@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require("fs");
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -25,15 +26,42 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
+// set ssl
+const ssl = {
+  key: fs.readFileSync("./files/privkey.pem"),
+  cert: fs.readFileSync("./files/fullchain.pem"),
+  ca: fs.readFileSync("./files/chain.pem")
+};
+
+var serverHttps = require('https').Server(ssl, app);
+var serverHttp = require('http').Server(app);
+var io = app.io = require('./routes/io')
+
+//middleware socket.io
+app.use((req, res, next) => {
+  res.io = io;
+  next();
+})
+
+//redirect http to https
+function ensureSecure(req, res, next) {
+  if (req.secure) {
+    return next();
+  };
+  res.redirect('https://' + req.hostname + req.url);
+};
+
+app.all('*', ensureSecure);
+
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -43,4 +71,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };

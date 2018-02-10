@@ -4,30 +4,39 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('alomobile:server');
-var http = require('http');
+var app = require('../app').app;
+var debug = require('debug')('Alomobile:server');
+var serverHttp = require('../app').serverHttp;
+var serverHttps = require('../app').serverHttps;
+var io = require('../routes/io');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+var portHttp = normalizePort(process.env.PORT || '3000');
+var portHttps = normalizePort(process.env.PORT || '443');
 
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
+app.set('portHttp', portHttp);
+app.set('portHttps', portHttps);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+serverHttps.listen(portHttps);
+serverHttp.listen(portHttp);
+serverHttp.on('error', onErrorInHTTP);
+serverHttp.on('listening', onListeningInHTTP);
+serverHttps.on('error', onErrorInHTTPS);
+serverHttps.on('listening', onListeningInHTTPS);
+
+/**
+ * Socket.io
+ */
+
+io.attach(serverHttp);
+io.attach(serverHttps)
 
 /**
  * Normalize a port into a number, string, or false.
@@ -53,14 +62,38 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+function onErrorInHTTP(error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof portHttp === 'string'
+    ? 'Pipe ' + portHttp
+    : 'Port ' + portHttp;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+function onErrorInHTTPS(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof portHttps === 'string'
+    ? 'Pipe ' + portHttps
+    : 'Port ' + portHttps;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -81,10 +114,19 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
-  var addr = server.address();
+function onListeningInHTTP() {
+  var addr = serverHttp.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
-    : 'port ' + addr.port;
+    : 'port ' + addr.portHttp;
   debug('Listening on ' + bind);
 }
+
+function onListeningInHTTPS() {
+  var addr = serverHttps.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.portHttps;
+  debug('Listening on ' + bind);
+}
+
