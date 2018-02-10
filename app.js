@@ -31,13 +31,13 @@ app.use('/', user);
 app.use('/', error);
 
 // set ssl
-const ssl = {
-  key: fs.readFileSync("./files/privkey.pem"),
-  cert: fs.readFileSync("./files/fullchain.pem"),
-  ca: fs.readFileSync("./files/chain.pem")
-};
+//const ssl = {
+//  key: fs.readFileSync("./files/privkey.pem"),
+//  cert: fs.readFileSync("./files/fullchain.pem"),
+//  ca: fs.readFileSync("./files/chain.pem")
+//};
 
-var serverHttps = require('https').Server(ssl, app);
+//var serverHttps = require('https').Server(ssl, app);
 var serverHttp = require('http').Server(app);
 var io = app.io = require('./routes/io')
 
@@ -48,12 +48,12 @@ app.use((req, res, next) => {
 })
 
 //redirect http to https
-app.use((req, res, next) => {
-  if (req.secure) {
-    return next();
-  };
-  res.redirect('https://' + req.hostname + req.url);
-})
+// app.use((req, res, next) => {
+//   if (req.secure) {
+//     return next();
+//   };
+//   res.redirect('https://' + req.hostname + req.url);
+// })
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

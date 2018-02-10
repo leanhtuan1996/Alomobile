@@ -15,28 +15,28 @@ var io = require('../routes/io');
  */
 
 var portHttp = normalizePort(process.env.PORT || '3000');
-var portHttps = normalizePort(process.env.PORT || '443');
+//var portHttps = normalizePort(process.env.PORT || '443');
 
 app.set('portHttp', portHttp);
-app.set('portHttps', portHttps);
+//app.set('portHttps', portHttps);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-serverHttps.listen(portHttps);
+//serverHttps.listen(portHttps);
 serverHttp.listen(portHttp);
 serverHttp.on('error', onErrorInHTTP);
 serverHttp.on('listening', onListeningInHTTP);
-serverHttps.on('error', onErrorInHTTPS);
-serverHttps.on('listening', onListeningInHTTPS);
+//serverHttps.on('error', onErrorInHTTPS);
+//serverHttps.on('listening', onListeningInHTTPS);
 
 /**
  * Socket.io
  */
 
 io.attach(serverHttp);
-io.attach(serverHttps)
+//io.attach(serverHttps)
 
 /**
  * Normalize a port into a number, string, or false.
