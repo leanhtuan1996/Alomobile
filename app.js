@@ -12,8 +12,9 @@ var users = require('./routes/users');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+//app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'ejs');
+app.set('views', ['app/views/', 'app/views/errors/', 'app/views/checkout/', 'app/views/menu/', 'app/views/customers/']);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -21,8 +22,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
+//use static
+app.use("/static", express.static(__dirname + "/public"));
 app.use('/', index);
 app.use('/users', users);
 
@@ -44,14 +46,12 @@ app.use((req, res, next) => {
 })
 
 //redirect http to https
-function ensureSecure(req, res, next) {
+app.use((req, res, next) => {
   if (req.secure) {
     return next();
   };
   res.redirect('https://' + req.hostname + req.url);
-};
-
-app.all('*', ensureSecure);
+})
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -68,7 +68,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('404');
 });
 
 module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
