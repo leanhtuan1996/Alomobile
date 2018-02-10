@@ -1,26 +1,20 @@
-
 <!doctype html>
 <html lang="en">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Delivery</title>
+    <title>Alomobile</title>
     <meta name="description" content="Shop powered by PrestaShop">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/vnd.microsoft.icon" href="/static/img/favicon.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
-
+    <link rel="icon" type="image/vnd.microsoft.icon" href="static/img/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;subset=devanagari,latin-ext" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="/static/css/theme.css" type="text/css" media="all">
-    <link rel="stylesheet" href="/static/css/animate.css" type="text/css" media="all">
-    <link rel="stylesheet" href="/static/css/custom.css" type="text/css" media="all">
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css" type="text/css" media="all">
-    <link rel="stylesheet" href="/static/css/ionicons.min.css" type="text/css" media="all">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">    
-
+    <link rel="stylesheet" href="static/css/theme.css" type="text/css" media="all">
     <script type="text/javascript">
     var CLOSE = "Close Categories";
     var MORE = "More Categories";
@@ -42,8 +36,8 @@
     }
     </style>
 </head>
-        
-<body id="my-account" class="lang-en country-us currency-usd layout-full-width page-my-account tax-display-disabled">
+
+<body id="authentication" class="lang-en country-us currency-eur layout-full-width page-authentication tax-display-disabled page-customer-account">
     <main>
         <header id="header">
             <div class="header-banner">
@@ -52,15 +46,18 @@
                 <%- include layouts/header-top %>
                     <%- include layouts/header-bottom %>
         </header>
-        <div class="headerSpace unvisible" style="height: 226px;"></div>
+        <aside id="notifications">
+            <div class="container">
+            </div>
+        </aside>
         <div class="breadcrumb_container">
             <div class="container">
                 <nav data-depth="1" class="breadcrumb hidden-sm-down">
-                    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList">
-                        <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                            <a itemprop="item" href="http://demo.posthemes.com/pos_fastbuy/layout2/en/">
-                  <span itemprop="name">Home</span>
-                </a>
+                    <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+                        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a itemprop="item" href="index.html">
+            <span itemprop="name">Home</span>
+          </a>
                             <meta itemprop="position" content="1">
                         </li>
                     </ol>
@@ -73,50 +70,60 @@
                     <div id="content-wrapper" class="col-xs-12">
                         <div id="main">
                             <header class="page-header">
-                                <h1>
-        Your account
-      </h1>
+                                <h1 style="text-align: center">
+  Log in to your account
+</h1>
                             </header>
-                            <section id="content" class="page-content">
-                                <aside id="notifications">
-                                    <div class="container">
-                                    </div>
-                                </aside>
-                                <div class="row">
-                                    <div class="links">
-                                        <a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="identity-link" href="my-informations.html">
-              <span class="link-item">
-                <i class="material-icons"></i>
-                Information
-              </span>
-            </a>
-                                        <a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="address-link" href="my-addresses.html">
-                <span class="link-item">
-                  <i class="material-icons"></i>
-                  My Addresses
-                </span>
-              </a>
-                                        <a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="history-link" href="my-order-history.html">
-                <span class="link-item">
-                  <i class="material-icons"></i>
-                  Order history and details
-                </span>
-              </a>
-                                        <a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="order-slips-link" href="my-credit.html">
-                <span class="link-item">
-                  <i class="material-icons"></i>
-                  Credit slips
-                </span>
-              </a>
-                                    </div>
+                            <section id="content" class="page-content card card-block">
+                                <section class="login-form">
+                                    <form id="login-form" action="" method="post">
+                                        <section>
+                                            <input type="hidden" name="back" value="">
+                                            <div class="form-group row ">
+                                                <label class="col-md-3 form-control-label required">
+                                                    Email
+                                                </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control" name="email" type="email" value="" required>
+                                                </div>
+                                                <div class="col-md-3 form-control-comment">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ">
+                                                <label class="col-md-3 form-control-label required">
+                                                    Password
+                                                </label>
+                                                <div class="col-md-6">
+                                                    <div class="input-group js-parent-focus">
+                                                        <input class="form-control js-child-focus js-visible-password" name="password" type="password" value="" pattern=".{5,}" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 form-control-comment">
+                                                </div>
+                                            </div>
+                                            <div class="forgot-password">
+                                                <a href="password-recovery" rel="nofollow">
+          Forgot your password?
+        </a>
+                                            </div>
+                                        </section>
+                                        <footer class="form-footer text-sm-center clearfix">
+                                            <input type="hidden" name="submitLogin" value="1">
+                                            <button class="btn btn-primary" data-link-action="sign-in" type="submit" class="form-control-submit">
+                                                Sign in
+                                            </button>
+                                        </footer>
+                                    </form>
+                                </section>
+                                <hr/>
+                                <div class="no-account">
+                                    <a href="sign-up" data-link-action="display-register-form">
+          No account? Create one here
+        </a>
                                 </div>
                             </section>
                             <footer class="page-footer">
-                                <div class="text-sm-center">
-                                    <a class="links_account" href="#">
-              Sign out
-            </a>
-                                </div>
+                                <!-- Footer content -->
                             </footer>
                         </div>
                     </div>
@@ -126,7 +133,6 @@
         <%- include layouts/footer %>
     </main>
     <script type="text/javascript" src="/static/js/custom.js"></script>
-    <div class="back-top"><a href="#" class="back-top-button"></a></div>   
+    <div class="back-top"><a href="#" class="back-top-button"></a></div>
 </body>
-
 </html>

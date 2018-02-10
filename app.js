@@ -7,7 +7,8 @@ var bodyParser = require('body-parser');
 var fs = require("fs");
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var user = require('./routes/user');
+var error = require('./routes/error');
 
 var app = express();
 
@@ -26,7 +27,8 @@ app.use(cookieParser());
 //use static
 app.use("/static", express.static(__dirname + "/public"));
 app.use('/', index);
-app.use('/users', users);
+app.use('/', user);
+app.use('/', error);
 
 // set ssl
 const ssl = {
