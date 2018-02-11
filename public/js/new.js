@@ -3752,19 +3752,14 @@
                 function c(e) { T = t.extend({}, T, e) }
 
                 function f() { var t = L.val(),
-                        e = L.parent(); "" !== t && (t = Number(t).toFixed(T.decimals)), L.data("initvalue", t).val(t), L.addClass("form-control"), e.hasClass("input-group") ? d(e) : p() }
-
-                function d(e) { e.addClass("bootstrap-touchspin"); var n, i, r = L.prev(),
-                        o = L.next(),
-                        s = '<span class="input-group-addon bootstrap-touchspin-prefix">' + T.prefix + "</span>",
-                        a = '<span class="input-group-addon bootstrap-touchspin-postfix">' + T.postfix + "</span>";
-                    r.hasClass("input-group-btn") ? (n = '<button class="' + T.buttondown_class + ' bootstrap-touchspin-down" type="button">' + T.buttondown_txt + "</button>", r.append(n)) : (n = '<span class="input-group-btn"><button class="' + T.buttondown_class + ' bootstrap-touchspin-down" type="button">' + T.buttondown_txt + "</button></span>", t(n).insertBefore(L)), o.hasClass("input-group-btn") ? (i = '<button class="' + T.buttonup_class + ' bootstrap-touchspin-up" type="button">' + T.buttonup_txt + "</button>", o.prepend(i)) : (i = '<span class="input-group-btn"><button class="' + T.buttonup_class + ' bootstrap-touchspin-up" type="button">' + T.buttonup_txt + "</button></span>", t(i).insertAfter(L)), t(s).insertBefore(L), t(a).insertAfter(L), A = e }
-
-                function p() { var e;
-                    e = T.verticalbuttons ? '<div class="input-group bootstrap-touchspin"><span class="input-group-addon bootstrap-touchspin-prefix">' + T.prefix + '</span><span class="input-group-addon bootstrap-touchspin-postfix">' + T.postfix + '</span><span class="input-group-btn-vertical"><button class="' + T.buttondown_class + ' bootstrap-touchspin-up" type="button"><i class="' + T.verticalupclass + '"></i></button><button class="' + T.buttonup_class + ' bootstrap-touchspin-down" type="button"><i class="' + T.verticaldownclass + '"></i></button></span></div>' : '<div class="input-group bootstrap-touchspin"><span class="input-group-btn"><button class="' + T.buttondown_class + ' bootstrap-touchspin-down" type="button">' + T.buttondown_txt + '</button></span><span class="input-group-addon bootstrap-touchspin-prefix">' + T.prefix + '</span><span class="input-group-addon bootstrap-touchspin-postfix">' + T.postfix + '</span><span class="input-group-btn"><button class="' + T.buttonup_class + ' bootstrap-touchspin-up" type="button">' + T.buttonup_txt + "</button></span></div>", A = t(e).insertBefore(L), t(".bootstrap-touchspin-prefix", A).after(L), L.hasClass("input-sm") ? A.addClass("input-group-sm") : L.hasClass("input-lg") && A.addClass("input-group-lg") }
+                        e = L.parent(); "" !== t && (t = Number(t).toFixed(T.decimals)), L.data("initvalue", t).val(t), L.addClass("form-control"), e.hasClass("input-group") ? d(e) : p() }                
 
                 function h() { I = { 
-                    down: t(".bootstrap-touchspin-down", A), up: t(".bootstrap-touchspin-up", A), input: t("input", A), prefix: t(".bootstrap-touchspin-prefix", A).addClass(T.prefix_extraclass), postfix: t(".bootstrap-touchspin-postfix", A).addClass(T.postfix_extraclass)                 
+                    down: t(".bootstrap-touchspin-down", A), 
+                    up: t(".bootstrap-touchspin-up", A), 
+                    input: t("input", A), 
+                    prefix: t(".bootstrap-touchspin-prefix", A).addClass(T.prefix_extraclass), 
+                    postfix: t(".bootstrap-touchspin-postfix", A).addClass(T.postfix_extraclass)                 
                     } 
                 }
                 function m() { "" === T.prefix && I.prefix.hide(), "" === T.postfix && I.postfix.hide() }
