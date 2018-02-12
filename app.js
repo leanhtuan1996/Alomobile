@@ -46,18 +46,6 @@ app.use((req, res, next) => {
   next();
 })
 
-//redirect http to https
-// redirect http to https
- function ensureSecure(req, res, next) {
-   console.log(req);
-   if (req.secure) {
-     return next();
-   };
-   res.redirect('https://' + req.hostname + req.url);
- };
-
-app.all('*', ensureSecure);
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
