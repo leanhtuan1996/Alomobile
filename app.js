@@ -47,12 +47,12 @@ app.use((req, res, next) => {
 })
 
 //redirect http to https
-// app.use((req, res, next) => {
-//   if (req.secure) {
-//     return next();
-//   };
-//   res.redirect('https://' + req.hostname + req.url);
-// })
+app.use((req, res, next) => {
+  if (req.secure) {
+    return next();
+  };
+  res.redirect('https://' + req.hostname + req.url);
+})
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -72,6 +72,6 @@ app.use(function (err, req, res, next) {
   res.render('404');
 });
 
-//module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
+module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
 
-module.exports = { app: app, serverHttp: serverHttp, io: io };
+//module.exports = { app: app, serverHttp: serverHttp, io: io };
