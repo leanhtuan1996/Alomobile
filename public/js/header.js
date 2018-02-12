@@ -128,7 +128,7 @@ var prestashop = {
         "canonical": null,
         "meta": {
             "title": "Fastbuy - Responsive Prestashop Theme",
-            "description": "Shop powered by PrestaShop",
+            "description": "Shop powered by Alomobile",
             "keywords": "",
             "robots": "index"
         },
