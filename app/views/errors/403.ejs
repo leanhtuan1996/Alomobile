@@ -74,12 +74,13 @@
             <div class="container">
                 <div class="jumbotron">
                     <h1 style="font-size: 60px"><i class="fa fa-ban red"></i> 403 Forbidden</h1>
-                    <p class="lead" style="margin-top: 10px">Sorry! You don't have access permissions for that on  <em><span id="display-domain">Ours Website</span></em>.</p>
-                    <p><button onclick="javascript:checkSite();" type="button" class="btn btn-outline-info"><span class="">Take Me To The Homepage</span></button>
+                    <p class="lead" style="margin-top: 10px">Xin lỗi! Bạn không có quyền truy cập vào địa chỉ này trên trang web của chúng tôi.</p>
+                    <p><button onclick="javascript:checkSite();" type="button" class="btn btn-outline-info"><span class="">Trở về trang chủ</span></button>
                         <script type="text/javascript">
                             function checkSite(){
                               var currentSite = window.location.hostname;
-                                window.location = "http://" + currentSite;
+                              var portSite = window.location.port;
+                                window.location = "http://" + currentSite + ":" + portSite;
                             }
                         </script>
                     </p>

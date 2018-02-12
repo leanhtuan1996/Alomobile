@@ -78,14 +78,9 @@
             <div class="container">
                 <div class="jumbotron">
                     <h1 style="font-size: 60px"><i class="fa fa-clock-o orange"></i>  504 Gateway Timeout</h1>
-                    <p class="lead" style="margin-top: 10px">The web server is returning an unexpected networking error for  <em><span id="display-domain">Ours Website</span></em>.</p>
-                    <p><button onclick="javascript:checkSite();" type="button" class="btn btn-outline-info"><span class="">Try This Page Again</span></button>
-                        <script type="text/javascript">
-                            function checkSite(){
-                              var currentSite = window.location.hostname;
-                                window.location = "http://" + currentSite;
-                            }
-                        </script>
+                    <p class="lead" style="margin-top: 10px">Máy chủ không thể trả về yêu cầu mà bạn đã gửi. Vui lòng thử lại sau.</p>
+                    <p><button onclick="javascript:document.location.reload(true);" type="button" class="btn btn-outline-info"><span class="">Thử lại</span></button>
+                       
                     </p>
                   </div>
             </div>
