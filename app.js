@@ -49,6 +49,7 @@ app.use((req, res, next) => {
 //redirect http to https
 // redirect http to https
  function ensureSecure(req, res, next) {
+   console.log(req);
    if (req.secure) {
      return next();
    };
