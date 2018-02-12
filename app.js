@@ -30,13 +30,13 @@ app.use('/', user);
 app.use('/', error);
 
 // set ssl
-//const ssl = {
-//  key: fs.readFileSync("./files/privkey.pem"),
-//  cert: fs.readFileSync("./files/fullchain.pem"),
-//  ca: fs.readFileSync("./files/chain.pem")
-//};
+var ssl = {
+ key: fs.readFileSync("privkey.pem"),
+ cert: fs.readFileSync("fullchain.pem"),
+ ca: fs.readFileSync("chain.pem")
+};
 
-//var serverHttps = require('https').Server(ssl, app);
+var serverHttps = require('https').Server(ssl, app);
 var serverHttp = require('http').Server(app);
 var io = app.io = require('./routes/io')
 
