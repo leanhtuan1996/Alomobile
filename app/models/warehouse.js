@@ -1,6 +1,6 @@
-
 'use strict';
-var mongoose = require('../config/index').db;
+
+var mongoose = require('../../config/db');
 var Schema = mongoose.Schema;
 
 module.exports = mongoose.model('Warehouse', new Schema({
@@ -9,9 +9,9 @@ module.exports = mongoose.model('Warehouse', new Schema({
     quantity: Number,
     created_at: Number,
     updated_at: Number,
-    logs: [{
-        previousQuantity: Number,
-        newQuantity: Number,
+    histories: [{
+        previous_Quantity: Number,
+        new_Quantity: Number,
         descriptions: String,
         created_at: Number,
         updated_at: Number

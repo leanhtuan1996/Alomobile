@@ -1,16 +1,16 @@
 'use strict';
-var mongoose = require('../config/index').db;
+var mongoose = require('../../config/db');
 var Schema = mongoose.Schema;
 
 module.exports = mongoose.model('ShippingMethod', new Schema({
     name: String,
     code: String,
     discount: Number,
-    usesTotal: Number,
-    useOrders: [{
+    uses_Total: Number,
+    use_Orders: [{
         type: Schema.Types.ObjectId, ref: "Order"
     }],
-    useUsers: [{
+    use_Users: [{
         type: Schema.Types.ObjectId, ref: "User"
     }],
     status: Boolean,

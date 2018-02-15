@@ -1,5 +1,5 @@
 'use strict';
-var mongoose = require('../config/index').db;
+var mongoose = require('../../config/db');
 var Schema = mongoose.Schema;
 
 module.exports = mongoose.model('User', new Schema({
@@ -16,17 +16,18 @@ module.exports = mongoose.model('User', new Schema({
         alias: String,  //bi danh
         company: String,
         address: String,
-        AddressComplement: String,
+        address_Complement: String,
         City: String,
         State: String,
         Zip_PostalCode: Number,
         Country: String
     }],
-    status: Boolean,
+    status: { type: Schema.Types.Boolean, default: true },
     orders: [{
         id: { type: Schema.Types.ObjectId, ref: "Order" }
     }],
-    isRegisteredNewLetters: Boolean,
+    isRegistered_NewLetters: Boolean,
+    last_sign_in: Number,
     created_at: Number,
     updated_at: Number
 }));

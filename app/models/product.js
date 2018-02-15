@@ -1,5 +1,5 @@
 'use strict';
-var mongoose = require('../config/index').db;
+var mongoose = require('../../config/db');
 var Schema = mongoose.Schema;
 
 module.exports = mongoose.model('Product', new Schema({
@@ -36,7 +36,7 @@ module.exports = mongoose.model('Product', new Schema({
     status: Boolean,
     isAvailable: Boolean,
     category_on: { type: Schema.Types.ObjectId, ref: "Category" },
-    totalOrders: Number,
+    total_Orders: Number,
     orderes: [{ type: Schema.Types.ObjectId, ref: "Order" }],
     created_at: Number,
     updated_at: Number
