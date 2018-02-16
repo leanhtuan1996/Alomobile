@@ -14,7 +14,7 @@ var io = require('../routes/io');
  * Get port from environment and store in Express.
  */
 
-var portHttp = normalizePort(process.env.PORT || '80');
+var portHttp = normalizePort(process.env.PORT || '3000');
 var portHttps = normalizePort(process.env.PORT || '443');
 
 app.set('portHttp', portHttp);
