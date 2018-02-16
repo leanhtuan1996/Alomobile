@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var user = require('../app/controllers/index').user;
+var User = require('../app/controllers/index').user;
 
 /* GET users listing. */
 /* USER SIGN_IN */
@@ -10,7 +10,7 @@ router.get('/sign-in', (req, res) => {
 });
 
 router.post('/sign-in', (req, res) => {
-    user.signIn(res, req.body.user);
+  User.signIn(req, res, req.body);
 }); /***/
 
 /* USER SIGN_UP */

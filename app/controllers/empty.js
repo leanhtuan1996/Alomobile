@@ -13,3 +13,11 @@ workflow.on('XXX', () => {
 });
 
 workflow.emit('validate-paremeters');
+
+<div class="help-block" >
+    
+    <ul>
+                <li class="alert alert-danger">Authentication failed.</li>
+            </ul>
+  
+</div>

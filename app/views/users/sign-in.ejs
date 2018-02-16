@@ -1,13 +1,14 @@
 <!doctype html>
 <html lang="vi">
+
 <head>
     <title>Alomobile</title>
-    
+
     <meta name="description" content="Shop powered by AloMobile">
     <meta name="keywords" content="">
-    
+
     <%- include layouts/head %>
-    </style>
+        </style>
 </head>
 
 <body id="authentication" class="lang-en country-us currency-eur layout-full-width page-authentication tax-display-disabled page-customer-account">
@@ -29,8 +30,8 @@
                     <ol itemscope itemtype="http://schema.org/BreadcrumbList">
                         <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                             <a itemprop="item" href="index.html">
-            <span itemprop="name">Home</span>
-          </a>
+                                <span itemprop="name">Home</span>
+                            </a>
                             <meta itemprop="position" content="1">
                         </li>
                     </ol>
@@ -44,12 +45,12 @@
                         <div id="main">
                             <header class="page-header">
                                 <h1 style="text-align: center">
-  Đăng nhập
-</h1>
+                                    Đăng nhập
+                                </h1>
                             </header>
                             <section id="content" class="page-content card card-block">
-                                <section class="login-form">
-                                    <form id="login-form" action="" method="post">
+                                <section class="login-form">    
+                                    <form id="login-form" action="/sign-in" method="post">
                                         <section>
                                             <input type="hidden" name="back" value="">
                                             <div class="form-group row ">
@@ -57,7 +58,7 @@
                                                     Email
                                                 </label>
                                                 <div class="col-md-6">
-                                                    <input class="form-control" name="email" type="email" value="" required>
+                                                    <input class="form-control" name="email" type="email" value="" required id="email">
                                                 </div>
                                                 <div class="col-md-3 form-control-comment">
                                                 </div>
@@ -68,7 +69,7 @@
                                                 </label>
                                                 <div class="col-md-6">
                                                     <div class="input-group js-parent-focus">
-                                                        <input class="form-control js-child-focus js-visible-password" name="password" type="password" value="" pattern=".{5,}" required>
+                                                        <input class="form-control js-child-focus" name="password" type="password" value="" pattern=".{5,}" required id="password">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 form-control-comment">
@@ -76,13 +77,12 @@
                                             </div>
                                             <div class="forgot-password">
                                                 <a href="/password-recovery" rel="nofollow">
-          Quên mật khẩu của bạn?
-        </a>
+                                                    Quên mật khẩu của bạn?
+                                                </a>
                                             </div>
                                         </section>
                                         <footer class="form-footer text-sm-center clearfix">
-                                            <input type="hidden" name="submitLogin" value="1">
-                                            <button class="btn btn-primary" data-link-action="sign-in" type="submit" class="form-control-submit">
+                                            <button class="btn btn-primary" type="submit" class="form-control-submit" id="login-button">
                                                 Đăng nhập
                                             </button>
                                         </footer>
@@ -91,8 +91,8 @@
                                 <hr/>
                                 <div class="no-account">
                                     <a href="/sign-up" data-link-action="display-register-form">
-          Không có tải khoản? Đăng ký ngay!
-        </a>
+                                        Không có tải khoản? Đăng ký ngay!
+                                    </a>
                                 </div>
                             </section>
                             <footer class="page-footer">
@@ -106,6 +106,49 @@
         <%- include layouts/footer %>
     </main>
     <script type="text/javascript" src="/static/js/custom.js"></script>
-    <div class="back-top"><a href="#" class="back-top-button"></a></div>
+    <div class="back-top">
+        <a href="#" class="back-top-button"></a>
+    </div>
+
+    <script type="text/javascript">
+        jQuery(document).ready(($) => {
+            $("form").submit((e) => {
+                e.preventDefault();
+                var $this = $(this);
+
+                //validate parameters
+                var email = $("#email").val(),
+                    password = $("#password").val();
+                
+                if (!email) {
+                    showNotify('#login-form', "Vui lòng nhập Email");
+                    return
+                }
+                
+                if (!password) {
+                    showNotify('#login-form', "Vui lòng nhập Password");
+                    return
+                }
+
+                var user = {
+                    email: email,
+                    password: password
+                }
+
+                //$("#login-button").html("Đang đăng nhập...").css("background-color", "blue");
+
+                $("#login-button").prop('disable', true);
+
+                $.post(
+                    $this.attr("action"),
+                    user,
+                    (data) => {
+                        var err = data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.";
+                        showNotify('#login-form', err);
+                    }
+                );
+            });
+        });
+    </script>
 </body>
 </html>

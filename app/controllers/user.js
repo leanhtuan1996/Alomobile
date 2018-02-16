@@ -8,8 +8,8 @@ var User = require('../models/index').user;
 
 
 var signIn = (req, res, user) => {
-
     var workflow = new event.EventEmitter();
+
     var email = user.email,
         password = user.password;
 
@@ -28,9 +28,9 @@ var signIn = (req, res, user) => {
     });
 
     workflow.on('handler-error', (err) => {
-        res.render('sign-in', {
+        res.send({
             error: err
-        });
+        });        
     });
 
     workflow.on('sign-in', () => {
@@ -195,13 +195,13 @@ var getInformations = (req, res) => {
 
         workflow.emit('get-informations', idUser);
     });
-    
+
     workflow.on('handler-error', (err) => {
         res.render('my-informations', {
-            error: err 
+            error: err
         });
     });
-    
+
     workflow.on('get-informations', (idUser) => {
         User.findById(idUser, (error, user) => {
             if (error) {
@@ -214,7 +214,7 @@ var getInformations = (req, res) => {
             });
         });
     });
-    
+
     workflow.emit('validate-paremeters');
 }
 

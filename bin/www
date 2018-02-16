@@ -15,7 +15,7 @@ var io = require('../routes/io');
  */
 
 var portHttp = normalizePort(process.env.PORT || '3000');
-var portHttps = normalizePort(process.env.PORT || '443');
+var portHttps = normalizePort(process.env.PORT || '8443');
 
 app.set('portHttp', portHttp);
 app.set('portHttps', portHttps);
