@@ -176,19 +176,43 @@ var registerNewLetters = (res, email) => {
 
 var getInformations = (req, res) => {
     var workflow = new event.EventEmitter();
+    var currentUser = helper.getSession(req, 'currentUser');
 
     workflow.on('validate-parameters', () => {
-        if (!helper.getSession(req, 'currentUser')) {
-            
+        if (!currentUser) {
+            helper.destroySession(req, 'currentUser');
+            workflow.emit('handler-error', 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.');
+            return
         }
+
+        var idUser = currentUser._id;
+
+        if (!idUser) {
+            helper.destroySession(req, 'currentUser');
+            workflow.emit('handler-error', 'Chứng thực tài khoản thất bại, vui lòng đăng nhập lại.');
+            return
+        }
+
+        workflow.emit('get-informations', idUser);
     });
     
     workflow.on('handler-error', (err) => {
-    
+        res.render('my-informations', {
+            error: err 
+        });
     });
     
-    workflow.on('XXX', () => {
-    
+    workflow.on('get-informations', (idUser) => {
+        User.findById(idUser, (error, user) => {
+            if (error) {
+                workflow.emit('handler-error', error);
+                return
+            }
+
+            res.render('my-informations', {
+                user: user
+            });
+        });
     });
     
     workflow.emit('validate-paremeters');

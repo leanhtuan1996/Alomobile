@@ -50,5 +50,6 @@ module.exports = {
     redirect: redirect,
     hashPw: hashPw,
     comparePw: comparePw,
-    dateToTimeStamp: dateToTimeStamp
+    dateToTimeStamp: dateToTimeStamp,
+    destroySession: destroySession
 }
