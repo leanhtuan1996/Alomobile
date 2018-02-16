@@ -1,0 +1,20 @@
+{
+	"server": {
+		"host" : "localhost",
+		"port" : 80
+	},
+	"mongoose": {
+		"host" : "35.201.241.250",
+		"port" : 27017,
+		"database" : "alomobile",
+		"user" : "anhtuan",
+		"password" : "tuanle"
+    },
+    "certificate": {
+        "key": "/privkey.pem",
+        "ca": "/chain.pem",
+        "cert": "/fullchain.pem"
+	},
+	"salt": 10,
+	"secret_key" : "alomobile"
+}

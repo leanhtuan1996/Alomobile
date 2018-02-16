@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
-/* USER */
+/* GET error listing. */
+/* ERROR */
 router.get('/403', (req, res) => {
     res.render('403');
 });

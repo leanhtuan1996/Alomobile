@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require("fs");
+var config = require("config");
+var session = require("express-session");
 
 var index = require('./routes/index');
 var user = require('./routes/user');
@@ -20,8 +22,19 @@ app.set('views', ['app/views/', 'app/views/errors/', 'app/views/checkout/', 'app
 app.use(favicon(path.join(__dirname, 'public', '/img/favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+//session
+app.set('trust proxy', 1) //trust first proxy
+app.use(session({
+    secret: config.get("secret_key"),
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false
+    }
+}));
 
 //use static
 app.use("/static", express.static(__dirname + "/public"));
