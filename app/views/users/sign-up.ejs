@@ -1,11 +1,12 @@
 <!doctype html>
 <html lang="vi">
+
 <head>
     <title>Đăng ký tài khoản</title>
-    
+
     <meta name="description" content="Shop powered by AloMobile">
     <meta name="keywords" content="">
-    
+
     <%- include layouts/head %>
 </head>
 
@@ -28,8 +29,8 @@
                     <ol itemscope itemtype="http://schema.org/BreadcrumbList">
                         <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                             <a itemprop="item" href="index.html">
-            <span itemprop="name">Trang chủ</span>
-          </a>
+                                <span itemprop="name">Trang chủ</span>
+                            </a>
                             <meta itemprop="position" content="1">
                         </li>
                     </ol>
@@ -43,13 +44,15 @@
                         <div id="main">
                             <header class="page-header">
                                 <h1 style="text-align: center">
-  Tạo tài khoản
-</h1>
+                                    Tạo tài khoản
+                                </h1>
                             </header>
                             <section id="content" class="page-content card card-block">
                                 <section class="register-form">
-                                    <p>Đã có tài khoản? <a href="/sign-in">Đăng nhập ngay!</a></p>
-                                    <form action="" id="customer-form" class="js-customer-form" method="post">
+                                    <p>Đã có tài khoản?
+                                        <a href="/sign-in">Đăng nhập ngay!</a>
+                                    </p>
+                                    <form action="/sign-up" id="customer-form" class="js-customer-form" method="post">
                                         <section>
                                             <input type="hidden" name="id_customer" value="">
                                             <div class="form-group row ">
@@ -59,34 +62,22 @@
                                                 <div class="col-md-6 form-control-valign">
                                                     <label class="radio-inline">
                                                         <span class="custom-radio">
-                                                             <input
-                                                                name="id_gender"
-                                                                type="radio"
-                                                                value="1"
-                                                                >
-                                                                <span></span>
+                                                            <input name="id_gender" type="radio" value="Nam">
+                                                            <span></span>
                                                         </span>
                                                         Nam
                                                     </label>
                                                     <label class="radio-inline">
                                                         <span class="custom-radio">
-                                                            <input
-                                                            name="id_gender"
-                                                            type="radio"
-                                                            value="2"
-                                                                                                >
+                                                            <input name="id_gender" type="radio" value="Nữ">
                                                             <span></span>
                                                         </span>
                                                         Nữ
                                                     </label>
                                                     <label class="radio-inline">
                                                         <span class="custom-radio">
-                                                             <input
-                                                                name="id_gender"
-                                                                type="radio"
-                                                                value="3"
-                                                                >
-                                                                <span></span>
+                                                            <input name="id_gender" type="radio" value="Khác">
+                                                            <span></span>
                                                         </span>
                                                         Khác
                                                     </label>
@@ -152,9 +143,11 @@
                                                 </label>
                                                 <div class="col-md-6">
                                                     <span class="custom-checkbox">
-            <input name="optin" type="checkbox" value="1"  >
-            <span><i class="material-icons checkbox-checked">&#xE5CA;</i></span>
-                                                    <label>Đăng ký nhận tin mới qua email</label>
+                                                        <input name="optin" type="checkbox" value="1">
+                                                        <span>
+                                                            <i class="material-icons checkbox-checked">&#xE5CA;</i>
+                                                        </span>
+                                                        <label>Đăng ký nhận tin mới qua email</label>
                                                     </span>
                                                 </div>
                                                 <div class="col-md-3 form-control-comment">
@@ -181,6 +174,92 @@
         <%- include layouts/footer %>
     </main>
     <script type="text/javascript" src="/static/js/custom.js"></script>
-    <div class="back-top"><a href="#" class="back-top-button"></a></div>
+    <div class="back-top">
+        <a href="#" class="back-top-button"></a>
+    </div>
+
+    <script type="text/javascript">
+
+        jQuery(document).ready(($) => {
+
+            $("form").submit((e) => {
+                e.preventDefault();
+                var $this = $(this);
+
+                //validate parameters
+                var firstName = $('input[name="firstname"]').val(),
+                    lastName = $('input[name="lastname"]').val(),
+                    email = $('input[name="email"]').val(),
+                    password = $('input[name="password"]').val(),
+                    birthday = $('input[name="birthday"]').val(),
+                    sex = $('input[name="id_gender"]:checked').val(),
+                    isRegistered_NewLetters = $('input[name="optin"]:checked').val() == 1 ? true : false;
+
+
+                if (!firstName) {
+                    showNotify('#customer-form', "Vui lòng nhập họ của bạn.");
+                    return
+                }
+
+                if (!lastName) {
+                    showNotify('#customer-form', "Vui lòng nhập tên của bạn.");
+                    return
+                }
+
+                if (!email) {
+                    showNotify('#customer-form', "Vui lòng nhập Email của bạn.");
+                    return
+                }
+
+                if (!password) {
+                    showNotify('#customer-form', "Vui lòng nhập mật khẩu.");
+                    return
+                }
+
+                if (!sex) {
+                    showNotify('#customer-form', "Vui lòng chọn giới tính.");
+                    return
+                }
+
+                if (birthday) {                    
+                    if (!isValidDate(birthday)) {
+                        showNotify('#customer-form', "Vui lòng nhập ngày sinh đúng định dạng: DD/MM/YYYY");
+                        return
+                    }
+                } else {
+                    birthday = null
+                }
+
+                //
+                var user = {
+                    fullName: {
+                        firstName: firstName,
+                        lastName: lastName
+                    },
+                    email: email,
+                    password: password,
+                    birthday: birthday,
+                    sex: sex,
+                    isRegistered_NewLetters: isRegistered_NewLetters
+                }
+
+                $('input[type="submit"]').html('Đang đăng ký...').addClass('disabled', true);
+
+                $.post(
+                    $this.attr("action"),
+                    user,
+                    (data) => {
+                        $('input[type="submit"]').html('Đăng ký ngay').removeClass('disabled');    
+                        
+                        window.console.log(data)
+
+                        var result = data.result || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.";
+                        showNotify('#customer-form', result); 
+                    }
+                );
+            });
+        });
+    </script>
 </body>
+
 </html>

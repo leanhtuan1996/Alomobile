@@ -19,7 +19,7 @@ router.get('/sign-up', (req, res) => {
 });
 
 router.post('/sign-up', (req, res) => {
-  user.signUp(res, req.body.user);  
+  User.signUp(req, res, req.body);
 }); /***/
 
 router.get('/my-account', (req, res) => {

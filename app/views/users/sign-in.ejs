@@ -135,16 +135,22 @@
                     password: password
                 }
 
-                //$("#login-button").html("Đang đăng nhập...").css("background-color", "blue");
-
-                $("#login-button").prop('disable', true);
+                $("#login-button").html("Đang đăng nhập...").addClass('disabled', true);
 
                 $.post(
                     $this.attr("action"),
                     user,
                     (data) => {
-                        var err = data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.";
-                        showNotify('#login-form', err);
+                        $("#login-button").html("Đăng nhập").removeClass('disabled');
+
+                        var success = data.success;
+
+                        if (success) {
+                            window.location.href = '/'
+                        } else {
+                            var err = data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.";
+                            showNotify('#login-form', err); 
+                        }                        
                     }
                 );
             });

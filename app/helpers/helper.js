@@ -39,8 +39,13 @@ var redirect = (res, to) => {
  */
 var dateToTimeStamp = (date) => {
     //format: YYYY-MM-DD
-    var date = new Date(date);
-    return date.getTime() / 1000
+    var newDate = new Date(date);
+    console.log(newDate);
+    return newDate.getTime() / 1000
+}
+
+var validateISODateTime = (string) => {
+    
 }
 
 module.exports = {

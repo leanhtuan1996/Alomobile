@@ -30,7 +30,7 @@ var signIn = (req, res, user) => {
     workflow.on('handler-error', (err) => {
         res.send({
             error: err
-        });        
+        });
     });
 
     workflow.on('sign-in', () => {
@@ -51,11 +51,12 @@ var signIn = (req, res, user) => {
             }
 
             if (helper.comparePw(password, user.password)) {
-                res.session.currentUser = user;
-                helper.redirect('/');
+                req.session.currentUser = user;
+                res.send({
+                    success: true
+                });
             } else {
                 workflow.emit('handler-error', 'Email hoặc mật khẩu không đúng, vui lòng thử lại.');
-                return
             }
         });
     });
@@ -65,53 +66,47 @@ var signIn = (req, res, user) => {
 
 
 var signUp = (req, res, user) => {
+
     var workflow = new event.EventEmitter();
     var email = user.email,
         password = user.password,
-        firstName = user.firstName,
-        lastName = user.lastName,
+        fullName = user.fullName,
         birthDay = user.birthDay,
-        phone = user.phone,
         sex = user.sex,
         isRegistered_NewLetters = user.isRegistered_NewLetters || false;
 
     workflow.on('validate-parameters', () => {
         if (!email) {
-            workflow.emit('handler-error', ('Email không được bỏ trống'));
+            workflow.emit('handler-error', 'Email không được bỏ trống');
             return
         }
 
         if (!password) {
-            workflow.emit('error-handler', ('Password không được bỏ trống'));
+            workflow.emit('handler-error', 'Password không được bỏ trống');
             return
         }
 
-        if (!firstName) {
-            workflow.emit('error-handler', ('Họ không được bỏ trống'));
-            return
-        }
-
-        if (!phone) {
-            workflow.emit('error-handler', ('Số điện thoại không được bỏ trống'));
+        if (!fullName) {
+            workflow.emit('handler-error', 'Họ tên không được bỏ trống');
             return
         }
 
         if (!sex) {
-            workflow.emit('error-handler', ('Giới tính không được bỏ trống'));
+            workflow.emit('handler-error', 'Giới tính không được bỏ trống');
             return
         }
-
         workflow.emit('sign-up');
     });
 
     workflow.on('handler-error', (err) => {
-        res.render('sign-up', {
-            error: err
+        res.send({
+            result: err
         });
     });
 
     workflow.on('sign-up', () => {
         User.findOne({ email: email }, (err, user) => {
+
             if (err) {
                 workflow.emit('handler-error', err);
                 return
@@ -127,24 +122,26 @@ var signUp = (req, res, user) => {
                 } else {
 
                     var newUser = new User();
-                    newUser.fullName = {
-                        firstName: firstName,
-                        lastName: lastName
-                    }
+                    newUser.fullName = fullName
                     newUser.email = email
                     newUser.password = hashPw
-                    newUser.birthDay = helper.dateToTimeStamp(birthDay)
+
+                    if (birthDay) {
+                        newUser.birthDay = helper.dateToTimeStamp(birthDay)
+                    }
+
                     newUser.sex = sex
                     newUser.isRegistered_NewLetters = isRegistered_NewLetters
                     newUser.created_at = Date.now() / 1000
+
+                    console.log(newUser);
 
                     newUser.save((err) => {
                         if (err) {
                             workflow.emit('handler-error', err);
                         } else {
-                            res.session.currentUser = newUser;
-                            res.render('sign-up', {
-                                success: 'Đăng kí tài khoản thành công, vui lòng nhấn vào <a href="/sign-in">đây</a> để đăng nhập.'
+                            res.send({
+                                result: 'Đăng kí tài khoản thành công, vui lòng nhấn vào <a href="/sign-in">đây</a> để đăng nhập.'
                             });
                         }
                     });
