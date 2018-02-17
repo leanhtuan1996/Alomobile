@@ -4,39 +4,75 @@ var router = express.Router();
 /* GET error listing. */
 /* ERROR */
 router.get('/403', (req, res) => {
-    res.render('403');
+    res.render('403', {
+        data: {
+            currentUser: req.session.currentUser
+        }
+    });
 });
 
 router.get('/404', (req, res) => {
-    res.render('404');
+    res.render('404', {
+        data: {
+            currentUser: req.session.currentUser
+        }
+    });
 });
 
 router.get('/500', (req, res) => {
-    res.render('500');
+    res.render('500', {
+        data: {
+            currentUser: req.session.currentUser
+        }
+    });
 });
 
 router.get('/502', (req, res) => {
-    res.render('502');
+    res.render('502', {
+        data: {
+            currentUser: req.session.currentUser
+        }
+    });
 });
 
 router.get('/503', (req, res) => {
-    res.render('503');
+    res.render('503', {
+        data: {
+            currentUser: req.session.currentUser
+        }
+    });
 });
 
 router.get('/504', (req, res) => {
-    res.render('504');
+    res.render('504', {
+        data: {
+            currentUser: req.session.currentUser
+        }
+    });
 });
 
 router.get('/504', (req, res) => {
-    res.render('504');
+    res.render('504', {
+        data: {
+            currentUser: req.session.currentUser
+        }
+    });
 });
 
 router.get('/rate-limit', (req, res) => {
-    res.render('rate-limit');
+    res.render('rate-limit', {
+        data: {
+            currentUser: req.session.currentUser
+        }
+    });
 });
 
 router.get('/temporary-maintenance', (req, res) => {
-    res.render('temporary-maintenance');
+    res.render('temporary-maintenance', {
+        data: {
+            currentUser: req.session.currentUser
+        }
+    });
 });
 
 module.exports = router;

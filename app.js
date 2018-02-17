@@ -28,12 +28,12 @@ app.use(cookieParser());
 //session
 app.set('trust proxy', 1) //trust first proxy
 app.use(session({
-    secret: config.get("secret_key"),
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        secure: false
-    }
+  secret: config.get("secret_key"),
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: false
+  }
 }));
 
 //use static
@@ -44,9 +44,9 @@ app.use('/', error);
 
 // set ssl
 var ssl = {
- key: fs.readFileSync("privkey.pem"),
- cert: fs.readFileSync("fullchain.pem"),
- ca: fs.readFileSync("chain.pem")
+  key: fs.readFileSync("privkey.pem"),
+  cert: fs.readFileSync("fullchain.pem"),
+  ca: fs.readFileSync("chain.pem")
 };
 
 var serverHttps = require('https').Server(ssl, app);
@@ -74,7 +74,11 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('404');
+  res.render('404', {
+    data: {
+      currentUser: req.session.currentUser
+    }
+  });
 });
 
 module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };

@@ -12,7 +12,7 @@ workflow.on('XXX', () => {
 
 });
 
-workflow.emit('validate-paremeters');
+workflow.emit('validate-parameters');
 
 <div class="help-block" >
     

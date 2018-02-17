@@ -184,7 +184,6 @@
 
             $("form").submit((e) => {
                 e.preventDefault();
-                var $this = $(this);
 
                 //validate parameters
                 var firstName = $('input[name="firstname"]').val(),
@@ -246,13 +245,11 @@
                 $('input[type="submit"]').html('Đang đăng ký...').addClass('disabled', true);
 
                 $.post(
-                    $this.attr("action"),
+                    'sign-up',
                     user,
                     (data) => {
                         $('input[type="submit"]').html('Đăng ký ngay').removeClass('disabled');    
                         
-                        window.console.log(data)
-
                         var result = data.result || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.";
                         showNotify('#customer-form', result); 
                     }

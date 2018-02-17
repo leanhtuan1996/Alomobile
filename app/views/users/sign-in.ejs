@@ -114,7 +114,6 @@
         jQuery(document).ready(($) => {
             $("form").submit((e) => {
                 e.preventDefault();
-                var $this = $(this);
 
                 //validate parameters
                 var email = $("#email").val(),
@@ -138,7 +137,7 @@
                 $("#login-button").html("Đang đăng nhập...").addClass('disabled', true);
 
                 $.post(
-                    $this.attr("action"),
+                    'sign-in',
                     user,
                     (data) => {
                         $("#login-button").html("Đăng nhập").removeClass('disabled');

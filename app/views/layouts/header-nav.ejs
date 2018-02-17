@@ -3,9 +3,19 @@
         <div class="user-info-block">
             <a href="/my-account" rel="nofollow">Tài khoản của tôi</a>
             <a href="/cart">Thanh toán</a>
-            <a href="/sign-in" title="Log in to your customer account" rel="nofollow">
-    <span class="">Đăng nhập</span>
-  </a>
+
+            <% if (data.currentUser) { %>             
+                <a href="/sign-out" title="Đăng xuất tài khoản của bạn" rel="nofollow">
+                    <span class="">Đăng xuất</span>
+                </a>
+                <a class="account" href="/my-account" title="View my customer account" rel="nofollow">
+                    <span class=""> <%- data.currentUser.fullName.lastName %> </span>
+                </a>
+            <% } else { %>
+                <a href="/sign-in" title="Log in to your customer account" rel="nofollow">
+                    <span class="">Đăng nhập</span>
+                </a>
+            <% } %>      
         </div>
     </div>
 </nav>

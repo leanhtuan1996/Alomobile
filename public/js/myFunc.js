@@ -11,7 +11,7 @@ function showNotify(i, content) {
         </ul>      
     </div> 
 `).show('slow');
-}   
+}
 
 function isValidDate(dateString) {
     var regEx = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
