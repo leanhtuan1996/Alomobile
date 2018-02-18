@@ -17,17 +17,21 @@ router.get('/sign-in', (req, res) => {
   } else {
     res.render('sign-in', {
       data: {
-  
+
       }
     });
-  }  
+  }
 });
 
 router.post('/sign-in', (req, res) => {
   if (req.session.currentUser) {
     res.redirect('/');
   } else {
-    User.signIn(req, res, req.body);
+    User.signIn(req, res, req.body, (result) => {
+      console.log('received');
+
+      res.send(result)
+    });
   }
 
 }); /***/

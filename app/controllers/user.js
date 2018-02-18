@@ -7,7 +7,7 @@ var helper = require('../helpers/index').helper;
 var User = require('../models/index').user;
 
 
-var signIn = (req, res, user) => {
+var signIn = (req, res, user, result) => {
     var workflow = new event.EventEmitter();
 
     var email = user.email,
@@ -15,48 +15,58 @@ var signIn = (req, res, user) => {
 
     workflow.on('validate-parameters', () => {
         if (!email) {
-            workflow.emit('handler-error', ('Email không được bỏ trống'));
+            workflow.emit('response', { error: 'Email không được bỏ trống' });
             return
         }
 
         if (!password) {
-            workflow.emit('error-handler', ('Password không được bỏ trống'));
+            workflow.emit('response', { error: 'Password không được bỏ trống' });
             return
         }
 
         workflow.emit('sign-in');
     });
 
-    workflow.on('handler-error', (err) => {
-        res.send({
-            error: err
-        });
+    workflow.on('response', (response) => {
+        var a = {
+            error: response.error,
+            success: response.success
+        }
+        return result(a);
     });
 
     workflow.on('sign-in', () => {
         User.findOne({ email: email }, (err, user) => {
             if (err) {
-                workflow.emit('handler-error', err);
+                workflow.emit('response', {
+                    error: err
+                });
                 return
             }
 
             if (!user) {
-                workflow.emit('handler-error', 'Email không tồn tại')
+                workflow.emit('response', {
+                    error: 'Email không tồn tại'
+                });
                 return
             }
 
             if (!user.password) {
-                workflow.emit('handler-error', 'Lỗi không xác định, vui lòng thử lại!')
+                workflow.emit('response', {
+                    error: 'Lỗi không xác định, vui lòng thử lại!'
+                });
                 return
             }
 
             if (helper.comparePw(password, user.password)) {
                 req.session.currentUser = user;
-                res.send({
+                workflow.emit('response', {
                     success: true
-                });
+                })
             } else {
-                workflow.emit('handler-error', 'Email hoặc mật khẩu không đúng, vui lòng thử lại.');
+                workflow.emit('response', ({
+                    error: 'Email hoặc mật khẩu không đúng, vui lòng kiểm tra lại.'
+                }));
             }
         });
     });
@@ -65,7 +75,7 @@ var signIn = (req, res, user) => {
 }/***/
 
 
-var signUp = (req, res, user) => {
+var signUp = (req, res, user, result) => {
 
     var workflow = new event.EventEmitter();
     var email = user.email,
@@ -77,30 +87,31 @@ var signUp = (req, res, user) => {
 
     workflow.on('validate-parameters', () => {
         if (!email) {
-            workflow.emit('handler-error', 'Email không được bỏ trống');
+            workflow.emit('response', { error: 'Email không được bỏ trống' });
             return
         }
 
         if (!password) {
-            workflow.emit('handler-error', 'Password không được bỏ trống');
+            workflow.emit('response', { error: 'Password không được bỏ trống' });
             return
         }
 
         if (!fullName) {
-            workflow.emit('handler-error', 'Họ tên không được bỏ trống');
+            workflow.emit('response', { error: 'Họ tên không được bỏ trống' });
             return
         }
 
         if (!sex) {
-            workflow.emit('handler-error', 'Giới tính không được bỏ trống');
+            workflow.emit('response', { error: 'Giới tính không được bỏ trống' });
             return
         }
         workflow.emit('sign-up');
     });
 
-    workflow.on('handler-error', (err) => {
-        res.send({
-            result: err
+    workflow.on('response', (result) => {
+        return result({
+            error: response.error,
+            success: response.success
         });
     });
 
@@ -108,17 +119,19 @@ var signUp = (req, res, user) => {
         User.findOne({ email: email }, (err, user) => {
 
             if (err) {
-                workflow.emit('handler-error', err);
+                workflow.emit('response', {
+                    error: err
+                });
                 return
             }
 
             if (user) {
-                workflow.emit('handler-error', 'Email này đã được sử dụng.')
+                workflow.emit('response', { error: 'Email này đã được sử dụng.' })
                 return
             } else {
                 var hashPw = helper.hashPw(password);
                 if (!hashPw) {
-                    workflow.emit('handler-error', 'Có lỗi xảy ra trong quá trình đăng ký, vui lòng thử lại sau!');
+                    workflow.emit('response', { error: 'Có lỗi xảy ra trong quá trình đăng ký, vui lòng thử lại sau!' });
                 } else {
 
                     var newUser = new User();
@@ -133,15 +146,12 @@ var signUp = (req, res, user) => {
                     newUser.sex = sex
                     newUser.isRegistered_NewLetters = isRegistered_NewLetters
                     newUser.created_at = Date.now() / 1000
-
-                    console.log(newUser);
-
                     newUser.save((err) => {
                         if (err) {
-                            workflow.emit('handler-error', err);
+                            workflow.emit('response', { error: err });
                         } else {
-                            res.send({
-                                result: 'Đăng kí tài khoản thành công, vui lòng nhấn vào <a href="/sign-in">đây</a> để đăng nhập.'
+                            workflow.emit('response', {
+                                success: 'Đăng kí tài khoản thành công, vui lòng nhấn vào <a href="/sign-in">đây</a> để đăng nhập.'
                             });
                         }
                     });
