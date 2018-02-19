@@ -5,23 +5,29 @@ var event = require('events');
 var helper = require('../helpers/index').helper;
 var Category = require('../models/index').category;
 
-var getCategories = () => {
+var getCategories = (result) => {
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
         workflow.emit('get-categories')
     });
 
-    workflow.on('handler-error', (err) => {
-        return [];
+    workflow.on('response', (response) => {
+        return result(response);
     });
 
     workflow.on('get-categories', () => {
         Category.find({}, (err, data) => {
             if (err) {
-                workflow.emit('handler-error', err);
+                workflow.emit('response', {
+                    error: err,
+                    categories: null
+                });
             } else {
-                return data || [];
+                workflow.emit('response', {
+                    error: null,
+                    categories: data || []
+                });
             }
         })
     });

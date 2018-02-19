@@ -7,91 +7,31 @@
                     <div class="navbar">
                         <div id="navbar-inner" class="navbar-inner navbar-inactive" style="text-align: center">
                             <a class="btn-navbar" style="text-align: center">Danh mục</a>
-                            <ul id="pt_custommenu_itemmobile" class="tree dhtml  mobilemenu nav-collapse collapse" style="text-align: center; ">                             
-                                <li><a href="15-phones-tablets.html" style="text-align: center">Điện thoại</a>
-                                    <ul class="dhtml">                                        
-                                            <li><a href="64-smartphone.html">Samsung</a></li>
-                                            <li><a href="64-smartphone.html">Apple</a></li>
-                                            <li><a href="64-smartphone.html">Nokia</a></li>
-                                            <li><a href="64-smartphone.html">Oppo</a></li>
-                                            <li><a href="64-smartphone.html">Sony</a></li>
-                                            <li><a href="64-smartphone.html">LG</a></li> 
-                                            <li><a href="64-smartphone.html">Huawei</a></li>
-                                            <li><a href="64-smartphone.html">BlackBerry</a></li>
-                                            <li><a href="64-smartphone.html">Masstel</a></li> 
-                                            <li><a href="64-smartphone.html">MobiiStar</a></li>
-                                            <li><a href="64-smartphone.html">Vivo</a></li>
-                                            <li><a href="64-smartphone.html">Philips</a></li> 
-                                            <li><a href="64-smartphone.html">Google</a></li>
-                                            <li><a href="64-smartphone.html">Điện thoại khác </a></li>
-                                    </ul>
-                                </li>
-
-                                <li><a href="15-phones-tablets.html">Máy tính bảng</a>
-                                    <ul class="dhtml">                                        
-                                            <li><a href="64-smartphone.html">Amazon</a></li>
-                                            <li><a href="64-smartphone.html">Samsung</a></li>
-                                            <li><a href="64-smartphone.html">Apple</a></li>
-                                            <li><a href="64-smartphone.html">Huawei</a></li>
-                                            <li><a href="64-smartphone.html">Masstel</a></li>
-                                            <li><a href="64-smartphone.html">Archos</a></li> 
-                                            <li><a href="64-smartphone.html">Asus</a></li>
-                                            <li><a href="64-smartphone.html">Lenovo</a></li>
-                                            <li><a href="64-smartphone.html">Microsoft</a></li> 
-                                            <li><a href="64-smartphone.html">Google</a></li>
-                                            <li><a href="64-smartphone.html">Máy tính bảng khác </a></li>
-                                    </ul>
-                                </li>
-
-                                <li><a href="15-phones-tablets.html">Máy tính xách tay</a>
-                                    <ul class="dhtml">                                        
-                                            <li><a href="64-smartphone.html">Dell</a></li>
-                                            <li><a href="64-smartphone.html">Asus</a></li>
-                                            <li><a href="64-smartphone.html">Apple</a></li>
-                                            <li><a href="64-smartphone.html">Acer</a></li>
-                                            <li><a href="64-smartphone.html">Lenovo</a></li>
-                                            <li><a href="64-smartphone.html">LG</a></li> 
-                                            <li><a href="64-smartphone.html">MSI</a></li>
-                                            <li><a href="64-smartphone.html">HP</a></li>
-                                            <li><a href="64-smartphone.html">Microsoft</a></li> 
-                                            <li><a href="64-smartphone.html">Google</a></li>
-                                            <li><a href="64-smartphone.html">Máy tính khác </a></li>
-                                    </ul>
-                                </li>
-
-                                <li><a href="15-phones-tablets.html">Phụ kiện máy tính</a>
-                                    <ul class="dhtml">                                        
-                                            <li><a href="64-smartphone.html">USB</a></li>
-                                            <li><a href="64-smartphone.html">Chuột</a></li>
-                                            <li><a href="64-smartphone.html">Bàn phím</a></li>
-                                            <li><a href="64-smartphone.html">Đế tản nhiệt</a></li>
-                                            <li><a href="64-smartphone.html">Túi đựng laptop</a></li>
-                                            <li><a href="64-smartphone.html">Ổ cứng di động</a></li> 
-                                            <li><a href="64-smartphone.html">Thiết bị mạng</a></li>
-                                            <li><a href="64-smartphone.html">Phụ kiện khác</a></li>
-                                    </ul>
-                                </li>
-
-                                <li><a href="15-phones-tablets.html">Phụ kiện điện thoại</a>
-                                    <ul class="dhtml">                                        
-                                        <li><a href="64-smartphone.html">Bao da/Ốp lưng</a></li>
-                                        <li><a href="64-smartphone.html">Pin dự phòng</a></li>
-                                        <li><a href="64-smartphone.html">Thẻ nhớ</a></li>
-                                        <li><a href="64-smartphone.html">Ốp lưng</a></li>
-                                        <li><a href="64-smartphone.html">Tai nghe</a></li>
-                                        <li><a href="64-smartphone.html">Tấm dán</a></li> 
-                                        <li><a href="64-smartphone.html">Cáp/Sạc</a></li>
-                                        <li><a href="64-smartphone.html">Phụ kiện khác </a></li>
-                                    </ul>
-                                </li>
-                               
-                                <li><a href="17-video-games.html">Thiết bị âm thanh </a>
-                                </li>
-                                <li><a href="18-sport-tourisim.html">Thiết bị khác</a>
-                                </li>
-                                <li><a href="19-fruits-veggies.html">Khuyến mãi</a>
-                                </li>
-                            </ul>
+                            <ul id="pt_custommenu_itemmobile" class="tree dhtml  mobilemenu nav-collapse collapse" style="text-align: center; ">   
+                            
+                                <% if (data.categories) { %>
+                                        <% data.categories.forEach((category) => { %>
+                                            <% var subCategories = category.subCategories; %>  
+                                            <% if (subCategories && subCategories.length != 0) { %>
+                                                <li><a href="/<%- category.alias %>" style="text-align: center"><%- category.name %></a>
+                                                    <ul class="dhtml"> 
+                                                        <% subCategories.forEach((sub) => { %>
+                                                            <% if (sub.items && sub.items.length != 0 ){ %>
+                                                                <% sub.items.forEach((item) => { %>   
+                                                                                                            
+                                                                    <li><a href="/<%- category.alias %>/<%- item.alias %>"><%- item.name %></a></li>
+                                                                        
+                                                                <% }); %>
+                                                            <% } %>
+                                                        <% }); %>
+                                                    </ul>               
+                                                </li>
+                                            <% } else { %>
+                                                <li><a href="/<%- category.alias %>" style="text-align: center"><%- category.name %></a></li>
+                                            <% } %>                                            
+                                        <% }); %>
+                                <% } %>    
+                            </ul>                        
                         </div>
                     </div>
                 </div>

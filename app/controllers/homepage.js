@@ -9,42 +9,28 @@ var Product = require('../models/index').product;
 
 const category = require('./category');
 
-var index = (req, res) => {
+var index = (req, res, result) => {
     var workflow = new event.EventEmitter();
 
-   // var currentUser = req.session.currentUser;
-
-    workflow.on('validate-parameters', () => {
-        //validate session
-        //console.log(currentUser);
-
+    workflow.on('validate-parameters', () => {        
         workflow.emit('index')
     });
 
-    workflow.on('handler-error', (err) => {
-
+    workflow.on('response', (response) => {
+        return result(response);
     });
 
     workflow.on('index', () => {
 
-        // var products = parameters.products,
-        //     user = parameters.user,
-        //     categories = parameters.categories;
-
-        // res.render('/sign-in', {
-        //     products: products,
-        //     user: user,
-        //     categories: categories
-        // })
-
         /** get categories */
-        var categories = category.getCategories();
+        category.getCategories((result) => {
+            var categories = result.categories || [];
 
-        res.render('index', {
-            data: {
-                currentUser: req.session.currentUser,
-                categories: categories
-            }
+            workflow.emit('response', {
+                error: null,
+                categories: categories,
+                currentUser: req.session.currentUser
+            });           
         });
     });
 

@@ -27,253 +27,70 @@
                                     <h2><i class="ion-navicon"></i>Tất cả danh mục</h2>
                                 </div>
                                 <!-- MENU -->
-                                <div id="pt_vmegamenu" class="pt_vmegamenu pt_vegamenu_cate">
+                                <div id="pt_vmegamenu" class="pt_vmegamenu pt_vegamenu_cate">                                   
                                     <!-- A CATEGORY -->
-                                    <div class="pt_menu">
-                                        <!-- level 0 -->
-                                        <div class="parentMenu">
-                                            <a href="/dien-thoai">
-                                                <span class="cate-thumb"><img class="img-responsive" src="https://png.icons8.com/ios-glyphs/24/7f8c8d/iphone.png" alt= ""/></span>
-                                                <span>Điện thoại</span>
-                                            </a>
-                                        </div>
-                                        <!-- level 1 -->
-                                        <div class="wrap-popup">
-                                            <div class="popup">
-                                                <div class="arrow-left"></div>
-                                                <div class="box-popup">
-                                                    <div class="block1">
-                                                        <div class="column first col1" style="float:left;">
-                                                            <div class="itemMenu ">
-                                                                <a class="itemMenuName" href="/dien-thoai" style="text-align: center">
-                                                                    <span>Điện thoại</span>
-                                                                </a>
-                                                                <!-- level 2 -->
-                                                                <div class="itemSubMenu">
-                                                                    <div class="itemMenu " style="float: left;">
-                                                                        <a class="itemMenuName " href="/dien-thoai/samsung"><span>Samsung</span></a><a class="itemMenuName " href="/dien-thoai/apple"><span>Apple</span></a><a class="itemMenuName  " href="/dien-thoai/oppo"><span>Oppo</span></a><a class="itemMenuName" href="/dien-thoai/nokia"><span>Nokia</span></a>
-                                                                        <a class="itemMenuName" href="/dien-thoai/sony"><span>Sony</span></a>
-                                                                        <a class="itemMenuName" href="/dien-thoai/lg"><span>LG</span></a>
-                                                                        <a class="itemMenuName" href="/dien-thoai/philips"><span>Philips</span></a>
-                                                                    </div>
-                                                                    <div class="itemMenu" style="float: right;">
-                                                                        <a class="itemMenuName" href="45-early-learning.html"><span>Huawei</span></a><a class="itemMenuName" href="46-animals.html"><span>BlackBerry</span></a><a class="itemMenuName" href="47-action-adventure.html"><span>Masstel</span></a><a class="itemMenuName" href="48-education-reference.html"><span>MobiiStar</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Vivo</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Google</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Khác</span></a>
+                                    <% if (data.categories) { %>
+                                        <% data.categories.forEach((category) => { %>
+                                            <% var subCategories = category.subCategories; %>  
+
+                                            <% if (subCategories && subCategories.length != 0){ %>
+                                                <div class="pt_menu">
+                                                    <div class="parentMenu">
+                                                        <a href="/<%- category.alias %>">
+                                                            <span class="cate-thumb">
+                                                                <img class="img-responsive" src="<%- category.icon %>" alt="">
+                                                            </span>
+                                                            <span><%- category.name %></span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="wrap-popup">
+                                                        <div class="popup" style="display: none;">
+                                                            <div class="arrow-left"></div>
+                                                                <div class="box-popup">
+                                                                    <div class="block1">
+                                                                        <% subCategories.forEach((sub) => { %>
+                                                                            <% var items = sub.items || [] %>
+                                                                            <% var name = sub.name || "" %>   
+                                                                            <% var style = sub.style || "" %>                              
+                                                        
+                                                                        <div class="column first col1" style="float: left">
+                                                                            <div class="itemMenu">
+                                                                                <a class="itemMenuName" href="" style=" <%- style %>">
+                                                                                    <span><%- name %></span>
+                                                                                </a>
+                                                                                <div class="itemSubMenu">
+                                                                                    <div class="itemMenu">
+                                                                                        <% items.forEach((item) => { %>  
+                                                                                                                                                                    
+                                                                                            <a class="itemMenuName" href="/<%- category.alias%>/<%- item.alias %>" style="text-align: center">
+                                                                                                <span><%- item.name %></span>
+                                                                                            </a>                                      
+                                                                                        <% }); %>   
+                                                                                    </div>       
+                                                                                </div> 
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="clearBoth"></div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- end level 2 -->
                                                             </div>
-                                                        </div>
-                                                        <div class="clearBoth"></div>
+                                                        </div>                                                        
+                                                    <% }); %>
+                                                </div>
+                                            <% } else { %> 
+                                                <div class="pt_menu noSub">
+                                                    <!-- level 0 -->
+                                                    <div class="parentMenu">
+                                                        <a href="<%- category.alias %>">
+                                                            <span class="cate-thumb"><img class="img-responsive" src="<%- category.icon %>" alt= ""/></span>
+                                                            <span><%- category.name %></span>
+                                                        </a>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <!-- end level 1 -->
-                                    </div>
-                                    <!-- END A CATEGORY -->
-                                    <!-- A CATEGORY -->
-                                    <div class="pt_menu">
-                                        <!-- level 0 -->
-                                        <div class="parentMenu">
-                                            <a href="13-book.html">
-                                                <span class="cate-thumb"><img class="img-responsive" src="https://png.icons8.com/windows/24/7f8c8d/android-tablet.png" alt= ""/></span>
-                                                <span>Máy tính bảng</span>
-                                            </a>
-                                        </div>
-                                        <!-- level 1 -->
-                                        <div class="wrap-popup">
-                                            <div class="popup">
-                                                <div class="arrow-left"></div>
-                                                <div class="box-popup">
-                                                    <div class="block1">
-                                                        <div class="column first col1" style="float:left;">
-                                                            <div class="itemMenu ">
-                                                                <a class="itemMenuName " href="43-children-s-books.html" style="text-align: center">
-                                                                    <span>Máy tính bảng</span>
-                                                                </a>
-                                                                <!-- level 2 -->
-                                                                <div class="itemSubMenu">
-                                                                    <div class="itemMenu " style="text-align: center">
-                                                                        <a class="itemMenuName " href="45-early-learning.html"><span>Amazon</span></a><a class="itemMenuName " href="46-animals.html"><span>Apple</span></a><a class="itemMenuName  " href="47-action-adventure.html"><span>Archos</span></a><a class="itemMenuName" href="48-education-reference.html"><span>Masstel</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Samsung</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Lenovo</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Asus</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Microsoft</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Google</span></a>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- end level 2 -->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="clearBoth"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- END A CATEGORY -->
-                                    <!-- A CATEGORY -->
-                                    <div class="pt_menu">
-                                        <!-- level 0 -->
-                                        <div class="parentMenu">
-                                            <a href="13-book.html">
-                                                <span class="cate-thumb"><img class="img-responsive" src="https://png.icons8.com/windows/24/7f8c8d/laptop.png" alt= ""/></span>
-                                                <span>Máy tính xách tay</span>
-                                            </a>
-                                        </div>
-                                        <!-- level 1 -->
-                                        <div class="wrap-popup">
-                                            <div class="popup">
-                                                <div class="arrow-left"></div>
-                                                <div class="box-popup">
-                                                    <div class="block1">
-                                                        <div class="column first col1" style="float:left;">
-                                                            <div class="itemMenu ">
-                                                                <a class="itemMenuName " href="43-children-s-books.html" style="text-align: center">
-                                                                    <span>Máy tính xách tay</span>
-                                                                </a>
-                                                                <!-- level 2 -->
-                                                                <div class="itemSubMenu">
-                                                                    <div class="itemMenu " style="text-align: center">
-                                                                        <a class="itemMenuName " href="45-early-learning.html"><span>Dell</span></a><a class="itemMenuName " href="46-animals.html"><span>Apple</span></a><a class="itemMenuName  " href="47-action-adventure.html"><span>Asus</span></a><a class="itemMenuName" href="48-education-reference.html"><span>Acer</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Lenovo</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>LG</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>MSI</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Microsoft</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>HP</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Khác</span></a>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- end level 2 -->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="clearBoth"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- END A CATEGORY -->
-                                    <!-- A CATEGORY -->
-                                    <div class="pt_menu">
-                                        <!-- level 0 -->
-                                        <div class="parentMenu">
-                                            <a href="13-book.html">
-                                                <span class="cate-thumb"><img class="img-responsive" src="https://png.icons8.com/wired/24/7f8c8d/mouse.png" alt= ""/></span>
-                                                <span>Phụ kiện máy tính</span>
-                                            </a>
-                                        </div>
-                                        <!-- level 1 -->
-                                        <div class="wrap-popup">
-                                            <div class="popup">
-                                                <div class="arrow-left"></div>
-                                                <div class="box-popup">
-                                                    <div class="block1">
-                                                        <div class="column first col1" style="float:left;">
-                                                            <div class="itemMenu ">
-                                                                <a class="itemMenuName " href="43-children-s-books.html" style="text-align: center">
-                                                                    <span>Phụ kiện máy tính</span>
-                                                                </a>
-                                                                <!-- level 2 -->
-                                                                <div class="itemSubMenu">
-                                                                    <div class="itemMenu " style="text-align: center">
-                                                                        <a class="itemMenuName " href="45-early-learning.html"><span>USB</span></a><a class="itemMenuName " href="46-animals.html"><span>Chuột</span></a><a class="itemMenuName  " href="47-action-adventure.html"><span>Bàn phím</span></a><a class="itemMenuName" href="48-education-reference.html"><span>Đế tản nhiệt</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Túi đựng laptop</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Ổ cứng di động</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Thiết bị mạng</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>DCOM-3G</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Khác</span></a>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- end level 2 -->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="clearBoth"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- END A CATEGORY -->
-                                    <!-- A CATEGORY -->
-                                    <div class="pt_menu">
-                                        <!-- level 0 -->
-                                        <div class="parentMenu">
-                                            <a href="13-book.html">
-                                                <span class="cate-thumb"><img class="img-responsive" src="https://png.icons8.com/ios/24/7f8c8d/no-selfie-stick.png" alt= ""/></span>
-                                                <span>Phụ kiện Điện thoại</span>
-                                            </a>
-                                        </div>
-                                        <!-- level 1 -->
-                                        <div class="wrap-popup">
-                                            <div class="popup">
-                                                <div class="arrow-left"></div>
-                                                <div class="box-popup">
-                                                    <div class="block1">
-                                                        <div class="column first col1" style="float:left;">
-                                                            <div class="itemMenu ">
-                                                                <a class="itemMenuName " href="43-children-s-books.html" style="text-align: center">
-                                                                    <span>Phụ kiện Điện thoại</span>
-                                                                </a>
-                                                                <!-- level 2 -->
-                                                                <div class="itemSubMenu">
-                                                                    <div class="itemMenu " style="text-align: center">
-                                                                        <a class="itemMenuName " href="45-early-learning.html"><span>Bao da/Ốp lưng</span></a><a class="itemMenuName " href="46-animals.html"><span>Pin dự phòng</span></a><a class="itemMenuName  " href="47-action-adventure.html"><span>Thẻ nhớ</span></a><a class="itemMenuName" href="48-education-reference.html"><span>Ốp lưng</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Tai nghe</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Kính cường lực</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Cáp/Sạc</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Loa di động</span></a>
-                                                                        <a class="itemMenuName" href="48-education-reference.html"><span>Khác</span></a>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- end level 2 -->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="clearBoth"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- END A CATEGORY -->
-                                    <!-- A CATEGORY -->
-                                    <div class="pt_menu noSub">
-                                        <!-- level 0 -->
-                                        <div class="parentMenu">
-                                            <a href="13-book.html">
-                                                <span class="cate-thumb"><img class="img-responsive" src="https://png.icons8.com/ios/24/7f8c8d/headphones.png" alt= ""/></span>
-                                                <span>Thiết bị âm thanh</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- END A CATEGORY -->
-                                    <!-- A CATEGORY -->
-                                    <div class="pt_menu noSub">
-                                        <!-- level 0 -->
-                                        <div class="parentMenu">
-                                            <a href="13-book.html">
-                                                <span class="cate-thumb"><img class="img-responsive" src="https://png.icons8.com/windows/24/7f8c8d/video-call.png" alt= ""/></span>
-                                                <span>Thiết bị khác</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- END A CATEGORY -->
-                                    <!-- A CATEGORY -->
-                                    <div class="pt_menu noSub">
-                                        <!-- level 0 -->
-                                        <div class="parentMenu">
-                                            <a href="13-book.html">
-                                                <span class="cate-thumb"><img class="img-responsive" src="https://png.icons8.com/windows/24/7f8c8d/discount.png" alt= ""/></span>
-                                                <span>Khuyến mãi</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- END A CATEGORY -->
+                                            <% } %>                                        
+                                        <% }); %>                                    
+                                    <% } %>
                                 </div>
-                                <!-- END MENU -->
                                 <div class="clearfix"></div>
                             </div>
                         </div>

@@ -5,7 +5,11 @@ var Homepage = require('../app/controllers/index').homepage;
 
 /* GET home page. */
 router.get('/', (req, res) => {
-  Homepage.index(req, res);
+  Homepage.index(req, res, (result) => {
+    res.render('index', {
+      data: result
+    });
+  });
 });
 
 router.get('/delivery', (req, res) => {

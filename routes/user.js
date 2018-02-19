@@ -46,7 +46,10 @@ router.get('/sign-up', (req, res) => {
 });
 
 router.post('/sign-up', (req, res) => {
-  User.signUp(req, res, req.body);
+  User.signUp(req, res, req.body, (result) => {
+    console.log('received');
+    res.send(result)
+  });
 }); /***/
 
 router.get('/sign-out', (req, res) => {

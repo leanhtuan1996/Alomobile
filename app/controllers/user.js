@@ -108,11 +108,12 @@ var signUp = (req, res, user, result) => {
         workflow.emit('sign-up');
     });
 
-    workflow.on('response', (result) => {
-        return result({
+    workflow.on('response', (response) => {
+        var a = {
             error: response.error,
             success: response.success
-        });
+        }
+        return result(a);
     });
 
     workflow.on('sign-up', () => {

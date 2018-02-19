@@ -248,10 +248,13 @@
                     'sign-up',
                     user,
                     (data) => {
-                        $('input[type="submit"]').html('Đăng ký ngay').removeClass('disabled');    
+                        $('input[type="submit"]').html('Đăng ký ngay').removeClass('disabled'); 
                         
-                        var result = data.result || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.";
-                        showNotify('#customer-form', result); 
+                        if (data.success) {
+                            showNotify('#customer-form', data.success); 
+                        } else {
+                            showNotify('#customer-form', data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau."); 
+                        } 
                     }
                 );
             });
