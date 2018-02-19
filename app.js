@@ -11,12 +11,13 @@ var session = require("express-session");
 var index = require('./routes/index');
 var user = require('./routes/user');
 var error = require('./routes/error');
+var admin = require('./routes/admin');
 
 var app = express();
 
 // view engine setup
 app.set('view engine', 'ejs');
-app.set('views', ['app/views/', 'app/views/errors/', 'app/views/checkout/', 'app/views/menu/', 'app/views/users/', 'app/views/products']);
+app.set('views', ['app/views/', 'app/views/errors/', 'app/views/checkout/', 'app/views/menu/', 'app/views/users/', 'app/views/products/', 'app/views/admin/']);
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', '/img/favicon.ico')));
@@ -37,10 +38,11 @@ app.use(session({
 }));
 
 //use static
-app.use("/static", express.static(__dirname + "/public"));
+app.use("/static", express.static("./public"));
 app.use('/', index);
 app.use('/', user);
 app.use('/', error);
+app.use('/admin', admin);
 
 // set ssl
 var ssl = {

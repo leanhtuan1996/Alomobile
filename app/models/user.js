@@ -12,6 +12,10 @@ module.exports = mongoose.model('User', new Schema({
     birthDay: Number,
     phone: String,
     sex: String,
+    type: {
+        type: Schema.Types.ObjectId,
+        ref: "AuthGroup"
+    },
     addresses: [{
         alias: String,  //bi danh
         company: String,

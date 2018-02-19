@@ -19,18 +19,22 @@ module.exports = mongoose.model('Product', new Schema({
         ref: "Manufacturer"
     },
     specifications: {}, //thong so ky thuat
-    images: {
-        thumbnail: String,
-        fullsize: [{ type: Schema.Types.String }]
-    },
+    images: [{
+        _id: Schema.Types.ObjectId,
+        url: String,
+        name: String,
+        alt: String
+    }],
     reviews: [{
-        quantity: Number,
+        _id: Schema.Types.ObjectId,
+        byUser: { type: Schema.Types.ObjectId, ref: "User" },
+        star: Number,
         title: String,
         content: String
     }],
     promotions: [{
-        type: Schema.Types.ObjectId, 
-        ref: "Promotion" 
+        type: Schema.Types.ObjectId,
+        ref: "Promotion"
     }],
     quantity: Number,
     status: Boolean,
