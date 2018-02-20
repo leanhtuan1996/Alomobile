@@ -6,23 +6,26 @@ var helper = require('../helpers/index').helper;
 var Product = require('../models/index').product;
 
 
-var getProducts = () => {
+var getProducts = (result) => {
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
         workflow.emit('get-products')
     });
 
-    workflow.on('handler-error', (err) => {
-        return [];
+    workflow.on('response', (reponse) => {
+        return result(reponse);
     });
 
     workflow.on('get-products', () => {
         Product.find({}, (err, products) => {
             if (err) {
-                workflow.emit('handler-error', err);
+                workflow.emit('response', err);
             } else {
-                return products || [];
+                workflow.emit('response', {
+                    error: null,
+                    products: products || []
+                });
             }
         });
     });
@@ -30,27 +33,33 @@ var getProducts = () => {
     workflow.emit('validate-parameters');
 }
 
-var getProduct = (id) => {
+var getProduct = (id, result) => {
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
         if (!id) {
-            workflow.emit('handler-error', 'Id product is required!');
+            workflow.emit('response', 'Id product is required!');
         } else {
             workflow.emit('get-product');
         }
     });
 
-    workflow.on('handler-error', (err) => {
-
+    workflow.on('response', (response) => {
+        return result(response)
     });
 
     workflow.on('get-product', () => {
         Product.findById(id, (err, product) => {
             if (err) {
-                workflow.emit('handler-error', err);
+                workflow.emit('response', {
+                    error: err,
+                    product: null
+                });
             } else {
-                return product || {}
+                workflow.emit('response', {
+                    error: null,
+                    product: product
+                })
             }
         })
     });

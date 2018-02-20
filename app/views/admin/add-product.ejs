@@ -3,9 +3,8 @@
 
 <head>
     <% include layouts/header %>
-
-    <!-- Bootstrap Dropify CSS -->
-		<link href="/static/admin/vendors/bower_components/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css"/>
+        <!-- Bootstrap Dropify CSS -->
+        <link href="/static/admin/vendors/bower_components/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -15,628 +14,269 @@
     </div>
     <!--/Preloader-->
     <div class="wrapper theme-5-active pimary-color-green">
-
         <% include layouts/menu %>
-
-        <!-- Main Content -->
-        <div class="page-wrapper">
-            <div class="container-fluid">
-                <!-- Title -->
-                <div class="row heading-bg">
-                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <h5 class="txt-dark">Thêm sản phẩm mới</h5>
+            <!-- Main Content -->
+            <div class="page-wrapper">
+                <div class="container-fluid">
+                    <!-- Title -->
+                    <div class="row heading-bg">
+                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                            <h5 class="txt-dark">Thêm sản phẩm mới</h5>
+                        </div>
                     </div>
-                </div>
-                <!-- /Title -->
-
-                <!-- Row -->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="panel panel-default card-view">
-                            <div class="panel-wrapper collapse in" style="margin: 10px">
-                                <div class="panel-body row">
-
-                                    <div class="form-wrap">
-                                        <form action="">
-                                            <h6 class="txt-dark capitalize-font">
-                                                <i class="zmdi zmdi-info-outline mr-10"></i>Thông tin cơ bản</h6>
-                                            <hr class="light-grey-hr" />
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Tên sản phẩm</label>
-                                                        <input type="text" id="firstName" class="form-control" placeholder="Iphone X 256GB">
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Thương hiệu</label>
-                                                        <select class="form-control" data-placeholder="Chọn danh mục" tabindex="1" id="selectManufacturer">
-                                                            <option value="null">Chọn một thương hiệu</option>
-                                                            <option value="apple">Apple</option>
-                                                            <option value="samsung">Samsung</option>
-                                                            <option value="sony">Sony</option>
-                                                            <option value="other">Khác</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                            </div>
-                                            <!-- Row -->
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Danh mục</label>
-                                                        <select class="form-control" data-placeholder="Chọn danh mục" tabindex="1" id="selectCategory">
-                                                            <option value="0">Chọn một danh mục</option>
-                                                            <% var categories = data.categories %>
-                                                            <% if (categories && categories.length != 0){ %>
-                                                                <% categories.forEach((category) => { %>
-                                                                    <option value="<%- category.name %>" data-root-name="<%- category.name %>" data-root-id="<%- category._id %>" data-is-root="1" data-alias="<%- category.alias %>"><%- category.name %></option>
-
-                                                                    <% var subCategory = category.subCategories %>
-                                                                    <% if (subCategory && subCategory.length != 0){ %> 
-                                                                        <% subCategory.forEach((sub) => { %>
-                                                                            <% var items = sub.items %>
-                                                                            <% if (items && items.length != 0){ %>
-                                                                                <% items.forEach((item) => { %>
-                                                                                    <option value="<%- item.name %>" data-root-name="<%- category.name %>" data-root-id="<%- category._id %>" data-alias="<%- category.alias %>">----<%- item.name %></option>
-                                                                                <% }); %>
-                                                                            <% } %>                             
-                                                                        <% }); %>
-                                                                    <% } %>
-                                                                <% }); %>
-                                                            <% } %>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Trạng thái</label>
-                                                        <div class="radio-list">
-                                                            <div class="radio-inline pl-0">
-                                                                <div class="radio radio-info">
-                                                                    <input type="radio" name="radio" id="radio1" value="option1">
-                                                                    <label for="radio1">Có sẵn</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="radio-inline">
-                                                                <div class="radio radio-info">
-                                                                    <input type="radio" name="radio" id="radio2" value="option2">
-                                                                    <label for="radio2">Tạm thời</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                            </div>
-                                            <!--/row-->
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Đơn giá</label>
-                                                        <div class="input-group">
-                                                            <div class="input-group-addon">
-                                                                <i class="ti-money"></i>
-                                                            </div>
-                                                            <input type="text" class="form-control" id="exampleInputuname" placeholder="12.000.000 VNĐ">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="seprator-block"></div>
-                                            
-                                            <h6 class="txt-dark capitalize-font">
-                                                <i class="zmdi zmdi-comment-text mr-10"></i>Mô tả chi tiết sản phẩm</h6>
-                                            <hr class="light-grey-hr" />
-                                            
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <textarea class="tinymce"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--/row-->
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Meta Title</label>
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Meta Keyword</label>
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="seprator-block"></div>
-                                            <h6 class="txt-dark capitalize-font">
-                                                <i class="zmdi zmdi-collection-image mr-10"></i>Hình ảnh sản phẩm</h6>
-                                            <hr class="light-grey-hr" />
-                                            <div class="row">
-                                                <div class="col-lg-4">
-                                                    <h6 class="panel-title txt-dark">Hình 1</h6>                                                       
-                                                    <div class="panel-wrapper collapse in">
-                                                        <div class="panel-body">
-                                                            <div class="mt-40" style="margin-top: 5px;">
-                                                                <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
-                                                            </div>	
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <h6 class="panel-title txt-dark">Hình 2</h6>                                                        
-                                                    <div class="panel-wrapper collapse in">
-                                                        <div class="panel-body">
-                                                            <div class="mt-40" style="margin-top: 5px;">
-                                                                <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
-                                                            </div>	
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <h6 class="panel-title txt-dark">Hình 3</h6>                                                       
-                                                    <div class="panel-wrapper collapse in">
-                                                        <div class="panel-body">
-                                                            <div class="mt-40" style="margin-top: 5px;">
-                                                            <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
-                                                            </div>	
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="clearfix" style="margin: 20px;"></div>
-                                            <div class="row">
-                                                <div class="col-lg-4">
-                                                    <h6 class="panel-title txt-dark">Hình 4</h6>                                                       
-                                                    <div class="panel-wrapper collapse in">
-                                                        <div class="panel-body">
-                                                            <div class="mt-40" style="margin-top: 5px;">
-                                                                <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
-                                                            </div>	
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <h6 class="panel-title txt-dark">Hình 5</h6>                                                       
-                                                    <div class="panel-wrapper collapse in">
-                                                        <div class="panel-body">
-                                                            <div class="mt-40" style="margin-top: 5px;">
-                                                            <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
-                                                            </div>	
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <h6 class="panel-title txt-dark">Hình 6</h6>
-                                                    <div class="panel-wrapper collapse in">
-                                                        <div class="panel-body">
-                                                            <div class="mt-40" style="margin-top: 5px;">
-                                                            <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
-                                                            </div>	
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="seprator-block" id="specifications-block" ></div>
-                                            
-                                            <!-- specifications-block -->
-                                            <div class="specifications-block">
+                    <!-- /Title -->
+                    <!-- Row -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default card-view">
+                                <div class="panel-wrapper collapse in" style="margin: 10px">
+                                    <div class="panel-body row">
+                                        <div class="form-wrap">
+                                            <form action="">
                                                 <h6 class="txt-dark capitalize-font">
-                                                    <i class="zmdi zmdi-calendar-note mr-10"></i>Thông số kỹ thuật
-                                                </h6>
+                                                    <i class="zmdi zmdi-info-outline mr-10"></i>Thông tin cơ bản</h6>
                                                 <hr class="light-grey-hr" />
-
-                                                <!-- ROW -->
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <h6 class="mb-20">Màn hình</h6>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Công nghệ màn hình</label>
-                                                                    <input type="text" class="form-control" placeholder="OLED">
-                                                                </div>   
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Độ phân giải</label>
-                                                                    <input type="text" class="form-control" placeholder="1125 x 2436 Pixels">
-                                                                </div>                                                            
-                                                            </div>
-                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Màn hình rộng</label>
-                                                                    <input type="text" class="form-control" placeholder="5.8 inch">
-                                                                </div>   
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Mặt kính cảm ứng</label>
-                                                                    <input type="text" class="form-control" placeholder="Kính oleophobic (ion cường lực)">
-                                                                </div>                                                            
-                                                            </div>
+                                                            <label class="control-label mb-10">Tên sản phẩm</label>
+                                                            <input type="text" id="firstName" class="form-control" placeholder="Iphone X 256GB">
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-6">
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <h6 class="mb-20">Camera trước</h6>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Độ phân giải</label>
-                                                                    <input type="text" class="form-control" placeholder="7 MP">
-                                                                </div>   
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Đèn flash</label>
-                                                                    <input type="text" class="form-control" placeholder="Không hỗ trợ">
-                                                                </div>                                                           
-                                                            </div>
-                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Video call</label>
-                                                                    <input type="text" class="form-control" placeholder="Có">
-                                                                </div> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Khác</label>
-                                                                    <textarea class="form-control" placeholder="Camera góc rộng, Selfie ngược sáng HDR, Nhận diện khuôn mặt, Quay video Full HD"></textarea>
-                                                                </div>                                                             
-                                                            </div>
+                                                            <label class="control-label mb-10">Thương hiệu</label>
+                                                            <select class="form-control" data-placeholder="Chọn danh mục" tabindex="1" id="selectManufacturer">
+                                                                <option value="null">Chọn một thương hiệu</option>
+                                                                <option value="apple">Apple</option>
+                                                                <option value="samsung">Samsung</option>
+                                                                <option value="sony">Sony</option>
+                                                                <option value="other">Khác</option>
+                                                            </select>
                                                         </div>
                                                     </div>
+                                                    <!--/span-->
                                                 </div>
-                                               
-                                                <!-- /ROW -->
-                                                <div class="clearfix" style="margin: 20px;"></div>
-                                                <!-- ROW -->
+                                                <!-- Row -->
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <h6 class="mb-20">Bộ nhớ & lưu trữ</h6>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Bộ nhớ ngoài</label>
-                                                                    <input type="text" class="form-control" placeholder="Không có">
-                                                                </div>   
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Bộ nhớ trong</label>
-                                                                    <input type="text" class="form-control" placeholder="256 GB">
-                                                                </div>                                                            
-                                                            </div>
-                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Bộ nhớ khả dụng</label>
-                                                                    <input type="text" class="form-control" placeholder="Khoảng 249 GB">
-                                                                </div>   
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Bộ nhớ ram</label>
-                                                                    <input type="text" class="form-control" placeholder="3 GB">
-                                                                </div>                                                          
-                                                            </div>
+                                                            <label class="control-label mb-10">Danh mục</label>
+                                                            <select class="form-control" data-placeholder="Chọn danh mục" tabindex="1" id="selectCategory">
+                                                                <option value="0">Chọn một danh mục</option>
+                                                                <% var categories = data.categories %>
+                                                                    <% if (categories && categories.length != 0){ %>
+                                                                        <% categories.forEach((category) => { %>
+                                                                            <option value="<%- category.name %>" data-root-name="<%- category.name %>" data-root-id="<%- category._id %>" data-is-root="1" data-alias="<%- category.alias %>">
+                                                                                <%- category.name %>
+                                                                            </option>
+                                                                            <% var subCategory = category.subCategories %>
+                                                                                <% if (subCategory && subCategory.length != 0){ %>
+                                                                                    <% subCategory.forEach((sub) => { %>
+                                                                                        <% var items = sub.items %>
+                                                                                            <% if (items && items.length != 0){ %>
+                                                                                                <% items.forEach((item) => { %>
+                                                                                                    <option value="<%- item.name %>" data-root-name="<%- category.name %>" data-root-id="<%- category._id %>" data-alias="<%- category.alias %>">----
+                                                                                                        <%- item.name %>
+                                                                                                    </option>
+                                                                                                    <% }); %>
+                                                                                                        <% } %>
+                                                                                                            <% }); %>
+                                                                                                                <% } %>
+                                                                                                                    <% }); %>
+                                                                                                                        <% } %>
+                                                            </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-6">
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <h6 class="mb-20">Camera sau</h6>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Độ phân giải</label>
-                                                                    <input type="text" class="form-control" placeholder="2 camera 12 MP">
-                                                                </div>   
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Đèn flash</label>
-                                                                    <input type="text" class="form-control" placeholder="4 đèn LED (2 tông màu)">
-                                                                </div> 
-                                                                </div>                                                            
-                                                            </div>
-                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Quay phim</label>
-                                                                    <input type="text" class="form-control" placeholder="Quay phim 4K 2160p@60fps">
-                                                                </div>  
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Khác</label>
-                                                                    <textarea type="text" class="form-control" placeholder="Lấy nét dự đoán, Chụp ảnh xóa phông, Tự động lấy nét, Chạm lấy nét, Nhận diện khuôn mặt, HDR, Panorama, Chống rung quang học (OIS)."></textarea>
-                                                                </div>                                                             
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- /ROW -->
-                                                <div class="clearfix" style="margin: 20px;"></div>
-                                                <!-- ROW -->
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <h6 class="mb-20">Bộ xử lý</h6> 
-                                                            <div class="row"> 
-                                                                <h6 class="mb-20" style="text-align: center;">CPU</h6>  
-                                                            </div> 
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Chipset</label>
-                                                                    <input type="text" class="form-control" placeholder="Apple A11 Bionic 6 nhân">
-                                                                </div>   
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Hãng sản xuất</label>
-                                                                    <input type="text" class="form-control" placeholder="Apple">
-                                                                </div> 
-                                                            </div>                                                       
-                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Tốc độ</label>
-                                                                    <input type="text" class="form-control" placeholder="2.39 GHz">
-                                                                </div>                                                            
-                                                            </div>
-                                                            <div class="clearfix" style="margin: 20px;"></div>
-                                                            <div class="row"> 
-                                                                <h6 class="mb-20" style="text-align: center;">GPU</h6>                     
-                                                            </div> 
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Chipset</label>
-                                                                    <input type="text" class="form-control" placeholder="Apple GPU 3 nhân">
-                                                                </div>   
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Hãng sản xuất</label>
-                                                                    <input type="text" class="form-control">
-                                                                </div> 
-                                                            </div>                                                       
-                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Tốc độ</label>
-                                                                    <input type="text" class="form-control">
-                                                                </div>                                                            
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <h6 class="mb-20">Kết nối</h6>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">Mạng di động</label>
-                                                                    <input type="text" class="form-control" placeholder="3G, 4G LTE Cat 16">
-                                                                </div>   
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">Sim</label>
-                                                                    <input type="text" class="form-control" placeholder="1 Nano SIM">
-                                                                </div> 
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">Wifi</label>
-                                                                    <input type="text" class="form-control" placeholder="Wi-Fi 802.11 a/b/g/n/ac, Dual-band, Wi-Fi hotspot">
+                                                            <label class="control-label mb-10">Trạng thái</label>
+                                                            <div class="radio-list">
+                                                                <div class="radio-inline pl-0">
+                                                                    <div class="radio radio-info">
+                                                                        <input type="radio" name="radio" id="radio1" value="option1">
+                                                                        <label for="radio1">Có sẵn</label>
+                                                                    </div>
                                                                 </div>
-                                                                </div>                                                            
-                                                            </div>
-                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">GPS</label>
-                                                                    <input type="text" class="form-control" placeholder="A-GPS, GLONASS">
-                                                                </div>   
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">Bluetooth</label>
-                                                                    <input type="text" class="form-control" placeholder="v5.0, A2DP, LE, EDR">
-                                                                </div> 
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">Cổng kết nối/sạc</label>
-                                                                    <input type="text" class="form-control" placeholder="Lightning">
-                                                                </div>                                                           
-                                                            </div>
-                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">Jack tai nghe</label>
-                                                                    <input type="text" class="form-control" placeholder="Lightning">
-                                                                </div>   
-                                                                <div class="col-sm-8">
-                                                                    <label class="control-label mb-10">Các kết nối khác</label>
-                                                                    <input type="text" class="form-control" placeholder="NFC, OTG">
-                                                                </div>                                                          
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- /ROW -->
-                                                <div class="clearfix" style="margin: 20px;"></div>
-                                                <!-- ROW -->
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <h6 class="mb-20">Thiết kế & Trọng lượng</h6>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Thiết kế</label>
-                                                                    <input type="text" class="form-control" placeholder="Nguyên khối">
-                                                                </div>   
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Chất liệu</label>
-                                                                    <input type="text" class="form-control" placeholder="Khung kim loại + mặt kính cường lực">
-                                                                </div>                                                            
-                                                            </div>
-                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div>
-                                                            <div class="row"> 
-                                                                <h6 class="mb-20" style="text-align: center; margin-bottom: 10px;">Kích thước</h6>
-                                                            </div>
-                                                            <div class="row">
-                                                                    <div class="col-sm-4">
-                                                                      <label class="control-label mb-10">Dài</label>
-                                                                      <input type="text" class="form-control" placeholder="143.6 mm">
-                                                                    </div>    
-                                                                    <div class="col-sm-4">
-                                                                       <label class="control-label mb-10">Ngang</label>
-                                                                      <input type="text" class="form-control" placeholder="70.9 mm">
-                                                                    </div> 
-                                                                    <div class="col-sm-4">
-                                                                     <label class="control-label mb-10">Dày</label>
-                                                                      <input type="text" class="form-control" placeholder="7.7 mm">
-                                                                    </div>  
+                                                                <div class="radio-inline">
+                                                                    <div class="radio radio-info">
+                                                                        <input type="radio" name="radio" id="radio2" value="option2">
+                                                                        <label for="radio2">Tạm thời</label>
+                                                                    </div>
                                                                 </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-6">
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <div class="row">
-                                                                <h6 class="mb-20" style="text-align: center; margin-bottom: 10px;">Pin</h6>
+                                                            <label class="control-label mb-10">Đơn giá</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">
+                                                                    <i class="ti-money"></i>
+                                                                </div>
+                                                                <input type="text" class="form-control" id="exampleInputuname" placeholder="12.000.000 VNĐ">
                                                             </div>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">Dung lượng pin</label>
-                                                                    <input type="text" class="form-control" placeholder="32716 mAh">
-                                                                </div>   
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">Loại pin</label>
-                                                                    <input type="text" class="form-control" placeholder="Pin chuẩn Li-Ion">
-                                                                </div> 
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">Công nghệ pin</label>
-                                                                    <input type="text" class="form-control" placeholder="Sạc pin nhanh, Sạc pin không dây, Tiết kiệm pin">
-                                                                </div>                                                           
-                                                            </div>                                                       
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- /ROW -->
-                                                <div class="clearfix" style="margin: 20px;"></div>
-                                                <!-- ROW -->
+                                                <div class="seprator-block"></div>
+                                                <h6 class="txt-dark capitalize-font">
+                                                    <i class="zmdi zmdi-comment-text mr-10"></i>Mô tả chi tiết sản phẩm</h6>
+                                                <hr class="light-grey-hr" />
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+                                                    <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <h6 class="mb-20">Tiện ích</h6>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Bảo mật nâng cao</label>
-                                                                    <input type="text" class="form-control" placeholder="Nhận diện khuôn mặt Face ID">
-                                                                </div>   
-                                                                <div class="col-sm-6">
-                                                                    <label class="control-label mb-10">Tính năng đặc biệt</label>
-                                                                    <input type="text" class="form-control" placeholder="Kháng nước, kháng bụi
-                                                                    3D Touch">
-                                                                </div>                                                            
-                                                            </div>
-                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div>
-                                                            <div class="row"> 
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">Ghi âm</label>
-                                                                    <input type="text" class="form-control" placeholder="Có, microphone chuyên dụng chống ồn">
-                                                                </div>   
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">Radio</label>
-                                                                    <input type="text" class="form-control" placeholder="Có">
-                                                                </div>    
-                                                                <div class="col-sm-4">
-                                                                    <label class="control-label mb-10">Xem phim/ Nghe nhạc</label>
-                                                                    <textarea type="text" class="form-control" placeholder="H.265, 3GP, MP4, AVI, WMV, H.263, H.264(MPEG4-AVC), Midi, Lossless, MP3, WAV, WMA9, WMA, AAC, AAC+, AAC++, eAAC+"></textarea>
-                                                                </div>                                                         
+                                                            <textarea class="tinymce"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label mb-10">Meta Title</label>
+                                                            <input type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label mb-10">Meta Keyword</label>
+                                                            <input type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="seprator-block"></div>
+                                                <h6 class="txt-dark capitalize-font">
+                                                    <i class="zmdi zmdi-collection-image mr-10"></i>Hình ảnh sản phẩm</h6>
+                                                <hr class="light-grey-hr" />
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 1</h6>
+                                                        <div class="panel-wrapper collapse in">
+                                                            <div class="panel-body">
+                                                                <div class="mt-10" style="margin-top: 5px;">
+                                                                    <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <h6 class="mb-20">Hệ điều hành</h6> 
-                                                            <div class="row">
-                                                                <div class="col-sm-4">
-                                                                    <input type="text" class="form-control" placeholder="iOS 11">
-                                                                </div> 
-                                                            </div>                                                       
-                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div> 
-                                                            <div class="row"> 
-                                                                <h5 class="mb-20" style="text-align: center;">Các thông số khác</h5>
-                                                                <div class="col-sm-12">
-                                                                    <textarea class="form-control" placeholder="Thời điểm ra mắt: 9/2017"></textarea>
-                                                                </div>  
-                                                            </div>                                                               
+                                                    <div class="col-lg-4">
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 2</h6>
+                                                        <div class="panel-wrapper collapse in">
+                                                            <div class="panel-body">
+                                                                <div class="mt-10" style="margin-top: 5px;">
+                                                                    <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                               
-                                                <!-- /ROW -->
-
+                                                    <div class="col-lg-4">
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 3</h6>
+                                                        <div class="panel-wrapper collapse in">
+                                                            <div class="panel-body">
+                                                                <div class="mt-10" style="margin-top: 5px;">
+                                                                    <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="clearfix" style="margin: 20px;"></div>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 4</h6>
+                                                        <div class="panel-wrapper collapse in">
+                                                            <div class="panel-body">
+                                                                <div class="mt-10" style="margin-top: 5px;">
+                                                                    <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 5</h6>
+                                                        <div class="panel-wrapper collapse in">
+                                                            <div class="panel-body">
+                                                                <div class="mt-10" style="margin-top: 5px;">
+                                                                    <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 6</h6>
+                                                        <div class="panel-wrapper collapse in">
+                                                            <div class="panel-body">
+                                                                <div class="mt-10" style="margin-top: 5px;">
+                                                                    <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- specifications-block -->
+                                                <div class="seprator-block" id="specifications-block"></div>
+                                                <!-- /specifications-block -->
+                                            </form>
                                             </div>
-                                            <!-- /specifications-block -->
-
-                                            <div class="form-actions" style="padding-bottom: 20px;">
-                                                <button class="btn btn-success btn-icon left-icon mr-10 pull-left">
-                                                    <i class="fa fa-check"></i>
-                                                    <span>Lưu lại</span>
-                                                </button>
-                                                <button type="button" class="btn btn-warning pull-left">Huỷ bỏ</button>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                        </form>
+                                        </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
+                        <!-- /Row -->
                     </div>
+                    <!-- Footer -->
+                    <footer class="footer container-fluid pl-30 pr-30">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>2018 &copy; Droopy. Pampered by Hencework</p>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- /Footer -->
                 </div>
-                <!-- /Row -->
+                <!-- /Main Content -->
             </div>
+            <!-- /#wrapper -->
+            <!-- JavaScript -->
+            <% include layouts/footer %>
+                <!-- Tinymce JavaScript -->
+                <script src="/static/admin/vendors/bower_components/tinymce/tinymce.min.js"></script>
+                <!-- Tinymce Wysuhtml5 Init JavaScript -->
+                <script src="/static/admin/js/tinymce-data.js"></script>
+                <script src="/static/admin/js/show-specifications.js"></script>
+                <!-- Bootstrap Daterangepicker JavaScript -->
+                <script src="/static/admin/vendors/bower_components/dropify/dist/js/dropify.min.js"></script>
+                <!-- Form Flie Upload Data JavaScript -->
+                <script src="/static/admin/js/form-file-upload-data.js"></script>
+                <!-- JQUERY -->
+                <script>
+                jQuery(document).ready(($) => {
+                    $("#selectCategory").change(() => {
+                        var optionSelected = $("#selectCategory").find('option:selected');
+                        var rootCategoryName = optionSelected.attr('data-root-name');
+                        var isRoot = optionSelected.attr('data-is-root');
+                        var alias = optionSelected.attr('data-alias');
+                        var selectedCategoryName = optionSelected.val();
 
-            <!-- Footer -->
-            <footer class="footer container-fluid pl-30 pr-30" style="display: none;">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <p>2018 &copy; Droopy. Pampered by Hencework</p>
-                    </div>
-                </div>
-            </footer>
-            <!-- /Footer -->
+                        if (!isRoot) {
+                            var newCate = rootCategoryName + " > " + selectedCategoryName;
+                            optionSelected.html(newCate)
+                        }
 
-        </div>
-        <!-- /Main Content -->
+                        showSpecification("#specifications-block", alias);
+                    });
 
-    </div>
-    <!-- /#wrapper -->
-
-    <!-- JavaScript -->
-
-    <% include layouts/footer %>
-
-    <!-- Tinymce JavaScript -->
-		<script src="/static/admin/vendors/bower_components/tinymce/tinymce.min.js"></script>
-			
-		<!-- Tinymce Wysuhtml5 Init JavaScript -->
-        <script src="/static/admin/js/tinymce-data.js"></script>
-        
-        <script src="/static/admin/js/show-specifications.js"></script>
-
-        	<!-- Bootstrap Daterangepicker JavaScript -->
-		<script src="/static/admin/vendors/bower_components/dropify/dist/js/dropify.min.js"></script>
-		
-		<!-- Form Flie Upload Data JavaScript -->
-		<script src="/static/admin/js/form-file-upload-data.js"></script>
-
-    <!-- JQUERY -->
-    <script>
-        jQuery(document).ready(($) => {
-            $("#selectCategory").change(() => {
-                var optionSelected = $("#selectCategory").find('option:selected');
-                var rootCategoryName = optionSelected.attr('data-root-name');
-                var isRoot = optionSelected.attr('data-is-root');
-                var alias = optionSelected.attr('data-alias');
-                var selectedCategoryName = optionSelected.val();
-                
-                if (!isRoot) {
-                    var newCate = rootCategoryName + " > " + selectedCategoryName;               
-                    optionSelected.html(newCate)
-                }
-
-                showSpecification("#specifications-block", alias);
-            });
-            
-        });
-    </script>
-
+                });
+                </script>
 </body>
 
 </html>

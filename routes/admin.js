@@ -2,14 +2,19 @@ var express = require('express');
 var router = express.Router();
 
 var Category = require('../app/controllers/index').category;
+var Dashboard = require('../app/controllers/admin/index').dashboard;
+var Product = require('../app/controllers/admin/index').product;
 
 /* GET users listing. */
 /* USER SIGN_IN */
 router.get('/', (req, res) => {
-    res.render('dashboard', {
-        data: {
-            title: "Trang quản trị - Alomobile"
-        }
+
+    Dashboard.dashboard((result) => {
+        res.render('dashboard', {
+            data: {
+                title: "Trang quản trị - Alomobile"
+            }
+        });
     });
 });
 
@@ -39,6 +44,12 @@ router.get('/products/add', (req, res) => {
             }
         });
     });    
+});
+
+router.post('products/add', (req, res) => {
+    Product.newProduct(req.body, (result) => {
+        res.send(result);
+    });
 });
 
 module.exports = router;
