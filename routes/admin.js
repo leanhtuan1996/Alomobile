@@ -47,6 +47,7 @@ router.get('/products/add', (req, res) => {
 });
 
 router.post('products/add', (req, res) => {
+    console.log(req.body);
     Product.newProduct(req.body, (result) => {
         res.send(result);
     });

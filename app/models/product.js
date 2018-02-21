@@ -5,15 +5,7 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('Product', new Schema({
     name: String,
     alias: String,
-    color: [{
-        hex: String,
-        rgb: {
-            red: Number,
-            green: Number,
-            blue: Number
-        },
-        name: String
-    }],
+    color: [String],
     manufacturer: {
         type: Schema.Types.ObjectId,
         ref: "Manufacturer"
