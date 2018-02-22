@@ -4710,16 +4710,13 @@ button.btn-small.btn-select.fc-agendaWeek-button, .btn-small.btn-select.fc-prev-
 /*Notification*/
 .alert {
   border-radius: 2px;
-  border: none;
-  color: #fff; }
+  border: none;}
   .alert i {
     font-size: 24px; }
   .alert.alert-success {
     background: #8BC34A; }
   .alert.alert-info {
     background: #e7368d; }
-  .alert.alert-danger {
-    background: #f33923; }
   .alert.alert-warning {
     background: #f8b32d; }
   .alert.alert-style-1 {

@@ -2,174 +2,403 @@
 <html lang="en">
 
 <head>
-	<% include layouts/header %>
+
+    <% include layouts/header %>
+        <!-- Bootstrap Dropify CSS -->
+        <link href="/static/admin/vendors/bower_components/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css" />
+
+        <!-- Bootstrap Colorpicker CSS -->
+        <link href="/static/admin/vendors/bower_components/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css"
+            rel="stylesheet" type="text/css" />
+
 </head>
 
 <body>
-	<!--Preloader-->
-	<div class="preloader-it">
-		<div class="la-anim-1"></div>
-	</div>
-	<!--/Preloader-->
-	<div class="wrapper theme-5-active pimary-color-green">
+    <!--Preloader-->
+    <div class="preloader-it">
+        <div class="la-anim-1"></div>
+    </div>
+    <!--/Preloader-->
+    <div class="wrapper theme-5-active pimary-color-green">
 
-		<% include layouts/menu %>
+        <% include layouts/menu %>
 
-		<!-- Main Content -->
-		<div class="page-wrapper">
-			<div class="container-fluid">
-				<!-- Title -->
-				<div class="row heading-bg">
-					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-						<h5 class="txt-dark">Trang quản trị danh mục</h5>
-					</div>
-					<div class="col-lg-3" style="float: right">
-						<a class="btn btn-primary" style="float: right" href="/admin/categories/add">Thêm danh mục</a>
-					</div>
-				</div>
-				<!-- /Title -->
+            <!-- Main Content -->
+            <div class="page-wrapper">
+                <div class="container-fluid">
+                    <!-- Title -->
+                    <div class="row heading-bg">
+                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                            <h5 class="txt-dark">Trang quản trị danh mục</h5>
+                        </div>
+                        <div class="col-lg-3" style="float: right">
+                            <button type="button" class="btn btn-primary" style="float: right" id="category-add" data-toggle="modal" data-target="#category-add-model">Thêm danh mục</button>
+                        </div>
+                    </div>
+                    <!-- /Title -->
 
-				<!-- Row -->
-				<div class="row">
-					<div class="col-sm-12">
-						<div class="panel panel-default card-view">
-							<div class="panel-wrapper collapse in">
-								<div class="panel-body row">
-									<div class="table-wrap">
-										<div class="table-responsive">
-											<table class="table display responsive product-overview mb-30" id="myTable">
-												<thead>
-													<tr>
-														<th>#ID</th>
-														<th>Tên danh mục</th>
-                                                        <th>Alias</th>
-                                                        <th>Icon</th>
-														<th>Trạng thái</th>
-														<th>Chức năng</th>
-													</tr>
-												</thead>
-                                                <tbody>
-                                                
-                                                    <% var categories = data.categories || [] %>
+                    <!-- /.modal -->
+                    <!-- Modal -->
+                    <div class="modal fade" id="category-add-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h5 class="modal-title" style="text-align: center;">Thêm danh mục</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="form-add-category">
+                                        <div class="form-group" >
+                                            <div class="row">
+                                                <div class="col-md-12" id="alert-error">
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label for="recipient-name" class="control-label mb-10">Tên danh mục:</label>
+                                                    <input type="text" class="form-control" id="category-name" placeholder="Loa di động">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="recipient-name" class="control-label mb-10">SEO URL:</label>
+                                                    <input type="text" class="form-control" id="category-alias" placeholder="loa-di-dong">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label for="message-text" class="control-label mb-10">Thuộc danh mục:</label>
+                                                    <select name="Danh mục gốc" id="category-on" class="form-control">
+                                                        <option value="0">Danh mục gốc</option>
 
-                                                    <% if (categories && categories.length != 0){ %>
-                                                    <% categories.forEach((category) => { %>
-                                                        <% var subCategories = category.subCategories || []; %>
-                                                        <% if (subCategories && subCategories.length != 0) { %>
 
-                                                            <tr>
-                                                                <td class="txt-dark"><%- category._id %></td>
-                                                                <td style="font-size: 18px; color: blue"><%- category.name %></td>
-                                                                <td class="txt-dark"><%- category.alias %></td>
-                                                                <td>
-                                                                    <% if (category.icon) { %>
-                                                                        <img src="<%- category.icon %>" alt="<%- category.alias %>" width="24">
-                                                                    <% } else { %>
-                                                                        Không có
+                                                        <% if(data.categories && data.categories.length != 0) { %>
+                                                            <% data.categories.forEach((category) => { %>
+                                                                <option value="<%- category._id %>">
+                                                                    <%- category.name %>
+                                                                </option>
+                                                                <% }); %>
                                                                     <% } %>
-                                                                    
-                                                                </td>
-                                                                <td>
-                                                                    <span class="label label-success font-weight-100">ACTIVE</span>
-                                                                </td>
-                                                                <td>
-                                                                    <a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip">
-                                                                        <i class="zmdi zmdi-edit txt-warning"></i>
-                                                                    </a>
-                                                                    <a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip">
-                                                                        <i class="zmdi zmdi-delete txt-danger"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
 
-                                                            <% subCategories.forEach((sub) => { %>
-                                                                <% var items = sub.items || []; %>
-                                                                <% if (items && items.length != 0) { %>
-                                                                    <% items.forEach((item) => { %>
-                                                                        <tr>
-                                                                        <td class="txt-dark"><%- category._id %></td>
-                                                                        <td style="color: green">-----<%- item.name %></td>
-                                                                        <td class="txt-dark"><%- item.alias %></td>
-                                                                        <td>
-                                                                            <% if (item.icon) { %>
-                                                                                <img src="<%- item.icon %>" alt="<%- item.alias %>" width="24">
-                                                                            <% } else { %>
-                                                                                Không có
-                                                                            <% } %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <span class="label label-success font-weight-100">ACTIVE</span>
-                                                                        </td>
-                                                                        <td>
-                                                                            <a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip">
-                                                                                <i class="zmdi zmdi-edit txt-warning"></i>
-                                                                            </a>
-                                                                            <a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip">
-                                                                                <i class="zmdi zmdi-delete txt-danger"></i>
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <% }); %>
-                                                                <% } %>
-                                                            <% }); %>
-                                                        <% } else { %>
-                                                            <tr>
-                                                                <td class="txt-dark"><%- category._id %></td>
-                                                                <td style="font-size: 18px; color: blue"><%- category.name %></td>
-                                                                <td class="txt-dark"><%- category.alias %></td>
-                                                                <td>
-                                                                    <img src="<%- category.icon %>" alt="iMac" width="24">
-                                                                </td>
-                                                                <td>
-                                                                    <span class="label label-success font-weight-100">ACTIVE</span>
-                                                                </td>
-                                                                <td>
-                                                                    <a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip">
-                                                                        <i class="zmdi zmdi-edit txt-warning"></i>
-                                                                    </a>
-                                                                    <a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip">
-                                                                        <i class="zmdi zmdi-delete txt-danger"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                        <% } %>
-                                                    <% }); %>
-                                                    <% } %>													
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /Row -->
-			</div>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="recipient-name" class="control-label mb-10">Trạng thái</label>
+                                                    <div class="checkbox mr-15">
+                                                        <input id="category-status" type="checkbox" checked>
+                                                        <label for="category-status">
+                                                            Hoạt động
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-upload-icon animated">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="control-label mb-10">Tải lên ảnh từ máy tính: </label>
+                                                    <input type="file" id="category-icon" data-max-file-size="2M" accept="image/*" />
 
-			<!-- Footer -->
-			<footer class="footer container-fluid pl-30 pr-30">
-				<div class="row">
-					<div class="col-sm-12">
-						<p>2018 &copy; Droopy. Pampered by Hencework</p>
-					</div>
-				</div>
-			</footer>
-			<!-- /Footer -->
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="control-label mb-10">Hoặc URL: </label>
+                                                    <input type="text" class="form-control" id="category-url" placeholder="https://png.icons8.com/ios-glyphs/24/7f8c8d/iphone.png">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-danger btn-save-changes"> Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-		</div>
-		<!-- /Main Content -->
+                    <!-- Row -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default card-view">
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body row">
+                                        <div class="table-wrap">
+                                            <div class="table-responsive">
+                                                <table class="table display responsive product-overview mb-30" id="table-category">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#ID</th>
+                                                            <th>Tên danh mục</th>
+                                                            <th>Alias</th>
+                                                            <th>Icon</th>
+                                                            <th>Trạng thái</th>
+                                                            <th>Chức năng</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
 
-	</div>
-	<!-- /#wrapper -->
+                                                        <% var categories = data.categories || [] %>
 
-    <% include layouts/footer %>
-	<!-- Data table JavaScript -->
-	<script src="/static/admin/vendors/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
-	<script src="/static/admin/js/productorders-data.js"></script>
+                                                            <% if (categories && categories.length != 0){ %>
+                                                                <% categories.forEach((category) => { %>
+                                                                    <% var subCategories = category.subCategories || []; %>
+                                                                        <% if (subCategories && subCategories.length != 0) { %>
 
-	<!-- Init JavaScript -->
-	<script src="/static/admin/js/init.js"></script>
+                                                                            <tr>
+                                                                                <td class="txt-dark">
+                                                                                    <%- category._id %>
+                                                                                </td>
+                                                                                <td style="font-size: 18px; color: blue">
+                                                                                    <%- category.name %>
+                                                                                </td>
+                                                                                <td class="txt-dark">
+                                                                                    <%- category.alias %>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <% if (category.icon) { %>
+                                                                                        <img src="<%- category.icon %>" alt="<%- category.alias %>" width="24">
+                                                                                        <% } else { %>
+                                                                                            Không có
+                                                                                            <% } %>
 
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="label label-success font-weight-100">ACTIVE</span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip">
+                                                                                        <i class="zmdi zmdi-edit txt-warning"></i>
+                                                                                    </a>
+                                                                                    <a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip">
+                                                                                        <i class="zmdi zmdi-delete txt-danger"></i>
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+
+                                                                            <% subCategories.forEach((sub) => { %>
+                                                                                <% var items = sub.items || []; %>
+                                                                                    <% if (items && items.length != 0) { %>
+                                                                                        <% items.forEach((item) => { %>
+                                                                                            <tr>
+                                                                                                <td class="txt-dark">
+                                                                                                    <%- category._id %>
+                                                                                                </td>
+                                                                                                <td style="color: green">-----
+                                                                                                    <%- item.name %>
+                                                                                                </td>
+                                                                                                <td class="txt-dark">
+                                                                                                    <%- item.alias %>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <% if (item.icon) { %>
+                                                                                                        <img src="<%- item.icon %>" alt="<%- item.alias %>" width="24">
+                                                                                                        <% } else { %>
+                                                                                                            Không có
+                                                                                                            <% } %>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <span class="label label-success font-weight-100">ACTIVE</span>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip">
+                                                                                                        <i class="zmdi zmdi-edit txt-warning"></i>
+                                                                                                    </a>
+                                                                                                    <a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip">
+                                                                                                        <i class="zmdi zmdi-delete txt-danger"></i>
+                                                                                                    </a>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <% }); %>
+                                                                                                <% } %>
+                                                                                                    <% }); %>
+                                                                                                        <% } else { %>
+                                                                                                            <tr>
+                                                                                                                <td class="txt-dark">
+                                                                                                                    <%- category._id %>
+                                                                                                                </td>
+                                                                                                                <td style="font-size: 18px; color: blue">
+                                                                                                                    <%- category.name %>
+                                                                                                                </td>
+                                                                                                                <td class="txt-dark">
+                                                                                                                    <%- category.alias %>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <img src="<%- category.icon %>" alt="iMac" width="24">
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <span class="label label-success font-weight-100">ACTIVE</span>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip">
+                                                                                                                        <i class="zmdi zmdi-edit txt-warning"></i>
+                                                                                                                    </a>
+                                                                                                                    <a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip">
+                                                                                                                        <i class="zmdi zmdi-delete txt-danger"></i>
+                                                                                                                    </a>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                            <% } %>
+                                                                                                                <% }); %>
+                                                                                                                    <% } %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- /Row -->
+
+
+                        <!-- Footer -->
+                        <footer class="footer container-fluid pl-30 pr-30">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p>2018 &copy; Droopy. Pampered by Hencework</p>
+                                </div>
+                            </div>
+                        </footer>
+                        <!-- /Footer -->
+
+                    </div>
+                    <!-- /Main Content -->
+
+
+                </div>
+                <!-- /#wrapper -->
+
+                <% include layouts/footer %>
+
+                <script>
+                    function showAlert(id, content) {
+                        var alert = `
+                                                    <div class="alert alert-danger alert-dismissable">
+                                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                        ${content}
+                                                    </div>
+                               `
+         
+
+                               $(id).append(alert);
+                    }
+                </script>
+
+                    <script>
+                        jQuery(document).ready(($) => {
+                            $('#table-category').DataTable();
+
+                            $("#category-on").change(() => {
+                                var optionSelected = $("#category-on").find("option:selected");
+                                if (optionSelected.val() == 0) {
+                                    $('.form-upload-icon').removeClass("bounceOutUp");
+                                    $('.form-upload-icon').addClass("bounceInDown");
+                                    $('.form-upload-icon').css("display", "block");
+                                } else {
+                                    if ($('.form-upload-icon').length != 0) {
+                                        $('.form-upload-icon').removeClass("bounceInDown");
+                                        $('.form-upload-icon').addClass("bounceOutUp");
+                                        setTimeout(() => {
+                                            $('.form-upload-icon').css("display", "none");
+                                        }, 800);
+
+                                    }
+                                }
+                            });
+
+                            //add new category
+                            $('.btn-save-changes').click((e) => {
+
+                                /*
+                                    category-name,
+                                category-alias,
+                                category-on,
+                                category-status,
+                                category-icon,
+                                category-url
+                                */
+
+                               //remove alert
+                               $('.alert').remove();
+
+                                var category_name,
+                                    category_alias,
+                                    category_on,
+                                    category_status,
+                                    category_icon,
+                                    category_url;
+
+
+                                //receive parameters
+                                $("#form-add-category :input").each((index, e) => {
+
+                                    
+
+                                    var id = $(e).attr('id');
+
+                                    switch (id) {
+                                        case 'category-name':
+                                            category_name = $(e).val();
+
+                                            if (!category_name) {                                                
+                                                 showAlert("#alert-error", "Tên danh mục là bắt buộc!");  
+                                                 return                       
+                                            }
+
+                                            break;
+                                        case 'category-alias':
+                                            category_alias = $(e).val();
+
+                                            if (!category_alias) {                                                
+                                                 showAlert("#alert-error", "SEO URL là bắt buộc!");  
+                                                 return                       
+                                            }
+                                            break;
+                                        case 'category-on':
+                                            category_on = $(e).val();
+                                            break;
+                                        case 'category-status':
+                                            category_status = $(e).attr("checked");
+                                            break;
+                                        case 'category-icon':
+                                            category_icon = $(e).val();
+                                            break;
+                                        case 'category-url':
+                                            category_url = $(e).val();
+                                            break;
+                                    }
+                                });
+
+                                //validate parameters
+                               
+                                //checking for category
+                                //if category is root => icon required
+                                if (category_on == 0) {
+                                    if (!(category_icon || category_url)) {
+                                        showAlert("#alert-error", "Vui lòng cung cấp hình ảnh!");  
+                                                 return  
+                                    }
+                                }
+                                //status
+                                alert(category_status)
+
+                            });
+
+                            //status
+                            $('#category-status').click((e) => {    
+                                $(e).removeAttr("checked");                            
+                                // if ($(e).is("checked") === false) {
+                                    
+                                // } else {
+                                //     $(e).add("checked");
+                                // }
+                            })
+                        });
+                    </script>
 </body>
+
 </html>

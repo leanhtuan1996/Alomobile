@@ -48,6 +48,19 @@ var validateISODateTime = (string) => {
     
 }
 
+var copySync = (src, dest) => {
+    if (!fs.existsSync(src)) {
+      return false;
+    }
+      fs.readFile(src, function (err, data) {
+      if (err) throw err;
+      fs.writeFile(dest, data, function (err) {
+          if (err) throw err;
+          return true;
+      });
+    });
+}
+
 module.exports = {
     getSession: getSession,
     setSession: setSession,
@@ -56,5 +69,6 @@ module.exports = {
     hashPw: hashPw,
     comparePw: comparePw,
     dateToTimeStamp: dateToTimeStamp,
-    destroySession: destroySession
+    destroySession: destroySession,
+    copySync: copySync
 }
