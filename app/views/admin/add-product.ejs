@@ -43,15 +43,19 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label mb-10">Tên sản phẩm</label>
-                                                            <input type="text" id="product_name" class="form-control" placeholder="Iphone X 256GB">
+                                                            <label class="control-label mb-10">Tên sản phẩm
+                                                                <span style="color: red">*</span>
+                                                            </label>
+                                                            <input type="text" id="product_name" class="form-control required" placeholder="Iphone X 256GB">
                                                         </div>
                                                     </div>
                                                     <!--/span-->
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <div class="form-group">
-                                                            <label class="control-label mb-10">Thương hiệu</label>
-                                                            <select class="form-control" data-placeholder="Chọn danh mục" tabindex="1" id="selectManufacturer">
+                                                            <label class="control-label mb-10">Thương hiệu
+                                                                    <span style="color: red">*</span>
+                                                            </label>
+                                                            <select class="form-control" tabindex="1" id="selectManufacturer">
                                                                 <option value="null">Chọn một thương hiệu</option>
                                                                 <option value="apple">Apple</option>
                                                                 <option value="samsung">Samsung</option>
@@ -61,6 +65,15 @@
                                                         </div>
                                                     </div>
                                                     <!--/span-->
+                                                    <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label mb-10">Tên hiển thị URL
+                                                                        <span style="color: red">*</span>
+                                                                </label>
+                                                                <input type="text" id="product_alias" class="form-control" placeholder="iphone-x-256-gb"></input>
+                                                            </div>
+                                                        </div>
+                                                        <!--/span-->
                                                 </div>
                                                 <!-- /row -->
 
@@ -68,7 +81,9 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label mb-10">Danh mục</label>
+                                                            <label class="control-label mb-10">Danh mục
+                                                                    <span style="color: red">*</span>
+                                                            </label>
                                                             <select class="form-control" data-placeholder="Chọn danh mục" tabindex="1" id="selectCategory">
                                                                 <option value="0">Chọn một danh mục</option>
                                                                 <% var categories = data.categories %>
@@ -97,7 +112,9 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label mb-10">Đơn giá</label>
+                                                                <label class="control-label mb-10">Đơn giá
+                                                                        <span style="color: red">*</span>
+                                                                </label>
                                                                 <div class="input-group">
                                                                     <div class="input-group-addon">
                                                                         <i class="ti-money"></i>
@@ -121,14 +138,14 @@
                                                                 </div>
                                                                 <div style="margin-top: 10px; margin-bottom: 10px;"></div>
                                                                 <div class="row" id="row-color">
-                                                                    <div class="col-md-2" id="color-1">
+                                                                    <div class="col-md-2 animated" id="color-1">
                                                                         <div class="colorpicker input-group colorpicker-component">
                                                                             <input type="text" value="#00AABB" class="form-control" id="color-value-1" />
                                                                              <span class="input-group-addon"><i></i></span>
                                                                              <span class="input-group-addon delete-color" data-id-color="color-1"><i class="fa fa-trash-o"></i></span>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-2" id="color-2">
+                                                                    <div class="col-md-2 animated" id="color-2">
                                                                         <div class="colorpicker input-group colorpicker-component">
                                                                             <input type="text" value="#00AABB" class="form-control" id="color-value-2"/>
                                                                                 <span class="input-group-addon "><i></i></span>
@@ -145,7 +162,8 @@
 
                                                 <div class="seprator-block"></div>
                                                 <h6 class="txt-dark capitalize-font">
-                                                    <i class="zmdi zmdi-comment-text mr-10"></i>Mô tả chi tiết sản phẩm</h6>
+                                                    <i class="zmdi zmdi-comment-text mr-10"></i>Mô tả chi tiết sản phẩm
+                                                    <span style="color: red">*</span></h6>
                                                 <hr class="light-grey-hr" />
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -158,25 +176,32 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label mb-10">Meta Title</label>
+                                                            <label class="control-label mb-10">Meta Title
+                                                                    <span style="color: red">*</span>
+                                                            </label>
                                                             <input type="text" class="form-control" id="product_meta_title">
                                                         </div>
                                                     </div>
                                                     <!--/span-->
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label mb-10">Meta Keyword</label>
+                                                            <label class="control-label mb-10">Meta Keyword
+                                                                    <span style="color: red">*</span>
+                                                            </label>
                                                             <input type="text" class="form-control" id="product_meta_keyword">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="seprator-block"></div>
                                                 <h6 class="txt-dark capitalize-font">
-                                                    <i class="zmdi zmdi-collection-image mr-10"></i>Hình ảnh sản phẩm</h6>
+                                                    <i class="zmdi zmdi-collection-image mr-10"></i>Hình ảnh sản phẩm
+                                                    <span style="color: red">*</span></h6>
                                                 <hr class="light-grey-hr" />
                                                 <div class="row">
                                                     <div class="col-lg-4">
-                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 1</h6>
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 1
+                                                                <span style="color: red">*</span>
+                                                        </h6>
                                                         <div class="panel-wrapper collapse in">
                                                             <div class="panel-body">
                                                                 <div class="mt-10" style="margin-top: 5px;">
@@ -186,7 +211,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
-                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 2</h6>
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 2
+                                                                <span style="color: red">*</span>
+                                                        </h6>
                                                         <div class="panel-wrapper collapse in">
                                                             <div class="panel-body">
                                                                 <div class="mt-10" style="margin-top: 5px;">
@@ -333,7 +360,7 @@
                     $("#newColor").click(() => {
                         totalColorPicker++;
                         $("#row-color").append(`
-                        <div class="col-md-2" id="color-${totalColorPicker}">
+                        <div class="col-md-2 animated rotateInDownLeft" id="color-${totalColorPicker}">
                             <div class="colorpicker input-group colorpicker-component">
                                 <input type="text" value="#00AABB" class="form-control" id="color-value-${totalColorPicker}" />
                                     <span class="input-group-addon"><i></i></span>
@@ -347,7 +374,12 @@
                     $("#row-color").delegate(".delete-color", "click", (e) => {
                         var idParent = e.currentTarget.parentElement.parentElement.id;
                         $(".colorpicker-visible").remove();
-                        $(`#${idParent}`).remove();
+                        $(`#${idParent}`).removeClass("rotateInDownLeft");
+                        $(`#${idParent}`).addClass("fadeOutLeft");                        
+
+                        setTimeout(() => {
+                            $(`#${idParent}`).remove();
+                        }, 1000);
                     });
                 });
     </script>

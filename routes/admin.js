@@ -46,11 +46,26 @@ router.get('/products/add', (req, res) => {
     });    
 });
 
-router.post('products/add', (req, res) => {
-    console.log(req.body);
+router.post('/products/add', (req, res) => {
     Product.newProduct(req.body, (result) => {
         res.send(result);
     });
+});
+
+router.get('/categories', (req, res) => {
+    Category.getCategories((result) => {
+        res.render('category', {
+            data: {
+                title: "Quản lý danh mục - Alomobile",
+                currentUser: req.session.currentUser,
+                categories: result.categories || []
+            }
+        })
+    });
+});
+
+router.post('/categories/add', (req, res) => {
+
 });
 
 module.exports = router;
