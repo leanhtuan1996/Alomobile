@@ -8,21 +8,15 @@
                         <div id="navbar-inner" class="navbar-inner navbar-inactive" style="text-align: center">
                             <a class="btn-navbar" style="text-align: center">Danh mục</a>
                             <ul id="pt_custommenu_itemmobile" class="tree dhtml  mobilemenu nav-collapse collapse" style="text-align: center; ">   
-                            
+                               
                                 <% if (data.categories) { %>
                                         <% data.categories.forEach((category) => { %>
                                             <% var subCategories = category.subCategories; %>  
                                             <% if (subCategories && subCategories.length != 0) { %>
                                                 <li><a href="/<%- category.alias %>" style="text-align: center"><%- category.name %></a>
                                                     <ul class="dhtml"> 
-                                                        <% subCategories.forEach((sub) => { %>
-                                                            <% if (sub.items && sub.items.length != 0 ){ %>
-                                                                <% sub.items.forEach((item) => { %>   
-                                                                                                            
-                                                                    <li><a href="/<%- category.alias %>/<%- item.alias %>"><%- item.name %></a></li>
-                                                                        
-                                                                <% }); %>
-                                                            <% } %>
+                                                        <% subCategories.forEach((sub) => { %>                                  
+                                                            <li><a href="/<%- category.alias %>/<%- sub.alias %>"><%- sub.name %></a></li>                                                           
                                                         <% }); %>
                                                     </ul>               
                                                 </li>
@@ -30,7 +24,8 @@
                                                 <li><a href="/<%- category.alias %>" style="text-align: center"><%- category.name %></a></li>
                                             <% } %>                                            
                                         <% }); %>
-                                <% } %>    
+                                <% } %>   
+
                             </ul>                        
                         </div>
                     </div>

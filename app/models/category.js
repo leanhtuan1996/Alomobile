@@ -10,17 +10,7 @@ module.exports = mongoose.model('Category', new Schema({
     subCategories: [{
         _id: { type: Schema.Types.ObjectId },
         name: String,
-        alias: String,
-        icon: String,
-        style: String,
-        items: [{
-            _id: { type: Schema.Types.ObjectId },
-            name: String,
-            alias: String,
-            descriptions: String,
-            meta_Descriptions: String,
-            meta_Keywords: String,
-        }],
+        alias: String,        
         descriptions: String,
         meta_Descriptions: String,
         meta_Keywords: String,

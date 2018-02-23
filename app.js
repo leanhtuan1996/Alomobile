@@ -8,6 +8,7 @@ var fs = require("fs");
 var config = require("config");
 var session = require("express-session");
 
+
 var index = require('./routes/index');
 var user = require('./routes/user');
 var error = require('./routes/error');
@@ -59,7 +60,7 @@ var io = app.io = require('./routes/io')
 app.use((req, res, next) => {
   res.io = io;
   next();
-})
+});
 
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {

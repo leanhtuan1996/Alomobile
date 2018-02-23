@@ -32,7 +32,6 @@
                                     <% if (data.categories) { %>
                                         <% data.categories.forEach((category) => { %>
                                             <% var subCategories = category.subCategories; %>  
-
                                             <% if (subCategories && subCategories.length != 0){ %>
                                                 <div class="pt_menu">
                                                     <div class="parentMenu">
@@ -48,23 +47,17 @@
                                                             <div class="arrow-left"></div>
                                                                 <div class="box-popup">
                                                                     <div class="block1">
-                                                                        <% subCategories.forEach((sub) => { %>
-                                                                            <% var items = sub.items || [] %>
-                                                                            <% var name = sub.name || "" %>   
-                                                                            <% var style = sub.style || "" %>                              
-                                                        
                                                                         <div class="column first col1" style="float: left">
                                                                             <div class="itemMenu">
-                                                                                <a class="itemMenuName" href="" style=" <%- style %>">
-                                                                                    <span><%- name %></span>
+                                                                                <a class="itemMenuName" href="" style="text-align: center;">
+                                                                                    <span><%- category.name %></span>
                                                                                 </a>
                                                                                 <div class="itemSubMenu">
                                                                                     <div class="itemMenu">
-                                                                                        <% items.forEach((item) => { %>  
-                                                                                            
-                                                                                        <a class="itemMenuName" href="/<%- category.alias%>/<%- item.alias %>" style="text-align: center;">
-                                                                                            <span><%- item.name %></span>
-                                                                                        </a>                                   
+                                                                                        <% subCategories.forEach((sub) => { %>   
+                                                                                            <a class="itemMenuName" href="/<%- category.alias %>/<%- sub.alias %>" style="text-align: center;">
+                                                                                                <span><%- sub.name %></span>
+                                                                                            </a>                                   
                                                                                         <% }); %>   
                                                                                     </div>       
                                                                                 </div> 
@@ -72,10 +65,9 @@
                                                                         </div>
                                                                         <div class="clearBoth"></div>
                                                                     </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>                                                        
-                                                    <% }); %>
+                                                                </div>                                                           
+                                                        </div>   
+                                                    </div> 
                                                 </div>
                                             <% } else { %> 
                                                 <div class="pt_menu noSub">
@@ -87,10 +79,10 @@
                                                         </a>
                                                     </div>
                                                 </div>
-                                            <% } %>                                        
-                                        <% }); %>                                    
+                                            <% } %>                                   
+                                        <% }) %>
                                     <% } %>
-                                </div>
+                                    </div>
                                 <div class="clearfix"></div>
                             </div>
                         </div>
