@@ -11,8 +11,10 @@ var storage = multer.diskStorage({
         cb(null, './public/img');
     },
     filename: (req, file, cb) => {
-        var originalName = file.originalname.replace(/\.[^/.]+$/, ""); 
+        var originalName = file.originalname.replace(/\.[^/.]+$/, "");
         var fileExtension = file.originalname.split('.').pop();
+
+        console.log(file.originalname);
 
         var newName = Date.now() + "." + fileExtension;
 
@@ -94,14 +96,18 @@ router.post('/categories/add', upload.single('icon'), (req, res) => {
     });
 });
 
-router.post('/categories/delete', (req, res) => {
-    console.log(req.body);
+router.post('/categories/delete', (req, res) => {    
     Category.delCategory(req.body, (result) => {
         res.send({
-            error: result.error,
-            success: true,
+            error: result.error
         });
     });
+});
+
+router.post('/categories/edit', upload.single('new_icon'), (req, res) => {
+    Category.editCategory(req.body, (result) => {
+        res.send(result);
+    })
 });
 
 module.exports = router;

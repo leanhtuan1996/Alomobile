@@ -25,7 +25,7 @@
                     <div class="row heading-bg">
                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12" style="width: 100%">
                             <h5 class="txt-dark" style="float: left;">Trang quản trị danh mục</h5>
-                            <button type="button" class="btn btn-primary" style="float: right" id="category-add" >Thêm danh mục</button>
+                            <button type="button" class="btn btn-primary" style="float: right" id="category-add">Thêm danh mục</button>
                         </div>
                     </div>
                     <!-- /Title -->
@@ -89,7 +89,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-danger btn-save-changes" class="form-control-submit"> Save changes</button>
+                                            <button type="submit" class="btn btn-danger btn-save-changes" class="form-control-submit" id="btn-add-category"> Save changes</button>
                                         </div>
                                     </form>
                                 </div>
@@ -126,7 +126,7 @@
                                                                     <td class="txt-dark td-id">
                                                                         <%- category._id %>
                                                                     </td>
-                                                                    <td style="color: blue" class="td-name">
+                                                                    <td style="color: blue; font-size: 18px;" class="td-name">
                                                                         <%- category.name %>
                                                                     </td>
                                                                     <td class="txt-dark td-alias">
@@ -159,8 +159,7 @@
                                                                                     <td class="txt-dark td-id">
                                                                                         <%- sub._id%>
                                                                                     </td>
-                                                                                    <td style="color: green" class="td-name">------
-                                                                                        <%- sub.name %>
+                                                                                    <td style="color: green" class="td-name"> -----| <%- sub.name %>
                                                                                     </td>
                                                                                     <td class="txt-dark td-alias">
                                                                                         <%- sub.alias %>
@@ -234,12 +233,14 @@
                     </script>
                     <script>
                         jQuery(document).ready(($) => {
+                            //configation datatable jquery
                             var table = $('#table-category').DataTable({
                                 "ordering": false,
                                 "paging": false,
                                 "info": false
                             });
 
+                            //animate
                             $("#category-on").change(() => {
                                 var optionSelected = $("#category-on").find("option:selected");
                                 if (optionSelected.val() == 0) {
@@ -257,12 +258,16 @@
                                 }
                             });
 
+                            //add and update category
                             $("form").submit((e) => {
 
                                 e.preventDefault();
 
                                 //remove alert
                                 $('.alert').remove();
+
+                                //get purpose
+                                var purpose = $('.btn-save-changes').attr('id');
 
                                 var category_name,
                                     category_alias,
@@ -322,33 +327,66 @@
                                 }
 
                                 var formData = new FormData();
-                                formData.append("name", category_name);
-                                formData.append("icon", category_icon);
-                                formData.append("url", category_url);
-                                formData.append("id_root_category", category_on);
-                                formData.append("alias", category_alias);
 
-                                $.ajax({
-                                    url: 'categories/add',
-                                    method: 'POST',
-                                    data: formData,
-                                    processData: false,
-                                    contentType: false,
-                                    success: (data) => {
-                                        if (data.error) {
-                                            showAlert("#alert-error", data.error);
-                                        } else {
-                                            location.reload(true);
+                                if (purpose == "btn-add-category") {                                    
+                                    formData.append("name", category_name);
+                                    formData.append("icon", category_icon);
+                                    formData.append("url", category_url);
+                                    formData.append("id_root_category", category_on);
+                                    formData.append("alias", category_alias);
+
+                                    $.ajax({
+                                        url: 'categories/add',
+                                        method: 'POST',
+                                        data: formData,
+                                        processData: false,
+                                        contentType: false,
+                                        success: (data) => {
+                                            if (data.error) {
+                                                showAlert("#alert-error", data.error);
+                                            } else {
+                                                location.reload(true);
+                                            }
+                                        },
+                                        error: (error) => {
+                                            showAlert("#alert-error", error);
                                         }
-                                    },
-                                    error: (error) => {
-                                        showAlert("#alert-error", error);
-                                    }
-                                });
+                                    });
+                                } else {
+
+                                    formData.append("new_name", category_name);
+                                    formData.append("new_alias", category_alias);
+                                    formData.append("current_id_category", $('#category-id').val());
+                                    formData.append("current_root_category", $('#category-id').attr('data-root-category'));
+                                    formData.append("new_root_category", category_on);
+                                    formData.append("new_icon", category_icon);
+                                    formData.append("new_url", category_url);
+
+                                    $.ajax({
+                                        url: 'categories/edit',
+                                        method: 'POST',
+                                        data: formData,
+                                        processData: false,
+                                        contentType: false,
+                                        success: (result) => {
+                                            window.console.log(result);
+                                            if (result.error) {
+                                                alert(result.error);
+                                            } else {
+                                                location.reload();
+                                            }
+                                        },
+                                        error: (error) => {
+                                            window.console.log(result);
+                                        }
+                                    });
+                                }
                             });
 
+                            //hide col 0 in datatable
                             $('tr th:nth-child(1), tr td:nth-child(1)').hide();
 
+                            //delete category
                             $("#table-category tbody").delegate('.delete-category', 'click', (e) => {
                                 var id = (e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML).trim();
                                 var rootId = (e.currentTarget.closest('tr').getElementsByClassName('td-root-id')[0].innerHTML).trim();
@@ -392,18 +430,24 @@
                                 }
                             });
 
+                            //show modal to edit category
                             $('.edit-category').click((e) => {
                                 var current_id_category = (e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML).trim();
                                 var current_root_category = (e.currentTarget.closest('tr').getElementsByClassName('td-root-id')[0].innerHTML).trim();
                                 var current_name_category = (e.currentTarget.closest('tr').getElementsByClassName('td-name')[0].innerHTML).trim();
                                 var current_alias_category = (e.currentTarget.closest('tr').getElementsByClassName('td-alias')[0].innerHTML).trim();
 
+                                //reformat name of subcategory
+                                if (current_id_category != current_root_category) {
+                                    current_name_category = current_name_category.split(' ')[1];  
+                                }
+
                                 var idElement = `
                                     <div class="form-group form-group-id-category">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="recipient-name" class="control-label mb-10">Mã danh mục</label>
-                                                <input type="text" class="form-control" id="category-id" placeholder="" disabled>
+                                                <input type="text" class="form-control" id="category-id" data-root-category="${current_root_category}" placeholder="" disabled value="${current_id_category}">
                                             </div>                                            
                                         </div>
                                     </div>
@@ -416,15 +460,27 @@
                                 $('.form-group-name-alias').before(idElement);
 
                                 $('#category-add-model').modal('show');
-                                $('#category-id').val(current_id_category);
                                 $('#category-name').val(current_name_category);
                                 $('#category-alias').val(current_alias_category);
 
                                 $(`#category-on option[value="${current_root_category}"]`).prop('selected', true);
+
+                                if ($('#btn-add-category').length != 0) {
+                                    $('.btn-save-changes').removeAttr('id');
+                                }
+
+                                if ($('#btn-edit-category').length == 0) {
+                                    $('.btn-save-changes').attr('id', 'btn-edit-category');
+                                }
                             });
 
+                            //show modal to add new category
                             $('#category-add').click((e) => {
                                 $('#category-add-model').modal('show');
+
+                                 $('.form-upload-icon').removeClass("bounceOutUp");
+                                    $('.form-upload-icon').addClass("bounceInDown");
+                                    $('.form-upload-icon').css("display", "block");
 
                                 if ($('.form-group-id-category').length != 0) {
                                     $('.form-group-id-category').remove();
@@ -434,6 +490,14 @@
                                 $('#category-alias').val("");
 
                                 $(`#category-on option[value="${0}"]`).prop('selected', true);
+
+                                if ($('#btn-edit-category').length != 0) {
+                                    $('.btn-save-changes').removeAttr('id');
+                                }
+
+                                if ($('#btn-add-category').length == 0) {
+                                    $('.btn-save-changes').attr('id', 'btn-add-category');
+                                }
 
                             });
 

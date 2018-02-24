@@ -223,7 +223,7 @@ var editCategory = (parameters, result) => {
         current_id_category = parameters.current_id_category,
         current_root_category = parameters.current_root_category,
         new_root_category = parameters.new_root_category,
-        new_icon = parameters.new_icon,
+        new_icon = parameters.newName,
         new_url = parameters.new_url;
 
     var workflow = new event.EventEmitter();
@@ -247,7 +247,7 @@ var editCategory = (parameters, result) => {
     });
 
     workflow.on('response', (response) => {
-        return response;
+        return result(response);
     });
 
     workflow.on('edit-category', () => {
@@ -255,6 +255,8 @@ var editCategory = (parameters, result) => {
         //move to root category
         if (new_root_category === 'undefined' || !new_root_category) {
 
+            console.log('NEW ROOT CATEGORY');
+            
             //remove and add new root category
             removeSubcategory(current_id_category, current_root_category, (result) => {
                 if (result.error) {
@@ -275,8 +277,12 @@ var editCategory = (parameters, result) => {
                 }
             });
         } else {
-            //update sub category
-            if (current_root_category == new_root_category) {
+
+            //update root category
+            if ((current_id_category == current_root_category) && (current_root_category == new_root_category)) {
+                console.log('UPDATE CURRENT ROOT CATEGORY');
+
+                //find root category
                 Category.findById(current_root_category, (err, category) => {
                     if (err) {
                         workflow.emit('response', {
@@ -296,7 +302,7 @@ var editCategory = (parameters, result) => {
                         category.name = new_name;
                     }
 
-                    if (new_url) {
+                    if (new_url || new_url != "") {
                         category.icon = new_url;
                     }
 
@@ -310,9 +316,78 @@ var editCategory = (parameters, result) => {
                         });
                     });
                 });
-            } else {    //move to another root category
-                //find old category in root and remove
+            } else if ((current_id_category != current_root_category) && (current_root_category == new_root_category)) {
+                //update sub category
+                console.log('UPDATE SUB CATEGORY');
 
+                //find root category
+                Category.findById(current_root_category, (err, category) => {
+                    if (err) {
+                        workflow.emit('response', {
+                            error: err,
+                        });
+                        return
+                    }
+
+                    if (!category) {
+                        workflow.emit('response', {
+                            error: "Category not exists"
+                        });
+                        return
+                    }
+
+                    var subs = category.subCategories;
+                    if (!subs || subs.length == 0) {
+                        workflow.emit('response', {
+                            error: "Subcategory is empty!"
+                        });
+                        return
+                    }
+
+                    var idx = _.findIndex(subs, (sub) => {                        
+                        if (sub && sub._id) {
+                            return sub._id == current_id_category;
+                        }
+                    });
+
+                    if (!idx || idx < 0) {
+                        workflow.emit('response', {
+                            error: "Subcategory not found"
+                        });
+                        return
+                    }
+
+                    var newSub = subs[idx];
+
+                    if (!newSub) {
+                        workflow.emit('response', {
+                            error: "Subcategory not found"
+                        });
+                    }
+
+                    if (new_alias) {
+                        newSub.alias = new_alias
+                    }
+
+                    if (new_name) {
+                        newSub.name = new_name
+                    }
+
+                    subs[idx] = newSub
+
+                    category.subCategories = subs;
+
+                    category.save((err) => {
+                        workflow.emit('response', {
+                            error: err
+                        });
+                    });
+                });
+
+            } else {
+                console.log('MOVE TO ANOTHER ROOT CATEGORY');
+
+                //move to another root category
                 if (!new_root_category) {
                     workflow.emit('response', {
                         error: "New root category is required!"
@@ -425,5 +500,6 @@ var removeSubcategory = (idSub, idRoot, result) => {
 module.exports = {
     getCategories: getCategories,
     addCategory: addCategory,
-    delCategory: delCategory
+    delCategory: delCategory,
+    editCategory: editCategory
 }
