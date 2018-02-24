@@ -3,6 +3,7 @@
 var session = require('express-session');
 var event = require('events');
 var mongoose = require('mongoose');
+var _ = require('lodash');
 
 var helper = require('../../helpers/index').helper;
 var Category = require('../../models/index').category;
@@ -31,8 +32,6 @@ var getCategories = (result) => {
 
 var addCategory = (category, result) => {
 
-    console.log(category);
-
     var workflow = new event.EventEmitter();
 
     var name = category.name,
@@ -57,20 +56,19 @@ var addCategory = (category, result) => {
             return
         }
 
-        if (root_category === 'undefined') {
+        if (root_category === 'undefined' || !root_category) {
             if (!(icon || url)) {
                 workflow.emit('response', {
                     error: "Hình ảnh không được bỏ trống"
                 });
                 return
-            }            
+            }
         }
 
         workflow.emit('add-category');
     });
 
     workflow.on('response', (response) => {
-        console.log(response);
         return result(response);
     });
 
@@ -79,17 +77,17 @@ var addCategory = (category, result) => {
         category.name = name;
         category.alias = alias;
         category.created_at = Date.now();
-    
+
+        if (url) {
+            category.icon = url
+        }
+
         if (icon) {
             category.icon = "/static/img/" + icon
         }
 
-        if (url) {
-            category.url = url
-        }
-
         //root
-        if (root_category === 'undefined') {            
+        if (root_category === 'undefined' || !root_category) {
             category.save((err) => {
                 if (err) {
                     workflow.emit('response', {
@@ -98,11 +96,11 @@ var addCategory = (category, result) => {
                     });
                 } else {
                     workflow.emit('response', {
-                        error: null, 
+                        error: null,
                         success: true
                     });
                 }
-            });            
+            });
         } else {
             Category.findById(root_category, (err, c) => {
                 if (err) {
@@ -122,7 +120,7 @@ var addCategory = (category, result) => {
                 }
 
                 c.subCategories.push(category);
-                
+
                 c.save((err) => {
                     if (err) {
                         workflow.emit('response', {
@@ -135,7 +133,7 @@ var addCategory = (category, result) => {
                             success: true
                         });
                     }
-                });                  
+                });
             });
         }
     });
@@ -143,7 +141,289 @@ var addCategory = (category, result) => {
     workflow.emit('validate-parameters');
 }
 
+var delCategory = (parameters, result) => {
+    var workflow = new event.EventEmitter();
+    var id = parameters.id,
+        rootCategory = parameters.rootCategory;
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: 'id category is required!'
+            });
+            return
+        }
+
+        workflow.emit('del-category');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('del-category', () => {
+        if (!rootCategory) {
+            Category.findByIdAndRemove(id, (err) => {
+                workflow.emit('response', {
+                    error: err,
+                });
+            });
+        } else {
+            Category.findById(rootCategory, (err, category) => {
+                if (err) {
+                    workflow.emit('response', {
+                        error: err
+                    });
+                } else {
+                    if (!category) {
+                        workflow.emit('response', {
+                            error: 'Category not exists'
+                        });
+                    } else {
+                        var subs = category.subCategories;
+                        if (subs && subs.length != 0) {
+
+                            var remainSubs = _.pullAt(subs, (sub) => {
+                                console.log(sub);
+                                console.log(id);
+                                return sub._id = id
+                            });
+
+                            //removed with no element
+                            if (remainSubs.length == 0) {
+                                workflow.emit('response', {
+                                    error: "Danh mục không thể xoá"
+                                });
+                            } else {
+                                category.subCategories = remainSubs;
+                                category.save((err) => {
+                                    workflow.emit('response', {
+                                        error: err
+                                    });
+                                });
+                            }
+
+                        } else {
+                            workflow.emit('response', {
+                                error: "Subcategory is empty"
+                            });
+                        }
+                    }
+                }
+            })
+        }
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var editCategory = (parameters, result) => {
+    var new_name = parameters.new_name,
+        new_alias = parameters.new_alias,
+        current_id_category = parameters.current_id_category,
+        current_root_category = parameters.current_root_category,
+        new_root_category = parameters.new_root_category,
+        new_icon = parameters.new_icon,
+        new_url = parameters.new_url;
+
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+
+        if (!current_id_category) {
+            workflow.emit('response', {
+                error: "Id of current category is required!"
+            });
+            return
+        }
+
+        if (!current_root_category) {
+            workflow.emit('response', {
+                error: "Root category is required!"
+            });
+        }
+
+        workflow.emit('edit-category');
+    });
+
+    workflow.on('response', (response) => {
+        return response;
+    });
+
+    workflow.on('edit-category', () => {
+
+        //move to root category
+        if (new_root_category === 'undefined' || !new_root_category) {
+
+            //remove and add new root category
+            removeSubcategory(current_id_category, current_root_category, (result) => {
+                if (result.error) {
+                    workflow.emit('response', {
+                        error: "Remove current category has been failed!"
+                    });
+                } else {
+                    var newCate = {
+                        name: new_name,
+                        alias: new_alias,
+                        newName: new_icon,
+                        url: new_url
+                    }
+        
+                    addCategory(newCate, (result) => {
+                        workflow.emit('response', result);
+                    });
+                }
+            });
+        } else {
+            //update sub category
+            if (current_root_category == new_root_category) {
+                Category.findById(current_root_category, (err, category) => {
+                    if (err) {
+                        workflow.emit('response', {
+                            error: err,
+                        });
+                        return
+                    }
+
+                    if (!category) {
+                        workflow.emit('response', {
+                            error: "Category not exists"
+                        });
+                        return
+                    }
+
+                    if (new_name) {
+                        category.name = new_name;
+                    }
+
+                    if (new_url) {
+                        category.icon = new_url;
+                    }
+
+                    if (new_icon) {
+                        category.icon = '/static/img/' + new_icon;
+                    }
+
+                    category.save((err) => {
+                        workflow.emit('response', {
+                            error: err
+                        });
+                    });
+                });
+            } else {    //move to another root category
+                //find old category in root and remove
+
+                if (!new_root_category) {
+                    workflow.emit('response', {
+                        error: "New root category is required!"
+                    });
+                    return
+                }
+
+                removeSubcategory(current_id_category, current_root_category, (result) => {
+                    if (result.error) {
+                        workflow.emit('response', {
+                            error: result.error
+                        });
+                        return
+                    }
+
+                    //add new category to category that choosen
+                    var newCategory = {
+                        name: new_name,
+                        alias: new_alias,
+                        newName: new_icon,
+                        url: new_url,
+                        id_root_category: new_root_category
+                    }
+
+                    addCategory(newCategory, (result) => {
+                        workflow.emit('response', result);
+                    });
+                });
+            }
+        }
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var removeSubcategory = (idSub, idRoot, result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!idSub) {
+            workflow.emit('response', {
+                error: "SubCategory is required!"
+            });
+            return
+        }
+
+        if (!idRoot) {
+            workflow.emit('response', {
+                error: "Root Category is required!"
+            });
+            return
+        }
+
+        workflow.emit('remove-sub');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('remove-sub', () => {
+        Category.findById(idRoot, (err, category) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err,
+                });
+                return
+            }
+
+            if (!category) {
+                workflow.emit('response', {
+                    error: "Category not found"
+                });
+                return
+            }
+
+            var subs = category.subCategories;
+
+            if (!subs || subs.length == 0) {
+                workflow.emit('response', {
+                    error: "Sub categories are empty"
+                });
+                return
+            }
+
+            var remainingCategory = _.pullAt(subs, (sub) => {
+                return sub._id == idSub
+            });
+
+            if (!remainingCategory || remainingCategory.length == 0) {
+                workflow.emit('response', {
+                    error: "Delete sub category has been failed"
+                });
+                return
+            }
+
+            category.subCategories = remainingCategory;
+
+            category.save((err) => {
+                workflow.emit('response', {
+                    error: err,
+                });
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     getCategories: getCategories,
-    addCategory: addCategory
+    addCategory: addCategory,
+    delCategory: delCategory
 }

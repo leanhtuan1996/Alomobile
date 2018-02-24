@@ -151,34 +151,37 @@
                                                                 <% var subs  = category.subCategories %>
                                                                     <% if (subs && subs.length != 0) { %>
                                                                         <% subs.forEach((sub) => { %>
-                                                                            <tr role="row" id="<%- sub._id %>" data-root-id="<%- category._id %>" data-category-id="<%- sub._id %>">
-                                                                                <td class="txt-dark td-root-id">
-                                                                                    <%- category._id %>
-                                                                                </td>
-                                                                                <td class="txt-dark td-id">
-                                                                                    <%- sub._id %>
-                                                                                </td>
-                                                                                <td style="color: green">------
-                                                                                    <%- sub.name %>
-                                                                                </td>
-                                                                                <td class="txt-dark">
-                                                                                    <%- sub.alias %>
-                                                                                </td>
-                                                                                <td>
-                                                                                    Không có
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span class="label label-success font-weight-100">ACTIVE</span>
-                                                                                </td>
-                                                                                <td class="action-category">
-                                                                                    <a href="javascript:void(0)" class="text-inverse pr-10 edit-category" title="">
-                                                                                        <i class="zmdi zmdi-edit txt-warning"></i>
-                                                                                    </a>
-                                                                                    <a href="javascript:void(0)" class="text-inverse delete-category" title="" data-delete-category="<%- sub._id %>">
-                                                                                        <i class="zmdi zmdi-delete txt-danger"></i>
-                                                                                    </a>
-                                                                                </td>
-                                                                            </tr>
+                                                                            <% if (sub) { %>
+                                                                                <tr role="row" id="<%- sub._id %>" data-root-id="<%- category._id %>" data-category-id="<%- sub._id %>">
+                                                                                    <td class="txt-dark td-root-id">
+                                                                                        <%- category._id %>
+                                                                                    </td>
+                                                                                    <td class="txt-dark td-id">
+                                                                                        <%- sub._id%>
+                                                                                    </td>
+                                                                                    <td style="color: green">------
+                                                                                        <%- sub.name %>
+                                                                                    </td>
+                                                                                    <td class="txt-dark">
+                                                                                        <%- sub.alias %>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        Không có
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span class="label label-success font-weight-100">ACTIVE</span>
+                                                                                    </td>
+                                                                                    <td class="action-category">
+                                                                                        <a href="javascript:void(0)" class="text-inverse pr-10 edit-category" title="">
+                                                                                            <i class="zmdi zmdi-edit txt-warning"></i>
+                                                                                        </a>
+                                                                                        <a href="javascript:void(0)" class="text-inverse delete-category" title="" data-delete-category="<%- sub._id %>">
+                                                                                            <i class="zmdi zmdi-delete txt-danger"></i>
+                                                                                        </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            <% } %>
+                                                                            
                                                                             <% }) %>
                                                                                 <% } %>
                                                                                     <% }); %>
@@ -340,27 +343,17 @@
                                     processData: false,
                                     contentType: false,
                                     success: (data) => {
-                                        window.console.log(data)
                                         if (data.error) {
                                             showAlert("#alert-error", data.error);
                                         } else {
-                                            showAlert("#alert-error", "Thêm thành công");
+                                            location.reload(true);
                                         }
                                     },
                                     error: (error) => {
-                                        window.console.log(error)
                                         showAlert("#alert-error", error);
                                     }
                                 });
                             });
-
-                            // $('.delete-category').click((e) => {
-                            //     table
-                            //         .row($(this).parents('tr'))
-                            //         .remove()
-                            //         .draw();
-                            //     window.console.log(e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML);
-                            // });
 
                              //$('tr th:nth-child(1), tr td:nth-child(1)').hide();
 
@@ -371,14 +364,40 @@
                                 var rows = $('#table-category tbody').find(`[data-root-id = ${rootId}]`);
                                 var row = $('#table-category tbody').find(`[data-category-id = ${id}]`);
 
+                                //delete root category
                                 if (id == rootId) {
-                                    table.rows(rows).remove().draw('page');
-                                } else {
-                                    table.row(row).remove().draw('page');
+                                    $.post(
+                                        'categories/delete',
+                                        {
+                                            id: id
+                                        },
+                                        (data) => {
+                                            var error = data.error;
+                                            if (error) {
+                                                alert(error);
+                                            } else {
+                                                table.rows(rows).remove().draw('page');
+                                            }
+                                        }
+                                    );
+                                    
+                                } else {    //non root
+                                    $.post(
+                                        'categories/delete',
+                                        {
+                                            id: id,
+                                            rootCategory: rootId
+                                        },
+                                        (data) => {
+                                            var error = data.error;
+                                            if (error) {
+                                                alert(error);
+                                            } else {
+                                                table.row(row).remove().draw('page');
+                                            }
+                                        }
+                                    );                                    
                                 }
-                                
-                                //$('tr th:nth-child(1), tr td:nth-child(1)').hide();
-                                
                             });
 
                             $("#table-category_paginate").click((e) => {

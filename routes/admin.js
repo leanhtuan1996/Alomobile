@@ -94,4 +94,14 @@ router.post('/categories/add', upload.single('icon'), (req, res) => {
     });
 });
 
+router.post('/categories/delete', (req, res) => {
+    console.log(req.body);
+    Category.delCategory(req.body, (result) => {
+        res.send({
+            error: result.error,
+            success: true,
+        });
+    });
+});
+
 module.exports = router;
