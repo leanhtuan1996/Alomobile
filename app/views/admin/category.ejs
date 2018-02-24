@@ -25,7 +25,7 @@
                     <div class="row heading-bg">
                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12" style="width: 100%">
                             <h5 class="txt-dark" style="float: left;">Trang quản trị danh mục</h5>
-                            <button type="button" class="btn btn-primary" style="float: right" id="category-add" data-toggle="modal" data-target="#category-add-model">Thêm danh mục</button>
+                            <button type="button" class="btn btn-primary" style="float: right" id="category-add" >Thêm danh mục</button>
                         </div>
                     </div>
                     <!-- /Title -->
@@ -46,7 +46,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group form-group-name-alias">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label for="recipient-name" class="control-label mb-10">Tên danh mục:</label>
@@ -126,13 +126,13 @@
                                                                     <td class="txt-dark td-id">
                                                                         <%- category._id %>
                                                                     </td>
-                                                                    <td style="color: blue">
+                                                                    <td style="color: blue" class="td-name">
                                                                         <%- category.name %>
                                                                     </td>
-                                                                    <td class="txt-dark">
+                                                                    <td class="txt-dark td-alias">
                                                                         <%- category.alias %>
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="td-icon">
                                                                         <img src="<%- category.icon %>" width="24px"></img>
                                                                     </td>
                                                                     <td>
@@ -159,13 +159,13 @@
                                                                                     <td class="txt-dark td-id">
                                                                                         <%- sub._id%>
                                                                                     </td>
-                                                                                    <td style="color: green">------
+                                                                                    <td style="color: green" class="td-name">------
                                                                                         <%- sub.name %>
                                                                                     </td>
-                                                                                    <td class="txt-dark">
+                                                                                    <td class="txt-dark td-alias">
                                                                                         <%- sub.alias %>
                                                                                     </td>
-                                                                                    <td>
+                                                                                    <td class="td-icon">
                                                                                         Không có
                                                                                     </td>
                                                                                     <td>
@@ -180,12 +180,12 @@
                                                                                         </a>
                                                                                     </td>
                                                                                 </tr>
-                                                                            <% } %>
-                                                                            
-                                                                            <% }) %>
                                                                                 <% } %>
-                                                                                    <% }); %>
+
+                                                                                    <% }) %>
                                                                                         <% } %>
+                                                                                            <% }); %>
+                                                                                                <% } %>
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
@@ -236,15 +236,8 @@
                         jQuery(document).ready(($) => {
                             var table = $('#table-category').DataTable({
                                 "ordering": false,
-                                "paging":   false,
-                                "info":     false
-                                // "columnDefs": [
-                                //     {
-                                //         "targets": [0],
-                                //         "visible": false,
-                                //         "searchable": false
-                                //     }
-                                // ]
+                                "paging": false,
+                                "info": false
                             });
 
                             $("#category-on").change(() => {
@@ -260,7 +253,6 @@
                                         setTimeout(() => {
                                             $('.form-upload-icon').css("display", "none");
                                         }, 800);
-
                                     }
                                 }
                             });
@@ -355,12 +347,12 @@
                                 });
                             });
 
-                             //$('tr th:nth-child(1), tr td:nth-child(1)').hide();
+                            $('tr th:nth-child(1), tr td:nth-child(1)').hide();
 
                             $("#table-category tbody").delegate('.delete-category', 'click', (e) => {
                                 var id = (e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML).trim();
                                 var rootId = (e.currentTarget.closest('tr').getElementsByClassName('td-root-id')[0].innerHTML).trim();
-                                
+
                                 var rows = $('#table-category tbody').find(`[data-root-id = ${rootId}]`);
                                 var row = $('#table-category tbody').find(`[data-category-id = ${id}]`);
 
@@ -380,7 +372,7 @@
                                             }
                                         }
                                     );
-                                    
+
                                 } else {    //non root
                                     $.post(
                                         'categories/delete',
@@ -396,15 +388,58 @@
                                                 table.row(row).remove().draw('page');
                                             }
                                         }
-                                    );                                    
+                                    );
                                 }
                             });
 
-                            $("#table-category_paginate").click((e) => {
-                                //$('tr th:nth-child(1), tr td:nth-child(1)').hide();
+                            $('.edit-category').click((e) => {
+                                var current_id_category = (e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML).trim();
+                                var current_root_category = (e.currentTarget.closest('tr').getElementsByClassName('td-root-id')[0].innerHTML).trim();
+                                var current_name_category = (e.currentTarget.closest('tr').getElementsByClassName('td-name')[0].innerHTML).trim();
+                                var current_alias_category = (e.currentTarget.closest('tr').getElementsByClassName('td-alias')[0].innerHTML).trim();
+
+                                var idElement = `
+                                    <div class="form-group form-group-id-category">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="recipient-name" class="control-label mb-10">Mã danh mục</label>
+                                                <input type="text" class="form-control" id="category-id" placeholder="" disabled>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                `
+
+                                if ($('.form-group-id-category').length != 0) {
+                                    $('.form-group-id-category').remove();
+                                }
+
+                                $('.form-group-name-alias').before(idElement);
+
+                                $('#category-add-model').modal('show');
+                                $('#category-id').val(current_id_category);
+                                $('#category-name').val(current_name_category);
+                                $('#category-alias').val(current_alias_category);
+
+                                $(`#category-on option[value="${current_root_category}"]`).prop('selected', true);
                             });
 
+                            $('#category-add').click((e) => {
+                                $('#category-add-model').modal('show');
 
+                                if ($('.form-group-id-category').length != 0) {
+                                    $('.form-group-id-category').remove();
+                                }
+
+                                $('#category-name').val("");
+                                $('#category-alias').val("");
+
+                                $(`#category-on option[value="${0}"]`).prop('selected', true);
+
+                            });
+
+                            $("#table-category_paginate").click((e) => {
+                                $('tr th:nth-child(1), tr td:nth-child(1)').hide();
+                            });
                         });
                     </script>
 </body>
