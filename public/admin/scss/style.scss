@@ -78,7 +78,7 @@ Project:	Droopy
 /** Imports **/
 /****************************/
 @import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Poppins:400|500);
-@import "/static/admin/vendors/bower_components/bootstrap/dist/css/bootstrap.min.css";
+@import "/static/admin/libs/bootstrap/dist/css/bootstrap.min.css";
 @import "/static/admin/css/font-awesome.min.css";	
 @import "/static/admin/css/themify-icons.css";	
 @import "/static/admin/css/animate.css";	
@@ -88,12 +88,12 @@ Project:	Droopy
 @import "/static/admin/css/pe-icon-7-styles.css";	
 @import "/static/admin/css/material-design-iconic-font.min.css";	
 @import "/static/admin/css/filter.css";	
-@import "/static/admin/vendors/bower_components/switchery/dist/switchery.min.css";	
-@import "/static/admin/vendors/bower_components/owl.carousel/dist/assets/owl.carousel.min.css";	
-@import "/static/admin/vendors/bower_components/owl.carousel/dist/assets/owl.theme.default.min.css";	
+@import "/static/admin/libs/switchery/dist/switchery.min.css";	
+@import "/static/admin/libs/owl.carousel/dist/assets/owl.carousel.min.css";	
+@import "/static/admin/libs/owl.carousel/dist/assets/owl.theme.default.min.css";	
 @import "/static/admin/css/lightgallery.css";	
-@import "/static/admin/vendors/bower_components/bourbon/app/assets/stylesheets/_bourbon.scss";	
-@import "/static/admin/vendors/bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css";	
+@import "/static/admin/libs/bourbon/app/assets/stylesheets/_bourbon.scss";	
+@import "/static/admin/libs/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css";	
 @import "/static/admin/css/mixins.scss";	
 
 $green:#8BC34A;

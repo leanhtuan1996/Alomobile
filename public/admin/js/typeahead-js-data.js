@@ -74,7 +74,7 @@ $(function() {
 	  queryTokenizer: Bloodhound.tokenizers.whitespace,
 	  // url points to a json file that contains an array of country names, see
 	  // https://github.com/twitter/typeahead.js/blob/gh-pages/data/countries.json
-	  prefetch: 'vendors/bower_components/typeahead.js/data/countries.json'
+	  prefetch: '/static/admin/libs/typeahead.js/data/countries.json'
 	});
 
 	// passing in `null` for the `options` arguments will result in the default
@@ -89,7 +89,7 @@ $(function() {
 	  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
 	  queryTokenizer: Bloodhound.tokenizers.whitespace,
 	  identify: function(obj) { return obj.team; },
-	  prefetch: 'vendors/bower_components/typeahead.js/data/nfl.json'
+	  prefetch: '/static/admin/libs/typeahead.js/data/nfl.json'
 	});
 
 	function nflTeamsWithDefaults(q, sync) {
