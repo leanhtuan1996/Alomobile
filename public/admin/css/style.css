@@ -78,19 +78,19 @@ Project:	Droopy
 /****************************/
 @import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Poppins:400|500);
 @import url(/static/admin/vendors/bower_components/bootstrap/dist/css/bootstrap.min.css);
-@import url(font-awesome.min.css);
-@import url(themify-icons.css);
-@import url(animate.css);
-@import url(simple-line-icons.css);
-@import url(linea-icon.css);
-@import url(pe-icon-7-stroke.css);
-@import url(pe-icon-7-styles.css);
-@import url(material-design-iconic-font.min.css);
-@import url(filter.css);
+@import url(/static/admin/css/font-awesome.min.css);
+@import url(/static/admin/css/themify-icons.css);
+@import url(/static/admin/css/animate.css);
+@import url(/static/admin/css/simple-line-icons.css);
+@import url(/static/admin/css/linea-icon.css);
+@import url(/static/admin/css/pe-icon-7-stroke.css);
+@import url(/static/admin/css/pe-icon-7-styles.css);
+@import url(/static/admin/css/material-design-iconic-font.min.css);
+@import url(/static/admin/css/filter.css);
 @import url(/static/admin/vendors/bower_components/switchery/dist/switchery.min.css);
 @import url(/static/admin/vendors/bower_components/owl.carousel/dist/assets/owl.carousel.min.css);
 @import url(/static/admin/vendors/bower_components/owl.carousel/dist/assets/owl.theme.default.min.css);
-@import url(lightgallery.css);
+@import url(/static/admin/css/lightgallery.css);
 @import url(/static/admin/vendors/bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css);
 /****************************/
 /** Reset **/
