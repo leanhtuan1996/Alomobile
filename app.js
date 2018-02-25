@@ -39,7 +39,7 @@ app.use(session({
 }));
 
 //use static
-app.use("/static", express.static("./public"));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/', user);
 app.use('/', error);
