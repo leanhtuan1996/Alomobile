@@ -12,21 +12,19 @@ module.exports = mongoose.model('Order', new Schema({
     }],
     byUser: { type: Schema.Types.ObjectId, ref: "User" },
     status: String,
-    to_Address: {
+    toAddress: {
         fullName: String,
         phone: Number,
         company: String,
         address: String,
-        address_Complement: String,
         city: String,
         state: String,
-        zip_PostalCode: Number,
+        zipPostalCode: Number,
         country: String
     },
     note: String,
-    shipping_Method: { type: Schema.Types.ObjectId, ref: "ShippingMethod" },
-    promo_Code: { type: Schema.Types.ObjectId, ref: "Promotion"},
-    total: Number,
+    shippingMethod: { type: Schema.Types.ObjectId, ref: "ShippingMethod" },
+    promoCode: [{ type: Schema.Types.ObjectId, ref: "Promotion"}],
     created_at: Number,
     updated_at: Number
 }));

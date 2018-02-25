@@ -6,11 +6,11 @@ module.exports = mongoose.model('ShippingMethod', new Schema({
     name: String,
     code: String,
     discount: Number,
-    uses_Total: Number,
-    use_Orders: [{
+    totalUsage: Number,
+    usedOrders: [{
         type: Schema.Types.ObjectId, ref: "Order"
     }],
-    use_Users: [{
+    usedUsers: [{
         type: Schema.Types.ObjectId, ref: "User"
     }],
     status: Boolean,

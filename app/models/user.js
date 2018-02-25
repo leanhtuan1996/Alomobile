@@ -9,29 +9,25 @@ module.exports = mongoose.model('User', new Schema({
     },
     email: String,
     password: String,
-    birthDay: Number,
     phone: String,
     sex: String,
     type: {
         type: Schema.Types.ObjectId,
-        ref: "AuthGroup"
+        ref: "Role"
     },
     addresses: [{
-        alias: String,  //bi danh
-        company: String,
         address: String,
-        address_Complement: String,
-        City: String,
-        State: String,
-        Zip_PostalCode: Number,
+        city: String,
+        state: String,
+        zipPostalCode: Number,
         Country: String
     }],
     status: { type: Schema.Types.Boolean, default: true },
     orders: [{
         id: { type: Schema.Types.ObjectId, ref: "Order" }
     }],
-    isRegistered_NewLetters: Boolean,
-    last_sign_in: Number,
+    isRegisteredNewLetters: Boolean,
+    lastSignIn: Number,
     created_at: Number,
     updated_at: Number
 }));
