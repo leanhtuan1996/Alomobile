@@ -4,6 +4,7 @@ var router = express.Router();
 var Dashboard = require('../app/controllers/admin/index').dashboard;
 var Product = require('../app/controllers/admin/index').product;
 var Category = require('../app/controllers/admin/index').category;
+var Brand = require('../app/controllers/admin/index').brand;
 
 var multer = require('multer');
 var storage = multer.diskStorage({
@@ -48,7 +49,7 @@ router.get('/users', (req, res) => {
 router.get('/products', (req, res) => {
     res.render('product', {
         data: {
-            title: "Trang quản lý sản phẩm"
+            title: "Trang quản lý sản phẩm - Alomobile"
         }
     });
 });
@@ -61,7 +62,7 @@ router.get('/products/add', (req, res) => {
 
         res.render('add-product', {
             data: {
-                title: "Thêm sản phẩm mới",
+                title: "Thêm sản phẩm mới - Alomobile",
                 currentUser: req.session.currentUser,
                 categories: categories
             }
@@ -74,6 +75,8 @@ router.post('/products/add', (req, res) => {
         res.send(result);
     });
 });
+
+/** CATEGORY ROUTERS */
 
 router.get('/categories', (req, res) => {
     Category.getCategories((result) => {
@@ -109,5 +112,46 @@ router.post('/categories/edit', upload.single('new_icon'), (req, res) => {
         res.send(result);
     })
 });
+/** /CATEGORY ROUTERS */
+
+//===========
+
+/** BRAND ROUTERS */
+router.get('/brands', (req, res) => {
+    Brand.getBrands((result) => {
+        res.render('brand', {
+            data: {
+                title: "Quản lý thương hiệu - Alomobile",
+                currentUser: req.session.currentUser,
+                brands: result.brands || []
+            }
+        })
+    });
+});
+
+router.post('/brands/add', upload.single('image'), (req, res) => {
+    Brand.newBrand(req.body, (result) => {
+        res.send({
+            error: result.error
+        });
+    });
+});
+
+router.post('/brands/edit', upload.single('image'), (req, res) => {
+    Brand.editBrand(req.body, (result) => {
+        res.send({
+            error: result.error
+        });
+    });
+});
+
+router.post('/brands/delete', (req, res) => {
+    Brand.deleteBrand(req.body, (result) => {
+        res.send({
+            error: result.error
+        });
+    });
+});
+/** /BRAND ROUTERS */
 
 module.exports = router;

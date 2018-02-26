@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include layouts/header %>
+        <!-- Bootstrap Dropify CSS -->
+        <link href="/static/admin/libs/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css" />
+        <!-- Bootstrap Colorpicker CSS -->
+        <link href="/static/admin/libs/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css"
+            rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <!--Preloader-->
+    <div class="preloader-it">
+        <div class="la-anim-1"></div>
+    </div>
+    <!--/Preloader-->
+    <div class="wrapper theme-5-active pimary-color-green">
+        <% include layouts/menu %>
+            <!-- Main Content -->
+            <div class="page-wrapper">
+                <div class="container-fluid">
+                    <!-- Title -->
+                    <div class="row heading-bg">
+                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12" style="width: 100%">
+                            <h5 class="txt-dark" style="float: left;">Trang quản trị thương hiệu</h5>
+                            <button type="button" class="btn btn-primary" style="float: right" id="brand-add">Thêm mới</button>
+                        </div>
+                    </div>
+                    <!-- /Title -->
+                    <!-- /.modal -->
+                    <!-- Modal -->
+                    <div class="modal fade" id="brand-add-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h5 class="modal-title" style="text-align: center;">Thêm mới</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="form-add-brand" action="">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-12" id="alert-error">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-group-name-alias">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label for="recipient-name" class="control-label mb-10">Tên thương hiệu:</label>
+                                                    <input type="text" class="form-control" id="brand-name" placeholder="Apple">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="recipient-name" class="control-label mb-10">SEO URL:</label>
+                                                    <input type="text" class="form-control" id="brand-alias" placeholder="apple">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-upload-icon animated">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="control-label mb-10">Tải lên ảnh từ máy tính: </label>
+                                                    <input type="file" id="brand-icon" data-max-file-size="2M" accept="image/*" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="control-label mb-10">Hoặc URL: </label>
+                                                    <input type="text" class="form-control" id="brand-url" placeholder="https://png.icons8.com/ios-glyphs/24/7f8c8d/iphone.png">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-danger btn-save-changes" class="form-control-submit" id="btn-add-brand"> Save changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default card-view">
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body row">
+                                        <div class="table-wrap">
+                                            <div class="table-responsive">
+                                                <table class="table display mb-30" cellspacing="0" width="100%" id="table-brand">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Tên thương hiệu</th>
+                                                            <th>Alias</th>
+                                                            <th>Icon</th>
+                                                            <th>Trạng thái</th>
+                                                            <th>Chức năng</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% if (data.brands && data.brands.length != 0) { %>
+                                                            <% data.brands.forEach((brand) => { %>
+                                                                <tr role="row" id="<%- brand.id %>"> 
+                                                                    <td class="txt-dark td-id">
+                                                                        <%- brand._id %>
+                                                                    </td>
+                                                                    <td style="color: blue; font-size: 18px;" class="td-name">
+                                                                        <%- brand.name %>
+                                                                    </td>
+                                                                    <td class="txt-dark td-alias">
+                                                                        <%- brand.alias %>
+                                                                    </td>
+                                                                    <td class="td-icon">
+                                                                        <img src="<%- brand.image %>" width="24px"></img>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span class="label label-success font-weight-100">ACTIVE</span>
+                                                                    </td>
+                                                                    <td class="action-brand">
+                                                                        <a href="javascript:void(0)" class="text-inverse pr-10 edit-brand" title="">
+                                                                            <i class="zmdi zmdi-edit txt-warning"></i>
+                                                                        </a>
+                                                                        <a href="javascript:void(0)" class="text-inverse delete-brand" title="">
+                                                                            <i class="zmdi zmdi-delete txt-danger"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            <% }); %>
+                                                        <% } %>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Tên thương hiệu</th>
+                                                            <th>Alias</th>
+                                                            <th>Icon</th>
+                                                            <th>Trạng thái</th>
+                                                            <th>Chức năng</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Row -->
+                        <!-- Footer -->
+                        <footer class="footer container-fluid pl-30 pr-30">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p>2018 &copy; Droopy. Pampered by Hencework</p>
+                                </div>
+                            </div>
+                        </footer>
+                        <!-- /Footer -->    
+                    </div>
+                    <!-- /Main Content -->
+                </div>
+                <!-- /#wrapper -->
+                <% include layouts/footer %>
+                    <script type="text/javascript">
+                        function showAlert(id, content) {
+                            var alert = `
+                            <div class="alert alert-danger alert-dismissable">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                ${content}
+                            </div>
+                        `
+                            $(id).append(alert);
+                        }
+                    </script>
+                    <script>
+                        jQuery(document).ready(($) => {
+                            //configation datatable jquery
+                            var table = $('#table-brand').DataTable();
+
+                            //add and update brand
+                            $("form").submit((e) => {
+
+                                e.preventDefault();
+
+                                //remove alert
+                                $('.alert').remove();
+
+                                //get purpose
+                                var purpose = $('.btn-save-changes').attr('id');
+
+                                var brand_name,
+                                    brand_alias,
+                                    brand_icon,
+                                    brand_url;
+
+                                //receive parameters
+                                $("#form-add-brand :input").each((index, element) => {
+
+                                    var id = $(element).attr('id');
+
+                                    switch (id) {
+                                        case 'brand-name':
+                                            brand_name = $(element).val();
+
+                                            if (!brand_name) {
+                                                showAlert("#alert-error", "Tên thương hiệu là bắt buộc!");
+                                                return
+                                            }
+
+                                            break;
+                                        case 'brand-alias':
+                                            brand_alias = $(element).val();
+
+                                            if (!brand_alias) {
+                                                showAlert("#alert-error", "SEO URL là bắt buộc!");
+                                                return
+                                            }
+                                            break;
+                                        case 'brand-icon':
+                                            if ($(element).get(0).files.length != 0) {
+                                                brand_icon = $(element).get(0).files[0];
+                                            };
+                                            break;
+                                        case 'brand-url':
+                                            brand_url = $(element).val();
+                                            break;
+                                    }
+                                });
+
+                                var formData = new FormData();
+
+                                if (purpose == "btn-add-brand") {                                    
+                                    formData.append("name", brand_name);
+                                    formData.append("image", brand_icon);
+                                    formData.append("url", brand_url);
+                                    formData.append("alias", brand_alias);
+
+                                    $.ajax({
+                                        url: 'brands/add',
+                                        method: 'POST',
+                                        data: formData,
+                                        processData: false,
+                                        contentType: false,
+                                        success: (data) => {
+                                            if (data.error) {
+                                                showAlert("#alert-error", data.error);
+                                            } else {
+                                                location.reload(true);
+                                            }
+                                        },
+                                        error: (error) => {
+                                            showAlert("#alert-error", error);
+                                        }
+                                    });
+                                } else {
+
+                                    formData.append("name", brand_name);
+                                    formData.append("alias", brand_alias);
+                                    formData.append("id", $('#brand-id').attr('data-id-brand'));
+                                    formData.append("image", brand_icon);
+                                    formData.append("url", brand_url);
+
+                                    $.ajax({
+                                        url: 'brands/edit',
+                                        method: 'POST',
+                                        data: formData,
+                                        processData: false,
+                                        contentType: false,
+                                        success: (result) => {
+                                            if (result.error) {
+                                            } else {
+                                                location.reload();
+                                            }
+                                        },
+                                        error: (error) => {
+                                            window.console.log(result);
+                                        }
+                                    });
+                                }
+                            });
+
+                            //delete brand
+                            $("#table-brand tbody").delegate('.delete-brand', 'click', (e) => {
+                                var id = (e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML).trim(); 
+
+                                var row = $('#table-brand tbody').find(`[id = ${id}]`);
+
+                                $.post(
+                                    'brands/delete',
+                                    {
+                                        id: id
+                                    },
+                                    (data) => {
+                                        var error = data.error;
+                                        if (error) {
+                                            window.console.log(error);
+                                            alert(error);
+                                        } else {
+                                            table.row(row).remove().draw('page');
+                                        }
+                                    }
+                                );
+                            });
+
+                            //show modal to edit brand
+                            $('.edit-brand').click((e) => {
+                                var current_id_brand = (e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML).trim();
+                                var current_name_brand = (e.currentTarget.closest('tr').getElementsByClassName('td-name')[0].innerHTML).trim();
+                                var current_alias_brand = (e.currentTarget.closest('tr').getElementsByClassName('td-alias')[0].innerHTML).trim();
+
+                                var idElement = `
+                                    <div class="form-group form-group-id-brand">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="recipient-name" class="control-label mb-10">Mã danh mục</label>
+                                                <input type="text" class="form-control" id="brand-id" data-id-brand="${current_id_brand}" placeholder="" disabled value="${current_id_brand}">
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                `
+
+                                if ($('.form-group-id-brand').length != 0) {
+                                    $('.form-group-id-brand').remove();
+                                }
+
+                                $('.form-group-name-alias').before(idElement);
+                               
+                                $('#brand-add-model').modal('show');
+                                $('#brand-name').val(current_name_brand);
+                                $('#brand-alias').val(current_alias_brand);
+
+                                if ($('#btn-add-brand').length != 0) {
+                                    $('.btn-save-changes').removeAttr('id');
+                                }
+
+                                if ($('#btn-edit-brand').length == 0) {
+                                    $('.btn-save-changes').attr('id', 'btn-edit-brand');
+                                }
+                            });
+
+                            //show modal to add new brand
+                            $('#brand-add').click((e) => {
+
+                                if ($('.form-group-id-brand').length != 0) {
+                                    $('.form-group-id-brand').remove();
+                                }
+
+                                $('#brand-add-model').modal('show');
+
+                                $('#brand-name').val("");
+                                $('#brand-alias').val("");
+
+
+                                if ($('#btn-edit-brand').length != 0) {
+                                    $('.btn-save-changes').removeAttr('id');
+                                }
+
+                                if ($('#btn-add-brand').length == 0) {
+                                    $('.btn-save-changes').attr('id', 'btn-add-brand');
+                                }
+
+                            });
+                        });
+                    </script>
+</body>
+
+</html>
