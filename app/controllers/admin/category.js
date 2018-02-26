@@ -144,7 +144,7 @@ var addCategory = (category, result) => {
 var delCategory = (parameters, result) => {
     var workflow = new event.EventEmitter();
     var id = parameters.id,
-        rootCategory = parameters.rootCategory;
+        rootCategory = parameters.rootCategory || parameters.id;
 
     workflow.on('validate-parameters', () => {
         if (!id) {
@@ -162,56 +162,12 @@ var delCategory = (parameters, result) => {
     });
 
     workflow.on('del-category', () => {
-        if (!rootCategory) {
-            Category.findByIdAndRemove(id, (err) => {
-                workflow.emit('response', {
-                    error: err,
-                });
-            });
-        } else {
-            Category.findById(rootCategory, (err, category) => {
-                if (err) {
-                    workflow.emit('response', {
-                        error: err
-                    });
-                } else {
-                    if (!category) {
-                        workflow.emit('response', {
-                            error: 'Category not exists'
-                        });
-                    } else {
-                        var subs = category.subCategories;
-                        if (subs && subs.length != 0) {
+        deleteCategory(id, rootCategory, (result) => {
+            workflow.emit('response', {
+                error: result.error,
 
-                            var remainSubs = _.pullAt(subs, (sub) => {
-                                console.log(sub);
-                                console.log(id);
-                                return sub._id = id
-                            });
-
-                            //removed with no element
-                            if (remainSubs.length == 0) {
-                                workflow.emit('response', {
-                                    error: "Danh mục không thể xoá"
-                                });
-                            } else {
-                                category.subCategories = remainSubs;
-                                category.save((err) => {
-                                    workflow.emit('response', {
-                                        error: err
-                                    });
-                                });
-                            }
-
-                        } else {
-                            workflow.emit('response', {
-                                error: "Subcategory is empty"
-                            });
-                        }
-                    }
-                }
             })
-        }
+        });
     });
 
     workflow.emit('validate-parameters');
@@ -257,8 +213,9 @@ var editCategory = (parameters, result) => {
 
             console.log('NEW ROOT CATEGORY');
             
-            //remove and add new root category
-            removeSubcategory(current_id_category, current_root_category, (result) => {
+            //remove and add new root category           
+
+            deleteCategory(current_id_category, current_root_category, (result) => {
                 if (result.error) {
                     workflow.emit('response', {
                         error: "Remove current category has been failed!"
@@ -395,7 +352,7 @@ var editCategory = (parameters, result) => {
                     return
                 }
 
-                removeSubcategory(current_id_category, current_root_category, (result) => {
+                deleteCategory(current_id_category, current_root_category, (result) => {
                     if (result.error) {
                         workflow.emit('response', {
                             error: result.error
@@ -423,7 +380,7 @@ var editCategory = (parameters, result) => {
     workflow.emit('validate-parameters');
 }
 
-var removeSubcategory = (idSub, idRoot, result) => {
+var deleteCategory = (idSub, idRoot, result) => {
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
@@ -441,57 +398,67 @@ var removeSubcategory = (idSub, idRoot, result) => {
             return
         }
 
-        workflow.emit('remove-sub');
+        workflow.emit('delete-category');
     });
 
     workflow.on('response', (response) => {
         return result(response);
     });
 
-    workflow.on('remove-sub', () => {
-        Category.findById(idRoot, (err, category) => {
-            if (err) {
+    workflow.on('delete-category', () => {
+
+        //root category
+        if (idRoot == idSub) {
+            Category.findByIdAndRemove(idRoot, (err) => {
                 workflow.emit('response', {
-                    error: err,
-                });
-                return
-            }
-
-            if (!category) {
-                workflow.emit('response', {
-                    error: "Category not found"
-                });
-                return
-            }
-
-            var subs = category.subCategories;
-
-            if (!subs || subs.length == 0) {
-                workflow.emit('response', {
-                    error: "Sub categories are empty"
-                });
-                return
-            }
-
-            var remainingCategory = _.pullAt(subs, (sub) => {
-                return sub._id == idSub
-            });
-
-            if (!remainingCategory || remainingCategory.length == 0) {
-                workflow.emit('response', {
-                    error: "Delete sub category has been failed"
-                });
-                return
-            }
-
-            category.subCategories = remainingCategory;
-
-            category.save((err) => {
-                workflow.emit('response', {
-                    error: err,
+                    error: err
                 });
             });
-        });
+        } else {
+            Category.findById(idRoot, (err, category) => {
+                if (err) {
+                    workflow.emit('response', {
+                        error: err,
+                    });
+                    return
+                }
+    
+                if (!category) {
+                    workflow.emit('response', {
+                        error: "Category not found"
+                    });
+                    return
+                }
+    
+                var subs = category.subCategories;
+    
+                if (!subs || subs.length == 0) {
+                    workflow.emit('response', {
+                        error: "Sub categories are empty"
+                    });
+                    return
+                }
+    
+                var remainingCategory = _.pullAt(subs, (sub) => {
+                    return sub._id == idSub
+                });
+    
+                if (!remainingCategory || remainingCategory.length == 0) {
+                    workflow.emit('response', {
+                        error: "Delete sub category has been failed"
+                    });
+                    return
+                }
+    
+                category.subCategories = remainingCategory;
+    
+                category.save((err) => {
+                    workflow.emit('response', {
+                        error: err,
+                    });
+                });
+            });
+        }
     });
 
     workflow.emit('validate-parameters');
