@@ -16,5 +16,6 @@
         "cert": "/fullchain.pem"
 	},
 	"salt": 10,
-	"secret_key" : "alomobile"
+	"secret_key" : "alomobile",
+	"keyJWT": "alomobile-zzzxxx"
 }

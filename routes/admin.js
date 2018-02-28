@@ -5,6 +5,7 @@ var Dashboard = require('../app/controllers/admin/index').dashboard;
 var Product = require('../app/controllers/admin/index').product;
 var Category = require('../app/controllers/admin/index').category;
 var Brand = require('../app/controllers/admin/index').brand;
+var User = require('../app/controllers/admin/index').user;
 
 var multer = require('multer');
 var storage = multer.diskStorage({
@@ -43,7 +44,12 @@ router.get('/', (req, res) => {
 });
 
 router.get('/users', (req, res) => {
-
+    User.getUsers((result) => {
+        res.send({
+            error: result.error,
+            user: result.user
+        });
+    });
 });
 
 router.get('/products', (req, res) => {

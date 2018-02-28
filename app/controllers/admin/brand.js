@@ -126,7 +126,6 @@ var editBrand = (brand, result) => {
     });
 
     workflow.on('response', (response) => {
-        console.log(response);
         return result(response);
     });
 
@@ -166,7 +165,7 @@ var editBrand = (brand, result) => {
             }
 
             if (image && image != 'undefined') {
-                element.image = image
+                element.image = '/static/img/' + image
             }
 
             element.save((err) => {

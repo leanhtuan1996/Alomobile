@@ -252,6 +252,7 @@
                         
                         if (data.success) {
                             showNotify('#customer-form', data.success); 
+                           window.location.href('/');
                         } else {
                             showNotify('#customer-form', data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau."); 
                         } 

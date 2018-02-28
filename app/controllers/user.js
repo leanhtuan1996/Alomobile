@@ -6,8 +6,10 @@ var event = require('events');
 var helper = require('../helpers/index').helper;
 var User = require('../models/index').user;
 
+var authenticate = require('../middleware/index').authenticate;
 
-var signIn = (req, res, user, result) => {
+
+var signIn = (user, result) => {
     var workflow = new event.EventEmitter();
 
     var email = user.email,
@@ -28,11 +30,7 @@ var signIn = (req, res, user, result) => {
     });
 
     workflow.on('response', (response) => {
-        var a = {
-            error: response.error,
-            success: response.success
-        }
-        return result(a);
+        return result(response);
     });
 
     workflow.on('sign-in', () => {
@@ -59,10 +57,9 @@ var signIn = (req, res, user, result) => {
             }
 
             if (helper.comparePw(password, user.password)) {
-                req.session.currentUser = user;
                 workflow.emit('response', {
-                    success: true
-                })
+                    user: user
+                });
             } else {
                 workflow.emit('response', ({
                     error: 'Email hoặc mật khẩu không đúng, vui lòng kiểm tra lại.'
@@ -75,7 +72,7 @@ var signIn = (req, res, user, result) => {
 }/***/
 
 
-var signUp = (req, res, user, result) => {
+var signUp = (user, result) => {
 
     var workflow = new event.EventEmitter();
     var email = user.email,
@@ -109,11 +106,8 @@ var signUp = (req, res, user, result) => {
     });
 
     workflow.on('response', (response) => {
-        var a = {
-            error: response.error,
-            success: response.success
-        }
-        return result(a);
+        console.log(response);
+        return result(response);
     });
 
     workflow.on('sign-up', () => {
@@ -128,35 +122,29 @@ var signUp = (req, res, user, result) => {
 
             if (user) {
                 workflow.emit('response', { error: 'Email này đã được sử dụng.' })
-                return
             } else {
-                var hashPw = helper.hashPw(password);
-                if (!hashPw) {
-                    workflow.emit('response', { error: 'Có lỗi xảy ra trong quá trình đăng ký, vui lòng thử lại sau!' });
-                } else {
 
-                    var newUser = new User();
-                    newUser.fullName = fullName
-                    newUser.email = email
-                    newUser.password = hashPw
+                var newUser = new User();
+                newUser.fullName = fullName
+                newUser.email = email
+                newUser.password = password
 
-                    if (birthDay) {
-                        newUser.birthDay = helper.dateToTimeStamp(birthDay)
-                    }
-
-                    newUser.sex = sex
-                    newUser.isRegistered_NewLetters = isRegistered_NewLetters
-                    newUser.created_at = Date.now() / 1000
-                    newUser.save((err) => {
-                        if (err) {
-                            workflow.emit('response', { error: err });
-                        } else {
-                            workflow.emit('response', {
-                                success: 'Đăng kí tài khoản thành công, vui lòng nhấn vào <a href="/sign-in">đây</a> để đăng nhập.'
-                            });
-                        }
-                    });
+                if (birthDay) {
+                    newUser.birthDay = helper.dateToTimeStamp(birthDay)
                 }
+
+                newUser.sex = sex
+                newUser.isRegistered_NewLetters = isRegistered_NewLetters
+                newUser.save((err) => {
+                    if (err) {
+                        workflow.emit('response', { error: err });
+                    } else {
+                        workflow.emit('response', {
+                            success: 'Đăng kí tài khoản thành công, vui lòng nhấn vào <a href="/sign-in">đây</a> để đăng nhập.'
+                        });
+                    }
+                });
+
             }
         });
     });
@@ -226,16 +214,49 @@ var getInformations = (req, res) => {
     workflow.emit('validate-paremeters');
 }
 
-var getOrders = (res) => {
+var verify = (token, cb) => {
+    var workflow = new event.EventEmitter();
 
-}
+    workflow.on('validate-parameters', () => {
+        if (!token) {
+            workflow.emit('response', {
+                error: "token is required!"
+            });
+            return
+        }
 
-var review = (res, review) => {
+        workflow.emit('verify');
+    });
 
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('verify', () => {
+        helper.decodeToken(token, (cb) => {
+            var id = cb.id;
+            if (!id) {
+                workflow.emit('response', {
+                    error: 'Invalid token'
+                });
+                return
+            }
+
+            User.findById(id, (error, user) => {
+                workflow.emit('response', {
+                    error: error,
+                    user: user
+                });
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
 }
 
 module.exports = {
     signIn: signIn,
     signUp: signUp,
-    registerNewLetters: registerNewLetters
+    registerNewLetters: registerNewLetters,
+    verify: verify
 }

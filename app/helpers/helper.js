@@ -2,6 +2,7 @@
 
 var bcrypt = require('bcryptjs');
 var config = require('config');
+var jwt = require('jsonwebtoken');
 
 var hashPw = (pw) => {
     var saltRounds = config.get("salt");
@@ -13,24 +14,30 @@ var comparePw = (pw, hash) => {
     return bcrypt.compareSync(pw, hash);
 }
 
-var getSession = (req, alias) => {
-    return req.session.alias
+var encodeToken = (payload) => {
+    return jwt.sign(payload, config.get("keyJWT"));
 }
 
-var setSession = (res, alias, data) => {
-    res.session.alias = data
-}
+var decodeToken = (token, cb) => {
+    jwt.verify(token, config.get("keyJWT"), (error, decoded) => {
+        if (error) {
+            return cb({
+                error: error
+            });
+        }
 
-var destroySession = (req, alias) => {
-    req.session.destroy();
-}
+        var id = decoded._id;
 
-var getDomain = () => {
+        if (!id) {
+            return cb({
+                error: "invalid token!"
+            });
+        }
 
-}
-
-var redirect = (res, to) => {
-    res.redirect(to);
+        return cb({
+            id: id
+        });
+    });
 }
 
 /**
@@ -62,13 +69,10 @@ var copySync = (src, dest) => {
 }
 
 module.exports = {
-    getSession: getSession,
-    setSession: setSession,
-    getDomain: getDomain,
-    redirect: redirect,
     hashPw: hashPw,
     comparePw: comparePw,
     dateToTimeStamp: dateToTimeStamp,
-    destroySession: destroySession,
-    copySync: copySync
+    copySync: copySync,
+    encodeToken: encodeToken,
+    decodeToken: decodeToken
 }

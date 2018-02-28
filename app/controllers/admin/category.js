@@ -255,7 +255,7 @@ var editCategory = (parameters, result) => {
                         return
                     }
 
-                    if (new_name) {
+                    if (new_name || new_name != 'undefined') {
                         category.name = new_name;
                     }
 
@@ -263,8 +263,12 @@ var editCategory = (parameters, result) => {
                         category.icon = new_url;
                     }
 
-                    if (new_icon) {
+                    if (new_icon || new_icon != 'undefined') {
                         category.icon = '/static/img/' + new_icon;
+                    }
+
+                    if (new_alias || new_alias != 'undefined') {
+                        category.alias = new_alias
                     }
 
                     category.save((err) => {

@@ -3,17 +3,36 @@ var router = express.Router();
 
 var User = require('../app/controllers/index').user;
 var helper = require('../app/helpers/index').helper;
+var middleware = require('../app/middleware/index').middleware
 
 /* GET users listing. */
 /* USER SIGN_IN */
 router.get('/sign-in', (req, res) => {
+  if (req.session.token) {
+    User.verify(token, (cb) => {
+      if (cb.error) {
+        req.session.destroy();
+        res.render('sign-in', {
+          data: {
 
-  if (req.session.currentUser) {
-    res.render('index', {
-      data: {
-        currentUser: req.session.currentUser
+          }
+        });
+      } else {
+        if (!cb.user) {
+          res.render('sign-in', {
+            data: {
+
+            }
+          });
+          return
+        }
+        res.render('index', {
+          data: {
+            user: cb.user
+          }
+        })
       }
-    })
+    });
   } else {
     res.render('sign-in', {
       data: {
@@ -24,30 +43,62 @@ router.get('/sign-in', (req, res) => {
 });
 
 router.post('/sign-in', (req, res) => {
-  if (req.session.currentUser) {
-    res.redirect('/');
-  } else {
-    User.signIn(req, res, req.body, (result) => {
-      console.log('received');
+  User.signIn(req.body, (result) => {
+    if (result.error) {
+      res.send({
+        error: result.error
+      });
+    } else {
+      var token = helper.encodeToken(user._id);
+      //set token in session
+      req.session.token = token
 
-      res.send(result)
-    });
-  }
-
+      res.send({
+        user: result.user,
+        token: token,
+      });
+    }
+  });
 }); /***/
 
 /* USER SIGN_UP */
 router.get('/sign-up', (req, res) => {
-  res.render('sign-up', {
-    data: {
+  if (req.session.token) {
+    User.verify(token, (cb) => {
+      if (cb.error) {
+        req.session.destroy();
+        res.render('sign-up', {
+          data: {
 
-    }
-  });
+          }
+        });
+      } else {
+        if (!cb.user) {
+          res.render('sign-up', {
+            data: {
+
+            }
+          });
+          return
+        }
+        res.render('index', {
+          data: {
+            user: cb.user
+          }
+        })
+      }
+    });
+  } else {
+    res.render('sign-up', {
+      data: {
+
+      }
+    });
+  }
 });
 
 router.post('/sign-up', (req, res) => {
-  User.signUp(req, res, req.body, (result) => {
-    console.log('received');
+  User.signUp(req.body, (result) => {
     res.send(result)
   });
 }); /***/

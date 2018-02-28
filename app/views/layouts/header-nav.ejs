@@ -4,12 +4,12 @@
             <a href="/my-account" rel="nofollow">Tài khoản của tôi</a>
             <a href="/cart">Thanh toán</a>
 
-            <% if (data.currentUser) { %>             
+            <% if (data.user) { %>             
                 <a href="/sign-out" title="Đăng xuất tài khoản của bạn" rel="nofollow">
                     <span class="">Đăng xuất</span>
                 </a>
                 <a class="account" href="/my-account" title="View my customer account" rel="nofollow">                    
-                    <span class=""> <%-  data.currentUser.fullName.firstName + " " + data.currentUser.fullName.lastName %> </span>
+                    <span class=""> <%-  data.user.fullName.firstName + " " + data.user.fullName.lastName %> </span>
                 </a>
             <% } else { %>
                 <a href="/sign-in" title="Log in to your customer account" rel="nofollow">
