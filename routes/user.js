@@ -9,29 +9,27 @@ var middleware = require('../app/middleware/index').middleware
 /* USER SIGN_IN */
 router.get('/sign-in', (req, res) => {
   if (req.session.token) {
-    User.verify(token, (cb) => {
+    User.verify(req.session.token, (cb) => {
+      var data = {};
+
       if (cb.error) {
         req.session.destroy();
+      }
+
+      if (!cb.user) {
         res.render('sign-in', {
           data: {
 
           }
         });
-      } else {
-        if (!cb.user) {
-          res.render('sign-in', {
-            data: {
-
-            }
-          });
-          return
-        }
-        res.render('index', {
-          data: {
-            user: cb.user
-          }
-        })
+        return
       }
+      res.render('index', {
+        data: {
+          user: cb.user
+        }
+      });
+
     });
   } else {
     res.render('sign-in', {
@@ -49,7 +47,10 @@ router.post('/sign-in', (req, res) => {
         error: result.error
       });
     } else {
-      var token = helper.encodeToken(user._id);
+
+      var id = result.user._id
+
+      var token = helper.encodeToken(id);
       //set token in session
       req.session.token = token
 
@@ -64,7 +65,7 @@ router.post('/sign-in', (req, res) => {
 /* USER SIGN_UP */
 router.get('/sign-up', (req, res) => {
   if (req.session.token) {
-    User.verify(token, (cb) => {
+    User.verify(req.session.token, (cb) => {
       if (cb.error) {
         req.session.destroy();
         res.render('sign-up', {
@@ -109,11 +110,28 @@ router.get('/sign-out', (req, res) => {
 })
 
 router.get('/my-account', (req, res) => {
-  if (req.session.currentUser) {
-    res.render('my-account', {
-      data: {
-        currentUser: req.session.currentUser
+  if (req.session.token) {
+    User.verify(req.session.token, (cb) => {
+      var data = {};
+
+      if (cb.error) {
+        req.session.destroy();
       }
+
+      if (!cb.user) {
+        res.render('sign-in', {
+          data: {
+
+          }
+        });
+        return
+      }
+      res.render('my-account', {
+        data: {
+          user: cb.user
+        }
+      });
+
     });
   } else {
     res.render('sign-in', {

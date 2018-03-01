@@ -15,7 +15,9 @@ var comparePw = (pw, hash) => {
 }
 
 var encodeToken = (payload) => {
-    return jwt.sign(payload, config.get("keyJWT"));
+    return jwt.sign({
+        id: String(payload)
+    }, config.get("keyJWT"));
 }
 
 var decodeToken = (token, cb) => {
@@ -26,11 +28,11 @@ var decodeToken = (token, cb) => {
             });
         }
 
-        var id = decoded._id;
+        var id = decoded.id;
 
         if (!id) {
             return cb({
-                error: "invalid token!"
+                error: "Invalid token!"
             });
         }
 

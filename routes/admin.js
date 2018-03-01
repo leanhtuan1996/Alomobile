@@ -8,6 +8,8 @@ var Brand = require('../app/controllers/admin/index').brand;
 var User = require('../app/controllers/admin/index').user;
 
 var multer = require('multer');
+var auth = require('../app/middleware/index').authenticate;
+
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './public/img');

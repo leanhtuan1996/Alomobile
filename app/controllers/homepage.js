@@ -28,8 +28,7 @@ var index = (req, res, result) => {
 
             workflow.emit('response', {
                 error: null,
-                categories: categories,
-                currentUser: req.session.currentUser
+                categories: categories
             });           
         });
     });

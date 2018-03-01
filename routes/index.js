@@ -2,14 +2,44 @@ var express = require('express');
 var router = express.Router();
 
 var Homepage = require('../app/controllers/index').homepage;
+var User = require('../app/controllers/index').user;
+
+var auth = require('../app/middleware/index').authenticate;
 
 /* GET home page. */
-router.get('/', (req, res) => {
-  Homepage.index(req, res, (result) => {
-    res.render('index', {
-      data: result
+router.get('/', [auth.requireAuth, auth.requireRole], (req, res) => {
+
+  if (req.session.token) {
+    User.verify(req.session.token, (cb) => {
+      if (cb.error) {
+        req.session.destroy();
+      }
+
+      var data = {};
+      if (cb.user) {
+        data.user = cb.user
+      }
+
+      Homepage.index(req, res, (result) => {
+
+        data.error = result.error;
+        data.categories = result.categories;
+
+        res.render('index', {
+          data
+        });
+      });
     });
-  });
+  } else {
+    Homepage.index(req, res, (result) => {
+      res.render('index', {
+        data: {
+          error: result.error,
+          categories: result.categories
+        }
+      });
+    });
+  }
 });
 
 router.get('/delivery', (req, res) => {

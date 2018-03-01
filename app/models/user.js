@@ -1,5 +1,5 @@
 'use strict';
-var mongoose = require('../../config/db');
+var mongoose = require('../../config/db').mongoose;
 var helper = require('../helpers/index').helper;
 var bcrypt = require('bcryptjs');
 var config = require('config');
@@ -16,7 +16,7 @@ var userSchema = new Schema({
     password: String,
     phone: String,
     sex: String,
-    type: {
+    role: {
         type: Schema.Types.ObjectId,
         ref: "Role"
     },
@@ -39,18 +39,18 @@ var userSchema = new Schema({
 
 var User = mongoose.model('User', userSchema);
 
-userSchema.pre('save', (next) => {
+userSchema.pre('save', function(next) {
     var user = this;
+
+    user.updated_at = Date.now(); 
 
     if (!user.isModified("password")) {
         return next();
     }
 
-    user.updated_at = Date.now();    
-
     if (!user.created_at) {
         user.created_at = Date.now();
-    }
+    }   
 
     var salt = config.get("salt");
     if (!salt) {
@@ -63,12 +63,13 @@ userSchema.pre('save', (next) => {
             return next(err);
         }
 
-        bcrypt.hash(user.password, salt, null, (err, hash) => {
+        bcrypt.hash(user.password, salt, (err, hash) => {
             if (err) {
                 return next(err);
             }
 
             user.password = hash
+
             next();
         });
     });

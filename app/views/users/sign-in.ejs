@@ -142,12 +142,11 @@
                     (data) => {
                         $("#login-button").html("Đăng nhập").removeClass('disabled');
 
-                        var success = data.success;
+                        var user = data.user;
 
-                        if (success) {
+                        if (user) {
                             window.location.href = '/'
                         } else {
-                            window.console.log(data)
                             var err = data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.";
                             showNotify('#login-form', err); 
                         }                        

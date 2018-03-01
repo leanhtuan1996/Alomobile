@@ -44,6 +44,13 @@ var signIn = (user, result) => {
 
             if (!user) {
                 workflow.emit('response', {
+                    error: 'Tài khoản không tồn tại.'
+                });
+                return
+            }
+
+            if (!user.email) {
+                workflow.emit('response', {
                     error: 'Email không tồn tại'
                 });
                 return
@@ -220,7 +227,7 @@ var verify = (token, cb) => {
     workflow.on('validate-parameters', () => {
         if (!token) {
             workflow.emit('response', {
-                error: "token is required!"
+                error: "Token is required!"
             });
             return
         }

@@ -1,6 +1,6 @@
 'use strict';
 
-var mongoose = require('../../config/db');
+var mongoose = require('../../config/db').mongoose;;
 var Schema = mongoose.Schema;
 
 module.exports = mongoose.model('Stock', new Schema({

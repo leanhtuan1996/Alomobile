@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require('mongoose');
 var config = require('config');
 
@@ -9,4 +11,6 @@ mongoose.connect(`mongodb://${config.get("mongoose.host")}:${config.get("mongoos
     reconnectTries: 30
 });
 
-module.exports = mongoose;  
+module.exports = {
+    mongoose: mongoose
+};  

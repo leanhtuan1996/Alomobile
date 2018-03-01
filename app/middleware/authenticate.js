@@ -3,36 +3,31 @@
 var jwt = require('jsonwebtoken');
 var config = require('config');
 var User = require('../models/index').user;
+var helper = require('../helpers/index').helper;
 
 var requireAuth = (req, res, next) => {
     var token = req.body.token || req.params.token || req.session.token;
-
+    
     if (!token) {
         var err = new Error("Token is required!");
-        err.status(401);
+        err.status = 401
         return next(err);
     }
-
-    jwt.decode(token, config.get("keyJWT"), (err, decoded) => {
-        if (err) {
-            return next(err);
+    
+    helper.decodeToken(token, (cb) => {
+        if (cb.error) {
+            return next(cb.error);
         }
 
-        if (!decoded) {
-            var error = new Error("Invalid token");
-            error.status(401);
-            return next(error);
-        }
+        var id = cb.id;
 
-        var id = decoded.id;
         if (!id) {
             var error = new Error("Invalid token");
-            error.status(401);
+            error.status = 401
             return next(error);
         }
 
-
-        User.findById(id, (err, user) => {
+        User.findById(id).populate('role').exec((err, user) => {
             if (err) {
                 return next(err);
             }
@@ -42,20 +37,22 @@ var requireAuth = (req, res, next) => {
                 return next(error);
             }
 
-            req.session.token = token;
-            req.session.user = user;
+            req.role = user.role
+
             next();
         });
     });
 }
 
-var generateToken = (id) => {
-    return jwt.sign(id, config.get("keyJWT"), {
-        expiresIn: 15 * 24 * 60 * 60
-    });
+var requireRole = (req, res, next) => {
+    var role = req.role;
+
+    console.log(req);
+
+    next();
 }
 
 module.exports = {
     requireAuth: requireAuth,
-    generateToken: generateToken
+    requireRole: requireRole
 }
