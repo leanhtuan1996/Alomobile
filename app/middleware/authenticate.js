@@ -4,16 +4,17 @@ var jwt = require('jsonwebtoken');
 var config = require('config');
 var User = require('../models/index').user;
 var helper = require('../helpers/index').helper;
+var _ = require('lodash');
 
 var requireAuth = (req, res, next) => {
     var token = req.body.token || req.params.token || req.session.token;
-    
+
     if (!token) {
         var err = new Error("Token is required!");
         err.status = 401
         return next(err);
     }
-    
+
     helper.decodeToken(token, (cb) => {
         if (cb.error) {
             return next(cb.error);
@@ -45,11 +46,80 @@ var requireAuth = (req, res, next) => {
 }
 
 var requireRole = (req, res, next) => {
-    var role = req.role;
+    //get current role of user
+    var role = req.role,
+        allows = role.allows,
+        name = role.name;
 
-    console.log(req);
+    var originalUrl = req.originalUrl,
+        method = req.method;
 
-    next();
+
+    if (!role) {
+        var error = new Error("Role of user not found!");
+        error.status = 401;
+        return next(error);
+    }
+
+    if (!(allows && name)) {
+        var error = new Error("User can not access to this page!");
+        error.status = 401;
+        return next(error);
+    }
+
+    if (!(originalUrl && method)) {
+        var error = new Error("User can not access to this page!");
+        error.status = 401;
+        return next(error);
+    }
+
+    if (allows.length == 0) {
+        var error = new Error("User can not access to this page!");
+        error.status = 401;
+        return next(error);
+    }
+
+    _.forEach(allows, (allow) => {
+        if (allow) {
+            var permissions = allow.permissions,
+                resources = allow.resources;
+
+            if (!(permissions && resources)) {
+                var error = new Error("User can not access to this page!");
+                error.status = 401;
+                return next(error);
+            }
+
+            if (permissions.length == 0) {
+                var error = new Error("User can not access to this page!");
+                error.status = 401;
+                return next(error);
+            }
+
+            //full permissions
+            if (permissions == '*' && resources == '*') {
+                return next();
+            }
+
+            _.forEach(permissions, (permission) => {
+                if (permission) {
+                    //console.log(permission.toLowerCase() + " | " + method.toLowerCase());
+                    //console.log(resources.toLowerCase() + " | " + originalUrl.toLowerCase());
+                    if ((permission.toLowerCase() == method.toLowerCase()) && (resources.toLowerCase() == originalUrl.toLowerCase())) {
+                        return next();
+                    } else {
+                        var error = new Error("User can not access to this page!");
+                        error.status = 401;
+                        return next(error);
+                    }
+                } else {
+                    var error = new Error("User can not access to this page!");
+                    error.status = 401;
+                    return next(error);
+                }
+            });
+        }
+    });
 }
 
 module.exports = {

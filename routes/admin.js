@@ -34,7 +34,7 @@ var upload = multer({
 
 /* GET users listing. */
 /* USER SIGN_IN */
-router.get('/', (req, res) => {
+router.get('/', [auth.requireAuth, auth.requireRole], (req, res) => {
 
     Dashboard.dashboard((result) => {
         res.render('dashboard', {
@@ -45,7 +45,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/users', (req, res) => {
+router.get('/users', [auth.requireAuth, auth.requireRole], (req, res) => {
     User.getUsers((result) => {
         res.send({
             error: result.error,
@@ -54,7 +54,7 @@ router.get('/users', (req, res) => {
     });
 });
 
-router.get('/products', (req, res) => {
+router.get('/products', [auth.requireAuth, auth.requireRole], (req, res) => {
     res.render('product', {
         data: {
             title: "Trang quản lý sản phẩm - Alomobile"
@@ -62,7 +62,7 @@ router.get('/products', (req, res) => {
     });
 });
 
-router.get('/products/add', (req, res) => {
+router.get('/products/add', [auth.requireAuth, auth.requireRole], (req, res) => {
 
     /** GET CATEGORIES */
     Category.getCategories((result) => {
@@ -78,7 +78,7 @@ router.get('/products/add', (req, res) => {
     });
 });
 
-router.post('/products/add', (req, res) => {
+router.post('/products/add', [auth.requireAuth, auth.requireRole], (req, res) => {
     Product.newProduct(req.body, (result) => {
         res.send(result);
     });
@@ -86,7 +86,7 @@ router.post('/products/add', (req, res) => {
 
 /** CATEGORY ROUTERS */
 
-router.get('/categories', (req, res) => {
+router.get('/categories', [auth.requireAuth, auth.requireRole], (req, res) => {
     Category.getCategories((result) => {
         res.render('category', {
             data: {
@@ -98,7 +98,7 @@ router.get('/categories', (req, res) => {
     });
 });
 
-router.post('/categories/add', upload.single('icon'), (req, res) => {
+router.post('/categories/add', [auth.requireAuth, auth.requireRole], upload.single('icon'), (req, res) => {
     Category.addCategory(req.body, (result) => {
         res.send({
             error: result.error,
@@ -107,7 +107,7 @@ router.post('/categories/add', upload.single('icon'), (req, res) => {
     });
 });
 
-router.post('/categories/delete', (req, res) => {    
+router.post('/categories/delete', [auth.requireAuth, auth.requireRole], (req, res) => {
     Category.delCategory(req.body, (result) => {
         res.send({
             error: result.error
@@ -115,7 +115,7 @@ router.post('/categories/delete', (req, res) => {
     });
 });
 
-router.post('/categories/edit', upload.single('new_icon'), (req, res) => {
+router.post('/categories/edit', [auth.requireAuth, auth.requireRole], upload.single('new_icon'), (req, res) => {
     Category.editCategory(req.body, (result) => {
         res.send(result);
     })
@@ -125,7 +125,7 @@ router.post('/categories/edit', upload.single('new_icon'), (req, res) => {
 //===========
 
 /** BRAND ROUTERS */
-router.get('/brands', (req, res) => {
+router.get('/brands', [auth.requireAuth, auth.requireRole], (req, res) => {
     Brand.getBrands((result) => {
         res.render('brand', {
             data: {
@@ -137,7 +137,7 @@ router.get('/brands', (req, res) => {
     });
 });
 
-router.post('/brands/add', upload.single('image'), (req, res) => {
+router.post('/brands/add', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
     Brand.newBrand(req.body, (result) => {
         res.send({
             error: result.error
@@ -145,7 +145,7 @@ router.post('/brands/add', upload.single('image'), (req, res) => {
     });
 });
 
-router.post('/brands/edit', upload.single('image'), (req, res) => {
+router.post('/brands/edit', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
     Brand.editBrand(req.body, (result) => {
         res.send({
             error: result.error
@@ -153,7 +153,7 @@ router.post('/brands/edit', upload.single('image'), (req, res) => {
     });
 });
 
-router.post('/brands/delete', (req, res) => {
+router.post('/brands/delete', [auth.requireAuth, auth.requireRole], (req, res) => {
     Brand.deleteBrand(req.body, (result) => {
         res.send({
             error: result.error

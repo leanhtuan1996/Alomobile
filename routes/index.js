@@ -7,7 +7,7 @@ var User = require('../app/controllers/index').user;
 var auth = require('../app/middleware/index').authenticate;
 
 /* GET home page. */
-router.get('/', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.get('/', (req, res) => {
 
   if (req.session.token) {
     User.verify(req.session.token, (cb) => {
