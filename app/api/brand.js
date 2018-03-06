@@ -4,8 +4,8 @@ var event = require('events');
 var mongoose = require('mongoose');
 var _ = require('lodash');
 
-var helper = require('../../helpers/index').helper;
-var Brand = require('../../models/index').brand;
+var helper = require('../helpers/index').helper;
+var Brand = require('../models/index').brand;
 
 var getBrands = (result) => {
 
@@ -47,7 +47,7 @@ var newBrand = (brand, result) => {
 
     var name = brand.name,
         alias = brand.alias,
-        image = Array.isArray(brand.newNames) == true ? brand.newNames[0] : brand.newNames,
+        image = brand.newName,
         url = brand.url;
 
     var workflow = new event.EventEmitter();
@@ -111,7 +111,7 @@ var editBrand = (brand, result) => {
     var id = brand.id,
         name = brand.name,
         alias = brand.alias,
-        image = Array.isArray(brand.newNames) == true ? brand.newNames[0] : brand.newNames,
+        image = brand.newName,
         url = brand.url;
 
     workflow.on('validate-parameters', () => {

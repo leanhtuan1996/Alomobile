@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var _ = require('lodash');
 
 var Dashboard = require('../app/controllers/admin/index').dashboard;
 var Product = require('../app/controllers/admin/index').product;
@@ -18,11 +19,13 @@ var storage = multer.diskStorage({
         var originalName = file.originalname.replace(/\.[^/.]+$/, "");
         var fileExtension = file.originalname.split('.').pop();
 
-        console.log(file.originalname);
+        if (!req.body.newNames) {
+            req.body.newNames = [];
+        }
 
-        var newName = Date.now() + "." + fileExtension;
+        var newName = Date.now() + _.random(1, 1000) + "." + fileExtension;
 
-        req.body.newName = newName;
+        req.body.newNames.push(newName);
 
         cb(null, newName);
     }
@@ -54,6 +57,10 @@ router.get('/users', [auth.requireAuth, auth.requireRole], (req, res) => {
     });
 });
 
+
+
+/** PRODUCT ROUTERS */
+
 router.get('/products', [auth.requireAuth, auth.requireRole], (req, res) => {
     res.render('product', {
         data: {
@@ -64,21 +71,23 @@ router.get('/products', [auth.requireAuth, auth.requireRole], (req, res) => {
 
 router.get('/products/add', [auth.requireAuth, auth.requireRole], (req, res) => {
 
+    
     /** GET CATEGORIES */
     Category.getCategories((result) => {
-        var categories = result.categories || [];
-
-        res.render('add-product', {
-            data: {
-                title: "Thêm sản phẩm mới - Alomobile",
-                currentUser: req.session.currentUser,
-                categories: categories
-            }
+        Brand.getBrands((result1) => {
+            res.render('add-product', {
+                data: {
+                    title: "Thêm sản phẩm mới - Alomobile",
+                    user: req.user,
+                    categories: result.categories || [],
+                    brands: result1.brands || []
+                }
+            });
         });
     });
 });
 
-router.post('/products/add', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.post('/products/add', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
     Product.newProduct(req.body, (result) => {
         res.send(result);
     });

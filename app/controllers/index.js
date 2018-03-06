@@ -4,11 +4,13 @@ var product = require('./product');
 var user = require('./user');
 var homepage = require('./homepage');
 var category = require('./category');
+var brand = require('./brand');
 
 module.exports = {
     order: order,
     user: user,
     product: product,
     homepage: homepage,
-    category: category
+    category: category,
+    brand: brand
 }

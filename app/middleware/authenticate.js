@@ -40,6 +40,8 @@ var requireAuth = (req, res, next) => {
 
             req.role = user.role
 
+            req.user = user
+
             next();
         });
     });

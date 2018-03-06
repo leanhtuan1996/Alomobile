@@ -1,17 +1,21 @@
 var showSpecification = (elementId, category) => {
     if ($('.specifications-block').length) {
         $('.specifications-block').remove();
-    } switch (category) {
-        case "may-tinh-xach-tay":
+    } 
+    
+    switch (category) {
+        case "laptop":
             $(elementId).after(spec_laptop);
             break;
-        case "may-tinh-bang": $(elementId).after(spec_phone_tablet); break;
-        case "dien-thoai": $(elementId).after(spec_phone_tablet); break;
+        case "dien-thoai-va-may-tinh-bang": $(elementId).after(spec_phone_tablet); break;
         case "phu-kien-may-tinh": break;
-        case "phu-kien-dien-thoai":
-            break;
+        case "phu-kien-dien-thoai": break;
         case "thiet-bi-am-thanh": break;
-        default: break;
+        default: 
+            if ($('.specifications-block').length) {
+                $('.specifications-block').remove();
+            } 
+        break;
     }
 };
 

@@ -36,7 +36,7 @@ var addCategory = (category, result) => {
 
     var name = category.name,
         alias = category.alias,
-        icon = category.newName,
+        icon = Array.isArray(category.newNames) == true ? category.newNames[0] : category.newNames,
         url = category.url,
         root_category = category.id_root_category;
 
@@ -179,7 +179,7 @@ var editCategory = (parameters, result) => {
         current_id_category = parameters.current_id_category,
         current_root_category = parameters.current_root_category,
         new_root_category = parameters.new_root_category,
-        new_icon = parameters.newName,
+        new_icon = Array.isArray(parameters.newNames) == true ? parameters.newNames[0] : parameters.newNames,
         new_url = parameters.new_url;
 
     var workflow = new event.EventEmitter();

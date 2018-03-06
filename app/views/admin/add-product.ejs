@@ -4,11 +4,11 @@
 <head>
     <% include layouts/header %>
 
-        <!-- Bootstrap Dropify CSS -->
-        <link href="/static/admin/libs/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap Dropify CSS -->
+    <link href="/static/admin/libs/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css" />
 
-        <!-- Bootstrap Colorpicker CSS -->
-		<link href="/static/admin/libs/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet" type="text/css"/>
+    <!-- Bootstrap Colorpicker CSS -->
+    <link href="/static/admin/libs/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
@@ -36,7 +36,7 @@
                                 <div class="panel-wrapper collapse in" style="margin: 10px">
                                     <div class="panel-body row">
                                         <div class="form-wrap">
-                                            <form action="" id="formNewProduct">
+                                            <form action="" id="formNewProduct" enctype="multipart/form-data">
                                                 <h6 class="txt-dark capitalize-font">
                                                     <i class="zmdi zmdi-info-outline mr-10"></i>Thông tin cơ bản</h6>
                                                 <hr class="light-grey-hr" />
@@ -55,13 +55,19 @@
                                                         <div class="form-group">
                                                             <label class="control-label mb-10">Thương hiệu
                                                                 <span style="color: red">*</span>
-                                                            </label>
+                                                            </label>                                                            
                                                             <select class="form-control" tabindex="1" id="selectManufacturer">
                                                                 <option value="null">Chọn một thương hiệu</option>
-                                                                <option value="apple">Apple</option>
-                                                                <option value="samsung">Samsung</option>
-                                                                <option value="sony">Sony</option>
-                                                                <option value="other">Khác</option>
+
+
+                                                                <% if (data.brands && data.brands.length > 0) { %>
+                                                                    <% data.brands.forEach((brand) => { %>
+                                                                        <% if (brand && brand.name) { %>
+                                                                            <option data-id-brand="<%- brand._id %>" value="<%- brand.name %>"><%- brand.name %></option>
+                                                                        <% } %>
+                                                                    <% }); %>
+                                                                <% } %>
+
                                                             </select>
                                                         </div>
                                                     </div>
@@ -82,33 +88,35 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label mb-10">Danh mục
+                                                            <label class="control-label mb-10">Loại sản phẩm
                                                                 <span style="color: red">*</span>
                                                             </label>
                                                             <select class="form-control" data-placeholder="Chọn danh mục" tabindex="1" id="selectCategory">
-                                                                <option value="0">Chọn một danh mục</option>
-                                                                <% var categories = data.categories %>
-                                                                    <% if (categories && categories.length != 0){ %>
-                                                                        <% categories.forEach((category) => { %>
-                                                                            <option value="<%- category.name %>" data-root-name="<%- category.name %>" data-root-id="<%- category._id %>" data-is-root="1"
-                                                                                data-alias="<%- category.alias %>">
-                                                                                <%- category.name %>
-                                                                            </option>
-                                                                            <% var subCategory = category.subCategories %>
-                                                                                <% if (subCategory && subCategory.length != 0){ %>
-                                                                                    <% subCategory.forEach((sub) => { %>
-                                                                                        <% var items = sub.items %>
-                                                                                            <% if (items && items.length != 0){ %>
-                                                                                                <% items.forEach((item) => { %>
-                                                                                                    <option value="<%- item.name %>" data-root-name="<%- category.name %>" data-root-id="<%- category._id %>" data-alias="<%- category.alias %>">----
-                                                                                                        <%- item.name %>
-                                                                                                    </option>
-                                                                                                    <% }); %>
-                                                                                                        <% } %>
-                                                                                                            <% }); %>
-                                                                                                                <% } %>
-                                                                                                                    <% }); %>
-                                                                                                                        <% } %>
+                                                                <option value="0" data-alias="none">Chọn một loại sản phẩm</option>
+                                                                <option value="Điện thoại & máy tín bảng"
+                                                                    data-alias="dien-thoai-va-may-tinh-bang">
+                                                                    Điện thoại & Máy tính bảng
+                                                                </option>
+                                                                <option value="Máy tính xách tay"
+                                                                    data-alias="laptop">
+                                                                    Máy tính xách tay
+                                                                </option>
+                                                                <option value="Phụ kiện máy tính"
+                                                                    data-alias="phu-kien-may-tinh">
+                                                                    Phụ kiện máy tính
+                                                                </option>
+                                                                <option value="Phụ kiện điện thoại"
+                                                                    data-alias="phu-kien-dien-thoai">
+                                                                    Phụ kiện điện thoại
+                                                                </option>
+                                                                <option value="Thiết bị âm thanh"
+                                                                    data-alias="thiet-bi-am-thanh">
+                                                                    Thiết bị âm thanh
+                                                                </option>
+                                                                <option value="Loại khác"
+                                                                data-alias="other">
+                                                                Loại khác
+                                                                </option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -142,7 +150,7 @@
                                                             <div class="row" id="row-color">
                                                                 <div class="col-md-2 animated" id="color-1">
                                                                     <div class="colorpicker input-group colorpicker-component">
-                                                                        <input type="text" value="#00AABB" class="form-control" id="color-value-1" />
+                                                                        <input type="text" value="#00AABB" class="form-control color-value" id="color-value-1" />
                                                                         <span class="input-group-addon">
                                                                             <i></i>
                                                                         </span>
@@ -153,7 +161,7 @@
                                                                 </div>
                                                                 <div class="col-md-2 animated" id="color-2">
                                                                     <div class="colorpicker input-group colorpicker-component">
-                                                                        <input type="text" value="#00AABB" class="form-control" id="color-value-2" />
+                                                                        <input type="text" value="#00AABB" class="form-control color-value" id="color-value-2" />
                                                                         <span class="input-group-addon ">
                                                                             <i></i>
                                                                         </span>
@@ -332,63 +340,361 @@
         <!-- Form Picker Init JavaScript -->
         <script type="text/javascript" src="/static/admin/js/form-picker-data.js"></script>	
 
+        <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
         <!-- JQUERY -->
         <script type="text/javascript">
+
+            function showAlert(notify) {
+                swal({
+                    title: "Có lỗi xảy ra",
+                    text: notify,
+                    icon: "error",
+                    button: "Đã hiểu",
+                });                
+            }
+
             jQuery(document).ready(($) => {
 
+                //default color of product are 2;
                 var totalColorPicker = 2;
 
+                //select a category
                 $("#selectCategory").change(() => {
-                    var optionSelected = $("#selectCategory").find('option:selected');
-                    var rootCategoryName = optionSelected.attr('data-root-name');
-                    var isRoot = optionSelected.attr('data-is-root');
-                    var alias = optionSelected.attr('data-alias');
-                    var selectedCategoryName = optionSelected.val();
-
-                    if (!isRoot) {
-                        var newCate = rootCategoryName + " > " + selectedCategoryName;
-                        optionSelected.html(newCate)
-                    }
-
-                    showSpecification("#specifications-block", alias);
+                    showSpecification("#specifications-block", $("#selectCategory").find('option:selected').attr('data-alias'));
                 });
 
+                //submit add new product
                 $("form").submit((e) => {
                     e.preventDefault();
 
-                    alert('sad');
+                    var newProduct = {}
 
                     //name
-                    var name = $("#product_name").val();
+                    newProduct.name = $("#product_name").val();
                     //alias
-                    var alias = $("#product_alias").val();
+                    newProduct.alias  = $("#product_alias").val();
                     //color
 
-                    //manufacturer
-                    //spacifications
+                    var numOfColors = $('.color-value');
+
+                    var colors = [];
+
+                    if (numOfColors.length > 0) {
+                        numOfColors.each((index, element) => {
+                            colors.push($(element).val());
+                        });
+                    }
+                    
+                    newProduct.colors = colors;
+                    newProduct.brand = $("#selectManufacturer").find('option:selected').attr('data-id-brand');
+                    newProduct.price = $("#product_price").val();
+                    newProduct.descriptions = tinyMCE.get('product_descriptions').getContent()
+                    newProduct.metaTitle = $("#product_meta_title").val();
+                    newProduct.metaKeyword = $("#product_meta_keyword").val();
+
+                    //get option of category that's selected
+                    var selectedOptionCategory = $("#selectCategory").find('option:selected');
+                    var specifications = {};
+                    //get specifications of product
+                    if (selectedOptionCategory.length > 0) {
+                        switch (selectedOptionCategory.attr('data-alias')) {
+                            case "laptop":
+                                var screen = {
+                                    displayTechnology: $('#display_technology').val(),
+                                    resolution: $('#display_resolution').val(),
+                                    width: $('#display_width').val(),
+                                    touch: $('#display_touch_screen').val()
+                                }
+                                var processor = {
+                                    tech: $('#processor_cpu_tech').val(),
+                                    type:  $('#processor_cpu_type').val(),
+                                    speed : $('#processor_cpu_speed').val(),
+                                    maxSpeed: $('#processor_cpu_max_speed').val(),
+                                }
+                                var storage = {
+                                    ram: $('#storage_ram').val(),
+                                    type:  $('#storage_ram_type').val(),
+                                    bus : $('#storage_ram_bus').val(),
+                                    maxRam: $('#storage_ram_max').val(),
+                                    hardDrive: $('#storage_hard_drive').val(),
+                                }
+                                var graphicsAudio = {
+                                    design: $('#graphics_design').val(),
+                                    cardName:  $('#graphics_card_name').val(),
+                                    sound : $('#sound_tech').val()
+                                }
+                                var connectionAndUtils = {
+                                    connectivePort: $('#connective_port').val(),
+                                    connectiveWireless:  $('#connective_wireless').val(),
+                                    opticalDrive : $('#connective_optical_drive').val(),
+                                    webcam: $('#connective_webcam').val(),
+                                    ligthKeyboard:  $('#connective_light_keyboard').val(),
+                                    otherUtils : $('#connective_other').val() 
+                                }
+                                var sizeAndWeight = {
+                                    weight: $('#design_weight').val(),
+                                    meterial:  $('#design_material').val(),
+                                    size: {
+                                        long: $('#size_long').val(),
+                                        horizontal: $('#size_horizontal').val(),
+                                        thick: $('#size_thick').val()
+                                    }                                
+                                }
+                                var battery = {
+                                    capacity: $('#battery_capacity').val(),
+                                    style:  $('#battery_style').val(),
+                                    tech: $('#battery_tech').val()
+                                }
+                                var os = $('#os').val();
+                                var other = $('#other').val();
+
+                                specifications.screen = screen;
+                                specifications.processor = processor;
+                                specifications.storage = storage;
+                                specifications.graphicsAudio = graphicsAudio;
+                                specifications.connectionAndUtils = connectionAndUtils;
+                                specifications.sizeAndWeight = sizeAndWeight;
+                                specifications.battery = battery;
+                                specifications.os = os;
+                                specifications.other = other;
+
+                                break;
+                            case "dien-thoai-va-may-tinh-bang":  
+                                var screen = {
+                                    displayTechnology: $('#display_technology').val(),
+                                    resolution: $('#display_resolution').val(),
+                                    width: $('#display_wideScreen').val(),
+                                    touch: $('#display_glass').val()
+                                }
+                                var frontCamera = {                                    
+                                    resolution: $('#camera_front_resolution').val(),
+                                    flash: $('#camera_front_flash').val(),
+                                    videoCall: $('#camera_front_video_call').val(),
+                                    other: $('#camera_front_other').val()
+                                }
+                                var backCamera = {                                    
+                                    resolution: $('#camera_back_resolution').val(),
+                                    flash: $('#camera_back_flash').val(),
+                                    makeFilm: $('#camera_back_film').val(),
+                                    other: $('#camera_back_other').val()
+                                }
+                                var processor = {
+                                    cpu: {
+                                        chipset: $('#processor_cpu_chipset').val(),
+                                        manufacturer:  $('#processor_cpu_manufacturer').val(),
+                                        speed : $('#processor_cpu_speed').val()
+                                    },
+                                    gpu: {
+                                        chipset: $('#processor_gpu_chipset').val(),
+                                        manufacturer:  $('#processor_gpu_manufacturer').val(),
+                                        speed : $('#processor_gpu_speed').val()
+                                    }                                    
+                                }
+                                var storage = {
+                                    internal: $('#storage_internal').val(),
+                                    external:  $('#storage_external').val(),
+                                    available : $('#storage_available').val(),
+                                    ram: $('#storage_ram').val()
+                                }
+                                var connections = {
+                                    mobileNetwork: $('#connective_mobile_network').val(),
+                                    sim:  $('#connective_sim').val(),
+                                    wifi : $('#connective_wifi').val(),
+                                    GPS: $('#connective_gps').val(),
+                                    bluetooth:  $('#connective_bluetooth').val(),
+                                    connectorCharger : $('#connective_connector_charger').val(),
+                                    jack : $('#connective_jack').val(),                                   
+                                    other:  $('#connective_other').val()
+                                }
+                                var utils = {
+                                    advancedSecurity: $('#util_advanced_security').val(),
+                                    specialFeatures:  $('#util_special_features').val(),
+                                    record : $('#util_record').val(),
+                                    radio: $('#util_radio').val(),
+                                    entertainment:  $('#util_entertainment').val()
+                                }
+                                var sizeAndWeight = {
+                                    style: $('#design_style').val(),
+                                    meterial:  $('#design_material').val(),
+                                    size: {
+                                        long: $('#size_long').val(),
+                                        horizontal: $('#size_horizontal').val(),
+                                        thick: $('#size_thick').val()
+                                    }                                
+                                }
+                                var battery = {
+                                    capacity: $('#battery_capcity').val(),
+                                    style:  $('#battery_type').val(),
+                                    tech: $('#battery_tech').val()
+                                }
+                                var os = $('#os').val();
+                                var other = $('#other').val();
+
+                                specifications.screen = screen;
+                                specifications.frontCamera = frontCamera;
+                                specifications.backCamera = backCamera;
+                                specifications.processor = processor;
+                                specifications.storage = storage;
+                                specifications.connections = connections;
+                                specifications.utils = utils;
+                                specifications.sizeAndWeight = sizeAndWeight;
+                                specifications.battery = battery; 
+                                specifications.os = os;
+                                specifications.other = other;                                 
+                            
+                                break;
+                            case "phu-kien-may-tinh": break;
+                            case "phu-kien-dien-thoai": break;
+                            case "thiet-bi-am-thanh": break;
+                            default: 
+                            break;
+                        }
+                    }
+
+                    newProduct.specifications = specifications;
+                    newProduct.type = selectedOptionCategory.attr('data-alias');
+                    newProduct.images = [];
                     //images
-                    //
 
+                    $("#formNewProduct").find('input[type=file]').each((index, image) => {
+                        if ($(image).get(0).files.length > 0 ) {
+                            newProduct.images.push($(image).get(0).files[0]);
+                        }                       
+                    });
 
-                    //get parameters
-                    window.console.log(e);
+                    //window.console.log($("#formNewProduct").find('input[type=file]').get(0).files[0]);
+
+                    window.console.log(newProduct);
+                 
+                    //validate parameters
+                    var productFormData = new FormData();
+        
+                    //name
+                    if (!newProduct.name) {
+                        showAlert('Tên sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("name", newProduct.name);
+                    }
+                    //alias
+                    if (!newProduct.alias) {
+                        showAlert('Tên hiển thị URL không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("alias", newProduct.alias);
+                    }
+                    //brand
+                    if (!newProduct.brand) {
+                        showAlert('Thương hiệu không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("brand", newProduct.brand);
+                    }
+                    //type
+                    if (!newProduct.type) {
+                        showAlert('Loại sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("type", newProduct.type);
+                    }
+                    //metaKeyword
+                    if (!newProduct.metaKeyword) {
+                        showAlert('Meta Keyword của sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("metaKeyword", newProduct.metaKeyword);
+                    }
+                    //metaTitle
+                    if (!newProduct.metaTitle) {
+                        showAlert('Meta Title của sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("metaTitle", newProduct.metaTitle);
+                    }
+                    //price
+                    if (!newProduct.price) {
+                        showAlert('Giá sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("price", newProduct.price);
+                    }
+                    //colors
+                    if (!newProduct.colors || newProduct.colors.length == 0) {
+                        showAlert('Màu sắc sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        for (let i = 0; i < newProduct.colors.length; i++) {
+                            const element = newProduct.colors[i];
+                            productFormData.append("colors", element);
+                        }                        
+                    }
+                    //description
+                    if (!newProduct.descriptions) {
+                        showAlert('Miêu tả sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("descriptions", newProduct.descriptions);
+                    }
+                    //spec
+                    
+                    if (!newProduct.images || newProduct.images.length == 0) {
+                        showAlert('Sản phẩm phải có ít nhất 2 hình ảnh');
+                        return
+                    } else {
+                        for (let i = 0; i < newProduct.images.length; i++) {
+                            const element = newProduct.images[i];
+                            productFormData.append("images", element);
+                        }  
+                    }
+
+                    if (newProduct.specifications) {
+                        productFormData.append("specifications", JSON.stringify(newProduct.specifications));
+                    }
+
+                    $.ajax({
+                        url: 'add',
+                        method: 'POST',
+                        data: productFormData,
+                        processData: false,
+                        contentType: false,
+                        success: (result) => {
+                            window.console.log(result);
+                        },
+                        error: (error) => {
+                            window.console.log(error);
+                        }
+                    })
+
+                    
+
                 });
 
+                //click new color
                 $("#newColor").click(() => {
+
+                    if ($('.colorpicker-component').length == 6) { return }
+
                     totalColorPicker++;
                     $("#row-color").append(`
-                <div class="col-md-2 animated rotateInDownLeft" id="color-${totalColorPicker}">
-                    <div class="colorpicker input-group colorpicker-component">
-                        <input type="text" value="#00AABB" class="form-control" id="color-value-${totalColorPicker}" />
-                            <span class="input-group-addon"><i></i></span>
-                            <span class="input-group-addon delete-color" data-id-color="color-${totalColorPicker}"><i class="fa fa-trash-o" ></i></span>
-                    </div>
-                </div>
-                `);
+                        <div class="col-md-2 animated rotateInDownLeft" id="color-${totalColorPicker}">
+                            <div class="colorpicker input-group colorpicker-component">
+                                <input type="text" value="#00AABB" class="form-control color-value" id="color-value-${totalColorPicker}" />
+                                    <span class="input-group-addon"><i></i></span>
+                                    <span class="input-group-addon delete-color" data-id-color="color-${totalColorPicker}"><i class="fa fa-trash-o" ></i></span>
+                            </div>
+                        </div>
+                    `);
                     $(".colorpicker").colorpicker();
                 });
 
+                //delete color
                 $("#row-color").delegate(".delete-color", "click", (e) => {
+
+
+
+                    if ($('.colorpicker-component').length <= 1) { return }
+
                     var idParent = e.currentTarget.parentElement.parentElement.id;
                     $(".colorpicker-visible").remove();
                     $(`#${idParent}`).removeClass("rotateInDownLeft");

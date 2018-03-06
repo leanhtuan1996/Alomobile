@@ -2,11 +2,14 @@
 
 var session = require('express-session');
 var event = require('events');
+var mongoose = require('mongoose');
+var _ = require('lodash');
 
 var helper = require('../../helpers/index').helper;
 var User = require('../../models/index').user;
 var Product = require('../../models/index').product;
-var productController = require('../index').product;
+var Brand = require('../../models/index').brand;
+var brandController = require('../index').brand;
 
 var index = (req, res, result) => {
     var workflow = new event.EventEmitter();
@@ -26,13 +29,13 @@ var index = (req, res, result) => {
             var categories = result.categories || [];
 
             getAllProducts((r) => {
-                var products = r.products || [];
-
-                workflow.emit('response', {
-                    error: null,
-                    categories: categories,
-                    currentUser: req.session.currentUser,
-                    products: products
+                brandController.getBrands((r1) => {
+                    workflow.emit('response', {
+                        error: null,
+                        categories: categories,
+                        products: r.products || [],
+                        brands: r1.brands
+                    });
                 });
             });
         });
@@ -64,12 +67,14 @@ var newProduct = (product, result) => {
 
     var name = product.name;
     var alias = product.alias;
-    var color = product.color;
-    var manufacturer = product.manufacturer;
+    var colors = product.colors;
+    var brand = product.brand;
     var specifications = product.specifications;
-    var images = product.images;
-    var status = product.status;
-    var category_on = product.category_on;
+    var images = product.newNames;
+    var type = product.type;
+    var descriptions = product.descriptions;
+    var metaTitle = product.metaTitle;
+    var metaKeyword = product.metaKeyword;
 
     workflow.on('validate-parameters', () => {
         if (!name) {
@@ -78,32 +83,39 @@ var newProduct = (product, result) => {
             });
             return
         }
-
         if (!alias) {
             workflow.emit('response', {
                 error: "Please enter alias of product"
             });
             return
         }
-
         if (!images) {
             workflow.emit('response', {
                 error: "Please provide images of product"
             });
             return
-        }
-
-        if (!status) 
-        {
+        } 
+        if (!type) {
             workflow.emit('response', {
-                error: "Please enter status of product"
+                error: "Please choose type of product"
             });
             return
         }
-
-        if (!category_on) {
+        if (!brand) {
             workflow.emit('response', {
-                error: "Please choose category of product"
+                error: "Please choose brand of product"
+            });
+            return
+        }
+        if (!descriptions) {
+            workflow.emit('response', {
+                error: "Please enter descriptions of product"
+            });
+            return
+        }
+        if (!colors || colors.length == 0) {
+            workflow.emit('response', {
+                error: "Please choose colors of product"
             });
             return
         }
@@ -120,13 +132,22 @@ var newProduct = (product, result) => {
         var newProduct = new Product();
         newProduct.name = name;
         newProduct.alias = alias;
-        newProduct.color = color;
-        newProduct.manufacturer = manufacturer;
-        newProduct.specifications = specifications;
-        newProduct.images = images;
-        newProduct.status = status;
-        newProduct.created_at = Date.now() / 1000;
-        newProduct.updated_at = Date.now() / 1000;
+        newProduct.colors = colors;
+        newProduct.brand = brand;
+        if (specifications) {
+            newProduct.specifications = JSON.parse(specifications);
+        }
+        newProduct.images = [];
+        _.forEach(images, (image) => {
+            var object = {}
+            object._id = mongoose.Types.ObjectId();
+            object.url = '/static/img/' + image;
+            object.alt = name;
+
+            newProduct.images.push(object);
+        });
+
+        console.log(newProduct.specifications);
 
         newProduct.save((err) => {
             if (err) {

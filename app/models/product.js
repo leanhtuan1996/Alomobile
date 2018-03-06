@@ -5,10 +5,7 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('Product', new Schema({
     name: String,
     alias: String,
-    color: [{
-        type: Schema.Types.ObjectId,
-        ref: "Color"
-    }],
+    colors: [String],
     brand: {
         type: Schema.Types.ObjectId,
         ref: "Brand"
@@ -17,7 +14,6 @@ module.exports = mongoose.model('Product', new Schema({
     images: [{
         _id: Schema.Types.ObjectId,
         url: String,
-        name: String,
         alt: String
     }],
     reviews: [{
@@ -31,9 +27,13 @@ module.exports = mongoose.model('Product', new Schema({
         type: Schema.Types.ObjectId,
         ref: "Promotion"
     }],
+    descriptions: String,
     quantity: Number,
     status: Boolean,
+    metaTitle: String,
+    metaKeyword: String,
     isAvailable: Boolean,
+    type: { type: Schema.Types.String },
     categoryOn: { type: Schema.Types.ObjectId, ref: "Category" },
     totalOrders: Number,
     orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
