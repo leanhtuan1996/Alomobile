@@ -18,4 +18,15 @@ module.exports = mongoose.model('ShippingMethod', new Schema({
     finish_at: Number,    
     created_at: Number,
     updated_at: Number
+}).pre('save', function(next) {
+    var promotion = this;
+
+    promotion.updated_at = Date.now();
+
+    if (!promotion.created_at) {
+        promotion.created_at = Date.now();
+    }
+
+    next();
+
 }));

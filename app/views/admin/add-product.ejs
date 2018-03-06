@@ -56,9 +56,8 @@
                                                             <label class="control-label mb-10">Thương hiệu
                                                                 <span style="color: red">*</span>
                                                             </label>                                                            
-                                                            <select class="form-control" tabindex="1" id="selectManufacturer">
+                                                            <select class="form-control" tabindex="1" id="selectBrand">
                                                                 <option value="null">Chọn một thương hiệu</option>
-
 
                                                                 <% if (data.brands && data.brands.length > 0) { %>
                                                                     <% data.brands.forEach((brand) => { %>
@@ -86,37 +85,43 @@
 
                                                 <!-- Row -->
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="control-label mb-10">Loại sản phẩm
                                                                 <span style="color: red">*</span>
                                                             </label>
+                                                            <select class="form-control" data-placeholder="Chọn danh mục" tabindex="1" id="selectType">
+                                                                <option value="0">Chọn một loại sản phẩm</option>
+                                                                
+                                                                <% var types = data.types; %>
+                                                                <%  if (types && types.length > 0) { %>
+                                                                    <% types.forEach((type) => { %>
+                                                                        <% var id = type._id; %>
+                                                                        <% var name = type.name; %>
+                                                                        <% var alias = type.alias; %>
+                                                                        
+                                                                        <% if ((id && name && alias)) { %>
+                                                                            <option value="<%- name %>"
+                                                                                data-alias="<%- alias %>" data-id-type="<%- id%>">
+                                                                                <%- name %>
+                                                                            </option>
+                                                                        <% } %>
+                                                                   <% }); %>
+                                                                <% } %>   
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="control-label mb-10">Danh mục sản phẩm
+                                                                <span style="color: red">*</span>
+                                                            </label>
                                                             <select class="form-control" data-placeholder="Chọn danh mục" tabindex="1" id="selectCategory">
-                                                                <option value="0" data-alias="none">Chọn một loại sản phẩm</option>
-                                                                <option value="Điện thoại & máy tín bảng"
-                                                                    data-alias="dien-thoai-va-may-tinh-bang">
-                                                                    Điện thoại & Máy tính bảng
-                                                                </option>
-                                                                <option value="Máy tính xách tay"
-                                                                    data-alias="laptop">
-                                                                    Máy tính xách tay
-                                                                </option>
-                                                                <option value="Phụ kiện máy tính"
-                                                                    data-alias="phu-kien-may-tinh">
-                                                                    Phụ kiện máy tính
-                                                                </option>
-                                                                <option value="Phụ kiện điện thoại"
-                                                                    data-alias="phu-kien-dien-thoai">
-                                                                    Phụ kiện điện thoại
-                                                                </option>
-                                                                <option value="Thiết bị âm thanh"
-                                                                    data-alias="thiet-bi-am-thanh">
-                                                                    Thiết bị âm thanh
-                                                                </option>
-                                                                <option value="Loại khác"
-                                                                data-alias="other">
-                                                                Loại khác
-                                                                </option>
+                                                                <option value="0">Chọn một danh mục</option>
+                                                                <% var categories = data.categories %>
+                                                                <% categories.forEach((category) => { %>
+                                                                    <option data-id-category="<%- category._id %>" value="<%- category.name %>"><%- category.name %></option>
+                                                                <% }) %>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -161,7 +166,7 @@
                                                                 </div>
                                                                 <div class="col-md-2 animated" id="color-2">
                                                                     <div class="colorpicker input-group colorpicker-component">
-                                                                        <input type="text" value="#00AABB" class="form-control color-value" id="color-value-2" />
+                                                                        <input type="text" value="#BB0016" class="form-control color-value" id="color-value-2" />
                                                                         <span class="input-group-addon ">
                                                                             <i></i>
                                                                         </span>
@@ -360,8 +365,8 @@
                 var totalColorPicker = 2;
 
                 //select a category
-                $("#selectCategory").change(() => {
-                    showSpecification("#specifications-block", $("#selectCategory").find('option:selected').attr('data-alias'));
+                $("#selectType").change(() => {
+                    showSpecification("#specifications-block", $("#selectType").find('option:selected').attr('data-alias'));
                 });
 
                 //submit add new product
@@ -387,18 +392,19 @@
                     }
                     
                     newProduct.colors = colors;
-                    newProduct.brand = $("#selectManufacturer").find('option:selected').attr('data-id-brand');
+                    newProduct.brand = $("#selectBrand").find('option:selected').attr('data-id-brand');
+                    newProduct.category = $("#selectCategory").find('option:selected').attr('data-id-category');
                     newProduct.price = $("#product_price").val();
                     newProduct.descriptions = tinyMCE.get('product_descriptions').getContent()
                     newProduct.metaTitle = $("#product_meta_title").val();
                     newProduct.metaKeyword = $("#product_meta_keyword").val();
 
                     //get option of category that's selected
-                    var selectedOptionCategory = $("#selectCategory").find('option:selected');
+                    var selectedType = $("#selectType").find('option:selected');
                     var specifications = {};
                     //get specifications of product
-                    if (selectedOptionCategory.length > 0) {
-                        switch (selectedOptionCategory.attr('data-alias')) {
+                    if (selectedType.length > 0) {
+                        switch (selectedType.attr('data-alias')) {
                             case "laptop":
                                 var screen = {
                                     displayTechnology: $('#display_technology').val(),
@@ -553,7 +559,7 @@
                     }
 
                     newProduct.specifications = specifications;
-                    newProduct.type = selectedOptionCategory.attr('data-alias');
+                    newProduct.type = selectedType.attr('data-id-type');
                     newProduct.images = [];
                     //images
 
@@ -562,11 +568,7 @@
                             newProduct.images.push($(image).get(0).files[0]);
                         }                       
                     });
-
-                    //window.console.log($("#formNewProduct").find('input[type=file]').get(0).files[0]);
-
-                    window.console.log(newProduct);
-                 
+                    
                     //validate parameters
                     var productFormData = new FormData();
         
@@ -598,6 +600,23 @@
                     } else {
                         productFormData.append("type", newProduct.type);
                     }
+
+                    //category
+                    if (!newProduct.category) {
+                        showAlert('Vui lòng chọn danh mục của sản phẩm');
+                        return
+                    } else {
+                        productFormData.append("category", newProduct.category); 
+                    }
+
+                    //description
+                    if (!newProduct.descriptions) {
+                        showAlert('Miêu tả sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("descriptions", newProduct.descriptions);
+                    }
+
                     //metaKeyword
                     if (!newProduct.metaKeyword) {
                         showAlert('Meta Keyword của sản phẩm không được bỏ trống!');
@@ -629,16 +648,10 @@
                             productFormData.append("colors", element);
                         }                        
                     }
-                    //description
-                    if (!newProduct.descriptions) {
-                        showAlert('Miêu tả sản phẩm không được bỏ trống!');
-                        return
-                    } else {
-                        productFormData.append("descriptions", newProduct.descriptions);
-                    }
+                    
                     //spec
                     
-                    if (!newProduct.images || newProduct.images.length == 0) {
+                    if (!newProduct.images || newProduct.images.length == 0 || newProduct.images.length < 2) {
                         showAlert('Sản phẩm phải có ít nhất 2 hình ảnh');
                         return
                     } else {
@@ -664,10 +677,7 @@
                         error: (error) => {
                             window.console.log(error);
                         }
-                    })
-
-                    
-
+                    });
                 });
 
                 //click new color

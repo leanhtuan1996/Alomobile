@@ -7,6 +7,7 @@ var Product = require('../app/controllers/admin/index').product;
 var Category = require('../app/controllers/admin/index').category;
 var Brand = require('../app/controllers/admin/index').brand;
 var User = require('../app/controllers/admin/index').user;
+var Type = require('../app/controllers/admin/index').type;
 
 var multer = require('multer');
 var auth = require('../app/middleware/index').authenticate;
@@ -70,19 +71,21 @@ router.get('/products', [auth.requireAuth, auth.requireRole], (req, res) => {
 });
 
 router.get('/products/add', [auth.requireAuth, auth.requireRole], (req, res) => {
-
-    
+      
     /** GET CATEGORIES */
-    Category.getCategories((result) => {
-        Brand.getBrands((result1) => {
-            res.render('add-product', {
-                data: {
-                    title: "Thêm sản phẩm mới - Alomobile",
-                    user: req.user,
-                    categories: result.categories || [],
-                    brands: result1.brands || []
-                }
-            });
+    Category.getCategories((r) => {
+        Brand.getBrands((r1) => {
+            Type.getTypes((r2) => {
+                res.render('add-product', {
+                    data: {
+                        title: "Thêm sản phẩm mới - Alomobile",
+                        user: req.user,
+                        categories: r.categories || [],
+                        brands: r1.brands || [],
+                        types: r2.types || []
+                    }
+                });
+            });            
         });
     });
 });

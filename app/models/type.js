@@ -2,18 +2,18 @@
 var mongoose = require('../../config/db').mongoose;;
 var Schema = mongoose.Schema;
 
-module.exports = mongoose.model('ShippingMethod', new Schema({
+module.exports = mongoose.model('Type', new Schema({
     name: String,
-    price: Number,
+    alias: String,
     created_at: Number,
     updated_at: Number
 }).pre('save', function(next) {
-    var sm = this;
+    var type = this;
 
-    sm.updated_at = Date.now();
+    type.updated_at = Date.now();
 
-    if (!sm.created_at) {
-        sm.created_at = Date.now();
+    if (!type.created_at) {
+        type.created_at = Date.now();
     }
 
     next();

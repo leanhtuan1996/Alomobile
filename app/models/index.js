@@ -6,6 +6,7 @@ var product = require('./product');
 var category = require('./category');
 var brand = require('./brand');
 var role = require('./role');
+var type = require('./type');
 
 module.exports = {
     user: user,
@@ -13,5 +14,6 @@ module.exports = {
     product: product,
     category: category,
     brand: brand,
-    role: role
+    role: role,
+    type: type
 }

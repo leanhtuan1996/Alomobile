@@ -15,4 +15,15 @@ module.exports = mongoose.model('Stock', new Schema({
     }],
     created_at: Number,
     updated_at: Number
+}).pre('save', function(next) {
+    var stock = this;
+
+    stock.updated_at = Date.now();
+
+    if (!stock.created_at) {
+        stock.created_at = Date.now();
+    }
+
+    next();
+
 }));

@@ -33,10 +33,27 @@ module.exports = mongoose.model('Product', new Schema({
     metaTitle: String,
     metaKeyword: String,
     isAvailable: Boolean,
-    type: { type: Schema.Types.String },
-    categoryOn: { type: Schema.Types.ObjectId, ref: "Category" },
+    type: {
+        type: Schema.Types.ObjectId,
+        ref: "Type"
+    },
+    category: { 
+        type: Schema.Types.ObjectId, 
+        ref: "Category" 
+    },
     totalOrders: Number,
     orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
     created_at: Number,
     updated_at: Number
+}).pre('save', function (next) {
+    var product = this;
+
+    product.updated_at = Date.now();
+
+    if (!product.created_at) {
+        product.created_at = Date.now();
+    }
+
+    next();
+
 }));

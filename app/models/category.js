@@ -21,4 +21,15 @@ module.exports = mongoose.model('Category', new Schema({
     metaKeywords: String,
     created_at: Number,
     updated_at: Number
+}).pre('save', function(next) {
+    var category = this;
+
+    category.updated_at = Date.now();
+
+    if (!category.created_at) {
+        category.created_at = Date.now();
+    }
+
+    next();
+
 }));

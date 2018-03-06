@@ -27,4 +27,15 @@ module.exports = mongoose.model('Order', new Schema({
     promoCode: [{ type: Schema.Types.ObjectId, ref: "Promotion"}],
     created_at: Number,
     updated_at: Number
+}).pre('save', function(next) {
+    var order = this;
+
+    order.updated_at = Date.now();
+
+    if (!order.created_at) {
+        order.created_at = Date.now();
+    }
+
+    next();
+
 }));

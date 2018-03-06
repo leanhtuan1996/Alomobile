@@ -47,7 +47,7 @@ var newBrand = (brand, result) => {
 
     var name = brand.name,
         alias = brand.alias,
-        image = brand.newName,
+        image = Array.isArray(brand.newNames) == true ? brand.newNames[0] : brand.newNames,
         url = brand.url;
 
     var workflow = new event.EventEmitter();
@@ -111,7 +111,7 @@ var editBrand = (brand, result) => {
     var id = brand.id,
         name = brand.name,
         alias = brand.alias,
-        image = brand.newName,
+        image = Array.isArray(brand.newNames) == true ? brand.newNames[0] : brand.newNames,
         url = brand.url;
 
     workflow.on('validate-parameters', () => {
