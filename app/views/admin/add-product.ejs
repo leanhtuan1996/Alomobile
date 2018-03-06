@@ -673,9 +673,33 @@
                         contentType: false,
                         success: (result) => {
                             window.console.log(result);
+                            var error = result.error;
+                            if (error) {
+                                showAlert(error);
+                            } else {
+                                swal({
+                                    title: "Thêm thành công!",
+                                    text: "Đã thêm sản phẩm mới thành công! Bạn có muốn tiếp tục không?",
+                                    icon: "success",
+                                    buttons: {
+                                        cancel: "Trở về danh sách sản phẩm",
+                                        new: "Tiếp tục",
+                                    },
+                                })
+                                .then((value) => {
+                                    switch (value) {                                    
+                                        case "new":
+                                            window.location.reload()
+                                            break;                                    
+                                        default:
+                                            window.location.href = '/admin/products'
+                                            break;
+                                    }
+                                }); 
+                            }
                         },
                         error: (error) => {
-                            window.console.log(error);
+                            showAlert(error);
                         }
                     });
                 });

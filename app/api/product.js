@@ -173,18 +173,11 @@ var newProduct = (product, result) => {
             newProduct.images.push(object);
         });
 
-        newProduct.save((err) => {
-            if (err) {
-                workflow.emit('response', {
-                    error: err
-                });
-            } else {
-                workflow.emit('response', {
-                    error: null
-                });
-            }
+        newProduct.save((err) => {            
+            workflow.emit('response', {
+                error: err
+            });
         });
-
     });
 
     workflow.emit('validate-parameters');
