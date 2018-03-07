@@ -70,6 +70,20 @@ router.get('/products', [auth.requireAuth, auth.requireRole], (req, res) => {
     });
 });
 
+router.get('/products/list', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.getAllProducts(req.parameters, (result) => {
+        res.json(result);
+    });
+});
+
+router.get('/products/listSpecial', [auth.requireAuth, auth.requireRole], (req, res) => {
+
+});
+
+router.get('/products/listNew', [auth.requireAuth, auth.requireRole], (req, res) => {
+
+});
+
 router.get('/products/add', [auth.requireAuth, auth.requireRole], (req, res) => {
       
     /** GET CATEGORIES */

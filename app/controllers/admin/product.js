@@ -61,14 +61,38 @@ var index = (result) => {
     workflow.emit('validate-parameters');
 }
 
-var getAllProducts = (result) => {
-    productApi.getProducts((response) => {
+var getAllProducts = (prevProduct = null, result) => {
+    productApi.getProducts(prevProduct, (response) => {
         return result(response);
     })
 }
 
 var getProduct = (id, result) => {
     productApi.getProductById(id, (response) => {
+        return result(response);
+    });
+}
+
+var getNewProducts = (result) => {
+    productApi.getNewProducts(20, (response) => {
+        return result(response);
+    });
+}
+
+var getSpecialProducts = (result) => {
+    productApi.getSpecialProducts(20, (response) => {
+        return result(response);
+    });
+}
+
+var getProductsByType = (type, result) => {
+    productApi.getProductsByType(type, 20, (response) => {
+        return result(response);
+    });
+}
+
+var getHotProducts = (result) => {
+    productApi.getHotProducts(20, (response) => {
         return result(response);
     });
 }
@@ -84,5 +108,9 @@ module.exports = {
     index: index,
     getAllProducts: getAllProducts,
     getProduct: getProduct,
-    newProduct: newProduct
+    newProduct: newProduct,
+    getProductsByType: getProductsByType,
+    getSpecialProducts: getSpecialProducts,
+    getHotProducts: getHotProducts,
+    getNewProducts: getNewProducts
 }

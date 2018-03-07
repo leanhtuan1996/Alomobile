@@ -14,8 +14,8 @@
             <div class="header-banner">
             </div>
             <%- include layouts/header-nav %>
-            <%- include layouts/header-top %>
-            <%- include layouts/header-bottom %>
+                <%- include layouts/header-top %>
+                    <%- include layouts/header-bottom %>
         </header>
         <div class="pos_bannerslide">
             <div class="container">
@@ -27,24 +27,24 @@
                                     <h2><i class="ion-navicon"></i>Tất cả danh mục</h2>
                                 </div>
                                 <!-- MENU -->
-                                <div id="pt_vmegamenu" class="pt_vmegamenu pt_vegamenu_cate">                                   
+                                <div id="pt_vmegamenu" class="pt_vmegamenu pt_vegamenu_cate">
                                     <!-- A CATEGORY -->
                                     <% if (data.categories) { %>
                                         <% data.categories.forEach((category) => { %>
-                                            <% var subCategories = category.subCategories; %>  
-                                            <% if (subCategories && subCategories.length != 0){ %>
-                                                <div class="pt_menu">
-                                                    <div class="parentMenu">
-                                                        <a href="/<%- category.alias %>">
+                                            <% var subCategories = category.subCategories; %>
+                                                <% if (subCategories && subCategories.length != 0){ %>
+                                                    <div class="pt_menu">
+                                                        <div class="parentMenu">
+                                                            <a href="/<%- category.alias %>">
                                                             <span class="cate-thumb">
                                                                 <img class="img-responsive" src="<%- category.icon %>" alt="">
                                                             </span>
                                                             <span><%- category.name %></span>
                                                         </a>
-                                                    </div>
-                                                    <div class="wrap-popup">
-                                                        <div class="popup" style="display: none;">
-                                                            <div class="arrow-left"></div>
+                                                        </div>
+                                                        <div class="wrap-popup">
+                                                            <div class="popup" style="display: none;">
+                                                                <div class="arrow-left"></div>
                                                                 <div class="box-popup">
                                                                     <div class="block1">
                                                                         <div class="column first col1" style="float: left">
@@ -54,35 +54,35 @@
                                                                                 </a>
                                                                                 <div class="itemSubMenu">
                                                                                     <div class="itemMenu">
-                                                                                        <% subCategories.forEach((sub) => { %>   
+                                                                                        <% subCategories.forEach((sub) => { %>
                                                                                             <a class="itemMenuName" href="/<%- category.alias %>/<%- sub.alias %>" style="text-align: center;">
                                                                                                 <span><%- sub.name %></span>
-                                                                                            </a>                                   
-                                                                                        <% }); %>   
-                                                                                    </div>       
-                                                                                </div> 
+                                                                                            </a>
+                                                                                            <% }); %>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="clearBoth"></div>
                                                                     </div>
-                                                                </div>                                                           
-                                                        </div>   
-                                                    </div> 
-                                                </div>
-                                            <% } else { %> 
-                                                <div class="pt_menu noSub">
-                                                    <!-- level 0 -->
-                                                    <div class="parentMenu">
-                                                        <a href="<%- category.alias %>">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <% } else { %>
+                                                        <div class="pt_menu noSub">
+                                                            <!-- level 0 -->
+                                                            <div class="parentMenu">
+                                                                <a href="<%- category.alias %>">
                                                             <span class="cate-thumb"><img class="img-responsive" src="<%- category.icon %>" alt= ""/></span>
                                                             <span><%- category.name %></span>
                                                         </a>
-                                                    </div>
-                                                </div>
-                                            <% } %>                                   
-                                        <% }) %>
-                                    <% } %>
-                                    </div>
+                                                            </div>
+                                                        </div>
+                                                        <% } %>
+                                                            <% }) %>
+                                                                <% } %>
+                                </div>
                                 <div class="clearfix"></div>
                             </div>
                         </div>
@@ -1125,21 +1125,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="home-banner">
-                    <div class="row">
-                        <div class="col col-sm-4 col-md-4 col-xs-12">
-                            <div class="banner-box"><a href="#"><img src="http://demo.posthemes.com/pos_fastbuy/layout2/img/cms/1_2.jpg" alt="" /> </a></div>
-                            <div class="banner-box"><a href="#"><img src="http://demo.posthemes.com/pos_fastbuy/layout2/img/cms/2_2.jpg" alt="" /> </a></div>
-                        </div>
-                        <div class="col col-sm-4 col-md-4 col-xs-12">
-                            <div class="banner-box"><a href="#"><img src="http://demo.posthemes.com/pos_fastbuy/layout2/img/cms/3_2.jpg" alt="" /> </a></div>
-                            <div class="banner-box"><a href="#"><img src="http://demo.posthemes.com/pos_fastbuy/layout2/img/cms/4_2.jpg" alt="" /> </a></div>
-                        </div>
-                        <div class="col col-sm-4 col-md-4 col-xs-12">
-                            <div class="banner-box"><a href="#"><img src="http://demo.posthemes.com/pos_fastbuy/layout2/img/cms/5_2.jpg" alt="" /> </a></div>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="poslistcateproduct poslistcateproduct_0 product_container col-lg-6 col-md-12 col-sm-12 col-xs-12" data-items="2" data-speed="1000" data-autoplay="0" data-time="0" data-arrow="1" data-pagination="0" data-move="0" data-pausehover="0" data-md="2" data-sm="2" data-xs="2" data-xxs="1">
                         <div class="content-category">
@@ -1147,10 +1132,10 @@
                                 <div class="row">
                                     <div class=" col-xs-12 col">
                                         <h2>
-                                                        <img src="https://png.icons8.com/ios-glyphs/30/7f8c8d/iphone.png" alt=""/>
-                                                        <span>Điện thoại</span>
+                                            <img src="https://png.icons8.com/ios-glyphs/30/7f8c8d/iphone.png" alt=""/>
+                                            <span>Điện thoại</span>
                         
-                        </h2>
+                                        </h2>
                                     </div>
                                     <div class=" col-xs-12 col">
                                     </div>
@@ -6381,6 +6366,12 @@
     </main>
     <script type="text/javascript" src="static/js/custom.js"></script>
     <div class="back-top"><a href="#" class="back-top-button"></a></div>
+
+    <script type="text/javascript">
+        jQuery(document).ready(($) => {
+            $.get('')
+        });
+    </script>
 </body>
 
 </html>

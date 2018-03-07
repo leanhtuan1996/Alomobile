@@ -10,30 +10,32 @@ var User = require('../models/index').user;
 var Product = require('../models/index').product;
 var Brand = require('../models/index').brand;
 
-var getProducts = (result) => {
+var getProducts = (prevProduct, result) => {
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
-        workflow.emit('get-products')
+        workflow.emit('get-products');
     });
 
-    workflow.on('response', (reponse) => {
-        return result(reponse);
+    workflow.on('response', (response) => {
+        return result(response);
     });
 
     workflow.on('get-products', () => {
-        Product.find({}, (err, products) => {
-            if (err) {
+        Product.find({
+                created_at: {
+                    $lte: prevProduct == null ? Date.now() : (prevProduct.created_at == null ? Date.now() : prevProduct.created_at)
+                }
+            })
+            .populate('brand')
+            .limit(15)
+            .sort('-created_at')            
+            .exec((err, products) => {
                 workflow.emit('response', {
-                    error: err
+                    error: err,
+                    products: products
                 });
-            } else {
-                workflow.emit('response', {
-                    error: null,
-                    products: products || []
-                });
-            }
-        });
+            });
     });
 
     workflow.emit('validate-parameters');
@@ -73,6 +75,126 @@ var getProductById = (id, result) => {
     workflow.emit('validate-parameters');
 }
 
+var getSpecialProducts = (limit, result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get-products');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('get-products', () => {
+        Product
+            .find({})
+            .limit(limit || 10)
+            .sort('-created_at')
+            .exec((err, products) => {
+                workflow.emit('response', {
+                    error: err,
+                    products: products
+                });
+            });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var getProductsByType = (idType, limit, result) => {
+    
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!idType) {
+            workflow.emit('response', {
+                error: "Type of product is required!"
+            });
+            return
+        }
+
+        workflow.emit('get-products');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('get-products', () => {
+        Product
+            .find({
+                type: idType
+            })
+            .populate('promotions')
+            .limit(limit || 10)
+            .sort('-created_at')
+            .exec((err, products) => {
+                workflow.emit('response', {
+                    error: err,
+                    products: products || []
+                });
+            });
+
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var getNewProducts = (limit, result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get-products');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('get-products', () => {
+        Product
+            .find({})
+            .limit(limit || 10)
+            .sort('-created_at')
+            .exec((err, products) => {
+                workflow.emit('response', {
+                    error: err,
+                    products: products
+                });
+            });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var getHotProducts = (limit, result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get-products');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('get-products', () => {
+        Product
+            .find({})
+            .limit(limit || 10)
+            .sort('-created_at')
+            .exec((err, products) => {
+                workflow.emit('response', {
+                    error: err,
+                    products: products
+                });
+            });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 var newProduct = (product, result) => {
     var workflow = new event.EventEmitter();
 
@@ -80,6 +202,7 @@ var newProduct = (product, result) => {
     var alias = product.alias;
     var colors = product.colors;
     var brand = product.brand;
+    var price = product.price;
     var specifications = product.specifications;
     var images = product.newNames;
     var type = product.type;
@@ -101,12 +224,18 @@ var newProduct = (product, result) => {
             });
             return
         }
+        if (!price) {
+            workflow.emit('response', {
+                error: "Please enter price of product"
+            });
+            return
+        }
         if (!images) {
             workflow.emit('response', {
                 error: "Please provide images of product"
             });
             return
-        } 
+        }
         if (!type) {
             workflow.emit('response', {
                 error: "Please choose type of product"
@@ -147,8 +276,9 @@ var newProduct = (product, result) => {
         return result(response);
     });
 
-    workflow.on('new-product', ()  => {
+    workflow.on('new-product', () => {
         var newProduct = new Product();
+
         newProduct.name = name;
         newProduct.alias = alias;
         newProduct.colors = colors;
@@ -158,6 +288,7 @@ var newProduct = (product, result) => {
         newProduct.descriptions = descriptions;
         newProduct.metaTitle = metaTitle;
         newProduct.metaKeyword = metaKeyword;
+        newProduct.price = price;
 
         if (specifications) {
             newProduct.specifications = JSON.parse(specifications);
@@ -173,11 +304,13 @@ var newProduct = (product, result) => {
             newProduct.images.push(object);
         });
 
-        newProduct.save((err) => {            
+
+        newProduct.save((err) => {
             workflow.emit('response', {
                 error: err
             });
         });
+
     });
 
     workflow.emit('validate-parameters');
@@ -186,5 +319,9 @@ var newProduct = (product, result) => {
 module.exports = {
     getProducts: getProducts,
     getProductById: getProductById,
+    getProductsByType: getProductsByType,
+    getHotProducts: getHotProducts,
+    getSpecialProducts: getSpecialProducts,
+    getNewProducts: getNewProducts,
     newProduct: newProduct
 }

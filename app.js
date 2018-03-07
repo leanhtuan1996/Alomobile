@@ -14,6 +14,7 @@ var index = require('./routes/index');
 var user = require('./routes/user');
 var error = require('./routes/error');
 var admin = require('./routes/admin');
+var product = require('./routes/product');
 
 var app = express();
 
@@ -51,6 +52,7 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use('/', index);
 app.use('/', user);
 app.use('/', error);
+app.use('/', product);
 app.use('/admin', admin);
 
 // set ssl
