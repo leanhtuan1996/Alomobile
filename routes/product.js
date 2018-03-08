@@ -9,26 +9,50 @@ router.get('/product/list', (req, res) => {
     });
 });
 
-router.get('/product/listNew', (req, res) => {
-    Product.getNewProducts((response) => {
+router.get('/product/listNew/', (req, res) => {
+    Product.getNewProducts(10, (response) => {
+        res.json(response);
+    });
+});
+
+router.get('/product/listNew/limit=:limit', (req, res) => {
+    Product.getNewProducts(req.params.limit, (response) => {
         res.json(response);
     });
 });
 
 router.get("/product/listSpecial", (req, res) => {
-    Product.getSpecialProducts((response) => {
+    Product.getSpecialProducts(10, (response) => {
         res.json(response);
     });
 });
 
-router.get(`/product/listHot`, (req, res) => {
-    Product.getHotProducts((response) => {
+router.get("/product/listSpecial/limit=:limit", (req, res) => {
+    Product.getSpecialProducts(parseInt(req.params.limit), (response) => {
+        res.json(response);
+    });
+});
+
+router.get("/product/listHot", (req, res) => {
+    Product.getHotProducts(20, (response) => {
+        res.json(response);
+    });
+});
+
+router.get("/product/listHot/limit=:limit", (req, res) => {
+    Product.getHotProducts(parseInt(req.params.limit), (response) => {
         res.json(response);
     });
 });
 
 router.get('/product/type/:type', (req, res) => {
-    Product.getProductsByType(req.params.type, (response) => {
+    Product.getProductsByType(req.params.type, 10, (response) => {
+        res.json(response);
+    });
+});
+
+router.get('/product/type/:type/limit=:limit', (req, res) => {
+    Product.getProductsByType(req.params.type, parseInt(req.params.limit), (response) => {
         res.json(response);
     });
 });

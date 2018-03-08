@@ -14,26 +14,32 @@ var getProductById = (id, result) => {
     });
 }
 
-var getNewProducts = (result) => {
-    productApi.getNewProducts(20, (response) => {
+var getNewProducts = (limit, result) => {
+    productApi.getNewProducts(limit, (response) => {
         return result(response);
     });
 }
 
-var getSpecialProducts = (result) => {
-    productApi.getSpecialProducts(20, (response) => {
+var getSpecialProducts = (limit, result) => {
+    productApi.getSpecialProducts(limit, (response) => {
         return result(response);
     });
 }
 
-var getProductsByType = (id, result) => {
-    productApi.getProductsByType(id, 20, (response) => {
+var getProductsByType = (id, limit,  result) => {
+    productApi.getProductsByType(id, limit, (response) => {
         return result(response);
     });
 }
 
-var getHotProducts = (result) => {
-    productApi.getHotProducts(20, (response) => {
+var getProductsByCategory = (idCategory, limit, result) => {
+    productApi.getProductsByCategory(idCategory, limit, (response) => {
+        return result(response);
+    });
+}
+
+var getHotProducts = (limit, result) => {
+    productApi.getHotProducts(limit, (response) => {
         return result(response);
     });
 }
@@ -43,6 +49,7 @@ module.exports = {
     getProductById: getProductById,
     getProductsByType: getProductsByType,
     getSpecialProducts: getSpecialProducts,
+    getProductsByCategory: getProductsByCategory,
     getHotProducts: getHotProducts,
     getNewProducts: getNewProducts
 }

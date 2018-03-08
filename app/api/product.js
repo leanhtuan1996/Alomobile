@@ -23,13 +23,13 @@ var getProducts = (prevProduct, result) => {
 
     workflow.on('get-products', () => {
         Product.find({
-                created_at: {
-                    $lte: prevProduct == null ? Date.now() : (prevProduct.created_at == null ? Date.now() : prevProduct.created_at)
-                }
-            })
+            created_at: {
+                $lt: prevProduct == null ? Date.now() : (prevProduct.created_at == null ? Date.now() : prevProduct.created_at)
+            }
+        })
             .populate('brand')
             .limit(15)
-            .sort('-created_at')            
+            .sort('-created_at')
             .exec((err, products) => {
                 workflow.emit('response', {
                     error: err,
@@ -103,7 +103,7 @@ var getSpecialProducts = (limit, result) => {
 }
 
 var getProductsByType = (idType, limit, result) => {
-    
+
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
@@ -126,7 +126,7 @@ var getProductsByType = (idType, limit, result) => {
             .find({
                 type: idType
             })
-            .populate('promotions')
+            .populate('brand')
             .limit(limit || 10)
             .sort('-created_at')
             .exec((err, products) => {
@@ -136,6 +136,42 @@ var getProductsByType = (idType, limit, result) => {
                 });
             });
 
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var getProductsByCategory = (idCategory, limit, result) => {
+    var event = event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!idCategory) {
+            workflow.emit('response', {
+                error: "Category is required!"
+            });
+            return
+        }
+
+        workflow.emit('get-products');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('get-products', () => {
+        Product
+        .find({
+            category: idCategory
+        })
+        .populate('Category')
+        .limit(limit)
+        .exec((err, products) => {
+            workflow.emit('response', {
+                error: err,
+                products: products
+            });
+        });
     });
 
     workflow.emit('validate-parameters');
@@ -155,7 +191,7 @@ var getNewProducts = (limit, result) => {
     workflow.on('get-products', () => {
         Product
             .find({})
-            .limit(limit || 10)
+            .limit(parseInt(limit) || 10)
             .sort('-created_at')
             .exec((err, products) => {
                 workflow.emit('response', {
@@ -322,6 +358,7 @@ module.exports = {
     getProductsByType: getProductsByType,
     getHotProducts: getHotProducts,
     getSpecialProducts: getSpecialProducts,
+    getProductsByCategory: getProductsByCategory,
     getNewProducts: getNewProducts,
     newProduct: newProduct
 }

@@ -172,7 +172,7 @@
 		jQuery(document).ready(($) => {
 
 			//load products
-			$.get('products/list', (data) => {
+			$.get('./products/list', (data) => {
 				if (data.products && data.products.length > 0) {
 					data.products.forEach(product => {
 						var color = "";

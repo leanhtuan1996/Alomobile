@@ -15,18 +15,16 @@ router.get('/', (req, res) => {
         req.session.destroy();
       }
 
-      var data = {};
-      if (cb.user) {
-        data.user = cb.user
-      }
-
       Homepage.index(req, res, (result) => {
-
-        data.error = result.error;
-        data.categories = result.categories;
-
         res.render('index', {
-          data
+          data: {
+            error: result.error,
+            user: cb.user,
+            categories: result.categories,
+            hotProducts: result.hotProducts,
+            newProducts: result.newProducts,
+            specialProducts: result.specialProducts
+          }
         });
       });
     });
@@ -35,7 +33,10 @@ router.get('/', (req, res) => {
       res.render('index', {
         data: {
           error: result.error,
-          categories: result.categories
+          categories: result.categories,
+          hotProducts: result.hotProducts,
+          newProducts: result.newProducts,
+          specialProducts: result.specialProducts
         }
       });
     });

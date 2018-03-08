@@ -139,6 +139,14 @@
                                                                 <% var categories = data.categories %>
                                                                 <% categories.forEach((category) => { %>
                                                                     <option data-id-category="<%- category._id %>" value="<%- category.name %>"><%- category.name %></option>
+
+                                                                    <% var subs = category.subCategories; %>
+                                                                    <% if (subs && subs.length > 0) { %>
+                                                                        <% subs.forEach((sub) => { %>
+                                                                            <option data-id-category="<%- sub._id %>" value="<%- sub.name %>">----<%- sub.name %></option>
+                                                                        <% }); %>
+                                                                    <% } %>
+
                                                                 <% }) %>
                                                             </select>
                                                         </div>
@@ -483,7 +491,7 @@
                                 specifications.other = other;
 
                                 break;
-                            case "dien-thoai-va-may-tinh-bang":  
+                            case "dien-thoai":  
                                 var screen = {
                                     displayTechnology: $('#display_technology').val(),
                                     resolution: $('#display_resolution').val(),
@@ -567,6 +575,90 @@
                                 specifications.other = other;                                 
                             
                                 break;
+                            case "may-tinh-bang":  
+                                    var screen = {
+                                        displayTechnology: $('#display_technology').val(),
+                                        resolution: $('#display_resolution').val(),
+                                        width: $('#display_wideScreen').val(),
+                                        touch: $('#display_glass').val()
+                                    }
+                                    var frontCamera = {                                    
+                                        resolution: $('#camera_front_resolution').val(),
+                                        flash: $('#camera_front_flash').val(),
+                                        videoCall: $('#camera_front_video_call').val(),
+                                        other: $('#camera_front_other').val()
+                                    }
+                                    var backCamera = {                                    
+                                        resolution: $('#camera_back_resolution').val(),
+                                        flash: $('#camera_back_flash').val(),
+                                        makeFilm: $('#camera_back_film').val(),
+                                        other: $('#camera_back_other').val()
+                                    }
+                                    var processor = {
+                                        cpu: {
+                                            chipset: $('#processor_cpu_chipset').val(),
+                                            manufacturer:  $('#processor_cpu_manufacturer').val(),
+                                            speed : $('#processor_cpu_speed').val()
+                                        },
+                                        gpu: {
+                                            chipset: $('#processor_gpu_chipset').val(),
+                                            manufacturer:  $('#processor_gpu_manufacturer').val(),
+                                            speed : $('#processor_gpu_speed').val()
+                                        }                                    
+                                    }
+                                    var storage = {
+                                        internal: $('#storage_internal').val(),
+                                        external:  $('#storage_external').val(),
+                                        available : $('#storage_available').val(),
+                                        ram: $('#storage_ram').val()
+                                    }
+                                    var connections = {
+                                        mobileNetwork: $('#connective_mobile_network').val(),
+                                        sim:  $('#connective_sim').val(),
+                                        wifi : $('#connective_wifi').val(),
+                                        GPS: $('#connective_gps').val(),
+                                        bluetooth:  $('#connective_bluetooth').val(),
+                                        connectorCharger : $('#connective_connector_charger').val(),
+                                        jack : $('#connective_jack').val(),                                   
+                                        other:  $('#connective_other').val()
+                                    }
+                                    var utils = {
+                                        advancedSecurity: $('#util_advanced_security').val(),
+                                        specialFeatures:  $('#util_special_features').val(),
+                                        record : $('#util_record').val(),
+                                        radio: $('#util_radio').val(),
+                                        entertainment:  $('#util_entertainment').val()
+                                    }
+                                    var sizeAndWeight = {
+                                        style: $('#design_style').val(),
+                                        meterial:  $('#design_material').val(),
+                                        size: {
+                                            long: $('#size_long').val(),
+                                            horizontal: $('#size_horizontal').val(),
+                                            thick: $('#size_thick').val()
+                                        }                                
+                                    }
+                                    var battery = {
+                                        capacity: $('#battery_capcity').val(),
+                                        style:  $('#battery_type').val(),
+                                        tech: $('#battery_tech').val()
+                                    }
+                                    var os = $('#os').val();
+                                    var other = $('#other').val();
+
+                                    specifications.screen = screen;
+                                    specifications.frontCamera = frontCamera;
+                                    specifications.backCamera = backCamera;
+                                    specifications.processor = processor;
+                                    specifications.storage = storage;
+                                    specifications.connections = connections;
+                                    specifications.utils = utils;
+                                    specifications.sizeAndWeight = sizeAndWeight;
+                                    specifications.battery = battery; 
+                                    specifications.os = os;
+                                    specifications.other = other;                                 
+                                
+                                    break;                            
                             case "phu-kien-may-tinh": break;
                             case "phu-kien-dien-thoai": break;
                             case "thiet-bi-am-thanh": break;
