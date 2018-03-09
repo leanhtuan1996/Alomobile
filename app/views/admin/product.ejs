@@ -152,6 +152,8 @@
 
 		jQuery(document).ready(($) => {
 
+			var maxPage;
+
 			//load products
 			$.get('./products/list', (data) => {
 				if (data.products && data.products.length > 0) {
@@ -218,45 +220,44 @@
 			});
 
 			$.get('./products/getCount', (count) => {
-				var limit = 15;
-				var per = Math.round(count / 15) + 1;
+				maxPage = Math.round(count / 15) + 1;
 				var li = `
-						<li class="page-item disabled">
-							<a class="page-link " href="javascript: void(0)" data-page="prev">Previous</a>
+						<li class="page-item disabled prev" data-page="prev">
+							<a class="page-link " href="javascript: void(0)" >Previous</a>
 						</li>
 				`
 
-				if (per == 1) {
+				if (maxPage == 1) {
 					li = `						
-						<li class="page-item active">
-							<a class="page-link" href="javascript: void(0)" data-page=1>1</a>
+						<li class="page-item active" data-page=1>
+							<a class="page-link" href="javascript: void(0)" >1</a>
 						</li>
-						<li class="page-item">
-							<a class="page-link" href="javascript: void(0)" data-page="next">Next</a>
+						<li class="page-item next"  data-page="next">
+							<a class="page-link" href="javascript: void(0)">Next</a>
 						</li>
 					`
-				} else if (per > 1 && per <= 8) {
-					for (let i = 0; i < per; i++) {
+				} else if (maxPage > 1 && maxPage <= 8) {
+					for (let i = 0; i < maxPage; i++) {
 						var t = ``;
 						if (i === 0) {
 							t = `
-							<li class="page-item active">
-								<a class="page-link" href="javascript: void(0)" data-page=${i + 1}>${i + 1}</a>
+							<li class="page-item active" data-page=${i + 1}>
+								<a class="page-link" href="javascript: void(0)" >${i + 1}</a>
 							</li>
 						`
 						} else {
 							t = `
-							<li class="page-item">
-								<a class="page-link" href="javascript: void(0)" data-page=${i + 1}>${i + 1}</a>
+							<li class="page-item" data-page=${i + 1}>
+								<a class="page-link" href="javascript: void(0)" >${i + 1}</a>
 							</li>
 						`
 						}
 						
 						li += t
 
-						if (i == per - 1) {
-							var next = `<li class="page-item">
-								<a class="page-link" href="javascript: void(0)" data-page="next">Next</a>
+						if (i == maxPage - 1) {
+							var next = `<li class="page-item" data-page="next">
+								<a class="page-link" href="javascript: void(0)" >Next</a>
 							</li>`
 
 							li+= next
@@ -266,21 +267,21 @@
 					var before = 0;
 					var after = 0;
 
-					for (let i = 0; i < per; i++) {
+					for (let i = 0; i < maxPage; i++) {
 						before++;
 
 						var t = ``;
 
 						if (i === 0) {
 							t = `
-							<li class="page-item active">
-								<a class="page-link" href="javascript: void(0)" data-page=${i + 1}>${i + 1}</a>
+							<li class="page-item active" data-page=${i + 1}>
+								<a class="page-link" href="javascript: void(0)" >${i + 1}</a>
 							</li>
 							`
 						} else {
 							t = `
-							<li class="page-item">
-								<a class="page-link" href="javascript: void(0)" data-page=${i + 1}>${i + 1}</a>
+							<li class="page-item" data-page=${i + 1}>
+								<a class="page-link" href="javascript: void(0)">${i + 1}</a>
 							</li>
 						`
 						}
@@ -289,7 +290,7 @@
 							li+= t
 						} else {
 							var a = `
-							<li class="page-item">
+							<li class="page-item more"  data-page="more">
 								<a class="page-link" href="javascript: void(0)">...</a>
 							</li>
 							`
@@ -298,20 +299,20 @@
 						}
 					}
 					
-					for (let i = 0; i < per; i++) {
+					for (let i = 0; i < maxPage; i++) {
 						after++;
-						if (i >= per - 3) {
+						if (i >= maxPage - 3) {
 							t = `
-							<li class="page-item">
-								<a class="page-link" href="javascript: void(0)" data-page=${i}>${i}</a>
+							<li class="page-item" data-page=${i}>
+								<a class="page-link" href="javascript: void(0)">${i}</a>
 							</li>
 							`
 
 							li+= t;
 							//last page
-							if (i == per - 1) {
-								var next = `<li class="page-item">
-									<a class="page-link" href="javascript: void(0)" data-page="next">Next</a>
+							if (i == maxPage - 1) {
+								var next = `<li class="page-item next" data-page="next">
+									<a class="page-link" href="javascript: void(0)">Next</a>
 								</li>`
 
 								li+= next;
@@ -331,9 +332,96 @@
 				window.console.log(err);
 			});
 
-			setInterval(() => {
+			$(".pagination").delegate("li", "click", (e) => {
 
-			}, 1000);
+				var prevPage = $(e.delegateTarget).find('.active');
+
+				var currentPage = $(e.currentTarget);
+
+				var nextButton = $(e.delegateTarget).find('.next');
+
+				var moreButton = $(e.delegateTarget).find('.more');
+
+				var prevButton = $(e.delegateTarget).find('.prev');
+
+				var numCurrentPage = $(currentPage).attr('data-page').trim()
+
+
+
+
+				if (Number.parseInt(numCurrentPage) != Number.parseInt(1) && Number.parseInt(numCurrentPage) != Number.parseInt(maxPage - 1)) {
+					$(prevButton).removeClass('disabled');
+					$(nextButton).removeClass('disabled');
+				} else if (Number.parseInt(numCurrentPage) == 1) {					
+					$(prevButton).addClass('disabled');
+				} else if (Number.parseInt(numCurrentPage) == (maxPage - 1)) {				
+					$(nextButton).addClass('disabled');
+				}
+
+				if ($(prevPage).attr('data-page') != $(currentPage).attr('data-page')) {
+
+					if (Number.isInteger(Number.parseInt(numCurrentPage))) {
+						 //remove active page
+						$(prevPage).removeClass('active');
+
+						//add active page
+						$(currentPage).addClass('active');
+
+					} else {
+						//check action button clicked
+						switch (numCurrentPage) {
+							case "prev":
+								var distinatedPage = prevPage.prev('li');
+
+								if ($(distinatedPage).attr('data-page') == 'more') {
+									distinatedPage = prevPage.prev('li').prev('li');
+								}
+
+								if ($(distinatedPage).attr('data-page') == 'prev') {
+									$(prevButton).addClass('disabled');
+									break;
+								}
+
+								if ($(distinatedPage).attr('data-page') == 1) {
+									$(prevButton).addClass('disabled');
+								}
+
+								//remove class adtive in prevButton
+								$(prevPage).removeClass('active');
+
+								//add active in disPage
+								$(distinatedPage).addClass('active');
+
+								break;
+							case "next":
+								var distinatedPage = prevPage.next('li');
+
+								if ($(distinatedPage).attr('data-page') == 'more') {
+									distinatedPage = prevPage.next('li').next('li');
+								}
+
+								if ($(distinatedPage).attr('data-page') == 'next') {
+									$(nextButton).addClass('disabled');
+									break;
+								}
+
+								if ($(distinatedPage).attr('data-page') == (maxPage - 1)) {
+									$(nextButton).addClass('disabled')
+								}
+
+								//remove class adtive in prevButton
+								$(prevPage).removeClass('active');
+
+								//add active in disPage
+								$(distinatedPage).addClass('active');
+								
+								break;						
+							default:
+								break;
+						}
+					}
+				} 
+			});
 
 			$('.search-panel .dropdown-menu').find('a').click(function (e) {
 				e.preventDefault();
