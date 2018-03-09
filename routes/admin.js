@@ -41,9 +41,12 @@ var upload = multer({
 router.get('/', [auth.requireAuth, auth.requireRole], (req, res) => {
 
     Dashboard.dashboard((result) => {
+        console.log(result);
         res.render('dashboard', {
             data: {
-                title: "Trang quản trị - Alomobile"
+                title: "Trang quản trị - Alomobile",
+                countProducts: result.countProducts,
+                countUsers: result.countUsers
             }
         });
     });
@@ -109,6 +112,26 @@ router.post('/products/add', [auth.requireAuth, auth.requireRole, upload.array('
         res.send(result);
     });
 });
+
+router.put('/product/edit', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
+    Product.editProduct(req.body, (result) => {
+        res.json(result);
+    });
+});
+
+router.delete('/product/delete', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.deleteProduct(req.body.id, (result) => {
+        res.json(result);
+    });
+});
+
+router.get('/products/getCount', (req, res) => {
+    Product.getCountProducts((response) => {
+        res.json(response);
+    });
+});
+
+
 
 /** CATEGORY ROUTERS */
 

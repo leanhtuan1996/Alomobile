@@ -57,4 +57,10 @@ router.get('/product/type/:type/limit=:limit', (req, res) => {
     });
 });
 
+router.get('/product/getCount', (req, res) => {
+    Product.getCountProducts((response) => {
+        res.json(response);
+    });
+});
+
 module.exports = router;

@@ -161,17 +161,17 @@ var getProductsByCategory = (idCategory, limit, result) => {
 
     workflow.on('get-products', () => {
         Product
-        .find({
-            category: idCategory
-        })
-        .populate('Category')
-        .limit(limit)
-        .exec((err, products) => {
-            workflow.emit('response', {
-                error: err,
-                products: products
+            .find({
+                category: idCategory
+            })
+            .populate('Category')
+            .limit(limit)
+            .exec((err, products) => {
+                workflow.emit('response', {
+                    error: err,
+                    products: products
+                });
             });
-        });
     });
 
     workflow.emit('validate-parameters');
@@ -352,6 +352,76 @@ var newProduct = (product, result) => {
     workflow.emit('validate-parameters');
 }
 
+var getCountProducts = (result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get-count-products');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('get-count-products', () => {
+        Product.count({}, (err, count) => {
+            workflow.emit('response', {
+                error: err,
+                count: count
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var editProduct = (product, result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('edit-product', () => {
+
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var deleteProduct = (id, result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id || id == 'undefined') {
+            workflow.emit('response', {
+                error: "Id of Product is required!"
+            });
+            return
+        }
+
+        workflow.emit('delete-product');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('delete-product', () => {
+        Product.findByIdAndRemove(id, (err) => {
+            workflow.emit('response', {
+                error: err
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     getProducts: getProducts,
     getProductById: getProductById,
@@ -360,5 +430,8 @@ module.exports = {
     getSpecialProducts: getSpecialProducts,
     getProductsByCategory: getProductsByCategory,
     getNewProducts: getNewProducts,
-    newProduct: newProduct
+    newProduct: newProduct,
+    getCountProducts: getCountProducts,
+    editProduct: editProduct,
+    deleteProduct: deleteProduct
 }

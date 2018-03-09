@@ -34,25 +34,21 @@
 							<div class="input-group">
 								<div class="input-group-btn search-panel">
 									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-										<span id="search_concept">Filter by</span>
+										<span id="search_concept">Tìm kiếm bởi</span>
 										<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu" role="menu">
 										<li>
-											<a href="#contains">Contains</a>
+											<a href="#contains">Tên</a>
 										</li>
 										<li>
-											<a href="#its_equal">It's equal</a>
+											<a href="#its_equal">Nhà sản xuất</a>
 										</li>
 										<li>
-											<a href="#greather_than">Greather than &gt;</a>
+											<a href="#greather_than">Trạng thái</a>
 										</li>
 										<li>
-											<a href="#less_than">Less than &lt; </a>
-										</li>
-										<li class="divider"></li>
-										<li>
-											<a href="#all">Anything</a>
+											<a href="#less_than">Giá</a>
 										</li>
 									</ul>
 								</div>
@@ -68,7 +64,7 @@
 					</div>
 
 					<!-- Row -->
-					<div class="row">
+					<div class="row" id="row_tbl_product">
 						<div class="col-sm-12">
 							<div class="panel panel-default card-view">
 								<div class="panel-wrapper collapse in">
@@ -91,7 +87,14 @@
 													<tbody>
 														<!-- ROWS -->
 													</tbody>
-												</table>
+												</table>												
+											</div>
+											<div class="row">
+												<div class="col-sm-6" style="float: right; margin-right: 10px;" >
+													<ul class="pagination" style="float: right; margin-right: 10px;">
+														
+													</ul>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -100,29 +103,6 @@
 						</div>
 					</div>
 					<!-- /Row -->
-
-					<div class="row">
-						<div class="col-sm-6" style="
-					float: right;">
-							<ul class="pagination" style="float: right;;">
-								<li class="page-item">
-									<a class="page-link" href="#">Previous</a>
-								</li>
-								<li class="page-item active">
-									<a class="page-link" href="#">1</a>
-								</li>
-								<li class="page-item">
-									<a class="page-link" href="#">2</a>
-								</li>
-								<li class="page-item">
-									<a class="page-link" href="#">3</a>
-								</li>
-								<li class="page-item">
-									<a class="page-link" href="#">Next</a>
-								</li>
-							</ul>
-						</div>
-					</div>
 				</div>
 
 				<!-- Footer -->
@@ -169,33 +149,48 @@
 	<script type="text/javascript" src="/static/admin/js/init.js"></script>
 
 	<script type="text/javascript">
+
 		jQuery(document).ready(($) => {
 
 			//load products
 			$.get('./products/list', (data) => {
 				if (data.products && data.products.length > 0) {
 					data.products.forEach(product => {
-						var color = "";
-						if (product.colors) {
-							product.colors.forEach(e => {
-								color = color + ", " + e
-							});
-
-							color = color.slice(1, color.length -1);
-						}
-
+						
 						var brand;
 						if (product.brand) {
 							brand = product.brand.name || "Không có";
+						}
+
+						var colors = ``;
+
+						if (product.colors && product.colors.length > 0) {
+							product.colors.forEach((color) => {
+								colors += `<div style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; margin: 0px 2px;"></div>`;
+							});
+						} else {
+							colors = "Không có"
+						}
+
+						var image = "";
+
+						if (product.images && product.images.length > 0) {
+							image = `<img src="${product.images[0].url}" alt="${product.images[0].alt}" width="80">`
+						} else {
+							image = "Không có"
 						}
 
 						var tr = `
 							<tr id="${product._id}">
 								<td class="txt-dark product-name">${product.name}</td>
 								<td>
-									<img src="${product.images[0].url}" alt="${product.images[0].alt}" width="80">
+									${image}
 								</td>
-								<td>${color}</td>
+								<td>
+									<div>
+										${colors}	
+									</div>														
+								</td>
 								<td>${product.price || "Không có"}</td>
 								<td>${brand}</td>
 								<td>
@@ -221,6 +216,124 @@
 			}).error((err) => {
 				window.console.log(err);
 			});
+
+			$.get('./products/getCount', (count) => {
+				var limit = 15;
+				var per = Math.round(count / 15) + 1;
+				var li = `
+						<li class="page-item disabled">
+							<a class="page-link " href="javascript: void(0)" data-page="prev">Previous</a>
+						</li>
+				`
+
+				if (per == 1) {
+					li = `						
+						<li class="page-item active">
+							<a class="page-link" href="javascript: void(0)" data-page=1>1</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="javascript: void(0)" data-page="next">Next</a>
+						</li>
+					`
+				} else if (per > 1 && per <= 8) {
+					for (let i = 0; i < per; i++) {
+						var t = ``;
+						if (i === 0) {
+							t = `
+							<li class="page-item active">
+								<a class="page-link" href="javascript: void(0)" data-page=${i + 1}>${i + 1}</a>
+							</li>
+						`
+						} else {
+							t = `
+							<li class="page-item">
+								<a class="page-link" href="javascript: void(0)" data-page=${i + 1}>${i + 1}</a>
+							</li>
+						`
+						}
+						
+						li += t
+
+						if (i == per - 1) {
+							var next = `<li class="page-item">
+								<a class="page-link" href="javascript: void(0)" data-page="next">Next</a>
+							</li>`
+
+							li+= next
+						}
+					}
+				} else {
+					var before = 0;
+					var after = 0;
+
+					for (let i = 0; i < per; i++) {
+						before++;
+
+						var t = ``;
+
+						if (i === 0) {
+							t = `
+							<li class="page-item active">
+								<a class="page-link" href="javascript: void(0)" data-page=${i + 1}>${i + 1}</a>
+							</li>
+							`
+						} else {
+							t = `
+							<li class="page-item">
+								<a class="page-link" href="javascript: void(0)" data-page=${i + 1}>${i + 1}</a>
+							</li>
+						`
+						}
+
+						if (before <= 3) {
+							li+= t
+						} else {
+							var a = `
+							<li class="page-item">
+								<a class="page-link" href="javascript: void(0)">...</a>
+							</li>
+							`
+							li+= a;
+							break;
+						}
+					}
+					
+					for (let i = 0; i < per; i++) {
+						after++;
+						if (i >= per - 3) {
+							t = `
+							<li class="page-item">
+								<a class="page-link" href="javascript: void(0)" data-page=${i}>${i}</a>
+							</li>
+							`
+
+							li+= t;
+							//last page
+							if (i == per - 1) {
+								var next = `<li class="page-item">
+									<a class="page-link" href="javascript: void(0)" data-page="next">Next</a>
+								</li>`
+
+								li+= next;
+								break;
+							}
+						}			
+					}
+				}
+
+				$('.pagination').append(li);
+				
+
+				//1 2 3 ... 98 99 100
+
+
+			}).error((err) => {
+				window.console.log(err);
+			});
+
+			setInterval(() => {
+
+			}, 1000);
 
 			$('.search-panel .dropdown-menu').find('a').click(function (e) {
 				e.preventDefault();

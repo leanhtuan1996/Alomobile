@@ -190,6 +190,8 @@ var editCategory = (parameters, result) => {
         new_icon = Array.isArray(parameters.newNames) == true ? parameters.newNames[0] : parameters.newNames,
         new_url = parameters.new_url;
 
+    console.log(parameters);
+
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
@@ -263,19 +265,19 @@ var editCategory = (parameters, result) => {
                         return
                     }
 
-                    if (new_name || new_name != 'undefined') {
+                    if (new_name && new_name != 'undefined') {
                         category.name = new_name;
                     }
 
-                    if (new_url || new_url != "") {
+                    if (new_url && new_url != "") {
                         category.icon = new_url;
                     }
 
-                    if (new_icon || new_icon != 'undefined') {
+                    if (new_icon && new_icon != 'undefined') {
                         category.icon = '/static/img/' + new_icon;
                     }
 
-                    if (new_alias || new_alias != 'undefined') {
+                    if (new_alias && new_alias != 'undefined') {
                         category.alias = new_alias
                     }
 

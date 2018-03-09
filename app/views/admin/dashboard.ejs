@@ -29,7 +29,13 @@
 											<div class="row">
 												<div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
 													<span class="txt-dark block counter">
-														<span class="counter-anim">914,001</span>
+														<span class="counter-anim">
+															<% if (data.countUsers) { %>
+																<%- data.countUsers %>
+															<% } else { %>
+																0
+															<% } %>														 
+														</span>
 													</span>
 													<span class="weight-500 uppercase-font block font-13">Người dùng</span>
 												</div>
@@ -76,7 +82,13 @@
 											<div class="row">
 												<div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
 													<span class="txt-dark block counter">
-														<span class="counter-anim">914,001</span>
+														<span class="counter-anim">
+														<% if (data.countProducts) { %>
+																<%- data.countProducts %>
+															<% } else { %>
+																NaN
+															<% } %>	
+														</span>
 													</span>
 													<span class="weight-500 uppercase-font block">Tổng số sản phẩm</span>
 												</div>

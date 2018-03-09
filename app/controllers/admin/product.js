@@ -103,6 +103,12 @@ var newProduct = (product, result) => {
     });
 }
 
+var getCountProducts = (result) => {
+    productApi.getCountProducts((response) => {
+        return result(response.count || 1);
+    });
+}
+
 
 module.exports = {
     index: index,
@@ -112,5 +118,6 @@ module.exports = {
     getProductsByType: getProductsByType,
     getSpecialProducts: getSpecialProducts,
     getHotProducts: getHotProducts,
-    getNewProducts: getNewProducts
+    getNewProducts: getNewProducts,
+    getCountProducts: getCountProducts
 }

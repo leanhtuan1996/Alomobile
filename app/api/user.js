@@ -230,25 +230,25 @@ var getUsers = (result) => {
     });
 
     workflow.on('get-users', () => {
-       User.find({}, (err, users) => {
-           if (err) {
-               workflow.emit('response', {
-                   error: err
-               });
-               return
-           }
+        User.find({}, (err, users) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err
+                });
+                return
+            }
 
-           if (!users) {
-               workflow.emit('response', {
-                   error: "Data is empty"
-               });
-               return
-           }
+            if (!users) {
+                workflow.emit('response', {
+                    error: "Data is empty"
+                });
+                return
+            }
 
-           workflow.emit('response', {
-               users: users
-           });
-       })
+            workflow.emit('response', {
+                users: users
+            });
+        })
     });
 
     workflow.emit('validate-parameters');
@@ -294,10 +294,34 @@ var verify = (token, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var getCountUsers = (result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get-count');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('get-count', () => {
+        User.count({}, (err, count) => {
+            workflow.emit('response', {
+                error: err,
+                count: count
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     signIn: signIn,
     signUp: signUp,
     registerNewLetters: registerNewLetters,
     verify: verify,
-    getUsers: getUsers
+    getUsers: getUsers,
+    getCountUsers: getCountUsers
 }
