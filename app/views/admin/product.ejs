@@ -75,10 +75,23 @@
 															<th>Trạng thái</th>
 															<th>Chức năng</th>
 														</tr>
-													</thead>
+													</thead>													
 													<tbody>
 														<!-- ROWS -->
 													</tbody>
+													<tfoot>
+															<tr>
+																<th>Tên sản phẩm</th>
+																<th>Ảnh</th>
+																<th>Màu sắc</th>
+																<th>Giá</th>
+																<th>Nhà sản xuất</th>
+																<th>Chi tiết sản phẩm</th>
+																<th>Ngày thêm</th>
+																<th>Trạng thái</th>
+																<th>Chức năng</th>
+															</tr>
+													</tfoot>
 												</table>												
 											</div>
 											<div class="row">
@@ -200,7 +213,7 @@
 						<td class="product-price">${product.price || "Không có"}</td>
 						<td class="product-brand">${brand}</td>
 						<td>
-							<a href="#">Xem chi tiết</a>
+							<a href="product/${product._id}" class="view-detail-product">Xem chi tiết</a>
 						</td>
 						<td class="product-created_at" data-original-time="${product.created_at}">
 							${created_at}
@@ -317,7 +330,12 @@
 						id: id
 					},
 					success: (data) => {
-						$(row).remove();
+						$(row).animate({
+							height: 10,
+							opacity: 0.1
+							}, 500, "swing", function() {
+								$(row).remove();
+						});
 						window.console.log(data);
 					},
 					error: (error) => {

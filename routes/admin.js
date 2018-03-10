@@ -151,6 +151,20 @@ router.get('/product/search/text=:text', [auth.requireAuth, auth.requireRole], (
     });
 });
 
+router.get('/product/:idProduct', [auth.requireAuth, auth.requireRole], (req, res) => {
+
+    Product.getProduct(req.params.idProduct, (response) => {
+        console.log(response);
+        res.render('admin/detail-product', {
+            data: {
+                title: "Xem chi tiết sản phẩm",
+                error: response.error,
+                product: response.product
+            }
+        });
+    });
+});
+
 /** CATEGORY ROUTERS */
 
 router.get('/categories', [auth.requireAuth, auth.requireRole], (req, res) => {

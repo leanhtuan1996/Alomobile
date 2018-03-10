@@ -9,6 +9,7 @@ var helper = require('../helpers/index').helper;
 var User = require('../models/index').user;
 var Product = require('../models/index').product;
 var Brand = require('../models/index').brand;
+var Category = require('../models/index').category;
 
 var getProducts = (prevProduct, result) => {
     var workflow = new event.EventEmitter();
@@ -88,19 +89,15 @@ var getProductById = (id, result) => {
     });
 
     workflow.on('get-product', () => {
-        Product.findById(id, (err, product) => {
-            if (err) {
+        Product
+            .findById(id)
+            .populate('brand type orders')
+            .exec((err, product) => {
                 workflow.emit('response', {
                     error: err,
-                    product: null
-                });
-            } else {
-                workflow.emit('response', {
-                    error: null,
                     product: product
-                })
-            }
-        })
+                });
+            });
     });
 
     workflow.emit('validate-parameters');
