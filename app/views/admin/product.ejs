@@ -209,10 +209,10 @@
 							<span class="label label-success font-weight-100">Active</span>
 						</td>
 						<td>
-							<a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip">
+							<a href="javascript:void(0)" class="text-inverse pr-10 edit-product" title="Edit" data-toggle="tooltip">
 								<i class="zmdi zmdi-edit txt-warning"></i>
 							</a>
-							<a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip">
+							<a href="javascript:void(0)" class="text-inverse delete-product" title="Delete" data-toggle="tooltip">
 								<i class="zmdi zmdi-delete txt-danger"></i>
 							</a>
 						</td>
@@ -285,6 +285,51 @@
 					var products = data.products;					
 					updateDataProducts(products);					
 				});
+			});
+
+			$("#text-search").keypress((e) => {
+				var text = $("#text-search").val();
+
+				if (!text || (text.trim()).length == 0) {
+					return
+				}
+
+				$.get(`./product/search/text=${text.trim()}`, (data) => {
+					var products = data.products;					
+					updateDataProducts(products);					
+				});
+			});
+
+			//delete product
+			$("#table_products tbody").delegate('.delete-product', 'click', (e) => {
+				var row = $(e.currentTarget.parentElement.parentElement);
+
+				var id = $(row).attr('id');
+
+				if (!id || id == 'undefined') {
+					return
+				}
+
+				$.ajax({
+					url: './product/delete',
+					method: 'DELETE',
+					data: {
+						id: id
+					},
+					success: (data) => {
+						$(row).remove();
+						window.console.log(data);
+					},
+					error: (error) => {
+						window.console.log(error);
+					}					
+				});
+
+			});
+
+			//edit product
+			$("#table_products tbody").delegate('.edit-product', 'click', (e) => {
+				
 			});
 		});
 	</script>

@@ -122,6 +122,12 @@ var searchProduct = (text, result) => {
     });
 }
 
+var deleteProduct = (id, result) => {
+    productApi.deleteProduct(id, (response) => {
+        return result(response);
+    });
+}
+
 
 module.exports = {
     index: index,
@@ -134,5 +140,6 @@ module.exports = {
     getNewProducts: getNewProducts,
     getCountProducts: getCountProducts,
     getPrevProducts: getPrevProducts,
-    searchProduct: searchProduct
+    searchProduct: searchProduct,
+    deleteProduct: deleteProduct
 }
