@@ -24,7 +24,38 @@ var getProducts = (prevProduct, result) => {
     workflow.on('get-products', () => {
         Product.find({
             created_at: {
-                $lt: prevProduct == null ? Date.now() : (prevProduct.created_at == null ? Date.now() : prevProduct.created_at)
+                $lt: prevProduct == null ? Date.now() : (prevProduct == null ? Date.now() : prevProduct)
+            }
+        })
+            .populate('brand')
+            .limit(15)
+            .sort('-created_at')
+            .exec((err, products) => {
+                workflow.emit('response', {
+                    error: err,
+                    products: products
+                });
+            });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var getPrevProducts = (nextProduct, result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get-products');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('get-products', () => {
+        Product.find({
+            created_at: {
+                $gt: nextProduct == null ? Date.now() : (nextProduct == null ? Date.now() : nextProduct)
             }
         })
             .populate('brand')
@@ -245,7 +276,7 @@ var newProduct = (product, result) => {
     var descriptions = product.descriptions;
     var metaTitle = product.metaTitle;
     var metaKeyword = product.metaKeyword;
-    var category = product.category;
+    var category = JSON.parse(product.category);
 
     workflow.on('validate-parameters', () => {
         if (!name) {
@@ -297,7 +328,7 @@ var newProduct = (product, result) => {
             return
         }
 
-        if (!category) {
+        if (!(category.idRootCategory && category.idCategory)) {
             workflow.emit('response', {
                 error: "Please choose category of product"
             });
@@ -339,7 +370,6 @@ var newProduct = (product, result) => {
 
             newProduct.images.push(object);
         });
-
 
         newProduct.save((err) => {
             workflow.emit('response', {
@@ -422,6 +452,46 @@ var deleteProduct = (id, result) => {
     workflow.emit('validate-parameters');
 }
 
+var searchProducts = (text, result) => {
+   //name, price, brand, status, category, type
+
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!text || text.length == 0) {
+            workflow.emit('response', {
+                error: "Please choose field to searching for products"
+            });
+            return
+        }
+
+        workflow.emit('search-products');
+    });
+
+    workflow.on('response', (response) => {
+        console.log(response);
+        return result(response);
+    });
+
+    workflow.on('search-products', () => {
+        Product.find({
+            $text: {
+                $search: `/^${text}$/i`,
+                $caseSensitive: false
+            }
+        }).populate(['type', 'brand'])
+        .limit(15)
+        .exec((err, products) => {
+            workflow.emit('response', {
+                error: err,
+                products: products
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+};
+
 module.exports = {
     getProducts: getProducts,
     getProductById: getProductById,
@@ -433,5 +503,7 @@ module.exports = {
     newProduct: newProduct,
     getCountProducts: getCountProducts,
     editProduct: editProduct,
-    deleteProduct: deleteProduct
+    deleteProduct: deleteProduct,
+    getPrevProducts: getPrevProducts,
+    searchProducts: searchProducts
 }

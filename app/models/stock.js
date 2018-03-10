@@ -26,4 +26,4 @@ module.exports = mongoose.model('Stock', new Schema({
 
     next();
 
-}));
+}).index({ '$**': 'text' }));

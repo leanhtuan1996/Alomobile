@@ -19,4 +19,4 @@ module.exports = mongoose.model('Brand', new Schema({
 
     next();
 
-}));
+}).index({ '$**': 'text' }));

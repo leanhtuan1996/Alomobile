@@ -32,30 +32,9 @@
 					<div class="row">
 						<div class="col-xs-6 col-xs-offset-2" style="float: right;margin-bottom: 20px;">
 							<div class="input-group">
-								<div class="input-group-btn search-panel">
-									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-										<span id="search_concept">Tìm kiếm bởi</span>
-										<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li>
-											<a href="#contains">Tên</a>
-										</li>
-										<li>
-											<a href="#its_equal">Nhà sản xuất</a>
-										</li>
-										<li>
-											<a href="#greather_than">Trạng thái</a>
-										</li>
-										<li>
-											<a href="#less_than">Giá</a>
-										</li>
-									</ul>
-								</div>
-								<input type="hidden" name="search_param" value="all" id="search_param">
-								<input type="text" class="form-control" name="x" placeholder="Search term...">
+								<input type="text" id="text-search" class="form-control" name="x" placeholder="Nhập từ khoá tìm kiếm...">
 								<span class="input-group-btn">
-									<button class="btn btn-default" type="button">
+									<button class="btn btn-default" type="button" id="search-product">
 										<span class="glyphicon glyphicon-search"></span>
 									</button>
 								</span>
@@ -71,6 +50,18 @@
 									<div class="panel-body row">
 										<div class="table-wrap">
 											<div class="table-responsive">
+													<div class="row">
+															<div class="col-sm-6" style="float: right; margin-right: 10px;" >
+																<ul class="pagination" style="float: right; margin-right: 10px;">
+																		<li class="page-item prev" data-action="prev" data-current-page=1>
+																				<a class="page-link" href="javascript: void(0)" >Previous</a>
+																			</li>
+																			<li class="page-item next" data-action="next" data-current-page="1">
+																				<a class="page-link" href="javascript: void(0)">Next</a>
+																			</li>
+																</ul>
+															</div>
+														</div>
 												<table class="table display responsive product-overview mb-30" id="table_products">
 													<thead>
 														<tr>
@@ -80,6 +71,7 @@
 															<th>Giá</th>
 															<th>Nhà sản xuất</th>
 															<th>Chi tiết sản phẩm</th>
+															<th>Ngày thêm</th>
 															<th>Trạng thái</th>
 															<th>Chức năng</th>
 														</tr>
@@ -92,7 +84,12 @@
 											<div class="row">
 												<div class="col-sm-6" style="float: right; margin-right: 10px;" >
 													<ul class="pagination" style="float: right; margin-right: 10px;">
-														
+															<li class="page-item prev" data-action="prev" data-current-page=1>
+																	<a class="page-link" href="javascript: void(0)" >Previous</a>
+																</li>
+																<li class="page-item next" data-action="next" data-current-page="1">
+																	<a class="page-link" href="javascript: void(0)">Next</a>
+																</li>
 													</ul>
 												</div>
 											</div>
@@ -150,285 +147,144 @@
 
 	<script type="text/javascript">
 
+		function updateDataProducts(products) {
+
+			if ($('#table_products tbody').find('tr').length > 0) {			
+				$('#table_products tbody tr').animate({
+					height: 50,
+					opacity: 0.1
+					}, 500, "swing", function() {
+						$(this).remove();
+				});
+			}			
+
+			products.forEach(product => {
+						
+				var brand;
+				if (product.brand) {
+					brand = product.brand.name || "Không có";
+				}
+
+				var colors = ``;
+
+				if (product.colors && product.colors.length > 0) {
+					product.colors.forEach((color) => {
+						colors += `<div style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; margin: 0px 2px;"></div>`;
+					});
+				} else {
+					colors = "Không có"
+				}
+
+				var image = "";
+
+				if (product.images && product.images.length > 0) {
+					image = `<img src="${product.images[0].url}" alt="${product.images[0].alt}" width="80">`
+				} else {
+					image = "Không có"
+				}
+
+				var date = new Date(product.created_at);
+				var created_at = `${date.getHours()}:${date.getMinutes()} ${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
+
+				var tr = `
+					<tr id="${product._id}">
+						<td class="txt-dark product-name">${product.name}</td>
+						<td class="product-images">
+							${image}
+						</td>
+						<td class="product-colors">
+							<div>
+								${colors}	
+							</div>														
+						</td>
+						<td class="product-price">${product.price || "Không có"}</td>
+						<td class="product-brand">${brand}</td>
+						<td>
+							<a href="#">Xem chi tiết</a>
+						</td>
+						<td class="product-created_at" data-original-time="${product.created_at}">
+							${created_at}
+						</td>
+						<td class="product-status">
+							<span class="label label-success font-weight-100">Active</span>
+						</td>
+						<td>
+							<a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip">
+								<i class="zmdi zmdi-edit txt-warning"></i>
+							</a>
+							<a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip">
+								<i class="zmdi zmdi-delete txt-danger"></i>
+							</a>
+						</td>
+					</tr>
+				`
+
+				$('#table_products tbody').append(tr)
+			});
+		}
+
 		jQuery(document).ready(($) => {
 
-			var maxPage;
+			var limit = 15;
 
 			//load products
 			$.get('./products/list', (data) => {
 				if (data.products && data.products.length > 0) {
-					data.products.forEach(product => {
-						
-						var brand;
-						if (product.brand) {
-							brand = product.brand.name || "Không có";
-						}
-
-						var colors = ``;
-
-						if (product.colors && product.colors.length > 0) {
-							product.colors.forEach((color) => {
-								colors += `<div style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; margin: 0px 2px;"></div>`;
-							});
-						} else {
-							colors = "Không có"
-						}
-
-						var image = "";
-
-						if (product.images && product.images.length > 0) {
-							image = `<img src="${product.images[0].url}" alt="${product.images[0].alt}" width="80">`
-						} else {
-							image = "Không có"
-						}
-
-						var tr = `
-							<tr id="${product._id}">
-								<td class="txt-dark product-name">${product.name}</td>
-								<td>
-									${image}
-								</td>
-								<td>
-									<div>
-										${colors}	
-									</div>														
-								</td>
-								<td>${product.price || "Không có"}</td>
-								<td>${brand}</td>
-								<td>
-									<a href="#">Xem chi tiết</a>
-								</td>
-								<td>
-									<span class="label label-success font-weight-100">Còn hàng</span>
-								</td>
-								<td>
-									<a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip">
-										<i class="zmdi zmdi-edit txt-warning"></i>
-									</a>
-									<a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip">
-										<i class="zmdi zmdi-delete txt-danger"></i>
-									</a>
-								</td>
-							</tr>
-						`
-
-						$('#table_products tbody').append(tr)
-					});
+					updateDataProducts(data.products);
 				}
-			}).error((err) => {
-				window.console.log(err);
-			});
-
-			$.get('./products/getCount', (count) => {
-				maxPage = Math.round(count / 15) + 1;
-				var li = `
-						<li class="page-item disabled prev" data-page="prev">
-							<a class="page-link " href="javascript: void(0)" >Previous</a>
-						</li>
-				`
-
-				if (maxPage == 1) {
-					li = `						
-						<li class="page-item active" data-page=1>
-							<a class="page-link" href="javascript: void(0)" >1</a>
-						</li>
-						<li class="page-item next"  data-page="next">
-							<a class="page-link" href="javascript: void(0)">Next</a>
-						</li>
-					`
-				} else if (maxPage > 1 && maxPage <= 8) {
-					for (let i = 0; i < maxPage; i++) {
-						var t = ``;
-						if (i === 0) {
-							t = `
-							<li class="page-item active" data-page=${i + 1}>
-								<a class="page-link" href="javascript: void(0)" >${i + 1}</a>
-							</li>
-						`
-						} else {
-							t = `
-							<li class="page-item" data-page=${i + 1}>
-								<a class="page-link" href="javascript: void(0)" >${i + 1}</a>
-							</li>
-						`
-						}
-						
-						li += t
-
-						if (i == maxPage - 1) {
-							var next = `<li class="page-item" data-page="next">
-								<a class="page-link" href="javascript: void(0)" >Next</a>
-							</li>`
-
-							li+= next
-						}
-					}
-				} else {
-					var before = 0;
-					var after = 0;
-
-					for (let i = 0; i < maxPage; i++) {
-						before++;
-
-						var t = ``;
-
-						if (i === 0) {
-							t = `
-							<li class="page-item active" data-page=${i + 1}>
-								<a class="page-link" href="javascript: void(0)" >${i + 1}</a>
-							</li>
-							`
-						} else {
-							t = `
-							<li class="page-item" data-page=${i + 1}>
-								<a class="page-link" href="javascript: void(0)">${i + 1}</a>
-							</li>
-						`
-						}
-
-						if (before <= 3) {
-							li+= t
-						} else {
-							var a = `
-							<li class="page-item more"  data-page="more">
-								<a class="page-link" href="javascript: void(0)">...</a>
-							</li>
-							`
-							li+= a;
-							break;
-						}
-					}
-					
-					for (let i = 0; i < maxPage; i++) {
-						after++;
-						if (i >= maxPage - 3) {
-							t = `
-							<li class="page-item" data-page=${i}>
-								<a class="page-link" href="javascript: void(0)">${i}</a>
-							</li>
-							`
-
-							li+= t;
-							//last page
-							if (i == maxPage - 1) {
-								var next = `<li class="page-item next" data-page="next">
-									<a class="page-link" href="javascript: void(0)">Next</a>
-								</li>`
-
-								li+= next;
-								break;
-							}
-						}			
-					}
-				}
-
-				$('.pagination').append(li);
-				
-
-				//1 2 3 ... 98 99 100
-
-
 			}).error((err) => {
 				window.console.log(err);
 			});
 
 			$(".pagination").delegate("li", "click", (e) => {
 
-				var prevPage = $(e.delegateTarget).find('.active');
-
-				var currentPage = $(e.currentTarget);
-
-				var nextButton = $(e.delegateTarget).find('.next');
-
-				var moreButton = $(e.delegateTarget).find('.more');
-
 				var prevButton = $(e.delegateTarget).find('.prev');
+				var nextButton = $(e.delegateTarget).find('.next');
+				var currentButton = $(e.currentTarget);
 
-				var numCurrentPage = $(currentPage).attr('data-page').trim()
+				var currentPage = $(currentButton).attr('data-current-page');
+				var currentActionButton = $(currentButton).attr('data-action');
 
+				var lastRow = $('#table_products tbody').find('tr').last();
+	
+				var lastProductCreated = $(lastRow).find('td.product-created_at').attr('data-original-time');
 
-
-
-				if (Number.parseInt(numCurrentPage) != Number.parseInt(1) && Number.parseInt(numCurrentPage) != Number.parseInt(maxPage - 1)) {
-					$(prevButton).removeClass('disabled');
-					$(nextButton).removeClass('disabled');
-				} else if (Number.parseInt(numCurrentPage) == 1) {					
-					$(prevButton).addClass('disabled');
-				} else if (Number.parseInt(numCurrentPage) == (maxPage - 1)) {				
-					$(nextButton).addClass('disabled');
-				}
-
-				if ($(prevPage).attr('data-page') != $(currentPage).attr('data-page')) {
-
-					if (Number.isInteger(Number.parseInt(numCurrentPage))) {
-						 //remove active page
-						$(prevPage).removeClass('active');
-
-						//add active page
-						$(currentPage).addClass('active');
-
-					} else {
-						//check action button clicked
-						switch (numCurrentPage) {
-							case "prev":
-								var distinatedPage = prevPage.prev('li');
-
-								if ($(distinatedPage).attr('data-page') == 'more') {
-									distinatedPage = prevPage.prev('li').prev('li');
-								}
-
-								if ($(distinatedPage).attr('data-page') == 'prev') {
-									$(prevButton).addClass('disabled');
-									break;
-								}
-
-								if ($(distinatedPage).attr('data-page') == 1) {
-									$(prevButton).addClass('disabled');
-								}
-
-								//remove class adtive in prevButton
-								$(prevPage).removeClass('active');
-
-								//add active in disPage
-								$(distinatedPage).addClass('active');
-
-								break;
-							case "next":
-								var distinatedPage = prevPage.next('li');
-
-								if ($(distinatedPage).attr('data-page') == 'more') {
-									distinatedPage = prevPage.next('li').next('li');
-								}
-
-								if ($(distinatedPage).attr('data-page') == 'next') {
-									$(nextButton).addClass('disabled');
-									break;
-								}
-
-								if ($(distinatedPage).attr('data-page') == (maxPage - 1)) {
-									$(nextButton).addClass('disabled')
-								}
-
-								//remove class adtive in prevButton
-								$(prevPage).removeClass('active');
-
-								//add active in disPage
-								$(distinatedPage).addClass('active');
-								
-								break;						
-							default:
-								break;
+				if (currentActionButton == 'next') {
+					$.get(`./products/list/from/${lastProductCreated}`, (data) => {
+						if (data.products && data.products.length > 0) {
+							updateDataProducts(data.products);
+							$(nextButton).removeAttr('data-current-page').attr('data-current-page', Number.parseInt(currentPage) + 1);
+							$(prevButton).removeAttr('data-current-page').attr('data-current-page', Number.parseInt(currentPage) + 1);
 						}
+					});
+				} else {
+					if (currentPage == 1) {
+						return
 					}
-				} 
+					$.get(`./products/list/to/${lastProductCreated}`, (data) => {
+						if (data.products && data.products.length > 0) {
+							updateDataProducts(data.products);
+
+							if (currentPage > 1) {
+								$(nextButton).removeAttr('data-current-page').attr('data-current-page', Number.parseInt(currentPage) - 1);
+								$(prevButton).removeAttr('data-current-page').attr('data-current-page', Number.parseInt(currentPage) - 1);
+							}
+						}
+					});
+				}				
 			});
 
-			$('.search-panel .dropdown-menu').find('a').click(function (e) {
-				e.preventDefault();
-				var param = $(this).attr("href").replace("#", "");
-				var concept = $(this).text();
-				$('.search-panel span#search_concept').text(concept);
-				$('.input-group #search_param').val(param);
+			$('#search-product').click((e) => {
+				var text = $("#text-search").val();
+
+				if (!text || (text.trim()).length == 0) {
+					return
+				}
+
+				$.get(`./product/search/text=${text.trim()}`, (data) => {
+					var products = data.products;					
+					updateDataProducts(products);					
+				});
 			});
 		});
 	</script>

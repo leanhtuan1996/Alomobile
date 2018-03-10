@@ -138,12 +138,12 @@
                                                                 <option value="0">Chọn một danh mục</option>
                                                                 <% var categories = data.categories %>
                                                                 <% categories.forEach((category) => { %>
-                                                                    <option data-id-category="<%- category._id %>" value="<%- category.name %>"><%- category.name %></option>
+                                                                    <option data-id-category="<%- category._id %>" data-id-root="<%- category._id %>" value="<%- category.name %>"><%- category.name %></option>
 
                                                                     <% var subs = category.subCategories; %>
                                                                     <% if (subs && subs.length > 0) { %>
                                                                         <% subs.forEach((sub) => { %>
-                                                                            <option data-id-category="<%- sub._id %>" value="<%- sub.name %>">----<%- sub.name %></option>
+                                                                            <option data-id-category="<%- sub._id %>" data-id-root="<%- category._id %>" value="<%- sub.name %>">----<%- sub.name %></option>
                                                                         <% }); %>
                                                                     <% } %>
 
@@ -418,7 +418,10 @@
                     
                     newProduct.colors = colors;
                     newProduct.brand = $("#selectBrand").find('option:selected').attr('data-id-brand');
-                    newProduct.category = $("#selectCategory").find('option:selected').attr('data-id-category');
+                    newProduct.category = {
+                        idRootCategory: $("#selectCategory").find('option:selected').attr('data-id-root'),
+                        idCategory: $("#selectCategory").find('option:selected').attr('data-id-category')
+                    }
                     newProduct.price = $("#product_price").val();
                     newProduct.descriptions = tinyMCE.get('product_descriptions').getContent()
                     newProduct.metaTitle = $("#product_meta_title").val();
@@ -715,7 +718,7 @@
                         showAlert('Vui lòng chọn danh mục của sản phẩm');
                         return
                     } else {
-                        productFormData.append("category", newProduct.category); 
+                        productFormData.append("category", JSON.stringify(newProduct.category)); 
                     }
 
                     //description
@@ -775,7 +778,7 @@
                     }
 
                     // Create a new instance of ladda for the specified button
-
+                    
                     $.ajax({
                         url: 'add',
                         method: 'POST',
@@ -786,27 +789,27 @@
                             window.console.log(result);
                             var error = result.error;
                             if (error) {
-                                //showAlert(error);
+                                showAlert(error);
                             } else {
-                                // swal({
-                                //     title: "Thêm thành công!",
-                                //     text: "Đã thêm sản phẩm mới thành công! Bạn có muốn tiếp tục không?",
-                                //     icon: "success",
-                                //     buttons: {
-                                //         cancel: "Trở về danh sách sản phẩm",
-                                //         new: "Tiếp tục",
-                                //     },
-                                // })
-                                // .then((value) => {
-                                //     switch (value) {                                    
-                                //         case "new":
-                                //             window.location.reload()
-                                //             break;                                    
-                                //         default:
-                                //             window.location.href = '/admin/products'
-                                //             break;
-                                //     }
-                                // }); 
+                                swal({
+                                    title: "Thêm thành công!",
+                                    text: "Đã thêm sản phẩm mới thành công! Bạn có muốn tiếp tục không?",
+                                    icon: "success",
+                                    buttons: {
+                                        cancel: "Trở về danh sách sản phẩm",
+                                        new: "Tiếp tục",
+                                    },
+                                })
+                                .then((value) => {
+                                    switch (value) {                                    
+                                        case "new":
+                                            window.location.reload()
+                                            break;                                    
+                                        default:
+                                            window.location.href = '/admin/products'
+                                            break;
+                                    }
+                                }); 
                             }
                         },
                         error: (error) => {

@@ -74,7 +74,19 @@ router.get('/products', [auth.requireAuth, auth.requireRole], (req, res) => {
 });
 
 router.get('/products/list', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.getAllProducts(req.parameters, (result) => {
+    Product.getAllProducts(null, (result) => {
+        res.json(result);
+    });
+});
+
+router.get('/products/list/from/:lastCreatedAt', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.getAllProducts(req.params.lastCreatedAt, (result) => {
+        res.json(result);
+    });
+});
+
+router.get('/products/list/to/:lastCreatedAt', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.getPrevProducts(req.params.lastCreatedAt, (result) => {
         res.json(result);
     });
 });
@@ -88,7 +100,7 @@ router.get('/products/listNew', [auth.requireAuth, auth.requireRole], (req, res)
 });
 
 router.get('/products/add', [auth.requireAuth, auth.requireRole], (req, res) => {
-      
+
     /** GET CATEGORIES */
     Category.getCategories((r) => {
         Brand.getBrands((r1) => {
@@ -102,7 +114,7 @@ router.get('/products/add', [auth.requireAuth, auth.requireRole], (req, res) => 
                         types: r2.types || []
                     }
                 });
-            });            
+            });
         });
     });
 });
@@ -125,13 +137,19 @@ router.delete('/product/delete', [auth.requireAuth, auth.requireRole], (req, res
     });
 });
 
-router.get('/products/getCount', (req, res) => {
+router.get('/products/getCount', [auth.requireAuth, auth.requireRole], (req, res) => {
     Product.getCountProducts((response) => {
         res.json(response);
     });
 });
 
-
+router.get('/product/search/text=:text', [auth.requireAuth, auth.requireRole], (req, res) => {
+    
+    Product.searchProduct(req.params.text, (response) => {
+        console.log(response);
+        res.json(response);
+    });
+});
 
 /** CATEGORY ROUTERS */
 

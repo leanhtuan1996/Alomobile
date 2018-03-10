@@ -38,4 +38,4 @@ module.exports = mongoose.model('Order', new Schema({
 
     next();
 
-}));
+}).index({ '$**': 'text' }));

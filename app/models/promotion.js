@@ -29,4 +29,4 @@ module.exports = mongoose.model('ShippingMethod', new Schema({
 
     next();
 
-}));
+}).index({ '$**': 'text' }));

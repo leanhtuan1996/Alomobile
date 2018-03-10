@@ -75,6 +75,8 @@ userSchema.pre('save', function(next) {
     });
 });
 
+userSchema.index({ '$**': 'text' })
+
 
 module.exports = User
 

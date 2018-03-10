@@ -64,7 +64,13 @@ var index = (result) => {
 var getAllProducts = (prevProduct = null, result) => {
     productApi.getProducts(prevProduct, (response) => {
         return result(response);
-    })
+    });
+}
+
+var getPrevProducts = (prevProduct = null, result) => {
+    productApi.getPrevProducts(prevProduct, (response) => {
+        return result(response);
+    });
 }
 
 var getProduct = (id, result) => {
@@ -109,6 +115,13 @@ var getCountProducts = (result) => {
     });
 }
 
+var searchProduct = (text, result) => {
+    productApi.searchProducts(text, (response) => {
+        console.log(response);
+        return result(response);
+    });
+}
+
 
 module.exports = {
     index: index,
@@ -119,5 +132,7 @@ module.exports = {
     getSpecialProducts: getSpecialProducts,
     getHotProducts: getHotProducts,
     getNewProducts: getNewProducts,
-    getCountProducts: getCountProducts
+    getCountProducts: getCountProducts,
+    getPrevProducts: getPrevProducts,
+    searchProduct: searchProduct
 }

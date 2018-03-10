@@ -3,7 +3,7 @@ var mongoose = require('../../config/db').mongoose;;
 var Schema = mongoose.Schema;
 
 module.exports = mongoose.model('Product', new Schema({
-    name: String,
+    name: { type: Schema.Types.String },
     alias: String,
     colors: [String],
     brand: {
@@ -33,13 +33,14 @@ module.exports = mongoose.model('Product', new Schema({
     metaTitle: String,
     metaKeyword: String,
     isAvailable: Boolean,
+    price: Number,
     type: {
         type: Schema.Types.ObjectId,
         ref: "Type"
     },
-    category: { 
-        type: Schema.Types.ObjectId, 
-        ref: "Category" 
+    category: {
+        idRootCategory: String,
+        idCategory: String
     },
     totalOrders: Number,
     orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
@@ -56,4 +57,5 @@ module.exports = mongoose.model('Product', new Schema({
 
     next();
 
-}));
+}).index({ '$**': 'text' })
+);

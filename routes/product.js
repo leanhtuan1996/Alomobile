@@ -63,4 +63,8 @@ router.get('/product/getCount', (req, res) => {
     });
 });
 
+router.get('/product/search/text=:text', (req, res) => {
+
+});
+
 module.exports = router;

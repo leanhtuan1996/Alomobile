@@ -32,4 +32,4 @@ module.exports = mongoose.model('Category', new Schema({
 
     next();
 
-}));
+}).index({ '$**': 'text' }));

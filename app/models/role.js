@@ -22,4 +22,4 @@ module.exports = mongoose.model('Role', new Schema({
 
     next();
 
-}));    
+}).index({ '$**': 'text' }));    

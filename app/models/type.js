@@ -18,4 +18,4 @@ module.exports = mongoose.model('Type', new Schema({
 
     next();
 
-}));
+}).index({ '$**': 'text' }));
