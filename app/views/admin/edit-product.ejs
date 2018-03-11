@@ -396,7 +396,6 @@
                 if (images && images.length > 0) {
                     for (let i = 0; i < images.length; i++) {
                         const url = images[i].url;
-                        window.console.log(url);
                         if (url) {
                             $(inputFiles[i]).attr('data-default-file', url);
                         }
@@ -999,19 +998,15 @@
                                 showAlert(error);
                             } else {
                                 swal({
-                                    title: "Thêm thành công!",
-                                    text: "Đã thêm sản phẩm mới thành công! Bạn có muốn tiếp tục không?",
+                                    title: "Cập nhật thành công!",
+                                    text: "Đã cập nhật sản phẩm thành công!",
                                     icon: "success",
                                     buttons: {
-                                        cancel: "Trở về danh sách sản phẩm",
-                                        new: "Tiếp tục",
+                                        canreturncel: "Trở về danh sách sản phẩm"
                                     },
                                 })
                                 .then((value) => {
                                     switch (value) {                                    
-                                        case "new":
-                                            window.location.reload()
-                                            break;                                    
                                         default:
                                             window.location.href = '/admin/products'
                                             break;

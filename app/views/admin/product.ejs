@@ -347,7 +347,16 @@
 
 			//edit product
 			$("#table_products tbody").delegate('.edit-product', 'click', (e) => {
-				
+				var row = $(e.currentTarget.parentElement.parentElement);
+
+				var id = $(row).attr('id');
+
+				if (!id || id == 'undefined') {
+					return
+				}
+
+				window.location.href = `/admin/product/edit/${id}`
+
 			});
 		});
 	</script>
