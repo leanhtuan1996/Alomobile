@@ -19,53 +19,93 @@
 	<!--/Preloader-->
     <div class="wrapper theme-5-active pimary-color-green">
 
-    <% include layouts/menu %>
+	<% include layouts/menu %>
+	
+	<% var product = data.product; %>
 
         <!-- Main Content -->
 		<div class="page-wrapper">
             <div class="container-fluid">
 				<!-- Title -->
 				<div class="row heading-bg">
-					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+					<div class="col-lg-9 col-md-4 col-sm-4 col-xs-12">
 					  <h5 class="txt-dark">Chi tiết sản phẩm</h5>
-					</div>					
+					</div>		
+					
+					<div class="col-lg-3 col-sm-8 col-md-8 col-xs-12" >
+						<a type="button" class="btn btn-primary" style="float: right" href="edit/<%- product._id %>">Chỉnh sửa</a>					 
+					</div>
 				</div>
-				<!-- /Title -->
+				<!-- /Title -->			
 				
 				<!-- Row -->
 				<div class="row">
-					<div class="col-sm-12">
+					<div class="col-sm-12">						
 						<div class="panel panel-default card-view">
 							<div class="panel-wrapper collapse in">
 								<div class="panel-body">
 									<div class="row">
-										<div class="col-md-3">
+										<div class="col-md-4">
 											<div class="item-big">
 												<!-- START carousel-->
 												<div id="carousel-example-captions-1" data-ride="carousel" class="carousel slide">
 													<ol class="carousel-indicators">
-													   <li data-target="#carousel-example-captions-1" data-slide-to="0" class="active"></li>
-													   <li data-target="#carousel-example-captions-1" data-slide-to="1"></li>
+														<li data-target="#carousel-example-captions-1" data-slide-to="0" class="active"></li>
+														<% if (product.images) { %>
+															<% for(var i = 1; i < product.images.length; i++) { %>
+																<li data-target="#carousel-example-captions-1" data-slide-to="<%- i %>"></li>
+															<% } %>
+														<% } %>													   
 													</ol>
 													<div role="listbox" class="carousel-inner">
-													   <div class="item active"> <img src="/static/img/gallery/mock1.jpg" alt="First slide image"> </div>
-													   <div class="item"> <img src="/static/img/gallery/mock4.jpg" alt="Second slide image"> </div>
+													   <div class="item active"> <img src="<%- product.images[0].url %>" alt="First slide image" height="1000" width="920"> </div>
+
+													   <% if (product.images) { %>
+													   		<% for(var i = 1; i < product.images.length; i++) { %>
+																<div class="item"> <img src="<%- product.images[i].url %>" height="1000" width="920" /></div>
+													   		 <% } %>
+												   		<% } %>		   
 													</div>
 												</div>
 												<!-- END carousel-->
 											</div>
 										</div>
 											
-										<div class="col-md-9">
+										<div class="col-md-4">
 											<div class="product-detail-wrap">
 												<div class="product-rating inline-block mb-10">
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a><a href="javascript:void(0);" class="zmdi zmdi-star"></a><a href="javascript:void(0);" class="zmdi zmdi-star"></a><a href="javascript:void(0);" class="zmdi zmdi-star"></a><a href="javascript:void(0);" class="zmdi zmdi-star-outline"></a>
+													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
+													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
+													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
+													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
+													<a href="javascript:void(0);" class="zmdi zmdi-star-outline"></a>
 												</div>
-												<div class="average-review inline-block mb-10">&nbsp;(<span class="review-count">5</span> customer review)</div>
-												<h3 class="mb-20 weight-500">Pure Leather Handbag</h3>
-												<div class="product-price head-font mb-30">$ 1234</div>
-												<p class="mb-50">Lorem ipsum dolor sit amet, facer velit at per, possit accusamus vim an. Cu vel possit dolorum. Elit placerat molestiae mea ne.Ex has movet ornatus, ei usu latine scripta molestiae. Sea ex aeterno adversarium, te ferri errem noluisse quo, meis civibus ea est. Sit in quas nostrud.</p>
-																							
+												<div class="average-review inline-block mb-10">&nbsp;(<span class="review-count">0</span> khách hàng đã phản hồi)</div>
+												<h3 class="mb-20 weight-500"><%- product.name %></h3>
+												<div class="product-price head-font mb-30"><%- product.price || "Không có" %></div>												
+												<h6 class="mb-20 weight-100">Các màu sắc: </h6>		
+												<div>
+													
+													<% if (product.colors) { %>
+														<% product.colors.forEach((color) => { %>
+															<div style="background-color: <%- color %>; border-radius: 50%; width: 20px; height: 20px; display: inline-block; margin: 0px 2px;"></div>
+														<% }) %>
+													<% } else { %>
+														<p>Không có</p>
+													<% } %>
+
+													
+													
+												</div>							
+											</div>
+										</div>
+
+										<div class="col-md-4">
+											<div class="specifications-product">   
+												<h4>Thông số kỹ thuật</h4> 
+												<div class="tableparameter" style="display: block;
+																				overflow: visible;">																																							
+												</div>																		
 											</div>
 										</div>
 									</div>
@@ -85,72 +125,22 @@
 										<div  class="tab-struct custom-tab-1 product-desc-tab">
 											<ul role="tablist" class="nav nav-tabs nav-tabs-responsive" id="myTabs_7">
 												<li class="active" role="presentation"><a aria-expanded="true"  data-toggle="tab" role="tab" id="descri_tab" href="#descri_tab_detail"><span>Mô tả sản phẩm</span></a></li>
-												<li role="presentation" class="next"><a  data-toggle="tab" id="adi_info_tab" role="tab" href="#adi_info_tab_detail" aria-expanded="false"><span>Thông số sản phẩm</span></a></li>
+												
+												<li role="presentation" class="next"><a  data-toggle="tab" id="promotion_info_tab" role="tab" href="#promotion_tab_detail" aria-expanded="false"><span>Các khuyến mãi</span></a></li>
 												<li role="presentation" class=""><a  data-toggle="tab" id="review_tab" role="tab" href="#review_tab_detail" aria-expanded="false"><span>Các bình luận<span class="inline-block">(<span class="review-count">0</span>)</span></span></a></li>
 											</ul>
 											<div class="tab-content" id="myTabContent_7">
-												<div  id="descri_tab_detail" class="tab-pane fade active in pt-0" role="tabpanel">
-													<p class="pt-15">Activist, criteria planned giving dignity, committed democratizing the global financial system progressive. Nelson Mandela equal opportunity change accelerate pathway to a better life invest our ambitions catalyst. Making progress contribution compassion Ford Foundation, cross-agency coordination Bill and Melinda Gates development. Overcome injustice tackling activism, promising development equality hack meaningful working families. Foundation; open source; organization volunteer, replicable think tank carbon emissions reductions.</p>
-												</div>
-												<div  id="adi_info_tab_detail" class="tab-pane pt-0 fade" role="tabpanel">
-													<div class="table-wrap">
-														<div class="table-responsive">
-														  <table class="table  mb-0">
-															<tbody>
-																<tr>
-																	<td class="border-none">SIZE</td>
-																	<td class="border-none">31, 32, 33, 34, 35</td>
-																</tr>
-																<tr>
-																	<td>COLOR</td>
-																	<td>blue, red, rosa, white</td>
-																</tr>
-																<tr>
-																	<td>TAGS</td>
-																	<td>Diesel, shoe, stars</td>
-																</tr>
-															</tbody>
-														  </table>
-														</div>
+												<div id="descri_tab_detail" class="tab-pane fade active in pt-0" role="tabpanel">
+													<div class="row" style="margin: 10px;">
+														<%- product.descriptions %>
 													</div>
+												</div>
+												<div  id="promotion_tab_detail" class="tab-pane pt-0 fade" role="tabpanel">
+													<p class="muted review-tag pt-15">Không có khuyến mãi.</p>													
 												</div>
 												<div  id="review_tab_detail" class="tab-pane pt-0 fade" role="tabpanel">
-													<p class="muted review-tag pt-15">No reviews yet.</p>
-													<div class="row mt-40">
-														<div class="col-sm-6">
-															<div class="form-wrap">
-																<form>
-																	<div class="form-group">
-																		<label class="control-label mb-10" for="review">Your rating</label>
-																		<div class='product-rating starrr' id='star1'></div>
-																	</div>
-																	<div class="form-group">
-																		<label class="control-label mb-10" for="review">Your review</label>
-																		<textarea class="form-control" id="review" placeholder="add review"></textarea>
-																	</div>
-																	<div class="row">
-																		<div class="col-sm-6">
-																			<div class="form-group">
-																				<label class="control-label mb-10" for="exampleInputuname_2">User Name</label>
-																				<input type="text" class="form-control" id="exampleInputuname_2" placeholder="Username"/>
-																			</div>
-																		</div>
-																		<div class="col-sm-6">
-																			<div class="form-group">
-																				<label class="control-label mb-10" for="exampleInputEmail_2">Email address</label>
-																				<input type="email" class="form-control" id="exampleInputEmail_2" placeholder="Enter email">
-																			</div>
-																		</div>
-																	</div>
-																		
-																	<div class="form-group mb-0">
-																		<button type="submit" class="btn btn-success  mr-10">Submit</button>
-																	</div>
-																</form>
-															</div>
-														</div>
-													</div>
-													</div>
+													<p class="muted review-tag pt-15">Chưa có bình luận.</p>													
+												</div>
 											</div>
 										</div>
 									
@@ -161,16 +151,6 @@
 					</div>
 					<!-- /Row -->
 			</div>
-			
-			<!-- Footer -->
-			<footer class="footer container-fluid pl-30 pr-30">
-				<div class="row">
-					<div class="col-sm-12">
-						<p>2018 &copy; Droopy. Pampered by Hencework</p>
-					</div>
-				</div>
-			</footer>
-			<!-- /Footer -->
 			
         </div>
         <!-- /Main Content -->
@@ -193,6 +173,329 @@
 		
 	<!-- Fancy Dropdown JS -->
 	<script type="text/javascript" src="/static/admin/js/dropdown-bootstrap-extended.js"></script>		
+
+	<script type="text/javascript">
+
+		var product = <%- JSON.stringify(data.product); %>
+
+		function showSpecifications(product) {
+
+			var specElement = `<ul class="specifications" style="display: block; position: relative; overflow: hidden; background: #fff; padding-top: 10px;">`;
+
+			var specifications = product.specifications;
+
+			switch (product.type.alias) {
+
+				case 'dien-thoai':
+					var screen = specifications.screen,
+						os = specifications.os,
+						backCamera = specifications.backCamera,
+						frontCamera = specifications.frontCamera,
+						cpu = specifications.processor.cpu,
+						ram = specifications.storage.ram,
+						storage = specifications.storage,
+						sim = specifications.connections.sim,
+						battery = specifications.battery;
+
+					if (screen) {
+						var tech = screen.displayTechnology,
+							resolution = screen.resolution,
+							width = screen.width,
+							touch = screen.touch;
+
+						var content = "";
+
+						if (tech) {
+							content += tech + ", ";
+						}
+
+						if (resolution) {
+							content += resolution + ", ";
+						}
+
+						if (width) {
+							content += width + ", ";
+						}
+
+						if (touch) {
+							content += touch + ".";
+						}
+
+						specElement = `<ul class="specifications" style="display: block; position: relative; overflow: hidden; background: #fff; padding-top: 10px;">
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Màn hình:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${content}
+										</div>
+									</li>														
+								</ul>`
+
+					} else {
+						specElement = `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Màn hình:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (os) {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Hệ điều hành:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${os}
+										</div>
+									</li> `
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Hệ điều hành:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (backCamera) {
+						if (backCamera.resolution) {
+							specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Camera sau:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${backCamera.resolution}
+										</div>
+									</li> `
+						} else {
+							specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Camera sau:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+						}
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Camera sau:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (frontCamera) {
+						if (frontCamera.resolution) {
+							specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Camera trước:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${frontCamera.resolution}
+										</div>
+									</li> `
+						} else {
+							specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Camera trước:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+						}
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Camera trước:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (cpu) {
+						var content = ``;
+
+						if (cpu.chipset) {
+							content = cpu.chipset + ", ";
+						} 
+
+						if (cpu.speed) {
+							content+= cpu.speed + ".";
+						}
+
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												CPU
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${content}
+										</div>
+									</li> `
+
+
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												CPU
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (ram) {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												RAM
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${ram || ""}
+										</div>
+									</li> `
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												RAM
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (storage) {
+						var content = ``;
+
+						if (storage.internal) {
+							content = "Bộ nhớ trong: " + storage.internal + " ,";
+						} 
+
+						if (storage.external) {
+							content = "Bộ nhớ ngoài: " + storage.external + "."
+						}
+
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Bộ nhớ trong
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${content}
+										</div>
+									</li> `
+
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Bộ nhớ trong
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (sim) {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												SIM
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${sim || ""}
+										</div>
+									</li> `
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												SIM
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (battery) {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Pin
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${battery.capacity || ""}
+										</div>
+									</li> `
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Pin
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}					
+					
+					break;
+				case 'may-tinh-bang':
+				break;
+				case 'laptop': 
+				break;
+			
+				default:
+				specElement = `<p>Không có</p>`
+					break;
+			}
+
+			specElement += `</ul>`
+			specElement += `<button type="button" class="btn btn-primary btn-rounded  btn-outline" style="text-align: center; width: 100%; margin-top: 5px;">Xem cấu hình chi tiết</button>`
+
+			$('.tableparameter').append(specElement);
+		}
+
+		if (!product.specifications) {
+			var p = `<p>Không có</p>`
+			$('.tableparameter').append(p);
+		} else {
+			showSpecifications(product);
+		}
+
+		jQuery(document).ready(($) => {
+			
+		});
+
+	</script>
 	
 </body>
 
