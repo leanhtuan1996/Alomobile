@@ -128,6 +128,12 @@ var deleteProduct = (id, result) => {
     });
 }
 
+var editProduct = (product, result) => {
+    productApi.editProduct(product, (response) => {
+        return result(response);
+    });
+}
+
 
 module.exports = {
     index: index,
@@ -141,5 +147,6 @@ module.exports = {
     getCountProducts: getCountProducts,
     getPrevProducts: getPrevProducts,
     searchProduct: searchProduct,
-    deleteProduct: deleteProduct
+    deleteProduct: deleteProduct,
+    editProduct: editProduct
 }

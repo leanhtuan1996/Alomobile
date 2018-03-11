@@ -126,6 +126,7 @@ router.post('/products/add', [auth.requireAuth, auth.requireRole, upload.array('
 });
 
 router.put('/product/edit', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
+    console.log(req.body);
     Product.editProduct(req.body, (result) => {
         res.json(result);
     });
@@ -162,6 +163,27 @@ router.get('/product/:idProduct', [auth.requireAuth, auth.requireRole], (req, re
                 product: response.product
             }
         });
+    });
+});
+
+router.get('/product/edit/:idProduct', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.getProduct(req.params.idProduct, (r1) => {
+        Type.getTypes((r2) => {
+            Category.getCategories((r3) => {
+                Brand.getBrands((r4) => {
+                    res.render('edit-product', {
+                        data: {
+                            title: "Chỉnh sửa sản phẩm ",
+                            user: req.user,
+                            categories: r3.categories || [],
+                            brands: r4.brands || [],
+                            types: r2.types || [],
+                            product: r1.product
+                        }
+                    })
+                });
+            });
+        });        
     });
 });
 

@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include layouts/header %>
+
+    <!-- Bootstrap Dropify CSS -->
+    <link href="/static/admin/libs/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Bootstrap Colorpicker CSS -->
+    <link href="/static/admin/libs/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet" type="text/css"/>
+
+    <style type="text/css">
+        .glyphicon-refresh-animate {
+        -animation: spin .7s infinite linear;
+        -webkit-animation: spin2 .7s infinite linear;
+        }
+
+        @-webkit-keyframes spin2 {
+            from { -webkit-transform: rotate(0deg);}
+            to { -webkit-transform: rotate(360deg);}
+        }
+
+        @keyframes spin {
+            from { transform: scale(1) rotate(0deg);}
+            to { transform: scale(1) rotate(360deg);}
+        }
+    </style>    
+</head>
+<body>
+    <!--Preloader-->
+    <div class="preloader-it">
+        <div class="la-anim-1"></div>
+    </div>
+    <!--/Preloader-->
+    <div class="wrapper theme-5-active pimary-color-green">
+        <% include layouts/menu %>
+            <!-- Main Content -->
+            <div class="page-wrapper">
+                <div class="container-fluid">
+                    <!-- Title -->
+                    <div class="row heading-bg">
+                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                            <h5 class="txt-dark">Thêm sản phẩm mới</h5>
+                        </div>
+                    </div>
+                    <!-- /Title -->
+                    <!-- Row -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default card-view">
+                                <div class="panel-wrapper collapse in" style="margin: 10px">
+                                    <div class="panel-body row">
+                                        <div class="form-wrap">
+                                            <form action="" id="formNewProduct" enctype="multipart/form-data">
+                                                <h6 class="txt-dark capitalize-font">
+                                                    <i class="zmdi zmdi-info-outline mr-10"></i>Thông tin cơ bản</h6>
+                                                <hr class="light-grey-hr" />
+                                                <!-- Row -->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label mb-10">Tên sản phẩm
+                                                                <span style="color: red">*</span>
+                                                            </label>
+                                                            <input type="text" id="product_name" class="form-control required" placeholder="Iphone X 256GB">
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="control-label mb-10">Thương hiệu
+                                                                <span style="color: red">*</span>
+                                                            </label>                                                            
+                                                            <select class="form-control" tabindex="1" id="selectBrand">
+                                                                <option value="null">Chọn một thương hiệu</option>
+
+                                                                <% if (data.brands && data.brands.length > 0) { %>
+                                                                    <% data.brands.forEach((brand) => { %>
+                                                                        <% if (brand && brand.name) { %>
+                                                                            <option data-id-brand="<%- brand._id %>" value="<%- brand._id %>"><%- brand.name %></option>
+                                                                        <% } %>
+                                                                    <% }); %>
+                                                                <% } %>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="control-label mb-10">Tên hiển thị URL
+                                                                <span style="color: red">*</span>
+                                                            </label>
+                                                            <input type="text" id="product_alias" class="form-control" placeholder="iphone-x-256-gb"></input>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!-- /row -->
+
+                                                <!-- Row -->
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="control-label mb-10">Loại sản phẩm
+                                                                <span style="color: red">*</span>
+                                                            </label>
+                                                            <select class="form-control" data-placeholder="Chọn danh mục" tabindex="1" id="selectType">
+                                                                <option value="0">Chọn một loại sản phẩm</option>
+                                                                
+                                                                <% var types = data.types; %>
+                                                                <%  if (types && types.length > 0) { %>
+                                                                    <% types.forEach((type) => { %>
+                                                                        <% var id = type._id; %>
+                                                                        <% var name = type.name; %>
+                                                                        <% var alias = type.alias; %>
+                                                                        
+                                                                        <% if ((id && name && alias)) { %>
+                                                                            <option value="<%- id %>"
+                                                                                data-alias="<%- alias %>" data-id-type="<%- id%>">
+                                                                                <%- name %>
+                                                                            </option>
+                                                                        <% } %>
+                                                                   <% }); %>
+                                                                <% } %>   
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="control-label mb-10">Danh mục sản phẩm
+                                                                <span style="color: red">*</span>
+                                                            </label>
+                                                            <select class="form-control" data-placeholder="Chọn danh mục" tabindex="1" id="selectCategory">
+                                                                <option value="0">Chọn một danh mục</option>
+                                                                <% var categories = data.categories %>
+                                                                <% categories.forEach((category) => { %>
+                                                                    <option data-id-category="<%- category._id %>" data-id-root="<%- category._id %>" value="<%- category._id %>"><%- category.name %></option>
+
+                                                                    <% var subs = category.subCategories; %>
+                                                                    <% if (subs && subs.length > 0) { %>
+                                                                        <% subs.forEach((sub) => { %>
+                                                                            <option data-id-category="<%- sub._id %>" data-id-root="<%- category._id %>" value="<%- sub._id %>">----<%- sub.name %></option>
+                                                                        <% }); %>
+                                                                    <% } %>
+
+                                                                <% }) %>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label mb-10">Đơn giá
+                                                                <span style="color: red">*</span>
+                                                            </label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">
+                                                                    <i class="ti-money"></i>
+                                                                </div>
+                                                                <input type="text" class="form-control" id="product_price" placeholder="12.000.000 VNĐ">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/row-->
+                                                <div style="margin-bottom: 10px; width: 50%;"></div>
+                                                <!-- Row -->
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label class="control-label mb-10">Màu sắc</label>
+                                                                    <button type="button" class="btn btn-primary btn-sm" style="margin-left: 15px;" id="newColor">Thêm màu mới</button>
+                                                                </div>
+                                                            </div>
+                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div>
+                                                            <div class="row" id="row-color">
+                                                                <!-- COLORS -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- /row -->
+
+
+
+                                                <div class="seprator-block"></div>
+                                                <h6 class="txt-dark capitalize-font">
+                                                    <i class="zmdi zmdi-comment-text mr-10"></i>Mô tả chi tiết sản phẩm
+                                                    <span style="color: red">*</span>
+                                                </h6>
+                                                <hr class="light-grey-hr" />
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <textarea class="tinymce" id="product_descriptions"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label mb-10">Meta Title
+                                                                <span style="color: red">*</span>
+                                                            </label>
+                                                            <input type="text" class="form-control" id="product_meta_title">
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label mb-10">Meta Keyword
+                                                                <span style="color: red">*</span>
+                                                            </label>
+                                                            <input type="text" class="form-control" id="product_meta_keyword">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="seprator-block"></div>
+                                                <h6 class="txt-dark capitalize-font">
+                                                    <i class="zmdi zmdi-collection-image mr-10"></i>Hình ảnh sản phẩm
+                                                    <span style="color: red">*</span>
+                                                </h6>
+                                                <hr class="light-grey-hr" />
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 1
+                                                                <span style="color: red">*</span>
+                                                        </h6>
+                                                        <div class="panel-wrapper collapse in">
+                                                            <div class="panel-body">
+                                                                <div class="mt-10" style="margin-top: 5px;">
+                                                                    <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 2
+                                                                <span style="color: red">*</span>
+                                                        </h6>
+                                                        <div class="panel-wrapper collapse in">
+                                                            <div class="panel-body">
+                                                                <div class="mt-10" style="margin-top: 5px;">
+                                                                    <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 3</h6>
+                                                        <div class="panel-wrapper collapse in">
+                                                            <div class="panel-body">
+                                                                <div class="mt-10" style="margin-top: 5px;">
+                                                                    <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="clearfix" style="margin: 20px;"></div>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 4</h6>
+                                                        <div class="panel-wrapper collapse in">
+                                                            <div class="panel-body">
+                                                                <div class="mt-10" style="margin-top: 5px;">
+                                                                    <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 5</h6>
+                                                        <div class="panel-wrapper collapse in">
+                                                            <div class="panel-body">
+                                                                <div class="mt-10" style="margin-top: 5px;">
+                                                                    <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <h6 class="panel-title txt-dark" style="text-align: center;">Hình 6</h6>
+                                                        <div class="panel-wrapper collapse in">
+                                                            <div class="panel-body">
+                                                                <div class="mt-10" style="margin-top: 5px;">
+                                                                    <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="clearfix" style="margin: 20px;"></div>
+
+                                                <!-- specifications-block -->
+                                                <div class="seprator-block" id="specifications-block"></div>
+                                                <!-- /specifications-block -->
+
+                                                <div class="form-actions">
+                                                    <button class="btn btn-success btn-icon left-icon mr-10 pull-left" id="add_save" type="submit">
+                                                        <!-- <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> -->
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                        <span>Lưu lại</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning pull-left" id="add_cancel">Trở về</button>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Row -->
+                </div>
+                <!-- Footer -->
+                <footer class="footer container-fluid pl-30 pr-30">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>2018 &copy; Droopy. Pampered by Hencework</p>
+                        </div>
+                    </div>
+                </footer>
+                <!-- /Footer -->
+            </div>
+            <!-- /Main Content -->
+    </div>
+    <!-- /#wrapper -->
+        <!-- JavaScript -->
+        <% include layouts/footer %>
+        <!-- Tinymce JavaScript -->
+        <script src="/static/admin/libs/tinymce/tinymce.min.js" type="text/javascript"></script>
+        <!-- Tinymce Wysuhtml5 Init JavaScript -->
+        <script type="text/javascript" src="/static/admin/js/tinymce-data.js"></script>
+        <script type="text/javascript" src="/static/admin/js/show-specifications.js"></script>
+        <!-- Bootstrap Daterangepicker JavaScript -->
+        <script type="text/javascript" src="/static/admin/libs/dropify/dist/js/dropify.min.js"></script>
+        <!-- Form Flie Upload Data JavaScript -->
+        <script type="text/javascript" src="/static/admin/js/form-file-upload-data.js"></script>
+        <!-- Bootstrap Colorpicker JavaScript -->
+        <script type="text/javascript" src="/static/admin/libs/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+        <!-- Form Picker Init JavaScript -->
+        <script type="text/javascript" src="/static/admin/js/form-picker-data.js"></script>	
+
+        <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <!-- JQUERY -->
+        <script type="text/javascript">
+
+            var product = <%- JSON.stringify(data.product) %>;
+           
+           (function() {
+
+               //genaral
+                $("#product_name").val(product.name || "")
+                $("#product_alias").val(product.alias || "");
+                $("#product_price").val(product.price || "");
+                $("#product_meta_title").val(product.metaTitle || "");
+                $("#product_meta_keyword").val(product.metaKeyword || "");
+                $("#product_descriptions").html(`${product.descriptions}`);
+
+                //colors
+                for (let i = 1; i <= product.colors.length; i++) {
+                    const element = product.colors[i - 1];
+                    var blockColor = `
+                        <div class="col-md-2 animated" id="color-${i}">
+                            <div class="colorpicker input-group colorpicker-component">
+                                <input type="text" value="${element}" class="form-control color-value" id="color-value-${i}" />
+                                <span class="input-group-addon">
+                                    <i></i>
+                                </span>
+                                <span class="input-group-addon delete-color" data-id-color="color-${i}">
+                                    <i class="fa fa-trash-o"></i>
+                                </span>
+                            </div>
+                        </div>
+                    `
+
+                     $("#row-color").append(blockColor);
+
+                    $(".colorpicker").colorpicker();
+                }
+
+                $(`#selectType option[value="${product.type._id}"]`).prop('selected', true);
+                $(`#selectBrand option[value="${product.brand._id}"]`).prop('selected', true);
+                $(`#selectCategory option[value="${product.category.idCategory}"]`).prop('selected', true);
+
+                //images
+                var inputFiles = $('input#input-file-max-fs.dropify');
+                var images = product.images;
+                if (images && images.length > 0) {
+                    for (let i = 0; i < images.length; i++) {
+                        const url = images[i].url;
+                        window.console.log(url);
+                        if (url) {
+                            $(inputFiles[i]).attr('data-default-file', url);
+                        }
+                    }
+                }
+
+                //specifications
+                showSpecification("#specifications-block", $("#selectType").find('option:selected').attr('data-alias'));
+
+                var specifications = product.specifications;
+
+                if (!specifications) {
+                    return;
+                }
+                switch (product.type.alias) {
+                    case "dien-thoai":                          
+                    case "may-tinh-bang":  
+                        var screen = specifications.screen,
+                            frontCamera = specifications.frontCamera,
+                            backCamera = specifications.backCamera,
+                            processor = specifications.processor,
+                            storage = specifications.storage,
+                            connections = specifications.connections,
+                            utils = specifications.utils,
+                            sizeAndWeight = specifications.sizeAndWeight,
+                            battery = specifications.battery;
+                        // screen
+                        if (screen) {
+                            $('#display_technology').val(screen.displayTechnology || "")
+                            $('#display_resolution').val(screen.resolution || "")
+                            $('#display_width').val(screen.width || "")
+                            $('#display_touch_screen').val(screen.touch || "")                        
+                        }
+                        
+                        //frontCamera
+                        if (frontCamera) {                                                             
+                            $('#camera_front_resolution').val(frontCamera.resolution || "")
+                            $('#camera_front_flash').val(frontCamera.flash || "")
+                            $('#camera_front_video_call').val(frontCamera.videoCall || "")
+                            $('#camera_front_other').val(frontCamera.other || "")
+                        }
+
+                        // backCamera   
+                        if (backCamera) {
+                            $('#camera_back_resolution').val(backCamera.resolution || "")
+                            $('#camera_back_flash').val(backCamera.flash || "")
+                            $('#camera_back_film').val(backCamera.makeFilm || "")
+                            $('#camera_back_other').val(backCamera.other || "")
+                        }
+
+                        //processor
+                        if (processor) {
+                            if (processor.cpu) {
+                                $('#processor_cpu_chipset').val(processor.cpu.chipset || "")
+                                $('#processor_cpu_manufacturer').val(processor.cpu.manufacturer || "")
+                                $('#processor_cpu_speed').val(processor.cpu.speed || "")                            
+                            }
+
+                            if (processor.gpu) {                                
+                                $('#processor_gpu_chipset').val(processor.gpu.chipset || "")
+                                $('#processor_gpu_manufacturer').val(processor.gpu.manufacturer || "")
+                                $('#processor_gpu_speed').val(processor.gpu.speed || "")                            
+                            }
+                        }
+
+                        //storage
+                        if (storage) {
+                            $('#storage_internal').val(storage.internal || "")
+                            $('#storage_external').val(storage.external || "")
+                            $('#storage_available').val(storage.available || "")
+                            $('#storage_ram').val(storage.ram || "")
+                        }
+
+                        //connections
+                        if (connections) {
+                            $('#connective_mobile_network').val(connections.mobileNetwork || "")
+                            $('#connective_sim').val(connections.sim || "")
+                            $('#connective_wifi').val(connections.wifi || "")
+                            $('#connective_gps').val(connections.GPS || "")
+                            $('#connective_bluetooth').val(connections.bluetooth || "")
+                            $('#connective_connector_charger').val(connections.connectorCharger || "")
+                            $('#connective_jack').val(connections.jack || "")                                  
+                            $('#connective_other').val(connections.other || "")
+                        }
+
+                        //utils
+                        if (utils) {
+                            $('#util_advanced_security').val(utils.advancedSecurity || "")
+                            $('#util_special_features').val(utils.specialFeatures || "")
+                            $('#util_record').val( utils.record || "")
+                            $('#util_radio').val(utils.radio || "")
+                            $('#util_entertainment').val(utils.entertainment || "")
+                        }
+
+                        //sizeAndWeight
+                        if (sizeAndWeight) {
+                            $('#design_style').val(sizeAndWeight.style || "")
+                            $('#design_material').val(sizeAndWeight.meterial || "")
+
+                            if (sizeAndWeight.size) {
+                                $('#size_long').val(sizeAndWeight.size.long || ""),
+                                $('#size_horizontal').val(sizeAndWeight.size.horizontal || ""),
+                                $('#size_thick').val(sizeAndWeight.size.thick || "")
+                            }
+                        }
+
+                        //battery
+                        if (battery) {
+                            $('#battery_capcity').val(battery.capacity || "")
+                            $('#battery_type').val(battery.style || "")
+                            $('#battery_tech').val(battery.tech || "")
+                        }
+
+                        $('#os').val(specifications.os || "");
+                        $('#other').val(specifications.other || "");
+                      
+                        break;     
+                    case "laptop":  
+                                     
+                        break;                            
+                    case "phu-kien-may-tinh": break;
+                    case "phu-kien-dien-thoai": break;
+                    case "thiet-bi-am-thanh": break;
+                    default: 
+                    break;
+                }
+
+            })();
+
+            function showAlert(notify) {
+                swal({
+                    title: "Có lỗi xảy ra",
+                    text: notify,
+                    icon: "error",
+                    button: "Đã hiểu",
+                });                
+            }
+
+            jQuery(document).ready(($) => {
+                
+
+                //default color of product are 2;
+                var totalColorPicker = product.colors.length;
+
+                //select a category
+                $("#selectType").change(() => {
+                    showSpecification("#specifications-block", $("#selectType").find('option:selected').attr('data-alias'));
+                });
+                
+                //submit add new product
+                $("form").submit((e) => {
+                    e.preventDefault();
+
+                    var newProduct = {}
+
+                    newProduct.id = product._id;
+
+                    //name
+                    newProduct.name = $("#product_name").val();
+                    //alias
+                    newProduct.alias  = $("#product_alias").val();
+                    //color
+
+                    var numOfColors = $('.color-value');
+
+                    var colors = [];
+
+                    if (numOfColors.length > 0) {
+                        numOfColors.each((index, element) => {
+                            colors.push($(element).val());
+                        });
+                    }
+                    
+                    newProduct.colors = colors;
+                    newProduct.brand = $("#selectBrand").find('option:selected').attr('data-id-brand');
+                    newProduct.category = {
+                        idRootCategory: $("#selectCategory").find('option:selected').attr('data-id-root'),
+                        idCategory: $("#selectCategory").find('option:selected').attr('data-id-category')
+                    }
+                    newProduct.price = $("#product_price").val();
+                    newProduct.descriptions = tinyMCE.get('product_descriptions').getContent()
+                    newProduct.metaTitle = $("#product_meta_title").val();
+                    newProduct.metaKeyword = $("#product_meta_keyword").val();
+
+                    //get option of category that's selected
+                    var selectedType = $("#selectType").find('option:selected');
+                    var specifications = {};
+                    //get specifications of product
+                    if (selectedType.length > 0) {
+                        switch (selectedType.attr('data-alias')) {
+                            case "laptop":
+                                var screen = {
+                                    displayTechnology: $('#display_technology').val(),
+                                    resolution: $('#display_resolution').val(),
+                                    width: $('#display_width').val(),
+                                    touch: $('#display_touch_screen').val()
+                                }
+                                var processor = {
+                                    tech: $('#processor_cpu_tech').val(),
+                                    type:  $('#processor_cpu_type').val(),
+                                    speed : $('#processor_cpu_speed').val(),
+                                    maxSpeed: $('#processor_cpu_max_speed').val(),
+                                }
+                                var storage = {
+                                    ram: $('#storage_ram').val(),
+                                    type:  $('#storage_ram_type').val(),
+                                    bus : $('#storage_ram_bus').val(),
+                                    maxRam: $('#storage_ram_max').val(),
+                                    hardDrive: $('#storage_hard_drive').val(),
+                                }
+                                var graphicsAudio = {
+                                    design: $('#graphics_design').val(),
+                                    cardName:  $('#graphics_card_name').val(),
+                                    sound : $('#sound_tech').val()
+                                }
+                                var connectionAndUtils = {
+                                    connectivePort: $('#connective_port').val(),
+                                    connectiveWireless:  $('#connective_wireless').val(),
+                                    opticalDrive : $('#connective_optical_drive').val(),
+                                    webcam: $('#connective_webcam').val(),
+                                    ligthKeyboard:  $('#connective_light_keyboard').val(),
+                                    otherUtils : $('#connective_other').val() 
+                                }
+                                var sizeAndWeight = {
+                                    weight: $('#design_weight').val(),
+                                    meterial:  $('#design_material').val(),
+                                    size: {
+                                        long: $('#size_long').val(),
+                                        horizontal: $('#size_horizontal').val(),
+                                        thick: $('#size_thick').val()
+                                    }                                
+                                }
+                                var battery = {
+                                    capacity: $('#battery_capacity').val(),
+                                    style:  $('#battery_style').val(),
+                                    tech: $('#battery_tech').val()
+                                }
+                                var os = $('#os').val();
+                                var other = $('#other').val();
+
+                                specifications.screen = screen;
+                                specifications.processor = processor;
+                                specifications.storage = storage;
+                                specifications.graphicsAudio = graphicsAudio;
+                                specifications.connectionAndUtils = connectionAndUtils;
+                                specifications.sizeAndWeight = sizeAndWeight;
+                                specifications.battery = battery;
+                                specifications.os = os;
+                                specifications.other = other;
+
+                                break;
+                            case "dien-thoai":  
+                                var screen = {
+                                    displayTechnology: $('#display_technology').val(),
+                                    resolution: $('#display_resolution').val(),
+                                    width: $('#display_wideScreen').val(),
+                                    touch: $('#display_glass').val()
+                                }
+                                var frontCamera = {                                    
+                                    resolution: $('#camera_front_resolution').val(),
+                                    flash: $('#camera_front_flash').val(),
+                                    videoCall: $('#camera_front_video_call').val(),
+                                    other: $('#camera_front_other').val()
+                                }
+                                var backCamera = {                                    
+                                    resolution: $('#camera_back_resolution').val(),
+                                    flash: $('#camera_back_flash').val(),
+                                    makeFilm: $('#camera_back_film').val(),
+                                    other: $('#camera_back_other').val()
+                                }
+                                var processor = {
+                                    cpu: {
+                                        chipset: $('#processor_cpu_chipset').val(),
+                                        manufacturer:  $('#processor_cpu_manufacturer').val(),
+                                        speed : $('#processor_cpu_speed').val()
+                                    },
+                                    gpu: {
+                                        chipset: $('#processor_gpu_chipset').val(),
+                                        manufacturer:  $('#processor_gpu_manufacturer').val(),
+                                        speed : $('#processor_gpu_speed').val()
+                                    }                                    
+                                }
+                                var storage = {
+                                    internal: $('#storage_internal').val(),
+                                    external:  $('#storage_external').val(),
+                                    available : $('#storage_available').val(),
+                                    ram: $('#storage_ram').val()
+                                }
+                                var connections = {
+                                    mobileNetwork: $('#connective_mobile_network').val(),
+                                    sim:  $('#connective_sim').val(),
+                                    wifi : $('#connective_wifi').val(),
+                                    GPS: $('#connective_gps').val(),
+                                    bluetooth:  $('#connective_bluetooth').val(),
+                                    connectorCharger : $('#connective_connector_charger').val(),
+                                    jack : $('#connective_jack').val(),                                   
+                                    other:  $('#connective_other').val()
+                                }
+                                var utils = {
+                                    advancedSecurity: $('#util_advanced_security').val(),
+                                    specialFeatures:  $('#util_special_features').val(),
+                                    record : $('#util_record').val(),
+                                    radio: $('#util_radio').val(),
+                                    entertainment:  $('#util_entertainment').val()
+                                }
+                                var sizeAndWeight = {
+                                    style: $('#design_style').val(),
+                                    meterial:  $('#design_material').val(),
+                                    size: {
+                                        long: $('#size_long').val(),
+                                        horizontal: $('#size_horizontal').val(),
+                                        thick: $('#size_thick').val()
+                                    }                                
+                                }
+                                var battery = {
+                                    capacity: $('#battery_capcity').val(),
+                                    style:  $('#battery_type').val(),
+                                    tech: $('#battery_tech').val()
+                                }
+                                var os = $('#os').val();
+                                var other = $('#other').val();
+
+                                specifications.screen = screen;
+                                specifications.frontCamera = frontCamera;
+                                specifications.backCamera = backCamera;
+                                specifications.processor = processor;
+                                specifications.storage = storage;
+                                specifications.connections = connections;
+                                specifications.utils = utils;
+                                specifications.sizeAndWeight = sizeAndWeight;
+                                specifications.battery = battery; 
+                                specifications.os = os;
+                                specifications.other = other;                                 
+                            
+                                break;
+                            case "may-tinh-bang":  
+                                    var screen = {
+                                        displayTechnology: $('#display_technology').val(),
+                                        resolution: $('#display_resolution').val(),
+                                        width: $('#display_wideScreen').val(),
+                                        touch: $('#display_glass').val()
+                                    }
+                                    var frontCamera = {                                    
+                                        resolution: $('#camera_front_resolution').val(),
+                                        flash: $('#camera_front_flash').val(),
+                                        videoCall: $('#camera_front_video_call').val(),
+                                        other: $('#camera_front_other').val()
+                                    }
+                                    var backCamera = {                                    
+                                        resolution: $('#camera_back_resolution').val(),
+                                        flash: $('#camera_back_flash').val(),
+                                        makeFilm: $('#camera_back_film').val(),
+                                        other: $('#camera_back_other').val()
+                                    }
+                                    var processor = {
+                                        cpu: {
+                                            chipset: $('#processor_cpu_chipset').val(),
+                                            manufacturer:  $('#processor_cpu_manufacturer').val(),
+                                            speed : $('#processor_cpu_speed').val()
+                                        },
+                                        gpu: {
+                                            chipset: $('#processor_gpu_chipset').val(),
+                                            manufacturer:  $('#processor_gpu_manufacturer').val(),
+                                            speed : $('#processor_gpu_speed').val()
+                                        }                                    
+                                    }
+                                    var storage = {
+                                        internal: $('#storage_internal').val(),
+                                        external:  $('#storage_external').val(),
+                                        available : $('#storage_available').val(),
+                                        ram: $('#storage_ram').val()
+                                    }
+                                    var connections = {
+                                        mobileNetwork: $('#connective_mobile_network').val(),
+                                        sim:  $('#connective_sim').val(),
+                                        wifi : $('#connective_wifi').val(),
+                                        GPS: $('#connective_gps').val(),
+                                        bluetooth:  $('#connective_bluetooth').val(),
+                                        connectorCharger : $('#connective_connector_charger').val(),
+                                        jack : $('#connective_jack').val(),                                   
+                                        other:  $('#connective_other').val()
+                                    }
+                                    var utils = {
+                                        advancedSecurity: $('#util_advanced_security').val(),
+                                        specialFeatures:  $('#util_special_features').val(),
+                                        record : $('#util_record').val(),
+                                        radio: $('#util_radio').val(),
+                                        entertainment:  $('#util_entertainment').val()
+                                    }
+                                    var sizeAndWeight = {
+                                        style: $('#design_style').val(),
+                                        meterial:  $('#design_material').val(),
+                                        size: {
+                                            long: $('#size_long').val(),
+                                            horizontal: $('#size_horizontal').val(),
+                                            thick: $('#size_thick').val()
+                                        }                                
+                                    }
+                                    var battery = {
+                                        capacity: $('#battery_capcity').val(),
+                                        style:  $('#battery_type').val(),
+                                        tech: $('#battery_tech').val()
+                                    }
+                                    var os = $('#os').val();
+                                    var other = $('#other').val();
+
+                                    specifications.screen = screen;
+                                    specifications.frontCamera = frontCamera;
+                                    specifications.backCamera = backCamera;
+                                    specifications.processor = processor;
+                                    specifications.storage = storage;
+                                    specifications.connections = connections;
+                                    specifications.utils = utils;
+                                    specifications.sizeAndWeight = sizeAndWeight;
+                                    specifications.battery = battery; 
+                                    specifications.os = os;
+                                    specifications.other = other;                                 
+                                
+                                    break;                            
+                            case "phu-kien-may-tinh": break;
+                            case "phu-kien-dien-thoai": break;
+                            case "thiet-bi-am-thanh": break;
+                            default: 
+                            break;
+                        }
+                    }
+
+                    newProduct.specifications = specifications;
+                    newProduct.type = selectedType.attr('data-id-type');
+                    newProduct.originalImages = [];
+                    newProduct.images = [];
+                    
+
+                    //get all images of product
+                    $("div.dropify-wrapper.has-preview").find('input[type=file]').each((index, input) => {  
+                        var previewInput = $(input).attr('data-default-file')
+
+                        if (previewInput) {
+                            var temp = previewInput.split('/');
+                            newProduct.originalImages.push(temp[temp.length - 1])
+                        }
+                    });
+                    
+                    //
+                    $("#formNewProduct").find('input[type=file]').each((index, image) => {
+                        if ($(image).get(0).files.length > 0 ) {
+                            newProduct.images.push($(image).get(0).files[0]);
+                        }                       
+                    });
+                    
+                    //validate parameters
+                    var productFormData = new FormData();
+
+                    if (!newProduct.id) {
+                        showAlert('Không tìm thấy sản phẩm này!');
+                        return
+                    } else {
+                        productFormData.append("id", newProduct.id);
+                    }
+        
+                    //name
+                    if (!newProduct.name) {
+                        showAlert('Tên sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("name", newProduct.name);
+                    }
+                    //alias
+                    if (!newProduct.alias) {
+                        showAlert('Tên hiển thị URL không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("alias", newProduct.alias);
+                    }
+                    //brand
+                    if (!newProduct.brand) {
+                        showAlert('Thương hiệu không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("brand", newProduct.brand);
+                    }
+                    //type
+                    if (!newProduct.type) {
+                        showAlert('Loại sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("type", newProduct.type);
+                    }
+
+                    //category
+                    if (!newProduct.category) {
+                        showAlert('Vui lòng chọn danh mục của sản phẩm');
+                        return
+                    } else {
+                        productFormData.append("category", JSON.stringify(newProduct.category)); 
+                    }
+
+                    //description
+                    if (!newProduct.descriptions) {
+                        showAlert('Miêu tả sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("descriptions", newProduct.descriptions);
+                    }
+
+                    //metaKeyword
+                    if (!newProduct.metaKeyword) {
+                        showAlert('Meta Keyword của sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("metaKeyword", newProduct.metaKeyword);
+                    }
+                    //metaTitle
+                    if (!newProduct.metaTitle) {
+                        showAlert('Meta Title của sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("metaTitle", newProduct.metaTitle);
+                    }
+                    //price
+                    if (!newProduct.price) {
+                        showAlert('Giá sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        productFormData.append("price", newProduct.price);
+                    }
+                    //colors
+                    if (!newProduct.colors || newProduct.colors.length == 0) {
+                        showAlert('Màu sắc sản phẩm không được bỏ trống!');
+                        return
+                    } else {
+                        for (let i = 0; i < newProduct.colors.length; i++) {
+                            const element = newProduct.colors[i];
+                            productFormData.append("colors", element);
+                        }                        
+                    }
+                    
+                    //images
+                    if (!newProduct.images && !newProduct.originalImages) {
+                        showAlert('Sản phẩm phải có ít nhất 2 hình ảnh');
+                        return
+                    } else {
+                        if (newProduct.images && newProduct.originalImages) {
+                            if (newProduct.images.length + newProduct.originalImages.length < 2) {
+                                showAlert('Sản phẩm phải có ít nhất 2 hình ảnh');
+                                return
+                            } else {
+                                //for upload files
+                                for (let i = 0; i < newProduct.images.length; i++) {
+                                    const element = newProduct.images[i];
+                                    productFormData.append("images", element);
+                                } 
+
+                                //for orignal image
+                                for (let i = 0; i < newProduct.originalImages.length; i++) {
+                                    const element = newProduct.originalImages[i];
+                                    productFormData.append("originalImages", element);
+                                } 
+                            }
+                        } else if (!newProduct.images && newProduct.originalImages) {
+                            if (newProduct.originalImages.length < 2) {
+                                showAlert('Sản phẩm phải có ít nhất 2 hình ảnh');
+                                return
+                            } else {
+                                //for orignal image
+                                for (let i = 0; i < newProduct.originalImages.length; i++) {
+                                    const element = newProduct.originalImages[i];
+                                    productFormData.append("originalImages", element);
+                                } 
+                            }
+                        } else {
+                            if (newProduct.images.length < 2) {
+                                showAlert('Sản phẩm phải có ít nhất 2 hình ảnh');
+                                return
+                            } else {
+                                for (let i = 0; i < newProduct.images.length; i++) {
+                                    const element = newProduct.images[i];
+                                    productFormData.append("images", element);
+                                }
+                            }
+                        }
+                    }                    
+
+                    if (newProduct.specifications) {
+                        productFormData.append("specifications", JSON.stringify(newProduct.specifications));
+                    }
+
+                    // Create a new instance of ladda for the specified button
+                    
+                    $.ajax({
+                        url: '/admin/product/edit',
+                        method: 'PUT',
+                        data: productFormData,
+                        processData: false,
+                        contentType: false,
+                        success: (result) => {
+                            window.console.log(result);
+                            var error = result.error;
+                            if (error) {
+                                showAlert(error);
+                            } else {
+                                swal({
+                                    title: "Thêm thành công!",
+                                    text: "Đã thêm sản phẩm mới thành công! Bạn có muốn tiếp tục không?",
+                                    icon: "success",
+                                    buttons: {
+                                        cancel: "Trở về danh sách sản phẩm",
+                                        new: "Tiếp tục",
+                                    },
+                                })
+                                .then((value) => {
+                                    switch (value) {                                    
+                                        case "new":
+                                            window.location.reload()
+                                            break;                                    
+                                        default:
+                                            window.location.href = '/admin/products'
+                                            break;
+                                    }
+                                }); 
+                            }
+                        },
+                        error: (error) => {
+                            //showAlert(error);
+                        }
+                    });
+                    
+                });
+
+                //click new color
+                $("#newColor").click(() => {
+
+                    if ($('.colorpicker-component').length == 6) { return }
+
+                    totalColorPicker++;
+                    $("#row-color").append(`
+                        <div class="col-md-2 animated rotateInDownLeft" id="color-${totalColorPicker}">
+                            <div class="colorpicker input-group colorpicker-component">
+                                <input type="text" value="#00AABB" class="form-control color-value" id="color-value-${totalColorPicker}" />
+                                    <span class="input-group-addon"><i></i></span>
+                                    <span class="input-group-addon delete-color" data-id-color="color-${totalColorPicker}"><i class="fa fa-trash-o" ></i></span>
+                            </div>
+                        </div>
+                    `);
+                    $(".colorpicker").colorpicker();
+                });
+
+                //delete color
+                $("#row-color").delegate(".delete-color", "click", (e) => {
+
+
+
+                    if ($('.colorpicker-component').length <= 1) { return }
+
+                    var idParent = e.currentTarget.parentElement.parentElement.id;
+                    $(".colorpicker-visible").remove();
+                    $(`#${idParent}`).removeClass("rotateInDownLeft");
+                    $(`#${idParent}`).addClass("fadeOutLeft");
+
+                    setTimeout(() => {
+                        $(`#${idParent}`).remove();
+                    }, 1000);
+                });
+
+            });
+
+        </script>
+</body>
+
+</html>

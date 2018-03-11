@@ -405,15 +405,185 @@ var getCountProducts = (result) => {
 var editProduct = (product, result) => {
     var workflow = new event.EventEmitter();
 
+    var id = product.id;
+    var name = product.name;
+    var alias = product.alias;
+    var colors = product.colors;
+    var brand = product.brand;
+    var price = product.price;
+    var specifications = product.specifications;
+    var newImages = product.newNames;
+    var oldImages = product.originalImages;
+    var type = product.type;
+    var descriptions = product.descriptions;
+    var metaTitle = product.metaTitle;
+    var metaKeyword = product.metaKeyword;
+    var category = JSON.parse(product.category);
+
     workflow.on('validate-parameters', () => {
+        if (!name) {
+            workflow.emit('response', {
+                error: "Please enter name of product"
+            });
+            return
+        }
+        if (!alias) {
+            workflow.emit('response', {
+                error: "Please enter alias of product"
+            });
+            return
+        }
+        if (!price) {
+            workflow.emit('response', {
+                error: "Please enter price of product"
+            });
+            return
+        }
+        if (!newImages && !oldImages) {
+            workflow.emit('response', {
+                error: "Please provide images of product"
+            });
+            return
+        } else {
+            if (newImages && oldImages) {
+                if (newImages.length + oldImages.length < 2) {
+                    workflow.emit('response', {
+                        error: "Please provide at least 2 images of product "
+                    });
+                    return
+                }
+            } else if (newImages && !oldImages) {
+                if (newImages.length < 2) {
+                    workflow.emit('response', {
+                        error: "Please provide at least 2 images of product "
+                    });
+                    return
+                }
+            } else {
+                if (oldImages.length < 2) {
+                    workflow.emit('response', {
+                        error: "Please provide at least 2 images of product "
+                    });
+                    return
+                }
+            }
+        }
+
+        if (!type) {
+            workflow.emit('response', {
+                error: "Please choose type of product"
+            });
+            return
+        }
+        if (!brand) {
+            workflow.emit('response', {
+                error: "Please choose brand of product"
+            });
+            return
+        }
+        if (!descriptions) {
+            workflow.emit('response', {
+                error: "Please enter descriptions of product"
+            });
+            return
+        }
+        if (!colors || colors.length == 0) {
+            workflow.emit('response', {
+                error: "Please choose colors of product"
+            });
+            return
+        }
+
+        if (!(category.idRootCategory && category.idCategory)) {
+            workflow.emit('response', {
+                error: "Please choose category of product"
+            });
+            return
+        }
+
+        workflow.emit('processing-images');
 
     });
 
     workflow.on('response', (response) => {
+        console.log(response);
         return result(response);
     });
 
-    workflow.on('edit-product', () => {
+    workflow.on('processing-images', () => {
+        //processing for images
+        var tempImages = [];
+        var productImages = [];
+
+        if (newImages) {
+            newImages.forEach(element => {
+                tempImages.push(element)
+            });
+        }
+
+        if (oldImages) {
+            oldImages.forEach(element => {
+                tempImages.push(element);
+            });
+        }
+
+        _.forEach(tempImages, (image) => {
+            var object = {}
+            object._id = mongoose.Types.ObjectId();
+            object.url = '/static/img/' + image;
+            object.alt = name;
+
+            productImages.push(object);
+        });
+
+        workflow.emit('new-product', productImages);
+    });
+
+    workflow.on('new-product', (imagesEdited) => {
+
+        if (specifications) {
+            specifications = JSON.parse(specifications);
+        }
+
+        Product.findById(id, (err, product) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err
+                });
+                return
+            }
+
+            if (!product) {
+                workflow.emit('response', {
+                    error: "Product not found"
+                });
+                return
+            }
+
+            console.log(imagesEdited);
+
+            product.name = name;
+            product.alias = alias;
+            product.colors = colors;
+            product.brand = brand;
+            product.metaKeyword = metaKeyword;
+            product.metaTitle = metaTitle;
+            product.category = category;
+            product.type = type;
+            product.descriptions = descriptions;
+            product.images = imagesEdited;
+            product.price = price;
+
+            if (specifications) {
+                product.specifications = specifications
+            }
+
+            product.save((err) => {
+                workflow.emit('response', {
+                    error: err
+                });
+            });
+        });
 
     });
 
@@ -450,7 +620,7 @@ var deleteProduct = (id, result) => {
 }
 
 var searchProducts = (text, result) => {
-   //name, price, brand, status, category, type
+    //name, price, brand, status, category, type
 
     var workflow = new event.EventEmitter();
 
@@ -477,13 +647,13 @@ var searchProducts = (text, result) => {
                 $caseSensitive: false
             }
         }).populate(['type', 'brand'])
-        .limit(15)
-        .exec((err, products) => {
-            workflow.emit('response', {
-                error: err,
-                products: products
+            .limit(15)
+            .exec((err, products) => {
+                workflow.emit('response', {
+                    error: err,
+                    products: products
+                });
             });
-        });
     });
 
     workflow.emit('validate-parameters');
