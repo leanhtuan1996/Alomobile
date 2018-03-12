@@ -158,7 +158,31 @@
 	<!-- Init JavaScript -->
 	<script type="text/javascript" src="/static/admin/js/init.js"></script>
 
+	<script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 	<script type="text/javascript">
+
+	function confirmDelete(cb) {
+		swal({
+			   title: "Bạn có muốn xoá không?",
+			   text: "Nhấn vào 'Đồng ý' để xoá, không thể phục hồi được sau khi xoá!",
+			   icon: "info",
+			   buttons: {
+				   cancel: true,
+				   yes: "Đồng ý"
+			   },
+		   })
+		   .then((value) => {
+			   switch (value) {     
+				   case "yes":
+					   return cb(true);
+					   break;                               
+				   default:
+					   return cb(false);
+					   break;
+			   }
+		   }); 
+	   }
 
 		function updateDataProducts(products) {
 
@@ -315,34 +339,38 @@
 
 			//delete product
 			$("#table_products tbody").delegate('.delete-product', 'click', (e) => {
-				var row = $(e.currentTarget.parentElement.parentElement);
 
-				var id = $(row).attr('id');
+				confirmDelete((cb) => {
+					if (cb == true) {
+						var row = $(e.currentTarget.parentElement.parentElement);
 
-				if (!id || id == 'undefined') {
-					return
-				}
-
-				$.ajax({
-					url: './product/delete',
-					method: 'DELETE',
-					data: {
-						id: id
-					},
-					success: (data) => {
-						$(row).animate({
-							height: 10,
-							opacity: 0.1
-							}, 500, "swing", function() {
-								$(row).remove();
+						var id = $(row).attr('id');
+		
+						if (!id || id == 'undefined') {
+							return
+						}
+		
+						$.ajax({
+							url: './product/delete',
+							method: 'DELETE',
+							data: {
+								id: id
+							},
+							success: (data) => {
+								$(row).animate({
+									height: 10,
+									opacity: 0.1
+									}, 500, "swing", function() {
+										$(row).remove();
+								});
+								window.console.log(data);
+							},
+							error: (error) => {
+								window.console.log(error);
+							}					
 						});
-						window.console.log(data);
-					},
-					error: (error) => {
-						window.console.log(error);
-					}					
+					}
 				});
-
 			});
 
 			//edit product

@@ -117,7 +117,6 @@ var getCountProducts = (result) => {
 
 var searchProduct = (text, result) => {
     productApi.searchProducts(text, (response) => {
-        console.log(response);
         return result(response);
     });
 }

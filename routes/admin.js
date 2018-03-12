@@ -105,7 +105,7 @@ router.get('/products/add', [auth.requireAuth, auth.requireRole], (req, res) => 
     Category.getCategories((r) => {
         Brand.getBrands((r1) => {
             Type.getTypes((r2) => {
-                res.render('add-product', {
+                res.render('add-product-test', {
                     data: {
                         title: "Thêm sản phẩm mới - Alomobile",
                         user: req.user,
@@ -126,7 +126,6 @@ router.post('/products/add', [auth.requireAuth, auth.requireRole, upload.array('
 });
 
 router.put('/product/edit', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
-    console.log(req.body);
     Product.editProduct(req.body, (result) => {
         res.json(result);
     });
@@ -155,7 +154,6 @@ router.get('/product/search/text=:text', [auth.requireAuth, auth.requireRole], (
 router.get('/product/:idProduct', [auth.requireAuth, auth.requireRole], (req, res) => {
 
     Product.getProduct(req.params.idProduct, (response) => {
-        console.log(response);
         res.render('admin/detail-product', {
             data: {
                 title: "Xem chi tiết sản phẩm",

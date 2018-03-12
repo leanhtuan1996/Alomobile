@@ -154,6 +154,8 @@ var delCategory = (parameters, result) => {
     var id = parameters.id,
         rootCategory = parameters.rootCategory || parameters.id;
 
+    console.log(parameters);
+
     workflow.on('validate-parameters', () => {
         if (!id) {
             workflow.emit('response', {
@@ -189,8 +191,6 @@ var editCategory = (parameters, result) => {
         new_root_category = parameters.new_root_category,
         new_icon = Array.isArray(parameters.newNames) == true ? parameters.newNames[0] : parameters.newNames,
         new_url = parameters.new_url;
-
-    console.log(parameters);
 
     var workflow = new event.EventEmitter();
 
@@ -423,12 +423,14 @@ var deleteCategory = (idSub, idRoot, result) => {
 
         //root category
         if (idRoot == idSub) {
+            console.log('REMOVE ROOT');
             Category.findByIdAndRemove(idRoot, (err) => {
                 workflow.emit('response', {
                     error: err
                 });
             });
         } else {
+            console.log('REMOVE SUB');
             Category.findById(idRoot, (err, category) => {
                 if (err) {
                     workflow.emit('response', {
@@ -453,23 +455,31 @@ var deleteCategory = (idSub, idRoot, result) => {
                     return
                 }
 
-                var remainingCategory = _.pullAt(subs, (sub) => {
-                    return sub._id == idSub
+                subs = _.compact(subs);
+
+                //find sub in subs 
+                var index = _.findIndex(subs, (sub) => {
+                    if (sub != null) {
+                        return sub._id == idSub
+                    }
                 });
 
-                if (!remainingCategory || remainingCategory.length == 0) {
+                if (!index && index < 0) {
                     workflow.emit('response', {
-                        error: "Delete sub category has been failed"
+                        error: "Sub category not found"
                     });
                     return
                 }
 
-                category.subCategories = remainingCategory;
+                //remove element with index in array                
+                _.remove(subs, subs[index]);
+
+                category.subCategories = subs || [];
 
                 category.save((err) => {
-                    workflow.emit('response', {
-                        error: err,
-                    });
+                     workflow.emit('response', {
+                         error: err,
+                     });
                 });
             });
         }

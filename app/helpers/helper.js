@@ -49,7 +49,6 @@ var decodeToken = (token, cb) => {
 var dateToTimeStamp = (date) => {
     //format: YYYY-MM-DD
     var newDate = new Date(date);
-    console.log(newDate);
     return newDate.getTime() / 1000
 }
 

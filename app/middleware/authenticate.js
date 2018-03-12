@@ -105,8 +105,6 @@ var requireRole = (req, res, next) => {
 
             _.forEach(permissions, (permission) => {
                 if (permission) {
-                    //console.log(permission.toLowerCase() + " | " + method.toLowerCase());
-                    //console.log(resources.toLowerCase() + " | " + originalUrl.toLowerCase());
                     if ((permission.toLowerCase() == method.toLowerCase()) && (resources.toLowerCase() == originalUrl.toLowerCase())) {
                         return next();
                     } else {

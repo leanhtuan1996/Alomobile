@@ -506,7 +506,6 @@ var editProduct = (product, result) => {
     });
 
     workflow.on('response', (response) => {
-        console.log(response);
         return result(response);
     });
 
@@ -559,8 +558,6 @@ var editProduct = (product, result) => {
                 });
                 return
             }
-
-            console.log(imagesEdited);
 
             product.name = name;
             product.alias = alias;
@@ -636,7 +633,6 @@ var searchProducts = (text, result) => {
     });
 
     workflow.on('response', (response) => {
-        console.log(response);
         return result(response);
     });
 

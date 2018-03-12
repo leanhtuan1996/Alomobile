@@ -82,7 +82,7 @@
 												</div>
 												<div class="average-review inline-block mb-10">&nbsp;(<span class="review-count">0</span> khách hàng đã phản hồi)</div>
 												<h3 class="mb-20 weight-500"><%- product.name %></h3>
-												<div class="product-price head-font mb-30"><%- product.price || "Không có" %></div>												
+												<div class="product-price head-font mb-30"><%- product.price + " VNĐ" || "Không có" %></div>												
 												<h6 class="mb-20 weight-100">Các màu sắc: </h6>		
 												<div>
 													
@@ -177,7 +177,7 @@
 	<script type="text/javascript">
 
 		var product = <%- JSON.stringify(data.product); %>
-
+		
 		function showSpecifications(product) {
 
 			var specElement = `<ul class="specifications" style="display: block; position: relative; overflow: hidden; background: #fff; padding-top: 10px;">`;

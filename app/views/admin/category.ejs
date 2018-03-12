@@ -214,6 +214,7 @@
                 </div>
                 <!-- /#wrapper -->
                 <% include layouts/footer %>
+                <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
                     <script type="text/javascript">
                         function showAlert(id, content) {
                             var alert = `
@@ -225,8 +226,33 @@
 
                             $(id).append(alert);
                         }
+
+                        function confirmDelete(cb) {
+                         swal({
+                                title: "Bạn có muốn xoá không?",
+                                text: "Nhấn vào 'Đồng ý' để xoá, không thể phục hồi được sau khi xoá!",
+                                icon: "info",
+                                buttons: {
+                                    cancel: true,
+                                    yes: "Đồng ý"
+                                },
+                            })
+                            .then((value) => {
+                                switch (value) {     
+                                    case "yes":
+                                        return cb(true);
+                                        break;                               
+                                    default:
+                                        return cb(false);
+                                        break;
+                                }
+                            }); 
+                        }
                     </script>
                     <script>
+
+                    
+
                         jQuery(document).ready(($) => {
                             //configation datatable jquery
                             var table = $('#table-category').DataTable({
@@ -383,46 +409,51 @@
 
                             //delete category
                             $("#table-category tbody").delegate('.delete-category', 'click', (e) => {
-                                var id = (e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML).trim();
-                                var rootId = (e.currentTarget.closest('tr').getElementsByClassName('td-root-id')[0].innerHTML).trim();
 
-                                var rows = $('#table-category tbody').find(`[data-root-id = ${rootId}]`);
-                                var row = $('#table-category tbody').find(`[data-category-id = ${id}]`);
-
-                                //delete root category
-                                if (id == rootId) {
-                                    $.post(
-                                        'categories/delete',
-                                        {
-                                            id: id
-                                        },
-                                        (data) => {
-                                            var error = data.error;
-                                            if (error) {
-                                                alert(error);
-                                            } else {
-                                                table.rows(rows).remove().draw('page');
-                                            }
+                                confirmDelete((cb) => {
+                                    if (cb == true) {
+                                        var id = (e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML).trim();
+                                        var rootId = (e.currentTarget.closest('tr').getElementsByClassName('td-root-id')[0].innerHTML).trim();
+        
+                                        var rows = $('#table-category tbody').find(`[data-root-id = ${rootId}]`);
+                                        var row = $('#table-category tbody').find(`[data-category-id = ${id}]`);
+        
+                                        //delete root category
+                                        if (id == rootId) {
+                                            $.post(
+                                                'categories/delete',
+                                                {
+                                                    id: id
+                                                },
+                                                (data) => {
+                                                    var error = data.error;
+                                                    if (error) {
+                                                        alert(error);
+                                                    } else {
+                                                        table.rows(rows).remove().draw('page');
+                                                    }
+                                                }
+                                            );
+        
+                                        } else {    //non root
+                                            $.post(
+                                                'categories/delete',
+                                                {
+                                                    id: id,
+                                                    rootCategory: rootId
+                                                },
+                                                (data) => {
+                                                    var error = data.error;
+                                                    if (error) {
+                                                        alert(error);
+                                                    } else {
+                                                        table.row(row).remove().draw('page');
+                                                    }
+                                                }
+                                            );
                                         }
-                                    );
-
-                                } else {    //non root
-                                    $.post(
-                                        'categories/delete',
-                                        {
-                                            id: id,
-                                            rootCategory: rootId
-                                        },
-                                        (data) => {
-                                            var error = data.error;
-                                            if (error) {
-                                                alert(error);
-                                            } else {
-                                                table.row(row).remove().draw('page');
-                                            }
-                                        }
-                                    );
-                                }
+                                    }
+                                })
                             });
 
                             //show modal to edit category

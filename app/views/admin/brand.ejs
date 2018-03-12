@@ -62,7 +62,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label class="control-label mb-10">Tải lên ảnh từ máy tính: </label>
-                                                    <input type="file" id="brand-icon" data-max-file-size="2M" accept="image/*" />
+                                                    <input type="file" class="dropify" id="brand-icon" data-max-file-size="2M" accept="image/*" />
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="control-label mb-10">Hoặc URL: </label>
@@ -161,6 +161,8 @@
                 </div>
                 <!-- /#wrapper -->
                 <% include layouts/footer %>
+                <script type="text/javascript" src="/static/admin/libs/dropify/dist/js/dropify.min.js"></script>
+                <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
                     <script type="text/javascript">
                         function showAlert(id, content) {
                             var alert = `
@@ -171,6 +173,29 @@
                         `
                             $(id).append(alert);
                         }
+
+                        function confirmDelete(cb) {
+                            swal({
+                                    title: "Bạn có muốn xoá không?",
+                                    text: "Nhấn vào 'Đồng ý' để xoá, không thể phục hồi được sau khi xoá!",
+                                    icon: "info",
+                                    buttons: {
+                                        cancel: true,
+                                        yes: "Đồng ý"
+                                    },
+                                })
+                                .then((value) => {
+                                    switch (value) {     
+                                        case "yes":
+                                            return cb(true);
+                                            break;                               
+                                        default:
+                                            return cb(false);
+                                            break;
+                                    }
+                                }); 
+                        }
+
                     </script>
                     <script>
                         jQuery(document).ready(($) => {
@@ -281,29 +306,33 @@
 
                             //delete brand
                             $("#table-brand tbody").delegate('.delete-brand', 'click', (e) => {
-                                var id = (e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML).trim(); 
 
-                                var row = $('#table-brand tbody').find(`[id = ${id}]`);
+                                confirmDelete((result) => {
+                                    if (result == true) {
+                                        var id = (e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML).trim(); 
 
-                                $.post(
-                                    'brands/delete',
-                                    {
-                                        id: id
-                                    },
-                                    (data) => {
-                                        var error = data.error;
-                                        if (error) {
-                                            window.console.log(error);
-                                            alert(error);
-                                        } else {
-                                            table.row(row).remove().draw('page');
-                                        }
-                                    }
-                                );
+                                        var row = $('#table-brand tbody').find(`[id = ${id}]`);
+
+                                        $.post(
+                                            'brands/delete',
+                                            {
+                                                id: id
+                                            },
+                                            (data) => {
+                                                var error = data.error;
+                                                if (error) {
+                                                    window.console.log(error);
+                                                    alert(error);
+                                                } else {
+                                                    table.row(row).remove().draw('page');
+                                                }
+                                            }
+                                        );
+                                    } 
+                                });
                             });
 
-                            //show modal to edit brand
-                            $('.edit-brand').click((e) => {
+                            $("#table-brand tbody").delegate('.edit-brand', 'click', (e) => {
                                 var current_id_brand = (e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML).trim();
                                 var current_name_brand = (e.currentTarget.closest('tr').getElementsByClassName('td-name')[0].innerHTML).trim();
                                 var current_alias_brand = (e.currentTarget.closest('tr').getElementsByClassName('td-alias')[0].innerHTML).trim();
@@ -338,6 +367,7 @@
                                 }
                             });
 
+                            
                             //show modal to add new brand
                             $('#brand-add').click((e) => {
 
@@ -358,6 +388,23 @@
                                 if ($('#btn-add-brand').length == 0) {
                                     $('.btn-save-changes').attr('id', 'btn-add-brand');
                                 }
+
+                                $('.dropify').dropify({
+                                    error: {
+                                        'fileSize': 'Chỉ cho phép upload ảnh dưới 2 MB.',
+                                        'minWidth': 'Chiều dài ảnh phải lớn hơn {{ value }} pixel.',
+                                        'maxWidth': 'Chiều dài ảnh phải nhỏ hơn {{ value }} pixel.',
+                                        'minHeight': 'Chiều cao ảnh phải lớn hơn {{ value }} pixel.',
+                                        'maxHeight': 'Chiều cao ảnh phải nhỏ hơn {{ value }} pixel.',
+                                        'imageFormat': 'Chỉ cho phép upload các định dạng ảnh: {{ value }}.'
+                                    },
+                                    messages: {
+                                        'default': 'Kéo và thả hình vào đây hoặc nhấn vào để tải ảnh lên ',
+                                        'replace': 'Kéo và thả hình vào đây hoặc nhấn vào để thay thế ảnh hiện tại',
+                                        'remove':  'Thay thế',
+                                        'error':   'Tải ảnh lên thất bại!'
+                                    }
+                                });
 
                             });
                         });

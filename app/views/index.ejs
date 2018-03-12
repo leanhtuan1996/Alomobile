@@ -32,7 +32,7 @@
                                     <% if (data.categories) { %>
                                         <% data.categories.forEach((category) => { %>
                                             <% var subCategories = category.subCategories; %>
-                                                <% if (subCategories && subCategories.length != 0){ %>
+                                                <% if (subCategories && subCategories.length != 0 && subCategories[0] != null){ %>
                                                     <div class="pt_menu">
                                                         <div class="parentMenu">
                                                             <a href="/<%- category.alias %>">
@@ -55,9 +55,11 @@
                                                                                 <div class="itemSubMenu">
                                                                                     <div class="itemMenu">
                                                                                         <% subCategories.forEach((sub) => { %>
-                                                                                            <a class="itemMenuName" href="/<%- category.alias %>/<%- sub.alias %>" style="text-align: center;">
-                                                                                                <span><%- sub.name %></span>
-                                                                                            </a>
+                                                                                            <% if (sub) { %>
+                                                                                                <a class="itemMenuName" href="/<%- category.alias %>/<%- sub.alias %>" style="text-align: center;">
+                                                                                                    <span><%- sub.name %></span>
+                                                                                                </a>
+                                                                                            <% } %>
                                                                                             <% }); %>
                                                                                     </div>
                                                                                 </div>
