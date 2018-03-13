@@ -143,7 +143,7 @@ var signUp = (user, result) => {
                         workflow.emit('response', { error: err });
                     } else {
                         workflow.emit('response', {
-                            success: 'Đăng kí tài khoản thành công, vui lòng nhấn vào <a href="/sign-in">đây</a> để đăng nhập.'
+                            user: newUser
                         });
                     }
                 });

@@ -100,7 +100,20 @@ router.get('/sign-up', (req, res) => {
 
 router.post('/sign-up', (req, res) => {
   User.signUp(req.body, (result) => {
-    res.send(result)
+    if (result.user) {
+      var id = result.user._id
+
+      var token = helper.encodeToken(id);
+      //set token in session
+      req.session.token = token
+
+      res.send({
+        user: result.user,
+        token: token,
+      });
+    } else {
+      res.send(result);
+    }
   });
 }); /***/
 

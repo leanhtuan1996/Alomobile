@@ -250,10 +250,10 @@
                     (data) => {
                         $('input[type="submit"]').html('Đăng ký ngay').removeClass('disabled'); 
                         
-                        if (data.success) {
-                            window.location.href('/');
+                        if (data.error) {
+                            showNotify('#customer-form', data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.");
                         } else {
-                            showNotify('#customer-form', data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau."); 
+                            window.location.href = '/'
                         } 
                     }
                 );
