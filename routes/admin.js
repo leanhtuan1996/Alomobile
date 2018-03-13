@@ -105,7 +105,7 @@ router.get('/products/add', [auth.requireAuth, auth.requireRole], (req, res) => 
     Category.getCategories((r) => {
         Brand.getBrands((r1) => {
             Type.getTypes((r2) => {
-                res.render('add-product-test', {
+                res.render('add-product', {
                     data: {
                         title: "Thêm sản phẩm mới - Alomobile",
                         user: req.user,

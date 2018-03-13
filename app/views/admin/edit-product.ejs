@@ -25,6 +25,11 @@
             from { transform: scale(1) rotate(0deg);}
             to { transform: scale(1) rotate(360deg);}
         }
+
+        .row {
+            margin-right: 0;
+            margin-left: 0;
+        }
     </style>    
 </head>
 <body>
@@ -518,9 +523,236 @@
                     case "laptop":  
                                      
                         break;                            
-                    case "phu-kien-may-tinh": break;
-                    case "phu-kien-dien-thoai": break;
-                    case "thiet-bi-am-thanh": break;
+                    case "tai-nghe": 
+
+                        var jack = specifications.jack,
+                            wireLength = specifications.wireLength,
+                            buttonControl = specifications.buttonControl
+                            box = specifications.box;
+
+                        $('#product_jack').val(jack || "");
+                        $('#product_wire_length').val(wireLength || "");
+                        $('#product_button_control').val(buttonControl || "");
+                        $('#product_box').val(box || "");
+                        break;
+
+                    case "tai-nghe-khong-day": 
+                        
+                        var connection = specifications.connection,
+                            battery = specifications.battery,
+                            timeCharge = specifications.timeCharge,
+                            timeUse = specifications.timeUse,
+                            source = specifications.source;
+
+                            $('#product_connection').val(connection || "");
+                            $('#product_battery').val(battery || "");
+                            $('#product_time_charge').val(timeCharge || "");
+                            $('#product_time_use').val(timeUse || "");
+                            $('#product_source').val(source || "");
+
+                        break;
+
+                    case "op-lung":  
+                        
+                        var material = specifications.material,
+                            style = specifications.style;
+
+                        $('#product_material').val(material || "");
+                        $('#product_style').val(style || "");
+
+                        break;
+
+                    case "sac-du-phong":  
+                    
+                        var chargeTime = specifications.chargeTime,
+                            port = specifications.port,
+                            chargingPerformance = specifications.chargingPerformance,
+                            battery = specifications.battery,
+                            ledAlert = specifications.ledAlert,
+                            carrier = specifications.carrier,
+                            input = specifications.input,
+                            weight = specifications.weight;
+
+                        $('#product_charge_time').val(chargeTime || "");
+                        $('#product_port').val(port || "");
+                        $('#product_charging_performance').val(chargingPerformance || "");
+                        $('#product_battery').val(battery || "");
+                        $('#product_led_alert').val(ledAlert || "");
+                        $('#product_carrier').val(carrier || "");
+                        $('#product_input').val(input || "");
+                        $('#product_weight').val(weight || "");
+
+                        break;
+                            
+                    case "loa":
+                    case "loa-khong-day":
+
+                        var model = specifications.model,
+                        length = specifications.length,
+                        size = specifications.size,
+                        weight = specifications.weight,
+                        totalPower = specifications.totalPower,
+                        power = specifications.power,
+                        connection = specifications.connection,
+                        remote = specifications.remote,
+                        box = specifications.box,
+                        battery = specifications.battery;
+
+                        $('#product_model').val(model || "");
+                        $('#product_length').val(length || "");
+                        $('#product_size').val(size || "");
+                        $('#product_weight').val(weight || "");
+                        $('#product_total_power').val(totalPower || "");
+                        $('#product_power').val(power || "");
+                        $('#product_connection').val(connection || "");
+                        $('#product_remote').val(remote || "");
+                        $('#product_box').val(box || "");
+                        $('#product_battery').val(battery || "");
+
+                        break;
+
+                    case "ba-lo-tui-xach":  break;
+                    case "chuot": 
+                        
+                        var carrier = specifications.carrier,
+                            model = specifications.model,
+                            opticalResolution = specifications.opticalResolution,
+                            connection = specifications.connection,
+                            lengthCab = specifications.lengthCab,
+                            size = specifications.size,
+                            weight = specifications.weight;
+
+                        $('#product_carrier').val(carrier || "");
+                        $('#product_model').val(model || "");
+                        $('#product_optical_resolution').val(opticalResolution || "");
+                        $('#product_connection').val(connection || "");
+                        $('#product_length_cab').val(lengthCab || "");
+                        $('#product_size').val(size || "");
+                        $('#product_weight').val(weight || "");
+
+                        break;
+                    case "ban-phim":
+                        
+                        var carrier = specifications.carrier,
+                            model = specifications.model,
+                            opticalResolution = specifications.opticalResolution,
+                            connection = specifications.connection,
+                            lengthCab  = specifications.lengthCab,
+                            size = specifications.size,
+                            weight = specifications.weight;
+
+                        $('#product_carrier').val(carrier || "");
+                        $('#product_model').val(model || "");
+                        $('#product_optical_resolution').val(opticalResolution || "");
+                        $('#product_connection').val(connection || "");
+                        $('#product_length_cab').val(lengthCab || "");
+                        $('#product_size').val(size || "");
+                        $('#product_weight').val(weight || "");
+
+                        break;
+                    case "cap-sac":  
+                        
+                        var jack = specifications.jack,
+                            feature = specifications.feature,
+                            maxCharge = specifications.maxCharge,
+                            maxLong = specifications.maxLong,
+                            carrier = specifications.carrier;
+
+                        $('#product_jack').val(jack || "");
+                        $('#product_feature').val(feature || "");
+                        $('#product_max_charge').val(maxCharge || "");
+                        $('#product_connection').val(maxLong || "");
+                        $('#product_carrier').val(carrier || "");
+
+                        break;
+                    case "cu-sac":
+
+                        var power = specifications.power,
+                            feature = specifications.feature,
+                            maxCharge = specifications.maxCharge,
+                            carrier = specifications.carrier;
+
+                        $('#product_power').val(power || "");
+                        $('#product_feature').val(feature || "");
+                        $('#product_max_charge').val(maxCharge || "");
+                        $('#product_carrier').val(carrier || ""); 
+                                
+                        break;
+                    case "thiet-bi-luu-tru": 
+                        
+                        var type = specifications.type,
+                            capacity = specifications.capacity,
+                            speed_read = specifications.speed_read,
+                            speed_write = specifications.speed_write;
+
+                        $('#product_type').val(type || "");
+                        $('#product_capacity').val(capacity || "");
+                        $('#product_speed_read').val(speed_read || "");
+                        $('#product_speed_write').val(speed_write || "");
+                                
+                        break;
+                    case "dong-ho-thong-minh": 
+                    
+                    var screen = specifications.screen,
+                        detailConfiguration = specifications.detailConfiguration,
+                        entertainment = specifications.entertainment,
+                        connection = specifications.connectio = connection,
+                        physicalParameters = specifications.physicalParameters;
+
+                    if (screen) {
+                        $('#display_technology').val(screen.displayTechnology || "");
+                        $('#display_resolution').val(screen.resolution || "");
+                        $('#display_wideScreen').val(screen.wide || "");
+                        $('#display_glass').val(screen.glass || "");
+                    }
+
+                    if (detailConfiguration) {
+                        $('#os').val(detailConfiguration.os || "");
+                        $('#ram').val(detailConfiguration.ram || "");
+                        $('#cpu').val(detailConfiguration.cpu || "");
+                        $('#rom').val(detailConfiguration.rom || "");
+                    }
+                    
+                    if (entertainment) {
+                        $('#camera').val(entertainment.camera || "");
+                        $('#camera_app').val(entertainment.cameraApp || "");
+                        $('#record_video').val(entertainment.recordVideo || "");
+                        $('#speaker').val(entertainment.speaker || "");
+                        $('#feature_others').val(entertainment.featureOthers || "");
+                    }
+
+                    if (connection) {
+                        $('#connective').val(connection.connectiveDevice || "");
+                        $('#bluetooth').val(connection.bluetooth || "");
+                        $('#wifi').val(connection.wifi || "");
+                        $('#connection_others').val(connection.connection_others || "");
+                    }
+
+                    if (physicalParameters) {
+                        $('#size').val(physicalParameters.size || ""),
+                        $('#weight').val(physicalParameters.weight || ""),
+                        $('#material').val(physicalParameters.material || ""),
+                        $('#guard_water').val(physicalParameters.guardWater || ""),
+                        $('#battery').val(physicalParameters.battery || ""),
+                        $('#battery_wait').val(physicalParameters.batteryWait || "")
+                    }                                
+                                
+                        break;
+                    case "gay-tu-suong":  
+
+                        var typeConnection = specifications.typeConnection,
+                            minLong = specifications.minLong,
+                            maxLong = specifications.maxLong,
+                            compatible = specifications.compatible,
+                            carrier = specifications.carrier;
+
+                        $('#product_type_connection').val(typeConnection || "");
+                        $('#product_min_long').val(minLong || "");
+                        $('#product_max_long').val(maxLong || "");
+                        $('#product_compatible').val(compatible || "");
+                        $('#product_carrier').val(carrier || "");                        
+                                
+                        break;
                     default: 
                     break;
                 }
@@ -666,90 +898,7 @@
                                 specifications.other = other;
 
                                 break;
-                            case "dien-thoai":  
-                                var screen = {
-                                    displayTechnology: $('#display_technology').val(),
-                                    resolution: $('#display_resolution').val(),
-                                    width: $('#display_wideScreen').val(),
-                                    touch: $('#display_glass').val()
-                                }
-                                var frontCamera = {                                    
-                                    resolution: $('#camera_front_resolution').val(),
-                                    flash: $('#camera_front_flash').val(),
-                                    videoCall: $('#camera_front_video_call').val(),
-                                    other: $('#camera_front_other').val()
-                                }
-                                var backCamera = {                                    
-                                    resolution: $('#camera_back_resolution').val(),
-                                    flash: $('#camera_back_flash').val(),
-                                    makeFilm: $('#camera_back_film').val(),
-                                    other: $('#camera_back_other').val()
-                                }
-                                var processor = {
-                                    cpu: {
-                                        chipset: $('#processor_cpu_chipset').val(),
-                                        manufacturer:  $('#processor_cpu_manufacturer').val(),
-                                        speed : $('#processor_cpu_speed').val()
-                                    },
-                                    gpu: {
-                                        chipset: $('#processor_gpu_chipset').val(),
-                                        manufacturer:  $('#processor_gpu_manufacturer').val(),
-                                        speed : $('#processor_gpu_speed').val()
-                                    }                                    
-                                }
-                                var storage = {
-                                    internal: $('#storage_internal').val(),
-                                    external:  $('#storage_external').val(),
-                                    available : $('#storage_available').val(),
-                                    ram: $('#storage_ram').val()
-                                }
-                                var connections = {
-                                    mobileNetwork: $('#connective_mobile_network').val(),
-                                    sim:  $('#connective_sim').val(),
-                                    wifi : $('#connective_wifi').val(),
-                                    GPS: $('#connective_gps').val(),
-                                    bluetooth:  $('#connective_bluetooth').val(),
-                                    connectorCharger : $('#connective_connector_charger').val(),
-                                    jack : $('#connective_jack').val(),                                   
-                                    other:  $('#connective_other').val()
-                                }
-                                var utils = {
-                                    advancedSecurity: $('#util_advanced_security').val(),
-                                    specialFeatures:  $('#util_special_features').val(),
-                                    record : $('#util_record').val(),
-                                    radio: $('#util_radio').val(),
-                                    entertainment:  $('#util_entertainment').val()
-                                }
-                                var sizeAndWeight = {
-                                    style: $('#design_style').val(),
-                                    meterial:  $('#design_material').val(),
-                                    size: {
-                                        long: $('#size_long').val(),
-                                        horizontal: $('#size_horizontal').val(),
-                                        thick: $('#size_thick').val()
-                                    }                                
-                                }
-                                var battery = {
-                                    capacity: $('#battery_capcity').val(),
-                                    style:  $('#battery_type').val(),
-                                    tech: $('#battery_tech').val()
-                                }
-                                var os = $('#os').val();
-                                var other = $('#other').val();
-
-                                specifications.screen = screen;
-                                specifications.frontCamera = frontCamera;
-                                specifications.backCamera = backCamera;
-                                specifications.processor = processor;
-                                specifications.storage = storage;
-                                specifications.connections = connections;
-                                specifications.utils = utils;
-                                specifications.sizeAndWeight = sizeAndWeight;
-                                specifications.battery = battery; 
-                                specifications.os = os;
-                                specifications.other = other;                                 
-                            
-                                break;
+                            case "dien-thoai":
                             case "may-tinh-bang":  
                                     var screen = {
                                         displayTechnology: $('#display_technology').val(),
@@ -834,9 +983,220 @@
                                     specifications.other = other;                                 
                                 
                                     break;                            
-                            case "phu-kien-may-tinh": break;
-                            case "phu-kien-dien-thoai": break;
-                            case "thiet-bi-am-thanh": break;
+                            case "tai-nghe": 
+                                var jack = $('#product_jack').val();
+                                var wire_length = $('#product_wire_length').val();
+                                var button_control = $('#product_button_control').val();
+                                var box = $('#product_box').val();
+
+                                specifications.jack = jack;
+                                specifications.wireLength = wire_length;
+                                specifications.buttonControl = button_control;
+                                specifications.box = box;
+                                break;
+
+                            case "tai-nghe-khong-day":  
+                                var product_connection = $('#product_connection').val();
+                                var product_battery = $('#product_battery').val();
+                                var product_time_charge = $('#product_time_charge').val();
+                                var product_time_use = $('#product_time_use').val();
+                                var product_source = $('#product_source').val();
+
+                                specifications.connection = product_connection;
+                                specifications.battery = product_battery;
+                                specifications.timeCharge = product_time_charge;
+                                specifications.timeUse = product_time_use;
+                                specifications.source = product_source;
+
+                                break;
+
+                            case "op-lung":  
+                                var product_material = $('#product_material').val();
+                                var product_style = $('#product_style').val();
+
+                                specifications.material = product_material;
+                                specifications.style = product_style;
+
+                                break;
+
+                            case "sac-du-phong":  
+                            
+                                var product_charge_time = $('#product_charge_time').val();
+                                var product_port = $('#product_port').val();
+                                var product_charging_performance = $('#product_charging_performance').val();
+                                var product_battery = $('#product_battery').val();
+                                var product_led_alert = $('#product_led_alert').val();
+                                var product_carrier = $('#product_carrier').val();
+                                var product_input = $('#product_input').val();
+                                var product_weight = $('#product_weight').val();
+
+                                specifications.chargeTime = product_charge_time;
+                                specifications.port = product_port;
+                                specifications.chargingPerformance = product_charging_performance;
+                                specifications.battery = product_battery;
+                                specifications.ledAlert = product_led_alert;
+                                specifications.carrier = product_carrier;
+                                specifications.input = product_input;
+                                specifications.weight = product_weight;
+
+                                break;
+                                    
+                            case "loa":
+                            case "loa-khong-day":
+
+                                var product_model = $('#product_model').val();
+                                var product_length = $('#product_length').val();
+                                var product_size = $('#product_size').val();
+                                var product_weight = $('#product_weight').val();
+                                var product_total_power = $('#product_total_power').val();
+                                var product_power = $('#product_power').val();
+                                var product_connection = $('#product_connection').val();
+                                var product_remote = $('#product_remote').val();
+                                var product_box = $('#product_box').val();
+                                var product_battery = $('#product_battery').val();
+
+                                specifications.model = product_model;
+                                specifications.length = product_length;
+                                specifications.size = product_size;
+                                specifications.weight = product_weight;
+                                specifications.totalPower = product_total_power;
+                                specifications.power = product_power;
+                                specifications.connection = product_connection;
+                                specifications.remote = product_remote;
+                                specifications.box = product_box;
+                                specifications.battery = product_battery;
+                                break;
+
+                            case "ba-lo-tui-xach":  break;
+                            case "chuot": 
+                                var product_carrier = $('#product_carrier').val();
+                                var product_model = $('#product_model').val();
+                                var product_optical_resolution = $('#product_optical_resolution').val();
+                                var product_connection = $('#product_connection').val();
+                                var product_length_cab = $('#product_length_cab').val();
+                                var product_size = $('#product_size').val();
+                                var product_weight = $('#product_weight').val();
+
+                                specifications.carrier = product_carrier;
+                                specifications.model = product_model;
+                                specifications.opticalResolution = product_optical_resolution;
+                                specifications.connection = product_connection;
+                                specifications.lengthCab = product_length_cab;
+                                specifications.size = product_size;
+                                specifications.weight = product_weight;
+
+                                break;
+                            case "ban-phim":
+                                var product_carrier = $('#product_carrier').val();
+                                var product_model = $('#product_model').val();
+                                var product_optical_resolution = $('#product_optical_resolution').val();
+                                var product_connection = $('#product_connection').val();
+                                var product_length_cab = $('#product_length_cab').val();
+                                var product_size = $('#product_size').val();
+                                var product_weight = $('#product_weight').val();
+
+                                specifications.carrier = product_carrier;
+                                specifications.model = product_model;
+                                specifications.opticalResolution = product_optical_resolution;
+                                specifications.connection = product_connection;
+                                specifications.lengthCab = product_length_cab;
+                                specifications.size = product_size;
+                                specifications.weight = product_weight;
+
+                                break;
+                            case "cap-sac":  
+                                var product_jack = $('#product_jack').val();
+                                var product_feature = $('#product_feature').val();
+                                var product_max_charge = $('#product_max_charge').val();
+                                var product_max_long = $('#product_connection').val();
+                                var product_carrier = $('#product_carrier').val();
+
+                                specifications.jack = product_jack;
+                                specifications.feature = product_feature;
+                                specifications.maxCharge = product_max_charge;
+                                specifications.maxLong = product_max_long;
+                                specifications.carrier = product_carrier;
+
+                                break;
+                            case "cu-sac":                              
+                                var product_power = $('#product_power').val();
+                                var product_feature = $('#product_feature').val();
+                                var product_max_charge = $('#product_max_charge').val();
+                                var product_carrier = $('#product_carrier').val();               
+
+                                specifications.power = product_power;
+                                specifications.feature = product_feature;
+                                specifications.maxCharge = product_max_charge;
+                                specifications.carrier = product_carrier;
+                                        
+                                break;
+                            case "thiet-bi-luu-tru": 
+                                var product_type = $('#product_type').val();
+                                var product_capacity = $('#product_capacity').val();
+                                var product_speed_read = $('#product_speed_read').val();
+                                var product_speed_write = $('#product_speed_write').val();               
+                                specifications.type = product_type;
+                                specifications.capacity = product_capacity;
+                                specifications.speed_read = product_speed_read;
+                                specifications.speed_write = product_speed_write;
+                                        
+                                break;
+                            case "dong-ho-thong-minh":  
+                                var screen = {
+                                    displayTechnology: $('#display_technology').val(),
+                                    resolution: $('#display_resolution').val(),
+                                    wide: $('#display_wideScreen').val(),
+                                    glass: $('#display_glass').val()
+                                }
+                                var detailConfiguration = {
+                                    os: $('#os').val(),
+                                    ram:  $('#ram').val(),
+                                    cpu : $('#cpu').val(),
+                                    rom: $('#rom').val(),
+                                }
+                                var entertainment = {
+                                    camera: $('#camera').val(),
+                                    cameraApp:  $('#camera_app').val(),
+                                    recordVideo : $('#record_video').val(),
+                                    speaker: $('#speaker').val(),
+                                    featureOthers: $('#feature_others').val(),
+                                }
+                                var connection = {
+                                    connectiveDevice: $('#connective').val(),
+                                    bluetooth:  $('#bluetooth').val(),
+                                    wifi : $('#wifi').val(),
+                                    connection_others: $('#connection_others').val() 
+                                }
+                                var physicalParameters = {
+                                    size: $('#size').val(),
+                                    weight:  $('#weight').val(),
+                                    material: $('#material').val(),
+                                    guardWater: $('#guard_water').val(),
+                                    battery: $('#battery').val(),
+                                    batteryWait: $('#battery_wait').val()
+                                }                                
+
+                                specifications.screen = screen;
+                                specifications.detailConfiguration = detailConfiguration;
+                                specifications.entertainment = entertainment;
+                                specifications.connection = connection;
+                                specifications.physicalParameters = physicalParameters;
+                                        
+                                break;
+                            case "gay-tu-suong":  
+                                var product_type_connection = $('#product_type_connection').val();
+                                var product_min_long = $('#product_min_long').val();
+                                var product_max_long = $('#product_max_long').val();
+                                var product_compatible = $('#product_compatible').val();      
+                                var product_carrier = $('#product_carrier').val();  
+
+                                specifications.typeConnection = product_type_connection;
+                                specifications.minLong = product_min_long;
+                                specifications.maxLong = product_max_long;
+                                specifications.compatible = product_compatible;
+                                specifications.carrier = product_carrier;
+                                        
+                                break;
                             default: 
                             break;
                         }
@@ -845,8 +1205,7 @@
                     newProduct.specifications = specifications;
                     newProduct.type = selectedType.attr('data-id-type');
                     newProduct.originalImages = [];
-                    newProduct.images = [];
-                    
+                    newProduct.images = [];                    
 
                     //get all images of product
                     $("div.dropify-wrapper.has-preview").find('input[type=file]').each((index, input) => {  

@@ -627,7 +627,7 @@ var spec_ears_phone = `
                             <input type="text" class="form-control" placeholder="3.5 mm" id="product_jack">
                         </div>
                         <div class="col-sm-6">
-                            <label class="control-label mb-10">Độ dài dây</lbel>
+                            <label class="control-label mb-10">Độ dài dây</label>
                             <input type="text" class="form-control" placeholder="1.2 m" id="product_wire_length">
                         </div>
                     </div>
@@ -668,7 +668,7 @@ var spec_ears_phone_wireless = `
                             <input type="text" class="form-control" placeholder="Đầu sạc Micro USB" id="product_jack">
                         </div>
                         <div class="col-sm-6">
-                            <label class="control-label mb-10">Tương thích</lbel>
+                            <label class="control-label mb-10">Tương thích</label>
                             <input type="text" class="form-control" placeholder="1.2 m" id="product_compatible">
                         </div>
                     </div>
@@ -701,7 +701,7 @@ var spec_ears_phone_wireless = `
                             <input type="text" class="form-control" placeholder="2 máy" id="product_connection">
                         </div>
                         <div class="col-sm-6">
-                            <label class="control-label mb-10">Dung lượng pin</lbel>
+                            <label class="control-label mb-10">Dung lượng pin</label>
                             <input type="text" class="form-control" placeholder="70 mAh" id="product_battery">
                         </div>
                     </div>
@@ -749,7 +749,7 @@ var spec_loa = `
                             <input type="text" class="form-control" placeholder="U213A" id="product_model">
                         </div>
                         <div class="col-sm-6">
-                            <label class="control-label mb-10">Độ dài dây</lbel>
+                            <label class="control-label mb-10">Độ dài dây</label>
                             <input type="text" class="form-control" placeholder="1.2 m" id="product_length">
                         </div>
                     </div>
@@ -777,13 +777,17 @@ var spec_loa = `
             <div class="col-sm-6">
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <label class="control-label mb-10"> Tổng công suất</label>
                             <input type="text" class="form-control" placeholder="3.6 W" id="product_total_power">
                         </div>
-                        <div class="col-sm-6">
-                            <label class="control-label mb-10">Công suất loa vệ tinh</lbel>
+                        <div class="col-sm-4">
+                            <label class="control-label mb-10">Công suất loa vệ tinh</label>
                             <input type="text" class="form-control" placeholder="3.6 W" id="product_power">
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="control-label mb-10">Pin (loa không dây)</label>
+                            <input type="text" class="form-control" placeholder="1200 mAh" id="product_battery">
                         </div>
                     </div>
                 </div>
@@ -1040,7 +1044,7 @@ var spec_thietbiluutru = `
                             <input type="text" class="form-control" placeholder="Ổ cứng di động" id="product_type">
                         </div>
                         <div class="col-sm-6">
-                            <label class="control-label mb-10">Dung lượng</lbel>
+                            <label class="control-label mb-10">Dung lượng</label>
                             <input type="text" class="form-control" placeholder="250GB" id="product_capacity">
                         </div>
                     </div>
@@ -1065,7 +1069,6 @@ var spec_thietbiluutru = `
     </div>
 `;
 
-
 var spec_capsac = `
     <div class="specifications-block">
         <h6 class="txt-dark capitalize-font">
@@ -1079,10 +1082,10 @@ var spec_capsac = `
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="control-label mb-10">Jack cắm</label>
-                            <input type="text" class="form-control" placeholder="Micro USB" id="product_power">
+                            <input type="text" class="form-control" placeholder="Micro USB" id="product_jack">
                         </div>
                         <div class="col-sm-6">
-                            <label class="control-label mb-10">Tính năng</lbel>
+                            <label class="control-label mb-10">Tính năng</label>
                             <input type="text" class="form-control" placeholder="Sạc, truyền dữ liệu" id="product_feature">
                         </div>
                     </div>
@@ -1127,7 +1130,7 @@ var spec_cusac = `
                             <input type="text" class="form-control" placeholder="Hỗ trợ tất cả" id="product_power">
                         </div>
                         <div class="col-sm-6">
-                            <label class="control-label mb-10">Tính năng</lbel>
+                            <label class="control-label mb-10">Tính năng</label>
                             <input type="text" class="form-control" placeholder="Sạc nhanh" id="product_feature">
                         </div>
                     </div>
@@ -1168,7 +1171,7 @@ var spec_chuot = `
                             <input type="text" class="form-control" placeholder="Trung Quốc" id="product_carrier">
                         </div>
                         <div class="col-sm-6">
-                            <label class="control-label mb-10">Model</lbel>
+                            <label class="control-label mb-10">Model</label>
                             <input type="text" class="form-control" placeholder="M115" id="product_model">
                         </div>
                     </div>
@@ -1198,14 +1201,14 @@ var spec_chuot = `
                     <div class="row">
                         <div class="col-sm-4">
                             <label class="control-label mb-10">Độ dài dây/ Khoãng cách kết nối</label>
-                            <input type="text" class="form-control" placeholder="100 cm" id="product_carrier">
+                            <input type="text" class="form-control" placeholder="100 cm" id="product_length_cab">
                         </div>
                         <div class="col-sm-4">
                             <label class="control-label mb-10">Kích thước</label>
                             <input type="text" class="form-control" placeholder="Dài 9 cm - ngang 4.8 cm - cao 3.2 cm" id="product_size">
                         </div>
                         <div class="col-sm-4">
-                            <label class="control-label mb-10">Trọng lượng</lbel>
+                            <label class="control-label mb-10">Trọng lượng</label>
                             <input type="text" class="form-control" placeholder="200g" id="product_weight">
                         </div>
                     </div>
@@ -1232,7 +1235,7 @@ var spec_banphim = `
                             <input type="text" class="form-control" placeholder="Trung Quốc" id="product_carrier">
                         </div>
                         <div class="col-sm-6">
-                            <label class="control-label mb-10">Model</lbel>
+                            <label class="control-label mb-10">Model</label>
                             <input type="text" class="form-control" placeholder="M115" id="product_model">
                         </div>
                     </div>
@@ -1269,7 +1272,7 @@ var spec_banphim = `
                             <input type="text" class="form-control" placeholder="Dài 9 cm - ngang 4.8 cm - cao 3.2 cm" id="product_size">
                         </div>
                         <div class="col-sm-4">
-                            <label class="control-label mb-10">Trọng lượng</lbel>
+                            <label class="control-label mb-10">Trọng lượng</label>
                             <input type="text" class="form-control" placeholder="200g" id="product_weight">
                         </div>
                     </div>
@@ -1296,8 +1299,8 @@ var spec_oplung = `
                             <input type="text" class="form-control" placeholder="Nhựa dẽo" id="product_material">
                         </div>
                         <div class="col-sm-6">
-                            <label class="control-label mb-10">Kiểu dáng/ thiết kết</lbel>
-                            <input type="text" class="form-control" placeholder="1.2 m" id="product_tyle">
+                            <label class="control-label mb-10">Kiểu dáng/ thiết kế</label>
+                            <input type="text" class="form-control" placeholder="" id="product_style">
                         </div>
                     </div>
                 </div>
