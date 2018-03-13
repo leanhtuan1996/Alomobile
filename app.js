@@ -73,70 +73,72 @@ app.use((req, res, next) => {
 });
 
 // catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
+app.use(function (req, res, next) {
+
+  var err = new Error('Not Found');
+  if (req.url && typeof req.url == 'string' && req.url.startsWith('/admin/')) {    
+      err.href = 'admin/404';
+  } else {
+    err.status = 404;
+  }
+
+  next(err);
+});
 
 // // error handler
-// app.use(function (err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(function (err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  // render the error page
+  res.status(err.status || 500);
 
-//   // render the error page
-//   res.status(err.status || 500);
+  switch (err.status) {
+    case 403:
+      res.render(`${err.href || '403'}`, {
+        data: {
+          user: req.user
+        }
+      });
+      break;
+    case 500:
+      res.render(`${err.href || '500'}`, {
+        data: {
+          user: req.user
+        }
+      });
+      break;
+    case 502:
+      res.render(`${err.href || '502'}`, {
+        data: {
+          user: req.user
+        }
+      });
+      break;
+    case 503:
+      res.render(`${err.href || '503'}`, {
+        data: {
+          user: req.user
+        }
+      });
+      break;
+    case 504:
+      res.render(`${err.href || '504'}`, {
+        data: {
+          user: req.user
+        }
+      });
+      break;
 
-//   switch (err.status) {
-//     case 403:
-//       res.render('403', {
-//         data: {
-//           user: req.user
-//         }
-//       });
-//       break;
-//     case 500:
-//       res.render('500', {
-//         data: {
-//           user: req.user
-//         }
-//       });
-//       break;
-//     case 502:
-//       res.render('502', {
-//         data: {
-//           user: req.user
-//         }
-//       });
-//       break;
-//     case 503:
-//       res.render('503', {
-//         data: {
-//           user: req.user
-//         }
-//       });
-//       break;
-//     case 504:
-//       res.render('504', {
-//         data: {
-//           user: req.user
-//         }
-//       });
-//       break;
-
-//     default:
-//       res.render('404', {
-//         data: {
-//           user: req.user
-//         }
-//       });
-//       break;
-//   }
-
-
-
-// });
+    default:
+      res.render(`${err.href || '404'}`, {
+        data: {
+          user: req.user
+        }
+      });
+      break;
+  }
+});
 
 module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
 

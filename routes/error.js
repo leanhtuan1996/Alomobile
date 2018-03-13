@@ -12,7 +12,7 @@ router.get('/403', (req, res) => {
 });
 
 router.get('/404', (req, res) => {
-    res.render('404', {
+    res.render('admin/404', {
         data: {
             currentUser: req.session.currentUser
         }

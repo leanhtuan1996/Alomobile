@@ -52,6 +52,22 @@ router.get('/', [auth.requireAuth, auth.requireRole], (req, res) => {
     });
 });
 
+router.get('/sign-in', (req, res) => {
+    res.render('admin/sign-in', {
+        data: {
+            title: "Trang đăng nhập - Alomobile Manager"
+        }
+    });
+});
+
+router.get('/forgot-password', (req, res) => {
+    res.render('admin/forgot-password', {
+        data: {
+            title: "Quên mật khẩu- Alomobile Manager"
+        }
+    });
+});
+
 router.get('/users', [auth.requireAuth, auth.requireRole], (req, res) => {
     User.getUsers((result) => {
         res.send({
@@ -262,5 +278,15 @@ router.post('/brands/delete', [auth.requireAuth, auth.requireRole], (req, res) =
     });
 });
 /** /BRAND ROUTERS */
+
+
+/** ERRORS ROUTERS */
+router.get('/404', (req, res) => {
+    res.render('admin/404');
+});
+
+router.get('/403', (req, res) => {
+    res.render('admin/403');
+}); 
 
 module.exports = router;

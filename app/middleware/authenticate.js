@@ -11,7 +11,8 @@ var requireAuth = (req, res, next) => {
 
     if (!token) {
         var err = new Error("Token is required!");
-        err.status = 401
+        err.status = 401;
+        err.href = "admin/sign-in"
         return next(err);
     }
 
@@ -23,9 +24,10 @@ var requireAuth = (req, res, next) => {
         var id = cb.id;
 
         if (!id) {
-            var error = new Error("Invalid token");
-            error.status = 401
-            return next(error);
+            var err = new Error("Invalid token");
+            err.status = 401
+            err.href = "admin/sign-in"
+            return next(err);
         }
 
         User.findById(id).populate('role').exec((err, user) => {
@@ -34,8 +36,10 @@ var requireAuth = (req, res, next) => {
             }
 
             if (!user) {
-                var error = new Error("User not found");
-                return next(error);
+                var err = new Error("User not found");
+                err.status = 401
+                err.href = "admin/sign-in"
+                return next(err);
             }
 
             req.role = user.role
@@ -49,36 +53,43 @@ var requireAuth = (req, res, next) => {
 
 var requireRole = (req, res, next) => {
     //get current role of user
-    var role = req.role,
-        allows = role.allows,
-        name = role.name;
+
+    
+    var role = req.role;
+
+    if (!role) {
+        var err = new Error("Role of user not found!");
+        err.status = 403;
+        err.href = "admin/403"
+
+        return next(err);
+    }
+
+    var allows = role.allows;
+    var name = role.name;
 
     var originalUrl = req.originalUrl,
         method = req.method;
 
-
-    if (!role) {
-        var error = new Error("Role of user not found!");
-        error.status = 401;
-        return next(error);
-    }
-
     if (!(allows && name)) {
-        var error = new Error("User can not access to this page!");
-        error.status = 401;
-        return next(error);
+        var err = new Error("User can not access to this page!");
+        err.status = 403;
+        err.href = "admin/403"
+        return next(err);
     }
 
     if (!(originalUrl && method)) {
-        var error = new Error("User can not access to this page!");
-        error.status = 401;
-        return next(error);
+        var err = new Error("User can not access to this page!");
+        err.status = 403;
+        err.href = "admin/403"
+        return next(err);
     }
 
     if (allows.length == 0) {
-        var error = new Error("User can not access to this page!");
-        error.status = 401;
-        return next(error);
+        var err = new Error("User can not access to this page!");
+        err.status = 403;
+        err.href = "admin/403"
+        return next(err);
     }
 
     _.forEach(allows, (allow) => {
@@ -87,15 +98,17 @@ var requireRole = (req, res, next) => {
                 resources = allow.resources;
 
             if (!(permissions && resources)) {
-                var error = new Error("User can not access to this page!");
-                error.status = 401;
-                return next(error);
+                var err = new Error("User can not access to this page!");
+                err.status = 403;
+                err.href = "admin/403"
+                return next(err);
             }
 
             if (permissions.length == 0) {
-                var error = new Error("User can not access to this page!");
-                error.status = 401;
-                return next(error);
+                var err = new Error("User can not access to this page!");
+                err.status = 403;
+                err.href = "admin/403"
+                return next(err);
             }
 
             //full permissions
@@ -108,14 +121,17 @@ var requireRole = (req, res, next) => {
                     if ((permission.toLowerCase() == method.toLowerCase()) && (resources.toLowerCase() == originalUrl.toLowerCase())) {
                         return next();
                     } else {
-                        var error = new Error("User can not access to this page!");
-                        error.status = 401;
-                        return next(error);
+                        var err = new Error("User can not access to this page!");
+                        err.status = 403;
+                        err.href = "admin/403";
+
+                        return next(err);
                     }
                 } else {
-                    var error = new Error("User can not access to this page!");
-                    error.status = 401;
-                    return next(error);
+                    var err = new Error("User can not access to this page!");
+                    err.status = 403;
+                    err.href = "admin/403";
+                    return next(err);
                 }
             });
         }
