@@ -13,6 +13,7 @@ var requireAuth = (req, res, next) => {
         var err = new Error("Token is required!");
         err.status = 401;
         err.href = "admin/sign-in"
+        
         return next(err);
     }
 

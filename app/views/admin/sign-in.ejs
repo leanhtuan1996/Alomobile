@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<title><%- data.title %></title>
+		<title>Trang đăng nhập - Alomobile Management</title>
 		<meta name="description" content="Droopy is a Dashboard & Admin Site Responsive Template by hencework." />
 		<meta name="keywords" content="admin, admin dashboard, admin template, cms, crm, Droopy Admin, Droopyadmin, premium admin templates, responsive admin, sass, panel, software, ui, visualization, web app, application" />
 		<meta name="author" content="hencework"/>
@@ -95,5 +95,104 @@
 		
 		<!-- Init JavaScript -->
 		<script type="text/javascript" src="/static/admin/js/init.js"></script>
+
+		<script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+		<script type="text/javascript">
+
+			function showNotify(text, type) {
+				switch (type) {
+					case "incorrect":
+						swal({
+							title: "Có lỗi xảy ra",
+							text: text,
+							icon: "error",
+							button: "Thử lại",
+						}); 
+						break;
+					case "lostEmail":
+						swal({
+							title: "Có lỗi xảy ra",
+							text: "Vui lòng nhập email",
+							icon: "error",
+							button: "Đã rõ",
+						}); 
+						break;
+					case "lostPassword":
+					swal({
+							title: "Có lỗi xảy ra",
+							text: "Vui lòng nhập mật khẩu",
+							icon: "error",
+							button: "Đã rõ",
+						}); 
+						break;
+					default:	//no allows permission
+						swal({
+                                    title: "Đăng nhập thất bại",
+                                    text: text,
+                                    icon: "error",
+                                    buttons: {
+                                        cancel: "Quay về trang bán hàng",
+                                        reTry: "Thử lại tài khoản khác",
+                                    },
+                                })
+                                .then((value) => {
+                                    switch (value) {                                    
+                                        case "reTry":
+                                            window.location.reload()
+                                            break;                                    
+                                        default:
+                                            window.location.href = '/'
+                                            break;
+                                    }
+                                }); 
+						break;
+				}
+			}
+		
+			$(document).ready(($) => {
+				//validate parameters
+				$('form').submit((e) => {
+
+					e.preventDefault();
+
+					var email = $('#email').val(),
+						password = $('#password').val();
+
+					if (!email || email == 'undefined') {
+						showNotify('', 'lostEmail');
+						return
+					}
+
+					if (!password || password == 'undefined') {
+						showNotify('', 'lostPassword');
+						return
+					}
+
+					$.post('/admin/sign-in', {
+						email: email,
+						password: password
+					}, (data) => {
+						window.console.log(data);
+						if (data.error) {
+							showNotify(data.error, data.errorType);
+							return
+						} else {
+							window.location.href = '/admin'
+						}
+					}).error((err) => {
+						window.console.log(err);
+						swal({
+							title: "Có lỗi xảy ra",
+							text: err,
+							icon: "error",
+							button: "Thử lại",
+						}); 
+					});
+
+				});
+			});
+			
+		</script>
 	</body>
 </html>

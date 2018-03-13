@@ -32,45 +32,52 @@ var signIn = (user, result) => {
     });
 
     workflow.on('sign-in', () => {
-        User.findOne({ email: email }, (err, user) => {
-            if (err) {
-                workflow.emit('response', {
-                    error: err
-                });
-                return
-            }
 
-            if (!user) {
-                workflow.emit('response', {
-                    error: 'Tài khoản không tồn tại.'
-                });
-                return
-            }
-
-            if (!user.email) {
-                workflow.emit('response', {
-                    error: 'Email không tồn tại'
-                });
-                return
-            }
-
-            if (!user.password) {
-                workflow.emit('response', {
-                    error: 'Lỗi không xác định, vui lòng thử lại!'
-                });
-                return
-            }
-
-            if (helper.comparePw(password, user.password)) {
-                workflow.emit('response', {
-                    user: user
-                });
-            } else {
-                workflow.emit('response', ({
-                    error: 'Email hoặc mật khẩu không đúng, vui lòng kiểm tra lại.'
-                }));
-            }
-        });
+        User.findOne({email: email})
+            .populate('role')
+            .exec((err, user) => {
+                if (err) {
+                    workflow.emit('response', {
+                        error: err
+                    });
+                    return
+                }
+    
+                if (!user) {
+                    workflow.emit('response', {
+                        error: 'Tài khoản không tồn tại.',
+                        errorType: 'incorrect'
+                    });
+                    return
+                }
+    
+                if (!user.email) {
+                    workflow.emit('response', {
+                        error: 'Email không tồn tại',
+                        errorType: 'incorrect'
+                    });
+                    return
+                }
+    
+                if (!user.password) {
+                    workflow.emit('response', {
+                        error: 'Lỗi không xác định, vui lòng thử lại!',
+                        errorType: 'incorrect'
+                    });
+                    return
+                }
+    
+                if (helper.comparePw(password, user.password)) {
+                    workflow.emit('response', {
+                        user: user
+                    });
+                } else {
+                    workflow.emit('response', ({
+                        error: 'Email hoặc mật khẩu không đúng, vui lòng kiểm tra lại.',
+                        errorType: 'incorrect'
+                    }));
+                }
+            });
     });
 
     workflow.emit('validate-parameters');

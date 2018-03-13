@@ -11,6 +11,7 @@ var Type = require('../app/controllers/admin/index').type;
 
 var multer = require('multer');
 var auth = require('../app/middleware/index').authenticate;
+var helper = require('../app/helpers/index').helper;
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -41,7 +42,6 @@ var upload = multer({
 router.get('/', [auth.requireAuth, auth.requireRole], (req, res) => {
 
     Dashboard.dashboard((result) => {
-        console.log(result);
         res.render('dashboard', {
             data: {
                 title: "Trang quản trị - Alomobile",
@@ -58,6 +58,32 @@ router.get('/sign-in', (req, res) => {
             title: "Trang đăng nhập - Alomobile Manager"
         }
     });
+});
+
+router.post('/sign-in', (req, res) => {
+    User.signIn(req.body, (result) => {
+        if (result.error) {
+            res.json(result);
+        } else {
+            if (result.user) {
+                var id = result.user._id
+
+                var token = helper.encodeToken(id);
+                //set token in session
+                req.session.token = token
+
+                res.json({
+                    user: result.user,
+                    token: token,
+                });
+            }
+        }
+    });
+});
+
+router.get('/sign-out', (req, res) => {
+    req.session.destroy();
+    res.redirect('/admin');
 });
 
 router.get('/forgot-password', (req, res) => {
@@ -160,7 +186,7 @@ router.get('/products/getCount', [auth.requireAuth, auth.requireRole], (req, res
 });
 
 router.get('/product/search/text=:text', [auth.requireAuth, auth.requireRole], (req, res) => {
-    
+
     Product.searchProduct(req.params.text, (response) => {
         console.log(response);
         res.json(response);
@@ -197,7 +223,7 @@ router.get('/product/edit/:idProduct', [auth.requireAuth, auth.requireRole], (re
                     })
                 });
             });
-        });        
+        });
     });
 });
 
@@ -287,6 +313,6 @@ router.get('/404', (req, res) => {
 
 router.get('/403', (req, res) => {
     res.render('admin/403');
-}); 
+});
 
 module.exports = router;
