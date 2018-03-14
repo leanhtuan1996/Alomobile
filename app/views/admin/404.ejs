@@ -50,8 +50,8 @@
 									<div class="col-sm-12 col-xs-12">
 										<div class="mb-30">
 											<span class="block error-head text-center txt-success mb-10">404</span>
-											<span class="text-center nonecase-font mb-20 block error-comment">Trang không tìm thấy</span>
-											<p class="text-center">The URL may be misplaced or the page you are looking is no longer available.</p>
+											<span class="text-center nonecase-font mb-20 block error-comment"><%- data.title || "Trang không tìm thấy" %></span>
+											<p class="text-center"><%- data.text || "The URL may be misplaced or the page you are looking is no longer available."  %></p>
 										</div>	
 									</div>	
 								</div>

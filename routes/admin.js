@@ -208,6 +208,16 @@ router.get('/product/:idProduct', [auth.requireAuth, auth.requireRole], (req, re
 
 router.get('/product/edit/:idProduct', [auth.requireAuth, auth.requireRole], (req, res) => {
     Product.getProduct(req.params.idProduct, (r1) => {
+
+        if (r1.error) {
+            res.render('admin/404', {
+                data: {
+                    text: `Sản phẩm không tìm thấy hoặc có lỗi không xác định. Nhấn vào <a href="/admin/product/edit/${req.params.idProduct}">đây</a> để thử lại.`
+                }
+            });
+            return
+        }
+
         Type.getTypes((r2) => {
             Category.getCategories((r3) => {
                 Brand.getBrands((r4) => {
