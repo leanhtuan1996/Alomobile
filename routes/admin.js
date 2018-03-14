@@ -325,4 +325,15 @@ router.get('/403', (req, res) => {
     res.render('admin/403');
 });
 
+/** INBOX ROUTERS */
+
+router.get('/inbox', (req, res) => {
+    res.render('admin/inbox/inbox');
+});
+
+/** CHAT ROUTERS */
+router.get('/chat', (req, res) => {
+    res.render('admin/chat/chat');
+})
+
 module.exports = router;
