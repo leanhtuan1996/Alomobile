@@ -9,6 +9,7 @@ var config = require("config");
 var session = require("express-session");
 var MongoStore = require("connect-mongo")(session);
 var mongoose = require('mongoose');
+var auth = require('./app/middleware').authenticate;
 
 var index = require('./routes/index');
 var user = require('./routes/user');
@@ -16,6 +17,8 @@ var error = require('./routes/error');
 var admin = require('./routes/admin');
 var product = require('./routes/product');
 var api = require('./routes/api');
+var crawl = require('./routes/crawl');
+
 
 var app = express();
 
@@ -55,7 +58,8 @@ app.use('/', user);
 app.use('/', error);
 app.use('/', product);
 app.use('/admin', admin);
-//app.use('/api/v1/', api);
+app.use('/api/v1/', api);
+app.use('/crawl', crawl);
 
 // set ssl
 var ssl = {
@@ -142,7 +146,9 @@ app.use(function (err, req, res, next) {
   }
 });
 
+
 function print (path, layer) {
+    
   if (layer.route) {
     layer.route.stack.forEach(print.bind(null, path.concat(split(layer.route.path))))
   } else if (layer.name === 'router' && layer.handle.stack) {
@@ -150,7 +156,7 @@ function print (path, layer) {
   } else if (layer.method) {
     console.log('%s /%s',
       layer.method.toUpperCase(),
-      path.concat(split(layer.regexp)).filter(Boolean).join('/'))
+      path.concat(split(layer.regexp)).filter(Boolean).join('/'))     
   }
 }
 
@@ -170,7 +176,7 @@ function split (thing) {
   }
 }
 
-app._router.stack.forEach(print.bind(null, []))
+
 
 module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
 

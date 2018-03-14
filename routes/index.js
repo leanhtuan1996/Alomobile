@@ -44,35 +44,136 @@ router.get('/', (req, res) => {
 });
 
 router.get('/delivery', (req, res) => {
-  res.render('menu/delivery', {
-    data: {
-      currentUser: req.session.currentUser
-    }
-  });
+  if (req.session.token) {
+    User.verify(req.session.token, (cb) => {
+      var data = {};
+
+      if (cb.error) {
+        req.session.destroy();
+      }
+
+      if (!cb.user) {
+        res.render('menu/delivery', {
+          data: {
+
+          }
+        });
+        return
+      }
+      res.render('menu/delivery', {
+        data: {
+          user: cb.user
+        }
+      });
+
+    });
+  } else {
+    res.render('menu/delivery', {
+      data: {
+
+      }
+    });
+  }
 });
 
 router.get('/about-us', (req, res) => {
-  res.render('menu/about-us', {
-    data: {
-      currentUser: req.session.currentUser
-    }
-  });
+  if (req.session.token) {
+    User.verify(req.session.token, (cb) => {
+      var data = {};
+
+      if (cb.error) {
+        req.session.destroy();
+      }
+
+      if (!cb.user) {
+        res.render('menu/about-us', {
+          data: {
+
+          }
+        });
+        return
+      }
+      res.render('menu/about-us', {
+        data: {
+          user: cb.user
+        }
+      });
+
+    });
+  } else {
+    res.render('menu/about-us', {
+      data: {
+
+      }
+    });
+  }
 });
 
 router.get('/legal-notice', (req, res) => {
-  res.render('menu/legal-notice', {
-    data: {
-      currentUser: req.session.currentUser
-    }
-  });
+  if (req.session.token) {
+    User.verify(req.session.token, (cb) => {
+      var data = {};
+
+      if (cb.error) {
+        req.session.destroy();
+      }
+
+      if (!cb.user) {
+        res.render('menu/legal-notice', {
+          data: {
+
+          }
+        });
+        return
+      }
+      res.render('menu/legal-notice', {
+        data: {
+          user: cb.user
+        }
+      });
+
+    });
+  } else {
+    res.render('menu/legal-notice', {
+      data: {
+
+      }
+    });
+  }
+
 });
 
 router.get('/terms-and-conditions-of-use', (req, res) => {
-  res.render('menu/terms-and-conditions-of-use', {
-    data: {
-      currentUser: req.session.currentUser
-    }
-  });
+  if (req.session.token) {
+    User.verify(req.session.token, (cb) => {
+      var data = {};
+
+      if (cb.error) {
+        req.session.destroy();
+      }
+
+      if (!cb.user) {
+        res.render('menu/terms-and-conditions-of-use', {
+          data: {
+
+          }
+        });
+        return
+      }
+      res.render('menu/terms-and-conditions-of-use', {
+        data: {
+          user: cb.user
+        }
+      });
+
+    });
+  } else {
+    res.render('menu/terms-and-conditions-of-use', {
+      data: {
+
+      }
+    });
+  }
 });
 
 module.exports = router;

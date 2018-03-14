@@ -156,19 +156,71 @@ router.get('/my-account', (req, res) => {
 });
 
 router.get('/password-recovery', (req, res) => {
-  res.render('password-recovery', {
-    data: {
-      currentUser: req.session.currentUser
-    }
-  });
+
+  if (req.session.token) {
+    User.verify(req.session.token, (cb) => {
+      var data = {};
+
+      if (cb.error) {
+        req.session.destroy();
+      }
+
+      if (!cb.user) {
+        res.render('password-recovery', {
+          data: {
+
+          }
+        });
+        return
+      }
+      res.render('password-recovery', {
+        data: {
+          user: cb.user
+        }
+      });
+
+    });
+  } else {
+    res.render('password-recovery', {
+      data: {
+
+      }
+    });
+  }
 });
 
 router.get('/cart', (req, res) => {
-  res.render('cart', {
-    data: {
-      currentUser: req.session.currentUser
-    }
-  });
+
+  if (req.session.token) {
+    User.verify(req.session.token, (cb) => {
+      var data = {};
+
+      if (cb.error) {
+        req.session.destroy();
+      }
+
+      if (!cb.user) {
+        res.render('cart', {
+          data: {
+
+          }
+        });
+        return
+      }
+      res.render('cart', {
+        data: {
+          user: cb.user
+        }
+      });
+
+    });
+  } else {
+    res.render('cart', {
+      data: {
+
+      }
+    });
+  }
 });
 
 module.exports = router;

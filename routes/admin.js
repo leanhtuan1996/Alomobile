@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var _ = require('lodash');
+var app = require('../app').app;
 
 var Dashboard = require('../app/controllers/admin/index').dashboard;
 var Product = require('../app/controllers/admin/index').product;
@@ -196,6 +197,16 @@ router.get('/product/search/text=:text', [auth.requireAuth, auth.requireRole], (
 router.get('/product/:idProduct', [auth.requireAuth, auth.requireRole], (req, res) => {
 
     Product.getProduct(req.params.idProduct, (response) => {
+     
+        if (response.error) {
+            res.render('admin/404', {
+                data: {
+                    text: `Sản phẩm không tìm thấy hoặc có lỗi không xác định. Nhấn vào <a href="${req.originalUrl}">đây</a> để thử lại.`
+                }
+            });
+            return
+        }
+
         res.render('admin/detail-product', {
             data: {
                 title: "Xem chi tiết sản phẩm",
@@ -212,7 +223,7 @@ router.get('/product/edit/:idProduct', [auth.requireAuth, auth.requireRole], (re
         if (r1.error) {
             res.render('admin/404', {
                 data: {
-                    text: `Sản phẩm không tìm thấy hoặc có lỗi không xác định. Nhấn vào <a href="/admin/product/edit/${req.params.idProduct}">đây</a> để thử lại.`
+                    text: `Sản phẩm không tìm thấy hoặc có lỗi không xác định. Nhấn vào <a href="${req.originalUrl}">đây</a> để thử lại.`
                 }
             });
             return
@@ -328,12 +339,82 @@ router.get('/403', (req, res) => {
 /** INBOX ROUTERS */
 
 router.get('/inbox', (req, res) => {
-    res.render('admin/inbox/inbox');
+   // res.render('admin/inbox/inbox');
+   res.redirect('http://webmail.alomobile.tech');
 });
 
 /** CHAT ROUTERS */
 router.get('/chat', (req, res) => {
     res.render('admin/chat/chat');
 })
+
+router.get('/get-all-route', [auth.requireAuth, auth.requireRole], (req, res) => {
+    if (req.app) {
+        var route, routes = [];
+        req.app._router.stack.forEach(function(middleware){
+            if(middleware.route){ // routes registered directly on the app
+                routes.push(middleware.route);
+            } else if(middleware.name === 'router'){ // router middleware 
+                middleware.handle.stack.forEach(function(handler){
+                    route = handler.route;
+                    route && routes.push(route);
+                });
+            }
+        });
+        
+        var response = [];
+
+        for (let i = 0; i < routes.length; i++) {
+            const element = routes[i];
+            var methods = "";
+            for(var method in element.methods){
+                methods += method + ", ";
+            }
+
+            response.push({
+                method: methods,
+                path: element.path
+            });
+
+            if (i == routes.length - 1) {
+                res.json(response);
+            }
+        }
+
+    } else {
+        res.json({})
+    }
+});
+
+
+function print (path, layer) {
+    console.log(i);
+    if (layer.route) {
+      layer.route.stack.forEach(print.bind(null, path.concat(split(layer.route.path))))
+    } else if (layer.name === 'router' && layer.handle.stack) {
+      layer.handle.stack.forEach(print.bind(null, path.concat(split(layer.regexp))))
+    } else if (layer.method) {
+      console.log(i++ + '%s /%s',
+        layer.method.toUpperCase(),
+        path.concat(split(layer.regexp)).filter(Boolean).join('/'))     
+    }
+  }
+  
+  function split (thing) {
+    if (typeof thing === 'string') {
+      return thing.split('/')
+    } else if (thing.fast_slash) {
+      return ''
+    } else {
+      var match = thing.toString()
+        .replace('\\/?', '')
+        .replace('(?=\\/|$)', '$')
+        .match(/^\/\^((?:\\[.*+?^${}()|[\]\\\/]|[^.*+?^${}()|[\]\\\/])*)\$\//)
+      return match
+        ? match[1].replace(/\\(.)/g, '$1').split('/')
+        : '<complex:' + thing.toString() + '>'
+    }
+  }
+
 
 module.exports = router;
