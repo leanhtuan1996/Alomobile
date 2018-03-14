@@ -32,7 +32,7 @@
                                     <% if (data.categories) { %>
                                         <% data.categories.forEach((category) => { %>
                                             <% var subCategories = category.subCategories; %>
-                                                <% if (subCategories && subCategories.length != 0 && subCategories[0] != null){ %>
+                                                <% if (subCategories && subCategories.length != 0){ %>    
                                                     <div class="pt_menu">
                                                         <div class="parentMenu">
                                                             <a href="/<%- category.alias %>">
