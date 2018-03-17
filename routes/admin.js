@@ -46,7 +46,7 @@ router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
     Dashboard.dashboard((result) => {
         res.render('dashboard', {
             data: {
-                title: "Trang quản trị - Alomobile",
+                title: "Alomobile Control Panel - Trang quản trị",
                 countProducts: result.countProducts,
                 countUsers: result.countUsers
             }
@@ -57,7 +57,7 @@ router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
 router.get('/admin/sign-in', (req, res) => {
     res.render('admin/sign-in', {
         data: {
-            title: "Trang đăng nhập - Alomobile Manager"
+            title: "Alomobile Control Panel > Trang đăng nhập"
         }
     });
 });
@@ -91,16 +91,17 @@ router.get('/admin/sign-out', (req, res) => {
 router.get('/admin/forgot-password', (req, res) => {
     res.render('admin/forgot-password', {
         data: {
-            title: "Quên mật khẩu- Alomobile Manager"
+            title: "Alomobile Control Panel > Quên mật khẩu"
         }
     });
 });
 
 router.get('/admin/users', [auth.requireAuth, auth.requireRole], (req, res) => {
     User.getUsers((result) => {
-        res.send({
+        res.json({
             error: result.error,
-            user: result.user
+            user: result.user,
+            title: "Alomobile Control Panel > Trang quản lý người dùng"
         });
     });
 });
@@ -112,7 +113,7 @@ router.get('/admin/users', [auth.requireAuth, auth.requireRole], (req, res) => {
 router.get('/admin/products', [auth.requireAuth, auth.requireRole], (req, res) => {
     res.render('product', {
         data: {
-            title: "Trang quản lý sản phẩm - Alomobile"
+            title: "Alomobile Control Panel > Trang quản lý sản phẩm"
         }
     });
 });
@@ -151,7 +152,7 @@ router.get('/admin/product/add', [auth.requireAuth, auth.requireRole], (req, res
             Type.getTypes((r2) => {
                 res.render('add-product', {
                     data: {
-                        title: "Thêm sản phẩm mới - Alomobile",
+                        title: "Alomobile Control Panel > Thêm sản phẩm mới",
                         user: req.user,
                         categories: r.categories || [],
                         brands: r1.brands || [],
@@ -165,7 +166,7 @@ router.get('/admin/product/add', [auth.requireAuth, auth.requireRole], (req, res
 
 router.post('/admin/product/add', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
     Product.newProduct(req.body, (result) => {
-        res.send(result);
+        res.json(result);
     });
 });
 
@@ -188,17 +189,13 @@ router.get('/admin/products/getCount', [auth.requireAuth, auth.requireRole], (re
 });
 
 router.get('/admin/products/search/text=:text', [auth.requireAuth, auth.requireRole], (req, res) => {
-
     Product.searchProduct(req.params.text, (response) => {
-        console.log(response);
         res.json(response);
     });
 });
 
 router.get('/admin/product/:idProduct', [auth.requireAuth, auth.requireRole], (req, res) => {
-
     Product.getProduct(req.params.idProduct, (response) => {
-
         if (response.error) {
             res.render('admin/404', {
                 data: {
@@ -210,7 +207,7 @@ router.get('/admin/product/:idProduct', [auth.requireAuth, auth.requireRole], (r
 
         res.render('admin/detail-product', {
             data: {
-                title: "Xem chi tiết sản phẩm",
+                title: "Alomobile Control Panel > Xem chi tiết sản phẩm",
                 error: response.error,
                 product: response.product
             }
@@ -256,7 +253,7 @@ router.get('/admin/categories', [auth.requireAuth, auth.requireRole], (req, res)
     Category.getCategories((result) => {
         res.render('category', {
             data: {
-                title: "Quản lý danh mục - Alomobile",
+                title: "Alomobile Control Panel > Trang Quản lý danh mục",
                 currentUser: req.session.currentUser,
                 categories: result.categories || []
             }
@@ -266,7 +263,7 @@ router.get('/admin/categories', [auth.requireAuth, auth.requireRole], (req, res)
 
 router.post('/admin/category/add', [auth.requireAuth, auth.requireRole], upload.single('icon'), (req, res) => {
     Category.addCategory(req.body, (result) => {
-        res.send({
+        res.json({
             error: result.error,
             success: true,
         });
@@ -275,7 +272,7 @@ router.post('/admin/category/add', [auth.requireAuth, auth.requireRole], upload.
 
 router.delete('/admin/category/delete', [auth.requireAuth, auth.requireRole], (req, res) => {
     Category.delCategory(req.body, (result) => {
-        res.send({
+        res.json({
             error: result.error
         });
     });
@@ -283,7 +280,7 @@ router.delete('/admin/category/delete', [auth.requireAuth, auth.requireRole], (r
 
 router.put('/admin/category/edit', [auth.requireAuth, auth.requireRole], upload.single('new_icon'), (req, res) => {
     Category.editCategory(req.body, (result) => {
-        res.send(result);
+        res.json(result);
     })
 });
 //#endregion CATEGORY ROUTERS
@@ -293,7 +290,7 @@ router.get('/admin/brands', [auth.requireAuth, auth.requireRole], (req, res) => 
     Brand.getBrands((result) => {
         res.render('brand', {
             data: {
-                title: "Quản lý thương hiệu - Alomobile",
+                title: "Alomobile Control Panel > Trang quản lý thương hiệu",
                 currentUser: req.session.currentUser,
                 brands: result.brands || []
             }
@@ -303,7 +300,7 @@ router.get('/admin/brands', [auth.requireAuth, auth.requireRole], (req, res) => 
 
 router.post('/admin/brand/add', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
     Brand.newBrand(req.body, (result) => {
-        res.send({
+        res.json({
             error: result.error
         });
     });
@@ -311,7 +308,7 @@ router.post('/admin/brand/add', [auth.requireAuth, auth.requireRole], upload.sin
 
 router.put('/admin/brand/edit', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
     Brand.editBrand(req.body, (result) => {
-        res.send({
+        res.json({
             error: result.error
         });
     });
@@ -319,7 +316,7 @@ router.put('/admin/brand/edit', [auth.requireAuth, auth.requireRole], upload.sin
 
 router.delete('/admin/brand/delete', [auth.requireAuth, auth.requireRole], (req, res) => {
     Brand.deleteBrand(req.body, (result) => {
-        res.send({
+        res.json({
             error: result.error
         });
     });
@@ -482,7 +479,7 @@ router.get('/admin/roles', [auth.requireAuth, auth.requireRole], (req, res) => {
     Role.getRoles((result) => {
         res.render('admin/role', {
             data: {
-                title: "Trang phân quyền người dùng - Alomobile Manager",
+                title: "Alomobile Control Panel > Trang phân quyền người dùng",
                 error: result.error,
                 roles: result.roles
             }
