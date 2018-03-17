@@ -396,7 +396,16 @@
                                 $('#select-all-footer').prop('checked', e.currentTarget.checked);
                             })
 
-                            //show model add role
+                            $("#select-all-footer").click((e) => {
+                                                              
+                                                              var rows = tableAdd.rows().nodes();                               
+                                                              $('input[type="checkbox"]', rows).prop('checked', e.currentTarget.checked);   
+                                                              $('#select-all-footer').prop('checked', e.currentTarget.checked);
+                                                          })
+
+                           
+                            
+                           //show model add role
                             $('#role-add').click((e) => {
 
                                 var bodyTable = $('#table-role-add > tbody');
@@ -417,7 +426,7 @@
                                                         <label for="${router.path}"></label>  
 												    </div>    
                                                 </td>    
-                                                <td>${router.path}</td>                                         
+                                                <td><label class="router-path" for="${router.path}">${router.path}</label></td>                                         
                                             `
                                             var tdMethod = `<td>`;
 
@@ -448,36 +457,57 @@
 
                                 var modelNew = $("#role-add-model");
                                 var name = $(modelNew).find('#role-name').val();
-
-                                var newRole = {
-                                    name: name
-                                }
-
                                 var routerChecked = [];
 
+                                //find routers that checked
                                 var rows = tableAdd.rows().nodes();
                                 rows.each((row, index) => {
                                     var input = $(row).find('input[type="checkbox"]')[0];
                                     if (input.checked) {
-                                        console.log($(input.parentElement.parentElement.parentElement));
+
+                                        //find path
+                                        var path = $(input.parentElement.parentElement.parentElement).find('label.router-path').html();
+
+                                        //find methods
+                                        var divMethods = $(input.parentElement.parentElement.parentElement).find('input.select-method');
+                                        var methods = [];                                        
+                                        
+                                        if (divMethods && divMethods.length > 0) {
+                                            divMethods.each((i, e) => {
+                                                //var m = $(e).attr('data-method');
+                                                if (e.checked) {
+                                                    methods.push($(e).attr('data-method'));
+                                                }
+                                            });
+                                        }
+
+                                        routerChecked.push({
+                                            resources: path,
+                                            permissions: methods
+                                        });
                                     }
-                                });
+                                });    
 
-                                // $.ajax({
-                                //     url: "/admin/role/new",
-                                //     method: "POST",
-                                //     data: newRole,
-                                //     success: (data) => {
-                                //         if (data.error) {
+                                var parameters = {
+                                    name: name,
+                                    allows: JSON.stringify(routerChecked)
+                                } 
 
-                                //         } else {
-                                //             window.location.reload();
-                                //         }
-                                //     },
-                                //     error: (err) => {
-                                //         window.console.log(err);
-                                //     }
-                                // })
+                                $.ajax({
+                                    url: "/admin/role/new",
+                                    method: "POST",
+                                    data: parameters,
+                                    success: (data) => {
+                                        if (data.error) {
+
+                                        } else {
+                                            window.location.reload();
+                                        }
+                                    },
+                                    error: (err) => {
+                                        window.console.log(err);
+                                    }
+                                })
                             });
 
                             $('#btn-edit-role').click((e) => {

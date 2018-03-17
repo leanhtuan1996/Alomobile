@@ -502,7 +502,7 @@ router.get('/admin/role/:id', [auth.requireAuth, auth.requireRole], (req, res) =
     });
 });
 
-router.post('/admin/role/new', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.post('/admin/role/new', [auth.requireAuth, auth.requireRole], (req, res) => {  
     Role.newRole(req.body, (result) => {
         res.json(result);
     });

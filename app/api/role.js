@@ -144,7 +144,7 @@ var editRole = (roleEdited, result) => {
 
 var newRole = (newRole, result) => {
     var name = newRole.name,
-        allows = newRole.allows || [];
+        allows = [];
 
     var workflow = new event.EventEmitter();
 
@@ -161,6 +161,10 @@ var newRole = (newRole, result) => {
                 error: "Name of Role is required!"
             });
             return
+        }
+
+        if (newRole.allows) {
+            allows = JSON.parse(newRole.allows)
         }
 
         workflow.emit('new-role');
