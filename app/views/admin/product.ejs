@@ -24,7 +24,7 @@
 							<h5 class="txt-dark">Trang quản trị sản phẩm</h5>
 						</div>
 						<div class="col-lg-3" style="float: right">
-							<a class="btn btn-primary" style="float: right" href="/admin/products/add">Thêm sản phẩm</a>
+							<a class="btn btn-primary" style="float: right" href="/admin/product/add">Thêm sản phẩm</a>
 						</div>
 					</div>
 					<!-- /Title -->
@@ -318,7 +318,7 @@
 					return
 				}
 
-				$.get(`./product/search/text=${text.trim()}`, (data) => {
+				$.get(`./products/search/text=${text.trim()}`, (data) => {
 					var products = data.products;					
 					updateDataProducts(products);					
 				});
@@ -388,7 +388,5 @@
 			});
 		});
 	</script>
-
 </body>
-
 </html>

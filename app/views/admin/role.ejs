@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <% include layouts/header %>
+        <!-- Bootstrap Dropify CSS -->
+        <link href="/static/admin/libs/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css" />
+        <!-- Bootstrap Colorpicker CSS -->
+        <link href="/static/admin/libs/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css"
+            rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <!--Preloader-->
+    <div class="preloader-it">
+        <div class="la-anim-1"></div>
+    </div>
+    <!--/Preloader-->
+    <div class="wrapper theme-5-active pimary-color-green">
+        <% include layouts/menu %>
+            <!-- Main Content -->
+            <div class="page-wrapper">
+                <div class="container-fluid">
+                    <!-- Title -->
+                    <div class="row heading-bg">
+                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12" style="width: 100%">
+                            <h5 class="txt-dark" style="float: left;"><%- data.title || "Trang quản lý phân quyền" %></h5>
+                            <button type="button" class="btn btn-primary" style="float: right" id="role-add">Thêm mới</button>
+                        </div>
+                    </div>
+                    <!-- /Title -->
+
+                    <!-- MODEL ADD ROLE  -->
+                    <div class="modal fade" id="role-add-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h5 class="modal-title" style="text-align: center;">Thêm mới</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="form-add-role" action="">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-12" id="alert-error">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-group-name">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="recipient-name" class="control-label mb-10">Tên vai trò</label>
+                                                    <input type="text" class="form-control" id="role-name" placeholder="Admin">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <h5 class="modal-title" style="text-align: center;">Các chức năng</h5>
+                                            <div class="row">
+                                                <div class="col-md-12" id="roles">
+                                                        <div class="table-responsive">
+                                                                <table class="table display mb-30" cellspacing="0" width="100%" id="table-role-add">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="select-all" style="width: 40px;"> 
+                                                                                <div class="checkbox checkbox-success">
+                                                                                    <input id="select-all-header" type="checkbox">
+                                                                                    <label for="select-all-header"></label>
+                                                                                   
+                                                                                </div>
+                                                                            </th>
+                                                                            <th>Chức năng</th>
+                                                                            <th>Phương thức</th>  
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>               
+                                                                        
+                                                                    </tbody>
+                                                                    <tfoot>
+                                                                        <tr>
+                                                                            <th class="select-all" style="width: 40px;"> 
+                                                                                <div class="checkbox checkbox-success">
+                                                                                       
+                                                                                                <input id="select-all-footer" type="checkbox">
+                                                                                                <label for="select-all-footer"></label>
+                                                                                                
+                                                                                </div>
+                                                                            </th>
+                                                                            <th>Chức năng</th>
+                                                                            <th>Phương thức</th>
+                                                                        </tr>
+                                                                    </tfoot>
+                                                                </table>
+                                                            </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-danger btn-save-changes" class="form-control-submit" id="btn-add-role"> Save changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal -->
+
+                     <!-- MODEL EDIT ROLE  -->
+                     <div class="modal fade" id="role-edit-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h5 class="modal-title" style="text-align: center;">Chỉnh sửa quyền</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="form-edit-role" action="">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-12" id="alert-error">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-group-id">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="recipient-name" class="control-label mb-10">#</label>
+                                                    <input type="text" class="form-control disabled" id="role-id">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-group-name">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label for="recipient-name" class="control-label mb-10">Tên vai trò:</label>
+                                                    <input type="text" class="form-control" id="role-name" placeholder="Admin">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                                <h5 class="modal-title" style="text-align: center;">Các chức năng</h5>
+                                                <div class="row">
+                                                    <div class="col-md-12" id="roles">
+                                                            <div class="table-responsive">
+                                                                    <table class="table display mb-30" cellspacing="0" width="100%" id="table-role-edit">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="select-all" style="width: 40px;"> 
+                                                                                    <div class="checkbox checkbox-success">
+                                                                                           
+                                                                                                    <input class="select-all-header" type="checkbox">
+                                                                                                    <label for="select-all-header"></label>
+                                                                                                   
+                                                                                    </div>
+                                                                                </th>
+                                                                                <th>Chức năng</th>
+                                                                                <th>Phương thức</th>  
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>               
+                                                                            
+                                                                        </tbody>
+                                                                        <tfoot>
+                                                                            <tr>
+                                                                                <th style="width: 40px;"> 
+                                                                                    <div class="checkbox checkbox-success">
+                                                                                          
+                                                                                                    <input class="select-all-footer" type="checkbox">
+                                                                                                    <label for="select-all-footer"></label>
+                                                                                                   
+                                                                                    </div>
+                                                                                </th>
+                                                                                <th>Chức năng</th>
+                                                                                <th>Phương thức</th>
+                                                                            </tr>
+                                                                        </tfoot>
+                                                                    </table>
+                                                                </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-danger btn-save-changes" class="form-control-submit" id="btn-edit-role"> Save changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal -->
+
+                    <!-- Row -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default card-view">
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body row">
+                                        <div class="table-wrap">
+                                            <div class="table-responsive">
+                                                <table class="table display mb-30" cellspacing="0" width="100%" id="table-role">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Vai trò</th>
+                                                            <th>Các quyền</th>  
+                                                            <th>Trạng thái</th>
+                                                            <th>Chức năng</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>               
+                                                        <% var roles = data.roles %>     
+                                                        <% if (roles && roles.length > 0) { %>
+                                                            <% roles.forEach((role) => { %>
+                                                                <tr role="row" data-id-role="<%- role._id || "" %>"> 
+                                                                    <td class="txt-dark td-id">
+                                                                        <%- role._id || "" %>
+                                                                    </td>
+                                                                    <td class="txt-dark td-name">
+                                                                        <%- role.name || "" %>
+                                                                    </td>
+                                                                    <td class="td-routers">
+                                                                        <a href="javascript: void(0)" style="font-size: 14px;" class="view-detail-role">Xem các quyền<a>
+                                                                    </td>
+                                                                    <td class="td-icon status-role">
+                                                                        <span class="label label-success font-weight-100">ACTIVE</span>
+                                                                    </td>
+                                                                    <td class="action-role">
+                                                                        <a href="javascript:void(0)" class="text-inverse pr-10 edit-role" title="Chỉnh sửa vai trò này">
+                                                                            <i class="zmdi zmdi-edit txt-warning"></i>
+                                                                        </a>
+                                                                        <a href="javascript:void(0)" class="text-inverse delete-role" title="Xoá vai trò này">
+                                                                            <i class="zmdi zmdi-delete txt-danger"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            <% }); %>
+                                                        <% } %>                                    
+                                                        
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Vai trò</th>
+                                                            <th>Các quyền</th>  
+                                                            <th>Trạng thái</th>
+                                                            <th>Chức năng</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Row -->
+                        <!-- Footer -->
+                        <footer class="footer container-fluid pl-30 pr-30">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p>2018 &copy; Droopy. Pampered by Hencework</p>
+                                </div>
+                            </div>
+                        </footer>
+                        <!-- /Footer -->    
+                    </div>
+                    <!-- /Main Content -->
+                </div>
+                <!-- /#wrapper -->
+                <% include layouts/footer %>
+                <script type="text/javascript" src="/static/admin/libs/dropify/dist/js/dropify.min.js"></script>
+                <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                <script type="text/javascript">
+
+                    var table = $('#table-role').DataTable();
+
+                    var tableAdd = $('#table-role-add').DataTable({
+                        "columnDefs": [{
+                            "targets": 0,
+                            "orderable": false,
+                            "width": "20%"
+                        }]
+                    });
+                    var tableEdit = $('#table-role-edit').DataTable({
+                        "columnDefs": [ {
+                            "targets": 0,
+                            "orderable": false,
+                            "width": "20%"
+                        }]
+                    });
+
+                    function getRole(id, cb) {
+                        $.get(`/admin/role/${id}`, (data) => {
+                            return cb(data);
+                        }).error((err) => {
+                            window.console.log(err);
+                        });
+                    }
+
+                    function getRouters(cb) {
+                        $.get('/admin/role/get-routers', (data) => {
+                            return cb(data);
+                        }).error((err) => {
+                            window.console.log(err);
+                        })
+                    }
+
+                    function showAlert(id, content) {
+                        var alert = `
+                        <div class="alert alert-danger alert-dismissable">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            ${content}
+                        </div>
+                    `
+                        $(id).append(alert);
+                    }
+
+                    function confirmDelete(cb) {
+                        swal({
+                                title: "Bạn có muốn xoá không?",
+                                text: "Nhấn vào 'Đồng ý' để xoá, không thể phục hồi được sau khi xoá!",
+                                icon: "info",
+                                buttons: {
+                                    cancel: true,
+                                    yes: "Đồng ý"
+                                },
+                            })
+                            .then((value) => {
+                                switch (value) {     
+                                    case "yes":
+                                        return cb(true);
+                                        break;                               
+                                    default:
+                                        return cb(false);
+                                        break;
+                                }
+                            }); 
+                    }
+
+                    jQuery(document).ready(($) => {
+                            
+                            //delete role
+                            $("#table-role tbody").delegate('.delete-role', 'click', (e) => {
+
+                                confirmDelete((result) => {
+                                    if (result == true) {
+                                        var row = $(e.currentTarget.parentElement.parentElement);
+
+                                        if (!row) { return }
+
+                                        var id = $(row).attr('data-id-role');
+                                        
+                                        if (!id) { return }
+
+                                        $.ajax({
+                                            url: "/admin/role/delete",
+                                            method: "DELETE",
+                                            data: {
+                                                id: id
+                                            },
+                                            success: (data) => {
+                                                table.row(row).remove().draw('page');
+                                            },
+                                            error: (err) => {
+                                                alert(err);
+                                            }
+                                        });                                       
+                                    } 
+                                });
+                            });
+
+                            //edit role
+                            $("#table-role tbody").delegate('.edit-role', 'click', (e) => {
+                                var modelEdit = $("#role-edit-model");
+                                //get id role
+                                var id = $(e.currentTarget.parentElement.parentElement).attr('data-id-role');
+
+                                $(modelEdit).find("#role-id").val(id);
+
+                                $("#role-edit-model").modal('show');
+                            });
+
+                            //view detail role
+                            $("#table-role tbody").delegate('.view-detail-role', 'click', (e) => {
+                                var id = $(e.currentTarget.parentElement.parentElement).attr('data-id-role');
+                                alert(id)
+                            });
+
+                            //select all permissions on add & edit model of role
+                            $("#select-all-header").click((e) => {
+                                                              
+                                var rows = tableAdd.rows().nodes();                               
+                                $('input[type="checkbox"]', rows).prop('checked', e.currentTarget.checked);   
+                                $('#select-all-footer').prop('checked', e.currentTarget.checked);
+                            })
+
+                            //show model add role
+                            $('#role-add').click((e) => {
+
+                                var bodyTable = $('#table-role-add > tbody');
+
+                                if (bodyTable.length > 0) {
+                                    tableAdd.rows().remove();
+                                }
+                                $("#role-add-model").modal('show'); 
+                                $.get('/admin/role/get-routers', (routers) => {                                    
+
+                                    routers.forEach((router, index) => {
+                                        if (router.path && router.methods) {
+                                            var tr = `
+                                            <tr data-path="${router.path}">
+                                                <td>
+                                                    <div class="checkbox checkbox-success">
+													    <input class="select-router" id="${router.path}" type="checkbox">
+                                                        <label for="${router.path}"></label>  
+												    </div>    
+                                                </td>    
+                                                <td>${router.path}</td>                                         
+                                            `
+                                            var tdMethod = `<td>`;
+
+                                            router.methods.forEach((m) => {
+                                                tdMethod += `<div class="checkbox checkbox-success">
+													    <input class="select-method" data-method="${m}" id="${router.path}|${m}" type="checkbox">
+                                                        <label for="${router.path}|${m}">${m.toUpperCase()}</label>  
+												    </div> `
+                                            });
+                                            tdMethod += '</td>'
+                                            
+                                            
+                                            tr+= tdMethod
+                                            tr+='</tr>'
+
+                                            tableAdd.row.add($(tr));
+                                        }                                        
+                                    });
+                                    tableAdd.rows().draw();
+                                    //$('#table-role-add').DataTable();
+                                });                                
+                            });
+                             
+                            //add new role
+                            $('#btn-add-role').click((e) => {
+
+                                e.preventDefault();
+
+                                var modelNew = $("#role-add-model");
+                                var name = $(modelNew).find('#role-name').val();
+
+                                var newRole = {
+                                    name: name
+                                }
+
+                                var routerChecked = [];
+
+                                var rows = tableAdd.rows().nodes();
+                                rows.each((row, index) => {
+                                    var input = $(row).find('input[type="checkbox"]')[0];
+                                    if (input.checked) {
+                                        console.log($(input.parentElement.parentElement.parentElement));
+                                    }
+                                });
+
+                                // $.ajax({
+                                //     url: "/admin/role/new",
+                                //     method: "POST",
+                                //     data: newRole,
+                                //     success: (data) => {
+                                //         if (data.error) {
+
+                                //         } else {
+                                //             window.location.reload();
+                                //         }
+                                //     },
+                                //     error: (err) => {
+                                //         window.console.log(err);
+                                //     }
+                                // })
+                            });
+
+                            $('#btn-edit-role').click((e) => {
+                                var modelEdit = $("#role-edit-model");  
+                                var id = $(modelEdit).find("#role-id").val();
+                                var name = $(modelEdit).find("#role-name").val();
+
+
+                                var editedRole = {
+                                    _id: id,
+                                    name: name
+                                }
+
+                                $.ajax({
+                                    url: "/admin/role/edit",
+                                    method: "PUT",
+                                    data: editedRole,
+                                    success: (data) => {
+                                        if (data.error) {
+
+                                        } else {
+                                            window.location.reload();
+                                        }
+                                    },
+                                    error: (err) => {
+
+                                    }
+                                })
+                            });
+
+                            //auto check all methods when selected router
+                            $('#table-role-add tbody').delegate('.select-router', 'click', (e) => {
+                                $(e.currentTarget.parentElement.parentElement.parentElement).find('.select-method').prop('checked', e.currentTarget.checked);
+                            });
+
+                            $('#table-role-add tbody').delegate('.select-method', 'click', (e) => {
+                                 var numMethods = $(e.currentTarget.parentElement.parentElement).find('.checkbox');
+                                 // console.log(e);
+                                 if (numMethods.length == 1) {
+                                     //find row
+                                    var input = $(numMethods[0].parentElement.parentElement).find('input');
+                                    if (input && input.length > 0) {
+                                        $(input[0]).prop('checked', e.currentTarget.checked);
+                                    }
+
+                                 } else if (numMethods.length > 1){
+                                    var input = $(numMethods[0].parentElement.parentElement).find('input');
+                                     if (input && input.length > 0) {
+                                         $(input[0]).prop('checked', true);
+                                     }
+
+                                    var arrays = [];
+                                    numMethods.each((index, checkbox) => {                                        
+                                        arrays.push($(checkbox).find('input')[0].checked)                                   
+                                       
+                                        if (index == numMethods.length - 1) {
+                                            var result = arrays.filter((element) => {
+                                                return element == true
+                                            });
+
+                                            if (result.length == 0) {
+                                                $(input[0]).prop('checked', false)
+                                            } else {
+                                                $(input[0]).prop('checked', true)
+                                            }
+                                        }
+                                    });
+                                    
+                                    ;                                    
+
+                                 } else {
+                                    var input = $(numMethods[0].parentElement.parentElement).find('input');
+                                    if (input && input.length > 0) {
+                                        $(input[0]).prop('checked', false);
+                                    }
+                                 }
+                            });
+                        });
+
+                </script>
+</body>
+
+</html>

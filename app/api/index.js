@@ -4,6 +4,7 @@ var order = require('./order');
 var user = require('./user');
 var product = require('./product');
 var type = require('./type');
+var role = require('./role');
 
 module.exports = {
     brand: brand,
@@ -11,5 +12,6 @@ module.exports = {
     order: order,
     product: product,
     user: user,
-    type: type
+    type: type,
+    role: role
 }

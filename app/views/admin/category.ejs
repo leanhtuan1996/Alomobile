@@ -355,7 +355,7 @@
                                     formData.append("alias", category_alias);
 
                                     $.ajax({
-                                        url: 'categories/add',
+                                        url: 'category/add',
                                         method: 'POST',
                                         data: formData,
                                         processData: false,
@@ -382,8 +382,8 @@
                                     formData.append("new_url", category_url);
 
                                     $.ajax({
-                                        url: 'categories/edit',
-                                        method: 'POST',
+                                        url: 'category/edit',
+                                        method: 'PUT',
                                         data: formData,
                                         processData: false,
                                         contentType: false,
@@ -418,37 +418,45 @@
         
                                         //delete root category
                                         if (id == rootId) {
-                                            $.post(
-                                                'categories/delete',
-                                                {
+                                            $.ajax({
+                                                url: 'category/delete',
+                                                method: 'delete',
+                                                data: {
                                                     id: id
                                                 },
-                                                (data) => {
+                                                success: (data) => {
                                                     var error = data.error;
                                                     if (error) {
-                                                        alert(error);
                                                     } else {
                                                         table.rows(rows).remove().draw('page');
                                                     }
+                                                },
+                                                error: (err) => {
+
                                                 }
-                                            );
+                                            });
+                                            
         
                                         } else {    //non root
-                                            $.post(
-                                                'categories/delete',
-                                                {
+
+                                            $.ajax({
+                                                url: 'category/delete',
+                                                method: 'delete',
+                                                data: {
                                                     id: id,
                                                     rootCategory: rootId
                                                 },
-                                                (data) => {
+                                                success: (data) => {
                                                     var error = data.error;
                                                     if (error) {
-                                                        alert(error);
                                                     } else {
                                                         table.row(row).remove().draw('page');
                                                     }
+                                                },
+                                                error: (err) => {
+
                                                 }
-                                            );
+                                            });
                                         }
                                     }
                                 })

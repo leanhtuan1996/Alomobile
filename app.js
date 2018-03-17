@@ -18,7 +18,7 @@ var admin = require('./routes/admin');
 var product = require('./routes/product');
 var api = require('./routes/api');
 var crawl = require('./routes/crawl');
-
+var g3g4 = require('./routes/g3g4');
 
 var app = express();
 
@@ -57,9 +57,7 @@ app.use('/', index);
 app.use('/', user);
 app.use('/', error);
 app.use('/', product);
-app.use('/admin', admin);
-app.use('/api/v1/', api);
-app.use('/crawl', crawl);
+app.use('/', admin);
 
 // set ssl
 var ssl = {
@@ -80,7 +78,6 @@ app.use((req, res, next) => {
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-
   var err = new Error('Not Found');
   if (req.url && typeof req.url == 'string' && req.url.startsWith('/admin/')) {    
       err.href = 'admin/404';
@@ -145,37 +142,6 @@ app.use(function (err, req, res, next) {
       break;
   }
 });
-
-
-function print (path, layer) {
-    
-  if (layer.route) {
-    layer.route.stack.forEach(print.bind(null, path.concat(split(layer.route.path))))
-  } else if (layer.name === 'router' && layer.handle.stack) {
-    layer.handle.stack.forEach(print.bind(null, path.concat(split(layer.regexp))))
-  } else if (layer.method) {
-    console.log('%s /%s',
-      layer.method.toUpperCase(),
-      path.concat(split(layer.regexp)).filter(Boolean).join('/'))     
-  }
-}
-
-function split (thing) {
-  if (typeof thing === 'string') {
-    return thing.split('/')
-  } else if (thing.fast_slash) {
-    return ''
-  } else {
-    var match = thing.toString()
-      .replace('\\/?', '')
-      .replace('(?=\\/|$)', '$')
-      .match(/^\/\^((?:\\[.*+?^${}()|[\]\\\/]|[^.*+?^${}()|[\]\\\/])*)\$\//)
-    return match
-      ? match[1].replace(/\\(.)/g, '$1').split('/')
-      : '<complex:' + thing.toString() + '>'
-  }
-}
-
 
 
 module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };

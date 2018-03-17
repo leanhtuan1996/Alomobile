@@ -176,4 +176,9 @@ router.get('/terms-and-conditions-of-use', (req, res) => {
   }
 });
 
+/////
+router.get('/zalo-pro', (req, res) => {
+    res.render('zaloPro');
+});
+
 module.exports = router;

@@ -51,14 +51,6 @@ router.get('/504', (req, res) => {
     });
 });
 
-router.get('/504', (req, res) => {
-    res.render('504', {
-        data: {
-            currentUser: req.session.currentUser
-        }
-    });
-});
-
 router.get('/rate-limit', (req, res) => {
     res.render('rate-limit', {
         data: {

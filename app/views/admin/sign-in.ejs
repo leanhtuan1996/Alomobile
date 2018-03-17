@@ -26,7 +26,7 @@
 		</div>
 		<!--/Preloader-->
 		
-		<div class="wrapper  pa-0">
+		<div class="wrapper pa-0">
 			<header class="sp-header">
 				<div class="sp-logo-wrap pull-left">
 					<a href="/admin/">
@@ -119,7 +119,7 @@
 						}); 
 						break;
 					case "lostPassword":
-					swal({
+						swal({
 							title: "Có lỗi xảy ra",
 							text: "Vui lòng nhập mật khẩu",
 							icon: "error",
@@ -173,7 +173,6 @@
 						email: email,
 						password: password
 					}, (data) => {
-						window.console.log(data);
 						if (data.error) {
 							showNotify(data.error, data.errorType);
 							return
@@ -181,7 +180,6 @@
 							window.location.href = '/admin'
 						}
 					}).error((err) => {
-						window.console.log(err);
 						swal({
 							title: "Có lỗi xảy ra",
 							text: err,
@@ -189,7 +187,6 @@
 							button: "Thử lại",
 						}); 
 					});
-
 				});
 			});
 			

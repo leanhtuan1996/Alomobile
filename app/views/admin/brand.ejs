@@ -261,7 +261,7 @@
                                     formData.append("alias", brand_alias);
 
                                     $.ajax({
-                                        url: 'brands/add',
+                                        url: 'brand/add',
                                         method: 'POST',
                                         data: formData,
                                         processData: false,
@@ -286,8 +286,8 @@
                                     formData.append("url", brand_url);
 
                                     $.ajax({
-                                        url: 'brands/edit',
-                                        method: 'POST',
+                                        url: 'brand/edit',
+                                        method: 'PUT',
                                         data: formData,
                                         processData: false,
                                         contentType: false,
@@ -313,21 +313,25 @@
 
                                         var row = $('#table-brand tbody').find(`[id = ${id}]`);
 
-                                        $.post(
-                                            'brands/delete',
-                                            {
+                                        $.ajax({
+                                            url: 'brand/delete',
+                                            method: 'DELETE',
+                                            data: {
                                                 id: id
                                             },
-                                            (data) => {
-                                                var error = data.error;
+                                            success: (result) => {
+                                                var error = result.error;
                                                 if (error) {
                                                     window.console.log(error);
                                                     alert(error);
                                                 } else {
                                                     table.row(row).remove().draw('page');
                                                 }
+                                            },
+                                            error: (error) => {
+                                                window.console.log(result);
                                             }
-                                        );
+                                        });
                                     } 
                                 });
                             });
