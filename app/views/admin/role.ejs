@@ -191,6 +191,66 @@
                     </div>
                     <!-- /.modal -->
 
+                     <!-- MODEL VIEW ROLE  -->
+                     <div class="modal fade" id="role-view-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h5 class="modal-title" style="text-align: center;">Xem chi tiết quyền</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="form-add-role" action="">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12" id="alert-error">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-group-name">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label for="recipient-name" class="control-label mb-10">Tên vai trò</label>
+                                                        <input type="text" class="form-control disabled" disabled id="role-name" placeholder="Admin">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <h5 class="modal-title" style="text-align: center;">Các chức năng</h5>
+                                                <div class="row">
+                                                    <div class="col-md-12" id="roles">
+                                                            <div class="table-responsive">
+                                                                    <table class="table display mb-30" cellspacing="0" width="100%" id="table-role-view">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Chức năng</th>
+                                                                                <th>Phương thức</th>  
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>               
+                                                                            
+                                                                        </tbody>
+                                                                        <tfoot>
+                                                                            <tr>
+                                                                                <th>Chức năng</th>
+                                                                                <th>Phương thức</th>
+                                                                            </tr>
+                                                                        </tfoot>
+                                                                    </table>
+                                                                </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.modal -->
+
                     <!-- Row -->
                     <div class="row">
                         <div class="col-sm-12">
@@ -291,6 +351,8 @@
                         }]
                     });
 
+                    var tableView = $("#table-role-view").DataTable();
+
                     function getRole(id, cb) {
                         $.get(`/admin/role/${id}`, (data) => {
                             return cb(data);
@@ -385,7 +447,38 @@
                             //view detail role
                             $("#table-role tbody").delegate('.view-detail-role', 'click', (e) => {
                                 var id = $(e.currentTarget.parentElement.parentElement).attr('data-id-role');
-                                alert(id)
+                                
+                                $.get(`/admin/role/${id}`, (data) => {
+                                    if (data.error) {
+                                        alert(data.error);
+                                    } else {
+                                        var role = data.role;
+                                        if (!role) {
+                                            alert("Role was missing!")
+                                        } else {
+                                            var name = role.name;
+                                            var allows = role.allows;
+
+                                            $('#role-view-model').find('#role-name').val(name);
+
+                                            if (name && allows) {
+                                                $('#role-view-model').modal('show');
+                                                allows.forEach((element, index) => {
+                                                    var tr = `
+                                                        <tr>
+                                                            <td>${element.resources || ""}</td>
+                                                            <td>${element.permissions}</td>
+                                                        </tr>
+                                                    `
+
+                                                    tableView.row.add($(tr));
+                                                });
+
+                                                tableView.rows().draw();
+                                            }                                           
+                                        }
+                                    }
+                                });
                             });
 
                             //select all permissions on add & edit model of role
@@ -396,16 +489,13 @@
                                 $('#select-all-footer').prop('checked', e.currentTarget.checked);
                             })
 
-                            $("#select-all-footer").click((e) => {
-                                                              
-                                                              var rows = tableAdd.rows().nodes();                               
-                                                              $('input[type="checkbox"]', rows).prop('checked', e.currentTarget.checked);   
-                                                              $('#select-all-footer').prop('checked', e.currentTarget.checked);
-                                                          })
-
-                           
-                            
-                           //show model add role
+                            $("#select-all-footer").click((e) => {                                                              
+                                var rows = tableAdd.rows().nodes();                               
+                                $('input[type="checkbox"]', rows).prop('checked', e.currentTarget.checked);   
+                                $('#select-all-footer').prop('checked', e.currentTarget.checked);
+                            })                           
+                                                        
+                            //show model add role
                             $('#role-add').click((e) => {
 
                                 var bodyTable = $('#table-role-add > tbody');
@@ -510,6 +600,7 @@
                                 })
                             });
 
+                            //edit role
                             $('#btn-edit-role').click((e) => {
                                 var modelEdit = $("#role-edit-model");  
                                 var id = $(modelEdit).find("#role-id").val();
