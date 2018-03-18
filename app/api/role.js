@@ -89,22 +89,36 @@ var getRole = (id, result) => {
 }
 
 var editRole = (roleEdited, result) => {
-    var id = roleEdited._id;
+    var id = roleEdited.id;
+    var name = roleEdited.name;
+    var allows = [];
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
-        if (!roleEdited || roleEdited == 'undefined') {
+
+        if (!roleEdited) {
             workflow.emit('response', {
-                error: "Role were missing!"
+                error: "Parameters were missed!"
             });
             return
         }
 
-        if (!id) {
+        if (!id || id == 'undefined') {
             workflow.emit('response', {
-                error: "Role not found"
+                error: "Id of role is required!"
             });
             return
+        }
+
+        if (!name || name == 'undefined') {
+            workflow.emit('response', {
+                error: "name of role is required!"
+            });
+            return
+        }
+
+        if (roleEdited.allows) {
+            allows = JSON.parse(roleEdited.allows);
         }
 
         workflow.emit('edit-role');
@@ -130,7 +144,9 @@ var editRole = (roleEdited, result) => {
                 return
             }
 
-            role = roleEdited;
+            role.name = name;
+            role.allows = allows;            
+
             role.save((err) => {
                 workflow.emit('response', {
                     error: err
@@ -139,7 +155,7 @@ var editRole = (roleEdited, result) => {
         });
     });
 
-    workflow.emit('vailidate-parameters');
+    workflow.emit('validate-parameters');
 }
 
 var newRole = (newRole, result) => {

@@ -64,7 +64,7 @@
                                                                         <tr>
                                                                             <th class="select-all" style="width: 40px;"> 
                                                                                 <div class="checkbox checkbox-success">
-                                                                                    <input id="select-all-header" type="checkbox">
+                                                                                    <input class="select-all-header" type="checkbox">
                                                                                     <label for="select-all-header"></label>
                                                                                    
                                                                                 </div>
@@ -81,7 +81,7 @@
                                                                             <th class="select-all" style="width: 40px;"> 
                                                                                 <div class="checkbox checkbox-success">
                                                                                        
-                                                                                                <input id="select-all-footer" type="checkbox">
+                                                                                                <input class="select-all-footer" type="checkbox">
                                                                                                 <label for="select-all-footer"></label>
                                                                                                 
                                                                                 </div>
@@ -126,15 +126,15 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="recipient-name" class="control-label mb-10">#</label>
-                                                    <input type="text" class="form-control disabled" id="role-id">
+                                                    <input type="text" class="form-control disabled id-role" disabled>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group form-group-name">
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <label for="recipient-name" class="control-label mb-10">Tên vai trò:</label>
-                                                    <input type="text" class="form-control" id="role-name" placeholder="Admin">
+                                                    <input type="text" class="form-control name-role"  placeholder="Admin">
                                                 </div>
                                             </div>
                                         </div>
@@ -147,11 +147,9 @@
                                                                         <thead>
                                                                             <tr>
                                                                                 <th class="select-all" style="width: 40px;"> 
-                                                                                    <div class="checkbox checkbox-success">
-                                                                                           
-                                                                                                    <input class="select-all-header" type="checkbox">
-                                                                                                    <label for="select-all-header"></label>
-                                                                                                   
+                                                                                    <div class="checkbox checkbox-success"> 
+                                                                                        <input class="select-all-header" type="checkbox">
+                                                                                        <label for="select-all-header"></label>
                                                                                     </div>
                                                                                 </th>
                                                                                 <th>Chức năng</th>
@@ -165,10 +163,8 @@
                                                                             <tr>
                                                                                 <th style="width: 40px;"> 
                                                                                     <div class="checkbox checkbox-success">
-                                                                                          
-                                                                                                    <input class="select-all-footer" type="checkbox">
-                                                                                                    <label for="select-all-footer"></label>
-                                                                                                   
+                                                                                        <input class="select-all-footer" type="checkbox">
+                                                                                        <label for="select-all-footer"></label>
                                                                                     </div>
                                                                                 </th>
                                                                                 <th>Chức năng</th>
@@ -350,7 +346,6 @@
                             "width": "20%"
                         }]
                     });
-
                     var tableView = $("#table-role-view").DataTable();
 
                     function getRole(id, cb) {
@@ -435,17 +430,104 @@
 
                             //edit role
                             $("#table-role tbody").delegate('.edit-role', 'click', (e) => {
+
+                                tableEdit.rows().remove();
+
                                 var modelEdit = $("#role-edit-model");
                                 //get id role
                                 var id = $(e.currentTarget.parentElement.parentElement).attr('data-id-role');
+                                var name = $(e.currentTarget.parentElement.parentElement).find('td.td-name').html().trim();
 
-                                $(modelEdit).find("#role-id").val(id);
+                                $(modelEdit).find("input.id-role").val(id);
+                                $(modelEdit).find('input.name-role').val(name);
 
                                 $("#role-edit-model").modal('show');
+
+                                //process data
+                                $.get('/admin/role/get-routers', (routers) => {
+                                    $.get(`/admin/role/${id}`, (data) => {
+                                        var role = data.role;
+                                        if (!role) {
+                                            alert("Role was missing!")
+                                        } else {
+                                            var currentName = role.name;
+                                            var currentAllows = role.allows;
+                                            var allRouters = routers;
+
+                                            if (currentName && currentAllows) {
+
+                                                routers.forEach((router, index) => {
+                                                    if (router.path && router.methods) {
+
+                                                        var currentPermissions = [];
+                                                        var isMatchPath = currentAllows.find((element) => {
+                                                           
+                                                            if (router.path.trim() == element.resources.trim()) {
+                                                                currentPermissions = element.permissions;
+                                                                return true;
+                                                            } else {
+                                                                return false;
+                                                            }
+                                                        });
+
+                                                        var checkRouterElement = `<div class="checkbox checkbox-success">
+                                                                    <input class="select-router" id="${router.path}" type="checkbox">
+                                                                    <label for="${router.path}"></label>  
+                                                            </div>  `;
+
+                                                        if (isMatchPath) {
+                                                            checkRouterElement = `<div class="checkbox checkbox-success">
+                                                                    <input class="select-router" id="${router.path}" type="checkbox" checked>
+                                                                    <label for="${router.path}"></label>  
+                                                            </div> `
+                                                        } 
+
+
+                                                        var tr = `
+                                                        <tr data-path="${router.path}">
+                                                            <td>
+                                                                ${checkRouterElement}  
+                                                            </td>    
+                                                            <td><label class="router-path" for="${router.path}">${router.path}</label></td>                                         
+                                                        `
+                                                        var tdMethod = `<td>`;
+
+                                                        router.methods.forEach((m) => {
+
+                                                            var match = currentPermissions.includes(m);
+
+                                                            if (match) {
+                                                                tdMethod += `<div class="checkbox checkbox-success">
+                                                                    <input class="select-method" data-method="${m}" id="${router.path}|${m}" type="checkbox" checked>
+                                                                    <label for="${router.path}|${m}">${m.toUpperCase()}</label>  
+                                                                </div> `
+                                                            } else {
+                                                                tdMethod += `<div class="checkbox checkbox-success">
+                                                                    <input class="select-method" data-method="${m}" id="${router.path}|${m}" type="checkbox">
+                                                                    <label for="${router.path}|${m}">${m.toUpperCase()}</label>  
+                                                                </div> `
+                                                            }
+                                                        });
+                                                        tdMethod += '</td>'                                                        
+                                                        
+                                                        tr+= tdMethod
+                                                        tr+='</tr>'
+
+                                                        tableEdit.row.add($(tr));
+                                                    }                                        
+                                                });
+                                                tableEdit.rows().draw();
+                                            }                                           
+                                        }
+                                    });   
+                                }); 
                             });
 
                             //view detail role
                             $("#table-role tbody").delegate('.view-detail-role', 'click', (e) => {
+
+                                tableView.rows().remove();
+
                                 var id = $(e.currentTarget.parentElement.parentElement).attr('data-id-role');
                                 
                                 $.get(`/admin/role/${id}`, (data) => {
@@ -482,15 +564,26 @@
                             });
 
                             //select all permissions on add & edit model of role
-                            $("#select-all-header").click((e) => {
-                                                              
-                                var rows = tableAdd.rows().nodes();                               
+                            $(".select-all-header").click((e) => {
+                                
+                                //table add new role is default
+                                var rows = tableAdd.rows().nodes();   
+                                
+                                if ($("#role-edit-model").hasClass('in')) {
+                                    rows = tableEdit.rows().nodes();  
+                                }                                
+
                                 $('input[type="checkbox"]', rows).prop('checked', e.currentTarget.checked);   
                                 $('#select-all-footer').prop('checked', e.currentTarget.checked);
                             })
 
-                            $("#select-all-footer").click((e) => {                                                              
-                                var rows = tableAdd.rows().nodes();                               
+                            $(".select-all-footer").click((e) => { 
+                                var rows = tableAdd.rows().nodes();      
+                                
+                                if ($("#role-edit-model").hasClass('in')) {
+                                    rows = tableEdit.rows().nodes();  
+                                }
+
                                 $('input[type="checkbox"]', rows).prop('checked', e.currentTarget.checked);   
                                 $('#select-all-footer').prop('checked', e.currentTarget.checked);
                             })                           
@@ -602,20 +695,52 @@
 
                             //edit role
                             $('#btn-edit-role').click((e) => {
-                                var modelEdit = $("#role-edit-model");  
-                                var id = $(modelEdit).find("#role-id").val();
-                                var name = $(modelEdit).find("#role-name").val();
+                                e.preventDefault();
 
+                                var modalEdit = $("#role-edit-model");
+                                var name = $(modalEdit).find('input.name-role').val();
+                                var id = $(modalEdit).find('input.id-role').val();
+                                var routerChecked = [];
 
-                                var editedRole = {
-                                    _id: id,
-                                    name: name
-                                }
+                                //find routers that checked
+                                var rows = tableEdit.rows().nodes();
+                                rows.each((row, index) => {
+                                    var input = $(row).find('input[type="checkbox"]')[0];
+                                    if (input.checked) {
+
+                                        //find path
+                                        var path = $(input.parentElement.parentElement.parentElement).find('label.router-path').html();
+
+                                        //find methods
+                                        var divMethods = $(input.parentElement.parentElement.parentElement).find('input.select-method');
+                                        var methods = [];                                        
+                                        
+                                        if (divMethods && divMethods.length > 0) {
+                                            divMethods.each((i, e) => {
+                                                //var m = $(e).attr('data-method');
+                                                if (e.checked) {
+                                                    methods.push($(e).attr('data-method'));
+                                                }
+                                            });
+                                        }
+
+                                        routerChecked.push({
+                                            resources: path,
+                                            permissions: methods
+                                        });
+                                    }
+                                });    
+
+                                var parameters = {
+                                    id: id,
+                                    name: name,
+                                    allows: JSON.stringify(routerChecked)
+                                } 
 
                                 $.ajax({
                                     url: "/admin/role/edit",
                                     method: "PUT",
-                                    data: editedRole,
+                                    data: parameters,
                                     success: (data) => {
                                         if (data.error) {
 
@@ -624,17 +749,17 @@
                                         }
                                     },
                                     error: (err) => {
-
+                                        window.console.log(err);
                                     }
                                 })
                             });
 
                             //auto check all methods when selected router
-                            $('#table-role-add tbody').delegate('.select-router', 'click', (e) => {
+                            $('#table-role-add tbody, #table-role-edit tbody').delegate('.select-router', 'click', (e) => {
                                 $(e.currentTarget.parentElement.parentElement.parentElement).find('.select-method').prop('checked', e.currentTarget.checked);
                             });
 
-                            $('#table-role-add tbody').delegate('.select-method', 'click', (e) => {
+                            $('#table-role-add tbody, #table-role-edit tbody').delegate('.select-method', 'click', (e) => {
                                  var numMethods = $(e.currentTarget.parentElement.parentElement).find('.checkbox');
                                  // console.log(e);
                                  if (numMethods.length == 1) {

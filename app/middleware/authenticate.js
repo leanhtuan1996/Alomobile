@@ -54,15 +54,14 @@ var requireAuth = (req, res, next) => {
 
 var requireRole = (req, res, next) => {
     //get current role of user
-
     
     var role = req.role;
 
-    if (!role) {
-        var err = new Error("Role of user not found!");
-        err.status = 403;
-        err.href = "admin/403"
+    var err = new Error("User can not access to this page!");
+    err.status = 403;
+    err.href = "admin/403";
 
+    if (!role) {
         return next(err);
     }
 
@@ -73,70 +72,80 @@ var requireRole = (req, res, next) => {
         method = req.method;
 
     if (!(allows && name)) {
-        var err = new Error("User can not access to this page!");
-        err.status = 403;
-        err.href = "admin/403"
         return next(err);
     }
 
     if (!(originalUrl && method)) {
-        var err = new Error("User can not access to this page!");
-        err.status = 403;
-        err.href = "admin/403"
         return next(err);
     }
 
     if (allows.length == 0) {
-        var err = new Error("User can not access to this page!");
-        err.status = 403;
-        err.href = "admin/403"
         return next(err);
     }
 
-    _.forEach(allows, (allow) => {
+    if (!isMatchingRouter(originalUrl.trim(), method.toLowerCase().trim(), allows)) {
+        return next(err);
+    }
+    return next();
+
+    // _.forEach(allows, (allow) => {
+    //     if (allow) {
+    //         var permissions = allow.permissions,
+    //             resources = allow.resources;
+
+    //         if (!(permissions && resources)) {
+    //             return next(err);
+    //         }
+
+    //         if (permissions.length == 0) {                
+    //             return next(err);
+    //         }
+
+            
+
+    //         if (resources.trim().toLowerCase() == originalUrl.trim().toLowerCase()) {
+    //             //check permissions
+    //             if (_.includes(permissions, method.trim().toLowerCase())) {
+    //                 return next();
+    //             } else {
+    //                 return next(err);
+    //             }
+    //         } 
+    //     }
+    // });
+}
+
+var isMatchingRouter = (userPath, userMethod, allows) => {
+
+    if (!userPath) { return false }
+    if (!userMethod ) { return false }
+    if (!allows && allows.length == 0) { return false }
+
+    for (let i = 0; i < allows.length; i++) {
+        const allow = allows[i];        
         if (allow) {
-            var permissions = allow.permissions,
-                resources = allow.resources;
+            var path = allow.resources.trim();;
+            var methods = allow.permissions;
 
-            if (!(permissions && resources)) {
-                var err = new Error("User can not access to this page!");
-                err.status = 403;
-                err.href = "admin/403"
-                return next(err);
-            }
+            if (path && methods && methods.length > 0) {
+                //split path with path
+                var pathSplited = path.split('/');
+                var userPathSplited = userPath.split('/');
 
-            if (permissions.length == 0) {
-                var err = new Error("User can not access to this page!");
-                err.status = 403;
-                err.href = "admin/403"
-                return next(err);
-            }
-
-            //full permissions
-            if (permissions == '*' && resources == '*') {
-                return next();
-            }
-
-            _.forEach(permissions, (permission) => {
-                if (permission) {
-                    if ((permission.toLowerCase() == method.toLowerCase()) && (resources.toLowerCase() == originalUrl.toLowerCase())) {
-                        return next();
-                    } else {
-                        var err = new Error("User can not access to this page!");
-                        err.status = 403;
-                        err.href = "admin/403";
-
-                        return next(err);
-                    }
-                } else {
-                    var err = new Error("User can not access to this page!");
-                    err.status = 403;
-                    err.href = "admin/403";
-                    return next(err);
+                if (pathSplited.length == userPathSplited.length) {
+                    console.log(pathSplited);
+                    console.log(userPathSplited);
+                    console.log('=============');
                 }
-            });
+            }
         }
-    });
+
+        if (i == allows.length - 1) {
+            return true
+        }
+    }
+
+    return false;
 }
 
 module.exports = {

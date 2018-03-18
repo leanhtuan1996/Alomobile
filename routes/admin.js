@@ -505,8 +505,9 @@ router.post('/admin/role/new', [auth.requireAuth, auth.requireRole], (req, res) 
     });
 });
 
-router.put('/admin/role/edit', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.put('/admin/role/edit', [auth.requireAuth, auth.requireRole], (req, res) => { 
     Role.editRole(req.body, (result) => {
+        console.log(result);
         res.json(result);
     });
 });
