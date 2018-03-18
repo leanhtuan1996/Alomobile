@@ -87,32 +87,6 @@ var requireRole = (req, res, next) => {
         return next(err);
     }
     return next();
-
-    // _.forEach(allows, (allow) => {
-    //     if (allow) {
-    //         var permissions = allow.permissions,
-    //             resources = allow.resources;
-
-    //         if (!(permissions && resources)) {
-    //             return next(err);
-    //         }
-
-    //         if (permissions.length == 0) {                
-    //             return next(err);
-    //         }
-
-            
-
-    //         if (resources.trim().toLowerCase() == originalUrl.trim().toLowerCase()) {
-    //             //check permissions
-    //             if (_.includes(permissions, method.trim().toLowerCase())) {
-    //                 return next();
-    //             } else {
-    //                 return next(err);
-    //             }
-    //         } 
-    //     }
-    // });
 }
 
 var isMatchingRouter = (userPath, userMethod, allows) => {
@@ -128,20 +102,52 @@ var isMatchingRouter = (userPath, userMethod, allows) => {
             var methods = allow.permissions;
 
             if (path && methods && methods.length > 0) {
+
                 //split path with path
                 var pathSplited = path.split('/');
                 var userPathSplited = userPath.split('/');
 
                 if (pathSplited.length == userPathSplited.length) {
-                    console.log(pathSplited);
-                    console.log(userPathSplited);
-                    console.log('=============');
+
+                    var x = [];
+                    for (let a = 0; a < pathSplited.length; a++) {
+                        if (pathSplited[a].trim() == userPathSplited[a].trim()) {
+                            x.push(pathSplited[a]);
+                        }                        
+                    }
+
+                    //find index of paths that are match and remove this
+                    var indexParameters = [];
+                    var regex = /:[a-z]{1,}/gi;
+                    for (let y = 0; y < pathSplited.length; y++) {
+                        const element = pathSplited[y];
+                        if(element.match(regex)) {
+                            indexParameters.push(y);
+                        }
+                    }
+                    indexParameters.forEach(e => {
+                        pathSplited.splice(e, 1);
+                        userPathSplited.splice(e, 1);
+                    });      
+
+                    var newParametersMatched = [];
+                    for (let z = 0; z < pathSplited.length; z++) {
+                        if (pathSplited[z].trim() == userPathSplited[z].trim()) {
+                            newParametersMatched.push(pathSplited[z]);
+                        }
+                    }
+
+                    if (newParametersMatched.length == pathSplited.length) {                        
+                        if (_.includes(methods, userMethod.toLowerCase().trim()) == true) {
+                            return true;
+                        }
+                    } 
                 }
             }
         }
 
         if (i == allows.length - 1) {
-            return true
+            return false
         }
     }
 
