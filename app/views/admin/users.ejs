@@ -269,7 +269,7 @@
                                                                                     <%- user.role.name %>
                                                                                     <% } %>
                                                                             </td>
-                                                                        <td>
+                                                                        <td class="td-status">
                                                                             <% if (user.status == true) { %>
                                                                                 <span class="label label-success font-weight-100">ACTIVE</span>
                                                                             <% } else { %>
@@ -300,6 +300,7 @@
                                                             <th>#</th>
                                                             <th>Tên người dùng</th>
                                                             <th>Email</th>
+                                                            <th>Số điện thoại</th>
                                                             <th>Giới tính</th>
                                                             <th>Vai trò</th>
                                                             <th>Trạng thái</th>
@@ -364,6 +365,32 @@
                                 }); 
                         }
 
+                        function confirmDeleteWithBan(cb) {
+                            swal({
+                                    title: "Bạn có muốn xoá không?",
+                                    text: "Nhấn vào 'Xoá ngay' để xoá user ra khỏi hệ thống. Lưu ý sau khi xoá sẽ không thể hoàn tác.",
+                                    icon: "info",
+                                    buttons: {
+                                        cancel: true,
+                                        delete: {
+                                            text: "Xoá ngay",
+                                            value: 'delete',
+                                            className: 'btn-danger'
+                                        }
+                                    },
+                                })
+                                .then((value) => {
+                                    switch (value) {     
+                                        case "delete":
+                                            return cb('delete');
+                                            break;                      
+                                        default:
+                                            return cb('cancel');
+                                            break;
+                                    }
+                                }); 
+                        }
+
                          function confirmReset(cb) {
                             swal({
                                     title: "Bạn có muốn cập nhật lại mật khẩu không?",
@@ -418,9 +445,12 @@
 
                                 var row = $(e.currentTarget.parentElement.parentElement);
 
-                                confirmDelete((action) => {
-                                    switch (action) {
-                                        case "delete":
+                                //checking status of user
+                                var status = $(row).find('td.td-status').find('span').html();
+                                if (!status) {
+                                    confirmDeleteWithBan((result) => {
+                                        switch (result) {
+                                            case 'delete':
                                             $.ajax({
                                                 url: '/admin/user',
                                                 data: {
@@ -435,39 +465,94 @@
                                                     tableUsers.row(row).remove().draw('page');
                                                 },
                                                 error: (err) => {                                                    
-                                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
-                                                   
+                                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error') 
                                                 }
                                             })
-                                            break;
-                                        case "ban":
-                                            var properties = {
-                                                status: false
-                                            };
-
+                                            break;                                        
+                                            default:
+                                                break;
+                                        }
+                                    });
+                                } else {
+                                    if (status == 'DEACTIVE') {
+                                        confirmDeleteWithBan((result) => {
+                                        switch (result) {
+                                            case 'delete':
                                             $.ajax({
                                                 url: '/admin/user',
-                                                method: 'PUT',
                                                 data: {
-                                                    id: 1,
-                                                    properties: JSON.stringify(properties)
+                                                    id: $(row).attr('id')
                                                 },
+                                                method: "DELETE",
                                                 success: (data) => {
                                                     if (data.error) {
                                                         showNotifier('error', data.error);
                                                         return
-                                                    } 
-                                                    showNotifier('success', 'Cập nhật thông tin thành công!');
+                                                    }
+                                                    tableUsers.row(row).remove().draw('page');
                                                 },
-                                                error: (err) => {
-                                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
+                                                error: (err) => {                                                    
+                                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error') 
                                                 }
-                                            });
-                                            break;
-                                        default:
-                                            break;
+                                            })
+                                            break;                                        
+                                            default:
+                                                break;
+                                        }
+                                    });
+                                    } else {
+                                        confirmDelete((action) => {
+                                            switch (action) {
+                                                case "delete":
+                                                    $.ajax({
+                                                        url: '/admin/user',
+                                                        data: {
+                                                            id: $(row).attr('id')
+                                                        },
+                                                        method: "DELETE",
+                                                        success: (data) => {
+                                                            if (data.error) {
+                                                                showNotifier('error', data.error);
+                                                                return
+                                                            }
+                                                            tableUsers.row(row).remove().draw('page');
+                                                        },
+                                                        error: (err) => {                                                    
+                                                            swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error') 
+                                                        }
+                                                    })
+                                                    break;
+                                                case "ban":
+                                                    var properties = {
+                                                        status: false
+                                                    };
+
+                                                    $.ajax({
+                                                        url: '/admin/user',
+                                                        method: 'PUT',
+                                                        data: {
+                                                            id: $(row).attr('id'),
+                                                            properties: JSON.stringify(properties)
+                                                        },
+                                                        success: (data) => {
+                                                            if (data.error) {
+                                                                showNotifier('error', data.error);
+                                                                return
+                                                            } 
+                                                            $(row).find('td.td-status').find('span').html('DEACTIVE').removeClass('label-success').addClass('label-default');                                                    
+                                                            showNotifier('success', 'Cập nhật thông tin thành công!');
+                                                        },
+                                                        error: (err) => {
+                                                            swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
+                                                        }
+                                                    });
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        });
                                     }
-                                });
+                                }
                             });
 
                             $("#table-users tbody").delegate('.reset-password-user', 'click', (e) => {

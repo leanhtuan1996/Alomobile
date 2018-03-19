@@ -218,29 +218,12 @@ var editUser = (id, properties, result) => {
     });
 
     workflow.on('edit-user', () => {
-        User.find(id, (err, user) => {
-            if (err) {
-                workflow.emit('response', {
-                    error: err
-                });
-                return
-            }
-
-            if (!user) {
-                workflow.emit('response', {
-                    error: "User not found!"
-                });
-                return
-            }
-
-            user = properties;
-            user.save((err) => {
-                workflow.emit('response', {
-                    error: err,
-                    user: user
-                });
+        User.findByIdAndUpdate(id, properties, (err, user) => {
+            workflow.emit('response', {
+                error: err,
+                user: user
             });
-        })
+        });
     });
 
     workflow.emit('validate-parameters');
