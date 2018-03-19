@@ -60,6 +60,7 @@ var requireRole = (req, res, next) => {
     var err = new Error("User can not access to this page!");
     err.status = 403;
     err.href = "admin/403";
+    err.message = "User can not access to this page!";
 
     if (!role) {
         return next(err);

@@ -108,6 +108,30 @@ router.get('/admin/users', [auth.requireAuth, auth.requireRole], (req, res) => {
     });
 });
 
+router.get('/admin/user/:id', [auth.requireAuth, auth.requireRole], (req, res) => {
+    User.getUser(req.params.id, (result) => {
+        res.json(result);
+    });
+});
+
+router.put('/admin/user', [auth.requireAuth, auth.requireRole], (req, res) => {
+    User.editUser(req.body.id, req.body.properties, (result) => {
+        res.json(result);
+    });
+});
+
+router.post('/admin/user', [auth.requireAuth, auth.requireRole], (req, res) => {
+    User.newUser(req.body, (result) => {
+        res.json(result);
+    });
+});
+
+router.delete('/admin/user', [auth.requireAuth, auth.requireRole], (req, res) => {
+    User.deleteUser(req.body.id, (result) => {
+        res.json(result);
+    });
+});
+
 //#endregion USER ROUTERS
 
 //#region PRODUCT ROUTERS

@@ -20,12 +20,208 @@
                     <div class="row heading-bg">
                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12" style="width: 100%">
                             <h5 class="txt-dark" style="float: left;">Trang quản trị người dùng</h5>
-                            <button type="button" class="btn btn-primary" style="float: right" id="brand-add">Thêm mới</button>
+                            <button type="button" class="btn btn-primary" style="float: right" id="user-add">Thêm mới</button>
                         </div>
                     </div>
                     <!-- /Title -->
-                    <!-- /.modal -->
-
+                     <!-- Modal -->
+                     <div id="add-user-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h5 class="modal-title" id="myModalLabel">Thêm người dùng</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Row -->
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="">
+                                                    <div class="panel-wrapper collapse in">
+                                                        <div class="panel-body pa-0">
+                                                            <div class="col-sm-12 col-xs-12">
+                                                                <div class="form-wrap">
+                                                                    <form action="#">
+                                                                        <div class="form-body overflow-hide">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="firstName_add">Họ</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-user"></i></div>
+                                                                                    <input type="text" class="form-control" id="firstName_add" placeholder="Willard">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                    <label class="control-label mb-10" for="lastName_add">Tên</label>
+                                                                                    <div class="input-group">
+                                                                                        <div class="input-group-addon"><i class="icon-user"></i></div>
+                                                                                        <input type="text" class="form-control" id="lastName_add" placeholder="Bryant">
+                                                                                    </div>
+                                                                                </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="email_add">Địa chỉ Email</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-envelope-open"></i></div>
+                                                                                    <input type="email" class="form-control" id="email_add" placeholder="xyz@gmail.com">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="phone_add">Số điện thoại</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-phone"></i></div>
+                                                                                    <input type="email" class="form-control" id="phone_add" placeholder="+102 9388333">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="password_add">Mật khẩu</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-lock"></i></div>
+                                                                                    <input type="password" class="form-control" id="password_add" placeholder="Enter pwd" value="password">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10">Giới tính</label>
+                                                                                <div>
+                                                                                    <div class="radio">
+                                                                                        <input type="radio" name="radio1" id="radio_1" value="option1" checked="">
+                                                                                        <label for="radio_1">
+                                                                                        Nam
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="radio">
+                                                                                        <input type="radio" name="radio1" id="radio_2" value="option2">
+                                                                                        <label for="radio_2">
+                                                                                        Nữ
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10">Vai trò</label>
+                                                                                <select class="form-control select-role-add" data-placeholder="Choose a Category" tabindex="1">
+                                                                                    <option value="Category 2">Khách hàng</option>
+                                                                                    <option value="Category 3">Nhân viên</option>
+                                                                                    <option value="Category 4">Quản trị viên</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>			
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-success waves-effect" id="save-new-user">Save</button>
+                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    <!-- /modal -->
+                    <!-- Modal -->
+                    <div id="edit-user-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h5 class="modal-title" id="myModalLabel">Cập nhật thông tin người dùng</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Row -->
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="">
+                                                    <div class="panel-wrapper collapse in">
+                                                        <div class="panel-body pa-0">
+                                                            <div class="col-sm-12 col-xs-12">
+                                                                <div class="form-wrap">
+                                                                    <form action="#">
+                                                                        <div class="form-body overflow-hide">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="firstName_edit">Họ</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-user"></i></div>
+                                                                                    <input type="text" class="form-control" id="firstName_edit" placeholder="Willard">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                    <label class="control-label mb-10" for="lastName_edit">Tên</label>
+                                                                                    <div class="input-group">
+                                                                                        <div class="input-group-addon"><i class="icon-user"></i></div>
+                                                                                        <input type="text" class="form-control" id="lastName_edit" placeholder="Bryant">
+                                                                                    </div>
+                                                                                </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="email_edit">Địa chỉ Email</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-envelope-open"></i></div>
+                                                                                    <input type="email" class="form-control" id="email_edit" placeholder="xyz@gmail.com">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="phone_edit">Số điện thoại</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-phone"></i></div>
+                                                                                    <input type="email" class="form-control" id="phone_edit" placeholder="+102 9388333">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="password_edit">Mật khẩu</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-lock"></i></div>
+                                                                                    <input type="password" class="form-control" id="password_edit" placeholder="Enter pwd" value="password">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10">Giới tính</label>
+                                                                                <div>
+                                                                                    <div class="radio">
+                                                                                        <input type="radio" name="radio1" id="radio_1" value="option1" checked="">
+                                                                                        <label for="radio_1">
+                                                                                        Nam
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="radio">
+                                                                                        <input type="radio" name="radio1" id="radio_2" value="option2">
+                                                                                        <label for="radio_2">
+                                                                                        Nữ
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10">Vai trò</label>
+                                                                                <select class="form-control" data-placeholder="Choose a Category" tabindex="1">
+                                                                                    <option value="Category 2">Khách hàng</option>
+                                                                                    <option value="Category 3">Nhân viên</option>
+                                                                                    <option value="Category 4">Quản trị viên</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>			
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-success waves-effect" id="save-edit-user">Save</button>
+                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    <!-- /modal -->
                     <!-- Row -->
                     <div class="row">
                         <div class="col-sm-12">
@@ -82,6 +278,9 @@
                                                                             
                                                                         </td>
                                                                         <td class="action-brand">
+                                                                                <a href="javascript:void(0)" class="text-inverse pr-10 info-user" title="Xem thông tin người dùng">
+                                                                                        <i class="zmdi zmdi-eye text-primary"></i>
+                                                                                    </a>
                                                                             <a href="javascript:void(0)" class="text-inverse pr-10 edit-user" title="Chỉnh sửa người dùng">
                                                                                 <i class="zmdi zmdi-edit txt-warning"></i>
                                                                             </a>
@@ -131,33 +330,61 @@
                 <% include layouts/footer %>
                 <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
                     <script type="text/javascript">
-                        function showAlert(id, content) {
-                            var alert = `
-                            <div class="alert alert-danger alert-dismissable">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                ${content}
-                            </div>
-                        `
-                            $(id).append(alert);
+                        function showNotifier(status, content) {
+                            swal('Thông báo', content, status)
                         }
 
                         function confirmDelete(cb) {
                             swal({
                                     title: "Bạn có muốn xoá không?",
-                                    text: "Nhấn vào 'Đồng ý' để xoá, không thể phục hồi được sau khi xoá!",
+                                    text: "Nhấn vào 'Xoá ngay' nếu bạn muốn xoá hoặc nhấn vào 'Khoá tài khoản' để cấm người dùng truy cập vào hệ thống",
                                     icon: "info",
                                     buttons: {
                                         cancel: true,
-                                        yes: "Đồng ý"
+                                        ban: "Khoá tài khoản",
+                                        delete: {
+                                            text: "Xoá ngay",
+                                            value: 'delete',
+                                            className: 'btn-danger'
+                                        }
                                     },
                                 })
                                 .then((value) => {
                                     switch (value) {     
-                                        case "yes":
-                                            return cb(true);
-                                            break;                               
+                                        case "delete":
+                                            return cb('delete');
+                                            break;             
+                                        case "ban":
+                                            return cb('ban');
+                                            break;                  
                                         default:
-                                            return cb(false);
+                                            return cb('cancel');
+                                            break;
+                                    }
+                                }); 
+                        }
+
+                         function confirmReset(cb) {
+                            swal({
+                                    title: "Bạn có muốn cập nhật lại mật khẩu không?",
+                                    text: "Nhấn vào 'Reset' để cập nhật lại mật khẩu mới cho người dùng",
+                                    icon: "info",
+                                    buttons: {
+                                        cancel: true,
+                                        reset: {
+                                            text: "Reset",
+                                            value: "reset",
+                                            className: 'btn-warning'
+                                        }
+                                    },
+                                })
+                                .then((value) => {
+                                    switch (value) {     
+                                        case "reset":
+                                            return cb('reset');
+                                            break;                    
+                                        default:
+                                            return cb('cancel');
                                             break;
                                     }
                                 }); 
@@ -177,9 +404,121 @@
 
                         jQuery(document).ready(($) => {
 
+                            $('#user-add').click((e) => {
+                                $("#add-user-modal").modal('show');
+                            });
+
+                            $("#table-users tbody").delegate('.edit-user', 'click', (e) => {
+                                $('#edit-user-modal').modal('show');
+                            });
+
+                            $("#table-users tbody").delegate('.delete-user', 'click', (e) => {
+
+                                e.preventDefault();
+
+                                var row = $(e.currentTarget.parentElement.parentElement);
+
+                                confirmDelete((action) => {
+                                    switch (action) {
+                                        case "delete":
+                                            $.ajax({
+                                                url: '/admin/user',
+                                                data: {
+                                                    id: $(row).attr('id')
+                                                },
+                                                method: "DELETE",
+                                                success: (data) => {
+                                                    if (data.error) {
+                                                        showNotifier('error', data.error);
+                                                        return
+                                                    }
+                                                    tableUsers.row(row).remove().draw('page');
+                                                },
+                                                error: (err) => {                                                    
+                                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
+                                                   
+                                                }
+                                            })
+                                            break;
+                                        case "ban":
+                                            var properties = {
+                                                status: false
+                                            };
+
+                                            $.ajax({
+                                                url: '/admin/user',
+                                                method: 'PUT',
+                                                data: {
+                                                    id: 1,
+                                                    properties: JSON.stringify(properties)
+                                                },
+                                                success: (data) => {
+                                                    if (data.error) {
+                                                        showNotifier('error', data.error);
+                                                        return
+                                                    } 
+                                                    showNotifier('success', 'Cập nhật thông tin thành công!');
+                                                },
+                                                error: (err) => {
+                                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
+                                                }
+                                            });
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                });
+                            });
+
+                            $("#table-users tbody").delegate('.reset-password-user', 'click', (e) => {
+                                confirmReset((result) => {
+                                    switch (result) {
+                                        case 'reset':
+                                        
+                                            var id = $(e.currentTarget.parentElement.parentElement).attr('id');
+                                            if (!id) { return }
+
+                                            var properties = {
+                                                password: 'alomobile'
+                                            }
+                                            
+                                            $.ajax({
+                                                url: '/admin/user',
+                                                method: 'PUT',
+                                                data: {
+                                                    id: id,
+                                                    properties: JSON.stringify(properties)
+                                                },
+                                                success: (data) => {
+                                                    if (data.error) { 
+                                                        showNotifier('error', data.error);
+                                                        return 
+                                                    }
+                                                    showNotifier('success', "Mật khẩu của người dùng đã được reset!");
+                                                },
+                                                error: (err) => {
+                                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
+                                                }
+                                            })
+                                        
+                                            break;                                    
+                                        default:
+                                            break;
+                                    }
+                                });
+                            });
+
+                            $('#save-new-user').click((e) => {
+
+                            });
+
+                            $('#save-edit-user').click((e) => {
+
+                            });
                         });
 
                     </script>
 </body>
 
+\
 </html>
