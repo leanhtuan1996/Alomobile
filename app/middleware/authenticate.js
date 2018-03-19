@@ -145,10 +145,6 @@ var isMatchingRouter = (userPath, userMethod, allows) => {
                 }
             }
         }
-
-        if (i == allows.length - 1) {
-            return false
-        }
     }
 
     return false;

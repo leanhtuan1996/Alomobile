@@ -22,25 +22,14 @@ var getUsers = (result) => {
     });
 
     workflow.on('get-users', () => {
-       User.find({}, (err, users) => {
-           if (err) {
-               workflow.emit('response', {
-                   error: err
-               });
-               return
-           }
-
-           if (!users) {
-               workflow.emit('response', {
-                   error: "Data is empty"
-               });
-               return
-           }
-
-           workflow.emit('response', {
-               users: users
-           });
-       })
+       User.find({})
+            .populate('role', 'name', 'Role')
+            .exec((err, users) => {
+                workflow.emit('response', {
+                    error: err,
+                    users: users
+                });
+            });
     });
 
     workflow.emit('validate-parameters');

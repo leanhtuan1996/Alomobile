@@ -98,10 +98,12 @@ router.get('/admin/forgot-password', (req, res) => {
 
 router.get('/admin/users', [auth.requireAuth, auth.requireRole], (req, res) => {
     User.getUsers((result) => {
-        res.json({
-            error: result.error,
-            user: result.user,
-            title: "Alomobile Control Panel > Trang quản lý người dùng"
+        res.render("users", {
+            data: {
+                error: result.error,
+                users: result.users,
+                title: "Alomobile Control Panel > Trang quản lý người dùng"
+            }
         });
     });
 });
@@ -431,7 +433,7 @@ var getAllRouter = (stack, cb) => {
                 var newRouters = [];
                 for (let i = 0; i < oriRouters.length; i++) {
                     const router = oriRouters[i];
-                    
+
                     //method
 
                     var method = router.method;
@@ -439,7 +441,7 @@ var getAllRouter = (stack, cb) => {
                     var path = router.path;
 
                     var methods = []
-                    methods.push(router.method);                   
+                    methods.push(router.method);
 
                     //element
                     var temp = {
@@ -452,9 +454,9 @@ var getAllRouter = (stack, cb) => {
                     } else {
                         //find this path in newRouters
                         var index = _.findIndex(newRouters, (e) => {
-                             
+
                             //var matchMethod = _.findIndex(e.methods, (temp) => {
-                                //return temp == method;
+                            //return temp == method;
                             //});
                             return e.path == path;
                         });
@@ -499,13 +501,13 @@ router.get('/admin/role/:id', [auth.requireAuth, auth.requireRole], (req, res) =
     });
 });
 
-router.post('/admin/role/new', [auth.requireAuth, auth.requireRole], (req, res) => {  
+router.post('/admin/role/new', [auth.requireAuth, auth.requireRole], (req, res) => {
     Role.newRole(req.body, (result) => {
         res.json(result);
     });
 });
 
-router.put('/admin/role/edit', [auth.requireAuth, auth.requireRole], (req, res) => { 
+router.put('/admin/role/edit', [auth.requireAuth, auth.requireRole], (req, res) => {
     Role.editRole(req.body, (result) => {
         console.log(result);
         res.json(result);
