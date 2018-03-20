@@ -47,35 +47,35 @@
                                                                                 <label class="control-label mb-10" for="firstName_add">Họ</label>
                                                                                 <div class="input-group">
                                                                                     <div class="input-group-addon"><i class="icon-user"></i></div>
-                                                                                    <input type="text" class="form-control" id="firstName_add" placeholder="Willard">
+                                                                                    <input type="text" class="form-control" id="firstName_add" placeholder="Willard" required>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                     <label class="control-label mb-10" for="lastName_add">Tên</label>
                                                                                     <div class="input-group">
                                                                                         <div class="input-group-addon"><i class="icon-user"></i></div>
-                                                                                        <input type="text" class="form-control" id="lastName_add" placeholder="Bryant">
+                                                                                        <input type="text" class="form-control" id="lastName_add" placeholder="Bryant" required>
                                                                                     </div>
                                                                                 </div>
                                                                             <div class="form-group">
                                                                                 <label class="control-label mb-10" for="email_add">Địa chỉ Email</label>
                                                                                 <div class="input-group">
                                                                                     <div class="input-group-addon"><i class="icon-envelope-open"></i></div>
-                                                                                    <input type="email" class="form-control" id="email_add" placeholder="xyz@gmail.com">
+                                                                                    <input type="email" class="form-control" id="email_add" placeholder="xyz@gmail.com" required>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label class="control-label mb-10" for="phone_add">Số điện thoại</label>
                                                                                 <div class="input-group">
                                                                                     <div class="input-group-addon"><i class="icon-phone"></i></div>
-                                                                                    <input type="email" class="form-control" id="phone_add" placeholder="+102 9388333">
+                                                                                    <input type="email" class="form-control" id="phone_add" placeholder="+102 9388333" required>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label class="control-label mb-10" for="password_add">Mật khẩu</label>
                                                                                 <div class="input-group">
                                                                                     <div class="input-group-addon"><i class="icon-lock"></i></div>
-                                                                                    <input type="password" class="form-control" id="password_add" placeholder="Enter pwd" value="password">
+                                                                                    <input type="password" class="form-control" id="password_add" placeholder="Enter pwd" value="alomobile" required>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
@@ -140,6 +140,9 @@
                                                                 <div class="form-wrap">
                                                                     <form action="#">
                                                                         <div class="form-body overflow-hide">
+                                                                            <div class="form-group" style="display: none;">
+                                                                                <input type="text" class="form-control" id="id_user_edit" disabled>
+                                                                            </div>
                                                                             <div class="form-group">
                                                                                 <label class="control-label mb-10" for="firstName_edit">Họ</label>
                                                                                 <div class="input-group">
@@ -194,10 +197,7 @@
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label class="control-label mb-10">Vai trò</label>
-                                                                                <select class="form-control" data-placeholder="Choose a Category" tabindex="1">
-                                                                                    <option value="Category 2">Khách hàng</option>
-                                                                                    <option value="Category 3">Nhân viên</option>
-                                                                                    <option value="Category 4">Quản trị viên</option>
+                                                                                <select class="form-control select-role-edit" data-placeholder="Choose a Category" tabindex="1">  
                                                                                 </select>
                                                                             </div>
                                                                         </div>			
@@ -243,14 +243,14 @@
                                                     </thead>
                                                     <tbody>
                                                             <% if (data.users && data.users.length != 0) { %>
-                                                                <% data.users.forEach((user) => { %>                                                                    
+                                                                <% data.users.forEach((user) => { %>                                         <% var fullName = user.fullName.firstName.trim() + " " + user.fullName.lastName.trim() %>   
                                                                     <tr role="row" id="<%- user.id %>"> 
                                                                         <td class="td-id">
                                                                             <%- user._id %>
                                                                         </td>
                                                                         <td class="txt-dark td-name">
                                                                             <% if (user.fullName) { %>
-                                                                                <%- user.fullName.firstName || "" + " " + user.fullName.lastName || "" %>
+                                                                                <%- fullName %>
                                                                             <% } %>                                                                            
                                                                         </td>
                                                                         <td class="txt-dark td-email">
@@ -448,13 +448,82 @@
                                         $('#add-user-modal').find('.select-role-add').append(options);
                                     }
                                 }).error((err) => {
-                                    
+                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                 });
 
                             });
 
                             $("#table-users tbody").delegate('.edit-user', 'click', (e) => {
-                                $('#edit-user-modal').modal('show');
+                                var modalEdit = $("#edit-user-modal");                               
+                                var id = $(e.currentTarget.parentElement.parentElement).find('td.td-id').html();
+                                $.get(`/admin/user/${id.trim()}`, (data) => {
+                                    if (data.error) {
+
+                                    } else {
+                                        var user = data.user;
+                                        if (!user) {
+
+                                        } else {
+
+                                            var id = user._id,
+                                                firstName = user.fullName.firstName,
+                                                lastName = user.fullName.lastName,
+                                                phone = user.phone,
+                                                email = user.email,
+                                                role = user.role,
+                                                sex = user.sex;
+
+                                            if (!id) {
+                                                showNotifier('error', 'Dữ liệu người dùng được trả về không đúng định dạng hoặc thiếu các thuộc tính cần thiết, vui lòng thử lại!');
+                                                return
+                                            }
+                                            $(modalEdit).find("#id_user_edit").val(id);
+                                            $(modalEdit).find('#firstName_edit').val(firstName || "");
+                                            $(modalEdit).find("#lastName_edit").val(lastName || "");
+                                            $(modalEdit).find("#email_edit").val(email || "");
+                                            $(modalEdit).find("#phone_edit").val(phone || "");
+
+                                            $.get('/admin/get-roles', (data) => {
+                                                if (data.error) {
+
+                                                } else {
+                                                    var roles = data.roles;
+                                                    if (roles) {
+                                                        var selectRole = $(modalEdit).find('select');
+                                                        roles.forEach(role => {
+                                                            var idRole = role._id,
+                                                                name = role.name;
+                                                            if (idRole && name) {
+                                                                $(selectRole).append(`<option value="${idRole}">${name}</option>`)
+                                                            }                                                            
+                                                        });
+
+                                                        //assign name role
+                                                        $(selectRole).find(`option[value="${role._id.trim()}"]`).prop('selected', true);
+
+                                                        //assign sex
+                                                        var radioSex = $(modalEdit).find('div.radio');
+                                                        radioSex.each((index, element) => {
+                                                            var label = $(element).find('label');
+                                                            if ($(label).text().trim() == sex.trim()) {
+                                                                $(label).prev('input').prop('checked', true);
+                                                            }
+                                                        });
+                                                    } else {
+                                                        showNotifier('error', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.');
+                                                    }
+                                                }
+                                            }).error((err) => {
+                                                showNotifier('error', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.');
+                                            });
+
+
+                                            $(modalEdit).modal('show');
+                                        }
+                                    }
+                                }).error((err) => {
+                                    showNotifier('error', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.');
+                                });
                             });
 
                             $("#table-users tbody").delegate('.delete-user', 'click', (e) => {
@@ -612,11 +681,134 @@
                             });
 
                             $('#save-new-user').click((e) => {
-
+                                //validate firstname, lastname, email, password, phone, sex and role
+                                var modal = $('#add-user-modal');
+                                var fullName =  {
+                                        firstName: $(modal).find('#firstName_add').val(),
+                                        lastName: $(modal).find('#lastName_add').val(),
+                                    },                                    
+                                    email = $(modal).find('#email_add').val(),
+                                    phone = $(modal).find('#phone_add').val(),
+                                    role = $(modal).find('.select-role-add').find('option:selected').val(),
+                                    sex = $(modal).find('input[type="radio"]:checked').next('label').html().trim();
+                                
+                                var newUser = {
+                                    fullName: JSON.stringify(fullName),
+                                    email: email,
+                                    phone: phone,
+                                    role: role,
+                                    sex: sex
+                                }
+                                
+                                $.ajax({
+                                    url: "/admin/user",
+                                    data: newUser,
+                                    method: "POST",
+                                    success: (data) => {
+                                        if (data.error) {
+                                            showNotifier('error', data.error);
+                                        } else {
+                                            var user = data.user;
+                                            if (user) {
+                                                if (!user._id) { window.location.reload() }
+                                                    var row = `
+                                                        <tr role="row" id="${user._id}"> 
+                                                            <td class="td-id">
+                                                                ${user._id}
+                                                            </td>
+                                                            <td class="txt-dark td-name">${user.name || ""}</td>
+                                                            <td class="txt-dark td-email">${user.email || ""}</td>
+                                                            <td class="txt-dark td-phone">${user.phone || ""}</td>
+                                                            <td class="txt-dark td-sex">${user.sex || ""}</td>
+                                                            <td class="txt-dark td-role">${ user.role != undefined ? (user.role.name != undefined ? user.role.name : "") : "" }</td>
+                                                    `                                                
+                                                if (user.status) {
+                                                    row+= ` <td class="td-status">
+                                                            <span class="label label-success font-weight-100">ACTIVE</span>
+                                                        </td>`
+                                                } else {
+                                                    row+= ` <td class="td-status">
+                                                            <span class="label label-default font-weight-100">DEACTIVE</span>
+                                                        </td>`
+                                                }
+                                                row+= `<td class="action-brand">
+                                                            <a href="javascript:void(0)" class="text-inverse pr-10 info-user" title="Xem thông tin người dùng">
+                                                                <i class="zmdi zmdi-eye text-primary"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0)" class="text-inverse pr-10 edit-user" title="Chỉnh sửa người dùng">
+                                                                <i class="zmdi zmdi-edit txt-warning"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0)" class="text-inverse pr-10 reset-password-user" title="Reset mật khẩu người dùng">
+                                                                    <i class="zmdi zmdi-refresh-sync text-success"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0)" class="text-inverse delete-user" title="Xoá người dùng">
+                                                                <i class="zmdi zmdi-delete txt-danger"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                `
+                                                tableUsers.row.add(row).draw('page');
+                                                $(modal).modal('hide');
+                                            } else {
+                                                window.location.reload();
+                                            }                                            
+                                        }
+                                    },
+                                    error: (err) => {
+                                        showNotifier('error', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.');
+                                    }
+                                })
+                                
                             });
 
                             $('#save-edit-user').click((e) => {
+                                var modal = $('#edit-user-modal');
+                                
+                                var firstName = $(modal).find('#firstName_edit').val(),
+                                    lastName = $(modal).find('#lastName_edit').val(),
+                                    email = $(modal).find('#email_edit').val(),
+                                    phone = $(modal).find('#phone_edit').val(),
+                                    role = $(modal).find('.select-role-edit').find('option:selected').val(),
+                                    sex = $(modal).find('input[type="radio"]:checked').next('label').html().trim(),
+                                    id = $(modal).find('#id_user_edit').val(),
+                                    password = $(modal).find('#password_edit').val();
+                                
+                                var properties = {
+                                }
 
+                                properties.fullName = {};
+
+
+                                if (!firstName) { showNotifier('error', 'Họ người dùng không được bỏ trống!'); return; } else { properties.fullName.firstName = firstName }
+                                if (!lastName) { showNotifier('error', 'Tên người dùng không được bỏ trống!'); return; } else { properties.fullName.lastName = lastName }                                                     
+
+                                if (!email) { showNotifier('error', 'Email người dùng không được bỏ trống!'); return }
+                                if (phone) { properties.phone = phone }
+                                if (sex) { properties.sex = sex }
+                                if (role) { properties.role = role }
+                                if (password) { properties.password = password }
+
+                                if (!id) { showNotifier('error', 'Không thể lấy được mã người dùng cần sửa, thử lại sau!'); $(modal).modal('hide'); return; }
+                                
+                                $.ajax({
+                                    url: "/admin/user",
+                                    data: {
+                                        id: id,
+                                        properties: JSON.stringify(properties)
+                                    },
+                                    method: "PUT",
+                                    success: (data) => {
+                                        if (data.error) {
+                                            showNotifier('error', data.error);
+                                        } else {
+                                            window.location.reload();                                          
+                                        }
+                                    },
+                                    error: (err) => {
+                                        showNotifier('error', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.');
+                                        $(modal).modal('hide');
+                                    }
+                                })
                             });
                         });
 

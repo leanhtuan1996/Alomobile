@@ -218,6 +218,8 @@ var editUser = (id, properties, result) => {
     });
 
     workflow.on('edit-user', () => {
+        console.log(id);
+        console.log(properties);
         User.findByIdAndUpdate(id, properties, (err, user) => {
             workflow.emit('response', {
                 error: err,
