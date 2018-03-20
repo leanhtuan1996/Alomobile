@@ -711,27 +711,39 @@
                                             var user = data.user;
                                             if (user) {
                                                 if (!user._id) { window.location.reload() }
-                                                    var row = `
+
+                                                    var fullName;
+                                                    if (user.fullName) {
+                                                        if (user.fullName.firstName && !user.fullName.lastName) {
+                                                            fullName = user.fullName.firstName;
+                                                        } else if (user.fullName.lastName && !user.fullName.firstName) {
+                                                            fullName = user.fullName.lastName;
+                                                        } else {
+                                                            fullName = user.fullName.firstName + " " + user.fullName.lastName;
+                                                        }
+                                                    }
+
+                                                    var newRow = `
                                                         <tr role="row" id="${user._id}"> 
                                                             <td class="td-id">
                                                                 ${user._id}
                                                             </td>
-                                                            <td class="txt-dark td-name">${user.name || ""}</td>
+                                                            <td class="txt-dark td-name">${fullName || ""}</td>
                                                             <td class="txt-dark td-email">${user.email || ""}</td>
                                                             <td class="txt-dark td-phone">${user.phone || ""}</td>
                                                             <td class="txt-dark td-sex">${user.sex || ""}</td>
                                                             <td class="txt-dark td-role">${ user.role != undefined ? (user.role.name != undefined ? user.role.name : "") : "" }</td>
                                                     `                                                
                                                 if (user.status) {
-                                                    row+= ` <td class="td-status">
+                                                    newRow+= ` <td class="td-status">
                                                             <span class="label label-success font-weight-100">ACTIVE</span>
                                                         </td>`
                                                 } else {
-                                                    row+= ` <td class="td-status">
+                                                    newRow+= ` <td class="td-status">
                                                             <span class="label label-default font-weight-100">DEACTIVE</span>
                                                         </td>`
                                                 }
-                                                row+= `<td class="action-brand">
+                                                newRow+=  `<td class="action-brand">
                                                             <a href="javascript:void(0)" class="text-inverse pr-10 info-user" title="Xem thông tin người dùng">
                                                                 <i class="zmdi zmdi-eye text-primary"></i>
                                                             </a>
@@ -747,7 +759,7 @@
                                                         </td>
                                                     </tr>
                                                 `
-                                                tableUsers.row.add(row).draw('page');
+                                                tableUsers.row.add($(newRow)).draw();
                                                 $(modal).modal('hide');
                                             } else {
                                                 window.location.reload();
@@ -782,7 +794,7 @@
                                 if (!firstName) { showNotifier('error', 'Họ người dùng không được bỏ trống!'); return; } else { properties.fullName.firstName = firstName }
                                 if (!lastName) { showNotifier('error', 'Tên người dùng không được bỏ trống!'); return; } else { properties.fullName.lastName = lastName }                                                     
 
-                                if (!email) { showNotifier('error', 'Email người dùng không được bỏ trống!'); return }
+                                if (!email) { showNotifier('error', 'Email người dùng không được bỏ trống!'); return } else { properties.email = email; }
                                 if (phone) { properties.phone = phone }
                                 if (sex) { properties.sex = sex }
                                 if (role) { properties.role = role }

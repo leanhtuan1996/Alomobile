@@ -193,6 +193,8 @@ var newUser = (parameters, result) => {
 var editUser = (id, properties, result) => {
     var workflow = new event.EventEmitter();
 
+    console.log(properties);
+
     workflow.on('validate-parameters', () => {
         if (!id) {
             workflow.emit('response', {
@@ -218,11 +220,19 @@ var editUser = (id, properties, result) => {
     });
 
     workflow.on('edit-user', () => {
-        console.log(id);
-        console.log(properties);
         User.findByIdAndUpdate(id, properties, (err, user) => {
+
+            var errorName
+            if (err) {
+                if (err.code == 11000) {
+                    errorName = "Tài khoản đã tồn tại hoặc Email đã được sử dụng."
+                } else {
+                    errorName = "Lỗi không xác định, vui lòng thử lại!"
+                }
+            }
+
             workflow.emit('response', {
-                error: err,
+                error: errorName,
                 user: user
             });
         });
