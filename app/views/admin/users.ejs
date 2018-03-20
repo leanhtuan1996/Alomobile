@@ -97,10 +97,8 @@
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label class="control-label mb-10">Vai trò</label>
-                                                                                <select class="form-control select-role-add" data-placeholder="Choose a Category" tabindex="1">
-                                                                                    <option value="Category 2">Khách hàng</option>
-                                                                                    <option value="Category 3">Nhân viên</option>
-                                                                                    <option value="Category 4">Quản trị viên</option>
+                                                                                <select class="form-control select-role-add" data-placeholder="Choose a Role" tabindex="1">
+                                                                                    
                                                                                 </select>
                                                                             </div>
                                                                         </div>			
@@ -433,6 +431,26 @@
 
                             $('#user-add').click((e) => {
                                 $("#add-user-modal").modal('show');
+
+                                $.get('/admin/get-roles', (data) => {
+                                    var roles = data.roles;
+                                    if (roles && roles.length > 0) {
+                                        var options = ``;
+                                        roles.forEach(role => {
+                                            var id = role._id,
+                                                name = role.name;
+                                            if (!id) { return }
+                                            if (!name) { return }
+                                            options += `
+                                                <option value="${id}">${name}</option>
+                                            `
+                                        });
+                                        $('#add-user-modal').find('.select-role-add').append(options);
+                                    }
+                                }).error((err) => {
+                                    
+                                });
+
                             });
 
                             $("#table-users tbody").delegate('.edit-user', 'click', (e) => {
@@ -604,6 +622,4 @@
 
                     </script>
 </body>
-
-\
 </html>

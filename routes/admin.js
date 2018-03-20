@@ -513,6 +513,12 @@ router.get('/admin/roles', [auth.requireAuth, auth.requireRole], (req, res) => {
     });
 });
 
+router.get('/admin/get-roles', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Role.getRoles((result) => {
+        res.json(result);
+    });
+})
+
 router.get('/admin/role/get-routers', [auth.requireAuth, auth.requireRole], (req, res) => {
     getAllRouter(req.app._router.stack, (cb) => {
         res.json(cb);
