@@ -15,6 +15,10 @@
         "ca": "/chain.pem",
         "cert": "/fullchain.pem"
 	},
+	"mailbox": {
+		"user": "support@alomobile.tech",
+		"password": "fb@hTCcZ4"
+	},
 	"salt": 10,
 	"secret_key" : "alomobile",
 	"keyJWT": "alomobile-zzzxxx"

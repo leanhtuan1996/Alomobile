@@ -20,6 +20,8 @@ var api = require('./routes/api');
 var crawl = require('./routes/crawl');
 var g3g4 = require('./routes/g3g4');
 
+var nodemailer = require('nodemailer');
+
 var app = express();
 
 // view engine setup
@@ -76,15 +78,31 @@ app.use((req, res, next) => {
   next();
 });
 
+//config stmp email server
+app.use((req, res, next) => {  
+  res.transporter = nodemailer.createTransport({
+    host: 'us2.smtp.mailhostbox.com',
+    port: 25,
+    secure: false, // true for 465, false for other ports
+    auth: {
+        user: config.get("mailbox.user"), // generated ethereal user
+        pass: config.get("mailbox.password") // generated ethereal password
+    }
+  });
+  next();
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
+  console.log(req);
   if (req.url && typeof req.url == 'string' && req.url.startsWith('/admin/')) {    
-      err.href = 'admin/404';
+      err.href = 'admin/404';      
   } else {
     err.status = 404;
   }
 
+  err.ref = req.headers.referer;
   next(err);
 });
 
@@ -102,35 +120,44 @@ app.use(function (err, req, res, next) {
       res.render(`${err.href || '403'}`, {
         data: {
           user: req.user,
-          error: err.message
+          error: err.message,
+          ref: err.ref 
         }
       });
       break;
     case 500:
       res.render(`${err.href || '500'}`, {
         data: {
-          user: req.user
+          user: req.user,
+          error: err.message,
+          ref: err.ref           
         }
       });
       break;
     case 502:
       res.render(`${err.href || '502'}`, {
         data: {
-          user: req.user
+          user: req.user,
+          error: err.message,
+          ref: err.ref 
         }
       });
       break;
     case 503:
       res.render(`${err.href || '503'}`, {
         data: {
-          user: req.user
+          user: req.user,
+          error: err.message,
+          ref: err.ref 
         }
       });
       break;
     case 504:
       res.render(`${err.href || '504'}`, {
         data: {
-          user: req.user
+          user: req.user,
+          error: err.message,
+          ref: err.ref 
         }
       });
       break;
@@ -138,7 +165,9 @@ app.use(function (err, req, res, next) {
     default:
       res.render(`${err.href || '404'}`, {
         data: {
-          user: req.user
+          user: req.user,
+          error: err.message,
+          ref: err.ref 
         }
       });
       break;

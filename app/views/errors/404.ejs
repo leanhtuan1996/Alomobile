@@ -56,14 +56,7 @@
                 <div class="jumbotron">
                     <h1 style="font-size: 60px"><i class="fa fa-frown-o red"></i> 404 Not Found</h1>
                     <p class="lead" style="margin-top: 10px">Xin lỗi! Chúng tôi không tìm thấy yêu cầu của bạn trên trang web của chúng tôi.</p>
-                    <p><button onclick="javascript:checkSite();" type="button" class="btn btn-outline-info"><span class="">Trở về trang chủ</span></button>
-                        <script type="text/javascript">
-                        function checkSite(){
-                            var currentSite = window.location.hostname;
-                            var portSite = window.location.port;
-                              window.location = "http://" + currentSite + ":" + portSite;
-                          }
-                        </script>
+                    <p><a href="<%- data.ref || '/' %>" type="button" class="btn btn-outline-info"><span class="">Quay lại</span></a>
                     </p>
                   </div>
             </div>

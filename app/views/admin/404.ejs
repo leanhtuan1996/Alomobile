@@ -34,7 +34,7 @@
 					</a>
 				</div>
 				<div class="form-group mb-0 pull-right">
-					<a class="inline-block btn btn-success btn-rounded btn-outline nonecase-font" href="/admin">Back to Home</a>
+					<a class="inline-block btn btn-success btn-rounded btn-outline nonecase-font" href="/admin">Trở về trang quản trị</a>
 				</div>
 				<div class="clearfix"></div>
 			</header>
@@ -54,6 +54,11 @@
 											<p class="text-center"><%- data.text || "The URL may be misplaced or the page you are looking is no longer available."  %></p>
 										</div>	
 									</div>	
+									<div class="row">
+									<div class="col-sm-12 col-xs-12" style="text-align: center;">
+										<a class="inline-block btn btn-success btn-rounded btn-outline nonecase-font" href="<%- data.ref || '/admin' %>" style="width: 50%;">Quay lại</a>	
+									</div>	
+								</div>
 								</div>
 							</div>
 						</div>

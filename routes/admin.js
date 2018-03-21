@@ -11,6 +11,8 @@ var User = require('../app/controllers/admin/index').user;
 var Type = require('../app/controllers/admin/index').type;
 var Role = require('../app/controllers/admin/index').role;
 
+var mail = require('../app/api/index').mail;
+
 var multer = require('multer');
 var auth = require('../app/middleware/index').authenticate;
 var helper = require('../app/helpers/index').helper;
@@ -45,6 +47,7 @@ var upload = multer({
 
 //page admin
 router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
+    mail.sendMail();
     Dashboard.dashboard((result) => {
         res.render('dashboard', {
             data: {

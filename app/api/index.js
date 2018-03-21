@@ -5,6 +5,7 @@ var user = require('./user');
 var product = require('./product');
 var type = require('./type');
 var role = require('./role');
+var mail = require('./mail');
 
 module.exports = {
     brand: brand,
@@ -13,5 +14,6 @@ module.exports = {
     product: product,
     user: user,
     type: type,
-    role: role
+    role: role,
+    mail: mail
 }

@@ -172,13 +172,15 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label class="control-label mb-10" for="password_edit">Mật khẩu</label>
+                                                                                <label class="control-label mb-10" for="phone_edit">Trạng thái</label>
                                                                                 <div class="input-group">
-                                                                                    <div class="input-group-addon"><i class="icon-lock"></i></div>
-                                                                                    <input type="password" class="form-control" id="password_edit" placeholder="Enter pwd" value="password">
+                                                                                    <div class="checkbox checkbox-success">
+                                                                                        <input id="status_edit" type="checkbox">
+                                                                                        <label for="status_edit">HOẠT ĐỘNG</label>
+                                                                                    </div>                                   
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="form-group">
+                                                                            <div id="form-group">
                                                                                 <label class="control-label mb-10">Giới tính</label>
                                                                                 <div>
                                                                                     <div class="radio">
@@ -389,7 +391,7 @@
                                 }); 
                         }
 
-                         function confirmReset(cb) {
+                        function confirmReset(cb) {
                             swal({
                                     title: "Bạn có muốn cập nhật lại mật khẩu không?",
                                     text: "Nhấn vào 'Reset' để cập nhật lại mật khẩu mới cho người dùng",
@@ -471,7 +473,8 @@
                                                 phone = user.phone,
                                                 email = user.email,
                                                 role = user.role,
-                                                sex = user.sex;
+                                                sex = user.sex,
+                                                status = user.status;
 
                                             if (!id) {
                                                 showNotifier('error', 'Dữ liệu người dùng được trả về không đúng định dạng hoặc thiếu các thuộc tính cần thiết, vui lòng thử lại!');
@@ -482,6 +485,7 @@
                                             $(modalEdit).find("#lastName_edit").val(lastName || "");
                                             $(modalEdit).find("#email_edit").val(email || "");
                                             $(modalEdit).find("#phone_edit").val(phone || "");
+                                            $(modalEdit).find('#status_edit').prop('checked', status || false);
 
                                             $.get('/admin/get-roles', (data) => {
                                                 if (data.error) {
@@ -783,7 +787,7 @@
                                     role = $(modal).find('.select-role-edit').find('option:selected').val(),
                                     sex = $(modal).find('input[type="radio"]:checked').next('label').html().trim(),
                                     id = $(modal).find('#id_user_edit').val(),
-                                    password = $(modal).find('#password_edit').val();
+                                    status = $(modal).find('#status_edit').prop('checked');
                                 
                                 var properties = {
                                 }
@@ -798,7 +802,8 @@
                                 if (phone) { properties.phone = phone }
                                 if (sex) { properties.sex = sex }
                                 if (role) { properties.role = role }
-                                if (password) { properties.password = password }
+                                
+                                properties.status = status
 
                                 if (!id) { showNotifier('error', 'Không thể lấy được mã người dùng cần sửa, thử lại sau!'); $(modal).modal('hide'); return; }
                                 

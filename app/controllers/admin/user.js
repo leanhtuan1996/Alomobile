@@ -281,12 +281,13 @@ var editUser = (id, properties, result) => {
 
             if (properties.status) {
                 user.status = properties.status;
+            } else {
+                user.status = false;
             }
 
             if (properties.isRegisteredNewLetters) {
                 user.isRegisteredNewLetters = properties.isRegisteredNewLetters;
             }
-
             user.save((err) => {
                 workflow.emit('response', {
                     error: err

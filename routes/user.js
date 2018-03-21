@@ -119,7 +119,7 @@ router.post('/sign-up', (req, res) => {
 
 router.get('/sign-out', (req, res) => {
   req.session.destroy();
-  res.redirect('/');
+  res.redirect(req.headers.referer);
 })
 
 router.get('/my-account', (req, res) => {
