@@ -47,7 +47,7 @@ userSchema.pre('save', function(next) {
     if (!user.isModified("password")) {
         return next();
     }
-
+   
     if (!user.created_at) {
         user.created_at = Date.now();
     }   
@@ -63,10 +63,12 @@ userSchema.pre('save', function(next) {
             return next(err);
         }
 
-        bcrypt.hash(user.password, salt, (err, hash) => {
-            if (err) {
-                return next(err);
+        bcrypt.hash(user.password, salt, (e, hash) => {
+            if (e) {
+                return next(e);
             }
+
+            console.log(hash);
 
             user.password = hash
 

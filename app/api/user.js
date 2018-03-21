@@ -68,9 +68,18 @@ var signIn = (user, result) => {
                 }
     
                 if (helper.comparePw(password, user.password)) {
+
+                    if (user.status != true) {
+                        workflow.emit('response', {
+                            error: 'Your account is currently temporarily locked!'
+                        });
+                        return
+                    } 
+
                     workflow.emit('response', {
                         user: user
                     });
+                    
                 } else {
                     workflow.emit('response', ({
                         error: 'Email hoặc mật khẩu không đúng, vui lòng kiểm tra lại.',

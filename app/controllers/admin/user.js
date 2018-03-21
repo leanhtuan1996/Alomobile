@@ -193,8 +193,6 @@ var newUser = (parameters, result) => {
 var editUser = (id, properties, result) => {
     var workflow = new event.EventEmitter();
 
-    console.log(properties);
-
     workflow.on('validate-parameters', () => {
         if (!id) {
             workflow.emit('response', {
@@ -220,20 +218,79 @@ var editUser = (id, properties, result) => {
     });
 
     workflow.on('edit-user', () => {
-        User.findByIdAndUpdate(id, properties, (err, user) => {
 
-            var errorName
+        User.findById(id, (err, user) => {
             if (err) {
-                if (err.code == 11000) {
-                    errorName = "Tài khoản đã tồn tại hoặc Email đã được sử dụng."
-                } else {
-                    errorName = "Lỗi không xác định, vui lòng thử lại!"
-                }
+                workflow.emit('response', {
+                    error: err
+                });
+                return
             }
 
-            workflow.emit('response', {
-                error: errorName,
-                user: user
+            if (!user) {
+                workflow.emit('response', {
+                    error: "User not found"
+                });
+                return
+            }
+
+            if (!properties) {
+                workflow.emit('response', {
+                    user: user
+                });
+                return
+            }
+
+            if (properties.fullName) {
+                if (!properties.fullName.firstName) {
+                    workflow.emit('response', {
+                        error: "First name is required!"
+                    });
+                    return
+                }
+
+                if (!properties.fullName.lastName) {
+                    workflow.emit('response', {
+                        error: "Last name is required!"
+                    });
+                    return
+                }
+
+                user.fullName = properties.fullName;
+            }
+
+            if (properties.email) {
+                user.email = properties.email;
+            }
+
+            if (properties.password) {
+                user.password = properties.password;
+            }
+
+            if (properties.phone) {
+                user.phone = properties.phone;
+            }
+
+            if (properties.sex) {
+                user.sex = properties.sex;
+            }
+
+            if (properties.role) {
+                user.role = properties.role;
+            }
+
+            if (properties.status) {
+                user.status = properties.status;
+            }
+
+            if (properties.isRegisteredNewLetters) {
+                user.isRegisteredNewLetters = properties.isRegisteredNewLetters;
+            }
+
+            user.save((err) => {
+                workflow.emit('response', {
+                    error: err
+                });
             });
         });
     });
