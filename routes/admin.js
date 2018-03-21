@@ -42,6 +42,8 @@ var upload = multer({
 //#region USER ROUTERS
 /* GET users listing. */
 /* USER SIGN_IN */
+
+//page admin
 router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
     Dashboard.dashboard((result) => {
         res.render('dashboard', {
@@ -136,6 +138,7 @@ router.delete('/admin/user', [auth.requireAuth, auth.requireRole], (req, res) =>
 
 //#region PRODUCT ROUTERS
 
+//page products
 router.get('/admin/products', [auth.requireAuth, auth.requireRole], (req, res) => {
     res.render('product', {
         data: {
@@ -170,6 +173,7 @@ router.get('/admin/products/listNew', [auth.requireAuth, auth.requireRole], (req
 
 });
 
+    //page add new product
 router.get('/admin/product/add', [auth.requireAuth, auth.requireRole], (req, res) => {
 
     /** GET CATEGORIES */
@@ -190,19 +194,19 @@ router.get('/admin/product/add', [auth.requireAuth, auth.requireRole], (req, res
     });
 });
 
-router.post('/admin/product/add', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
+router.post('/admin/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
     Product.newProduct(req.body, (result) => {
         res.json(result);
     });
 });
 
-router.put('/admin/product/edit', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
+router.put('/admin/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
     Product.editProduct(req.body, (result) => {
         res.json(result);
     });
 });
 
-router.delete('/admin/product/delete', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.delete('/admin/product', [auth.requireAuth, auth.requireRole], (req, res) => {
     Product.deleteProduct(req.body.id, (result) => {
         res.json(result);
     });
@@ -220,8 +224,8 @@ router.get('/admin/products/search/text=:text', [auth.requireAuth, auth.requireR
     });
 });
 
-router.get('/admin/product/:idProduct', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.getProduct(req.params.idProduct, (response) => {
+router.get('/admin/product/:id', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.getProduct(req.params.id, (response) => {
         if (response.error) {
             res.render('admin/404', {
                 data: {
@@ -241,8 +245,8 @@ router.get('/admin/product/:idProduct', [auth.requireAuth, auth.requireRole], (r
     });
 });
 
-router.put('/admin/product/edit/:idProduct', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.getProduct(req.params.idProduct, (r1) => {
+router.get('/admin/product/edit/:id', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.getProduct(req.params.id, (r1) => {
 
         if (r1.error) {
             res.render('admin/404', {
@@ -275,6 +279,7 @@ router.put('/admin/product/edit/:idProduct', [auth.requireAuth, auth.requireRole
 //#endregion PRODUCT ROUTERS
 
 //#region CATEGORY ROUTERS
+    //page category
 router.get('/admin/categories', [auth.requireAuth, auth.requireRole], (req, res) => {
     Category.getCategories((result) => {
         res.render('category', {
@@ -287,7 +292,7 @@ router.get('/admin/categories', [auth.requireAuth, auth.requireRole], (req, res)
     });
 });
 
-router.post('/admin/category/add', [auth.requireAuth, auth.requireRole], upload.single('icon'), (req, res) => {
+router.post('/admin/category', [auth.requireAuth, auth.requireRole], upload.single('icon'), (req, res) => {
     Category.addCategory(req.body, (result) => {
         res.json({
             error: result.error,
@@ -296,7 +301,7 @@ router.post('/admin/category/add', [auth.requireAuth, auth.requireRole], upload.
     });
 });
 
-router.delete('/admin/category/delete', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.delete('/admin/category', [auth.requireAuth, auth.requireRole], (req, res) => {
     Category.delCategory(req.body, (result) => {
         res.json({
             error: result.error
@@ -304,7 +309,7 @@ router.delete('/admin/category/delete', [auth.requireAuth, auth.requireRole], (r
     });
 });
 
-router.put('/admin/category/edit', [auth.requireAuth, auth.requireRole], upload.single('new_icon'), (req, res) => {
+router.put('/admin/category', [auth.requireAuth, auth.requireRole], upload.single('new_icon'), (req, res) => {
     Category.editCategory(req.body, (result) => {
         res.json(result);
     })
@@ -324,7 +329,7 @@ router.get('/admin/brands', [auth.requireAuth, auth.requireRole], (req, res) => 
     });
 });
 
-router.post('/admin/brand/add', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
+router.post('/admin/brand', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
     Brand.newBrand(req.body, (result) => {
         res.json({
             error: result.error
@@ -332,7 +337,7 @@ router.post('/admin/brand/add', [auth.requireAuth, auth.requireRole], upload.sin
     });
 });
 
-router.put('/admin/brand/edit', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
+router.put('/admin/brand', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
     Brand.editBrand(req.body, (result) => {
         res.json({
             error: result.error
@@ -340,7 +345,7 @@ router.put('/admin/brand/edit', [auth.requireAuth, auth.requireRole], upload.sin
     });
 });
 
-router.delete('/admin/brand/delete', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.delete('/admin/brand', [auth.requireAuth, auth.requireRole], (req, res) => {
     Brand.deleteBrand(req.body, (result) => {
         res.json({
             error: result.error
@@ -531,20 +536,19 @@ router.get('/admin/role/:id', [auth.requireAuth, auth.requireRole], (req, res) =
     });
 });
 
-router.post('/admin/role/new', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.post('/admin/role', [auth.requireAuth, auth.requireRole], (req, res) => {
     Role.newRole(req.body, (result) => {
         res.json(result);
     });
 });
 
-router.put('/admin/role/edit', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.put('/admin/role', [auth.requireAuth, auth.requireRole], (req, res) => {
     Role.editRole(req.body, (result) => {
-        console.log(result);
         res.json(result);
     });
 });
 
-router.delete('/admin/role/delete', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.delete('/admin/role', [auth.requireAuth, auth.requireRole], (req, res) => {
     Role.deleteRole(req.body, (result) => {
         res.json(result);
     });

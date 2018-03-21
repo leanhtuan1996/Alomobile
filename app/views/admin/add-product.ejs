@@ -930,13 +930,12 @@
                     // Create a new instance of ladda for the specified button
                     
                     $.ajax({
-                        url: 'add',
+                        url: '/admin/product',
                         method: 'POST',
                         data: productFormData,
                         processData: false,
                         contentType: false,
                         success: (result) => {
-                            window.console.log(result);
                             var error = result.error;
                             if (error) {
                                 showAlert(error);

@@ -355,7 +355,7 @@
                                     formData.append("alias", category_alias);
 
                                     $.ajax({
-                                        url: 'category/add',
+                                        url: '/admin/category',
                                         method: 'POST',
                                         data: formData,
                                         processData: false,
@@ -382,13 +382,12 @@
                                     formData.append("new_url", category_url);
 
                                     $.ajax({
-                                        url: 'category/edit',
+                                        url: '/admin/category',
                                         method: 'PUT',
                                         data: formData,
                                         processData: false,
                                         contentType: false,
                                         success: (result) => {
-                                            window.console.log(result);
                                             if (result.error) {
                                                 alert(result.error);
                                             } else {
@@ -419,7 +418,7 @@
                                         //delete root category
                                         if (id == rootId) {
                                             $.ajax({
-                                                url: 'category/delete',
+                                                url: '/admin/category',
                                                 method: 'delete',
                                                 data: {
                                                     id: id
@@ -440,7 +439,7 @@
                                         } else {    //non root
 
                                             $.ajax({
-                                                url: 'category/delete',
+                                                url: '/admin/category',
                                                 method: 'delete',
                                                 data: {
                                                     id: id,

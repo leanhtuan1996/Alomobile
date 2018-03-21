@@ -364,15 +364,9 @@
                         })
                     }
 
-                    function showAlert(id, content) {
-                        var alert = `
-                        <div class="alert alert-danger alert-dismissable">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            ${content}
-                        </div>
-                    `
-                        $(id).append(alert);
-                    }
+                    function showNotifier(status, content) {
+                            swal('Thông báo', content, status)
+                        }
 
                     function confirmDelete(cb) {
                         swal({
@@ -412,7 +406,7 @@
                                         if (!id) { return }
 
                                         $.ajax({
-                                            url: "/admin/role/delete",
+                                            url: "/admin/role",
                                             method: "DELETE",
                                             data: {
                                                 id: id
@@ -421,7 +415,7 @@
                                                 table.row(row).remove().draw('page');
                                             },
                                             error: (err) => {
-                                                alert(err);
+                                                swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                             }
                                         });                                       
                                     } 
@@ -519,7 +513,11 @@
                                                 tableEdit.rows().draw();
                                             }                                           
                                         }
+                                    }).error(err => {
+                                        swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                     });   
+                                }).error(err => {
+                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                 }); 
                             });
 
@@ -560,6 +558,8 @@
                                             }                                           
                                         }
                                     }
+                                }).error((err) => {
+
                                 });
                             });
 
@@ -677,7 +677,7 @@
                                 } 
 
                                 $.ajax({
-                                    url: "/admin/role/new",
+                                    url: "/admin/role",
                                     method: "POST",
                                     data: parameters,
                                     success: (data) => {
@@ -738,7 +738,7 @@
                                 } 
 
                                 $.ajax({
-                                    url: "/admin/role/edit",
+                                    url: "/admin/role",
                                     method: "PUT",
                                     data: parameters,
                                     success: (data) => {

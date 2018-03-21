@@ -261,7 +261,7 @@
                                     formData.append("alias", brand_alias);
 
                                     $.ajax({
-                                        url: 'brand/add',
+                                        url: '/admin/brand',
                                         method: 'POST',
                                         data: formData,
                                         processData: false,
@@ -286,7 +286,7 @@
                                     formData.append("url", brand_url);
 
                                     $.ajax({
-                                        url: 'brand/edit',
+                                        url: '/admin/brand',
                                         method: 'PUT',
                                         data: formData,
                                         processData: false,
@@ -310,11 +310,10 @@
                                 confirmDelete((result) => {
                                     if (result == true) {
                                         var id = (e.currentTarget.closest('tr').getElementsByClassName('td-id')[0].innerHTML).trim(); 
-
                                         var row = $('#table-brand tbody').find(`[id = ${id}]`);
 
                                         $.ajax({
-                                            url: 'brand/delete',
+                                            url: '/admin/brand',
                                             method: 'DELETE',
                                             data: {
                                                 id: id
@@ -322,7 +321,6 @@
                                             success: (result) => {
                                                 var error = result.error;
                                                 if (error) {
-                                                    window.console.log(error);
                                                     alert(error);
                                                 } else {
                                                     table.row(row).remove().draw('page');
