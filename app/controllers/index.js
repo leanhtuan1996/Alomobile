@@ -5,6 +5,7 @@ var user = require('./user');
 var homepage = require('./homepage');
 var category = require('./category');
 var brand = require('./brand');
+var mailbox = require('./mailbox');
 
 module.exports = {
     order: order,
@@ -12,5 +13,6 @@ module.exports = {
     product: product,
     homepage: homepage,
     category: category,
-    brand: brand
+    brand: brand,
+    mailbox: mailbox
 }

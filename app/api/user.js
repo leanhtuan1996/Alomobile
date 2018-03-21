@@ -163,7 +163,6 @@ var signUp = (user, result) => {
                         });
                     }
                 });
-
             }
         });
     });

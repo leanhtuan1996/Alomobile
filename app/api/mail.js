@@ -3,22 +3,25 @@
 const event = require('events');
 const mongoose = require('mongoose');
 const _ = require('lodash');
-const nodemailer = require('nodemailer');
 const config = require('config');
+const nodemailer = require('nodemailer');
 
 const helper = require('../helpers/index').helper;
 
-var sendMail = (transporter, parameters, cb) => {
+var transporter = nodemailer.createTransport({
+    host: 'us2.smtp.mailhostbox.com',
+    port: 25,
+    secure: false, // true for 465, false for other ports
+    auth: {
+        user: config.get("mailbox.user"), // generated ethereal user
+        pass: config.get("mailbox.password") // generated ethereal password
+    }
+});
+
+var sendMail = (parameters, cb) => {
     var workflow = new event.EventEmitter();
 
-    workflow.on('validate-parameters', () => {
-        if (!transporter) {
-            workflow.emit('response', {
-                error: "Transporter is required!"
-            });
-            return
-        }
-
+    workflow.on('validate-parameters', () => {      
         if (!parameters) {
             workflow.emit('response', {
                 error: "Parameters is required!"
@@ -28,13 +31,6 @@ var sendMail = (transporter, parameters, cb) => {
             if (!parameters.to) {
                 workflow.emit('response', {
                     error: "Email receiver is required!"
-                });
-                return
-            }
-
-            if (!parameters.action) {
-                workflow.emit('response', {
-                    error: "Action of email is required!"
                 });
                 return
             }
@@ -62,9 +58,8 @@ var sendMail = (transporter, parameters, cb) => {
     });
 
     workflow.on('send-email', () => {
-
         let mailOptions = {
-            from: 'support@alomobile.tech', // sender address
+            from: '"Alomobile" <admin@alomobile.tech>', // sender address
             to: `${parameters.to}`, // list of receivers
             subject: `${parameters.subject}`, // Subject line
             html: `${parameters.html}` // html body
@@ -77,15 +72,10 @@ var sendMail = (transporter, parameters, cb) => {
             });
         });
     });
+
+    workflow.emit('validate-parameters');
 }
 
-var resetPassword = ``
-var registerNewsLetters = ``
-var registerAccount = ``
-var orderSuccessfully = ``
-
-
 module.exports = {
-    nodemailer: nodemailer,
     sendMail: sendMail
 }

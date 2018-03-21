@@ -154,8 +154,6 @@ var delCategory = (parameters, result) => {
     var id = parameters.id,
         rootCategory = parameters.rootCategory || parameters.id;
 
-    console.log(parameters);
-
     workflow.on('validate-parameters', () => {
         if (!id) {
             workflow.emit('response', {

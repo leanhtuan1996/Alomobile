@@ -4,6 +4,7 @@ var router = express.Router();
 var User = require('../app/controllers/index').user;
 var helper = require('../app/helpers/index').helper;
 var middleware = require('../app/middleware/index').middleware
+var mailbox = require('../app/controllers/index').mailbox;
 
 /* GET users listing. */
 /* USER SIGN_IN */
@@ -101,11 +102,20 @@ router.get('/sign-up', (req, res) => {
 router.post('/sign-up', (req, res) => {
   User.signUp(req.body, (result) => {
     if (result.user) {
-      var id = result.user._id
+      var newUser = result.user;
 
-      var token = helper.encodeToken(id);
+      var token = helper.encodeToken(newUser._id);
       //set token in session
       req.session.token = token
+
+      //send email to user     
+      var parameters = {
+        to: newUser.email,
+        subject: "Chúc mừng bạn đã đăng kí tài khoản thành công trên Alomobile",
+        fullName: newUser.fullName
+      }
+
+      mailbox.sendMailWithSignUp(parameters, (cb) => {});
 
       res.send({
         user: result.user,

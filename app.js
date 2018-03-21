@@ -78,24 +78,9 @@ app.use((req, res, next) => {
   next();
 });
 
-//config stmp email server
-app.use((req, res, next) => {  
-  res.transporter = nodemailer.createTransport({
-    host: 'us2.smtp.mailhostbox.com',
-    port: 25,
-    secure: false, // true for 465, false for other ports
-    auth: {
-        user: config.get("mailbox.user"), // generated ethereal user
-        pass: config.get("mailbox.password") // generated ethereal password
-    }
-  });
-  next();
-});
-
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   var err = new Error('Not Found');
-  console.log(req);
   if (req.url && typeof req.url == 'string' && req.url.startsWith('/admin/')) {    
       err.href = 'admin/404';      
   } else {
