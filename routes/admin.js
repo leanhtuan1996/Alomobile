@@ -375,7 +375,8 @@ router.get('/admin/inbox', (req, res) => {
 
 //#region CHAT ROUTERS
 router.get('/admin/chat', (req, res) => {
-    res.render('admin/chat/chat');
+    //res.render('admin/chat/chat');
+    res.redirect('https://dashboard.tawk.to');
 })
 
 router.get('/admin/get-all-route', [auth.requireAuth, auth.requireRole], (req, res) => {
