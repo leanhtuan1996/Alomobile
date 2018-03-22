@@ -109,7 +109,7 @@
     <div class="back-top">
         <a href="#" class="back-top-button"></a>
     </div>
-
+    <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript">
         jQuery(document).ready(($) => {
             $("form").submit((e) => {
@@ -120,13 +120,13 @@
                     password = $("#password").val();
                 
                 if (!email) {
-                    showNotify('#login-form', "Vui lòng nhập Email");
-                    return
+                    showNotify('Vui lòng nhập Email');
+					return
                 }
                 
                 if (!password) {
-                    showNotify('#login-form', "Vui lòng nhập Password");
-                    return
+                    showNotify('Vui lòng nhập mật khẩu');
+					return
                 }
 
                 var user = {
@@ -147,8 +147,9 @@
                         if (user) {
                             window.location.href = '/'
                         } else {
-                            var err = data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.";
-                            showNotify('#login-form', err); 
+                            var err = data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.";                            
+                            showNotify(err);
+							return 
                         }                        
                     }
                 );

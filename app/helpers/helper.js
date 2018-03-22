@@ -45,7 +45,6 @@ var decodeToken = (token, cb) => {
 
 var refreshToken = (token, cb) => {
     jwt.refresh(token, 3 * 24 * 60 * 60, config.get('keyJWT'), (err, newToken) => {
-        console.log('NEW REFRESH TOKEN: ' + newToken);
         return cb({ error: err, newToken: newToken })
     });
 }

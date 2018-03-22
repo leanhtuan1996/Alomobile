@@ -195,37 +195,28 @@
                     isRegistered_NewLetters = $('input[name="option"]:checked').val() == 1 ? true : false;
                     
                 if (!firstName) {
-                    showNotify('#customer-form', "Vui lòng nhập họ của bạn.");
+                    showNotify("Vui lòng nhập họ của bạn.");
                     return
                 }
 
                 if (!lastName) {
-                    showNotify('#customer-form', "Vui lòng nhập tên của bạn.");
+                    showNotify("Vui lòng nhập tên của bạn.");
                     return
                 }
 
                 if (!email) {
-                    showNotify('#customer-form', "Vui lòng nhập Email của bạn.");
+                    showNotify("Vui lòng nhập Email của bạn.");
                     return
                 }
 
                 if (!password) {
-                    showNotify('#customer-form', "Vui lòng nhập mật khẩu.");
+                    showNotify("Vui lòng nhập mật khẩu.");
                     return
                 }
 
                 if (!sex) {
-                    showNotify('#customer-form', "Vui lòng chọn giới tính.");
+                    showNotify("Vui lòng chọn giới tính.");
                     return
-                }
-
-                if (birthday) {                    
-                    if (!isValidDate(birthday)) {
-                        showNotify('#customer-form', "Vui lòng nhập ngày sinh đúng định dạng: DD/MM/YYYY");
-                        return
-                    }
-                } else {
-                    birthday = null
                 }
 
                 //
@@ -250,7 +241,8 @@
                         $('input[type="submit"]').html('Đăng ký ngay').removeClass('disabled'); 
                         
                         if (data.error) {
-                            showNotify('#customer-form', data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.");
+                            console.log(data.error)
+                            showNotify(data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.");
                         } else {
                             window.location.href = '/'
                         } 

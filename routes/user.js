@@ -42,12 +42,12 @@ router.post('/sign-in', (req, res) => {
       req.session.token = token
 
       //push new token to user
-      User.pushValidToken(token, result.user, (cb) => {  
-          res.json({
-            error: cb.error,
-            user: cb.user,
-            token: token
-          });
+      User.pushValidToken(token, result.user, (cb) => {
+        res.json({
+          error: cb.error,
+          user: cb.user,
+          token: token
+        });
       });
     }
   });
@@ -107,9 +107,13 @@ router.post('/sign-up', (req, res) => {
       }
       mailbox.sendMailWithSignUp(parameters, (cb) => { });
 
-      res.send({
-        user: result.user,
-        token: token,
+      //push new token to user
+      User.pushValidToken(token, result.user, (cb) => {
+        res.json({
+          error: cb.error,
+          user: cb.user,
+          token: token
+        });
       });
 
     } else {

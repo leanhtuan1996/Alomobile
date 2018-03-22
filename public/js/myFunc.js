@@ -1,16 +1,12 @@
-function showNotify(i, content) {
-
-    if ($('.help-block').length) {
-        $('.help-block').remove();
-    }
-
-    $(`${i}`).before(`
-    <div class="help-block" >    
-        <ul>
-            <li class="alert alert-danger">${content}.</li>
-        </ul>      
-    </div> 
-`).show('slow');
+function showNotify(text) {    
+    swal({
+        title: "Đăng nhập thất bại",
+        text: text,
+        icon: "error",
+        buttons: {
+            reTry: "Đã rõ",
+        },
+    })
 }
 
 function isValidDate(dateString) {
