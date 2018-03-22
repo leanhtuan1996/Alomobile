@@ -105,7 +105,7 @@ router.post('/sign-up', (req, res) => {
             email: user.name,
             fullName: user.fullName,
             phone: user.phone,
-            role: user.role._id,
+            role: user.role,
             sex: user.sex,
             orders: user.orders
           }
