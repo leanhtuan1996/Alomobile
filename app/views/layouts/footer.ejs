@@ -176,3 +176,17 @@
     </div>
 </footer>
 <script type="text/javascript" src="static/js/myFunc.js"></script>
+<script type="text/javascript">
+    function logout() {
+        $.ajax({
+            url: "/sign-out",
+            method: "PUT",
+            success: (data) => {
+                window.location.reload();
+            },
+            error: (err) => {
+                window.location.reload();
+            }
+        })
+    }
+</script>

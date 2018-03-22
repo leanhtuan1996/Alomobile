@@ -11,33 +11,19 @@ var mailbox = require('../app/controllers/index').mailbox;
 router.get('/sign-in', (req, res) => {
   if (req.session.token) {
     User.verify(req.session.token, (cb) => {
-      var data = {};
 
-      if (cb.error) {
-        req.session.destroy();
-      }
+      if (cb.error) { req.session.destroy(); res.render('sign-in', { data: {} }); return }
 
-      if (!cb.user) {
-        res.render('sign-in', {
-          data: {
+      if (!cb.user) { res.render('sign-in', { data: {} }); return }
 
-          }
-        });
-        return
-      }
       res.render('index', {
         data: {
           user: cb.user
         }
       });
-
     });
   } else {
-    res.render('sign-in', {
-      data: {
-
-      }
-    });
+    res.render('sign-in', { data: {} });
   }
 });
 
@@ -55,9 +41,13 @@ router.post('/sign-in', (req, res) => {
       //set token in session
       req.session.token = token
 
-      res.send({
-        user: result.user,
-        token: token,
+      //push new token to user
+      User.pushValidToken(token, result.user, (cb) => {  
+          res.json({
+            error: cb.error,
+            user: cb.user,
+            token: token
+          });
       });
     }
   });
@@ -83,6 +73,7 @@ router.get('/sign-up', (req, res) => {
           });
           return
         }
+
         res.render('index', {
           data: {
             user: cb.user
@@ -114,22 +105,23 @@ router.post('/sign-up', (req, res) => {
         subject: "Chúc mừng bạn đã đăng kí tài khoản thành công trên Alomobile",
         fullName: newUser.fullName
       }
-
-      mailbox.sendMailWithSignUp(parameters, (cb) => {});
+      mailbox.sendMailWithSignUp(parameters, (cb) => { });
 
       res.send({
         user: result.user,
         token: token,
       });
+
     } else {
       res.send(result);
     }
   });
 }); /***/
 
-router.get('/sign-out', (req, res) => {
-  req.session.destroy();
-  res.redirect(req.headers.referer);
+router.put('/sign-out', (req, res) => {
+  User.signOut(req.session.token, (r) => {
+    res.redirect(req.headers.referer);
+  });
 })
 
 router.get('/my-account', (req, res) => {
@@ -149,6 +141,7 @@ router.get('/my-account', (req, res) => {
         });
         return
       }
+
       res.render('my-account', {
         data: {
           user: cb.user
@@ -183,6 +176,7 @@ router.get('/password-recovery', (req, res) => {
         });
         return
       }
+
       res.render('password-recovery', {
         data: {
           user: cb.user
@@ -217,6 +211,7 @@ router.get('/cart', (req, res) => {
         });
         return
       }
+
       res.render('cart', {
         data: {
           user: cb.user

@@ -20,8 +20,29 @@ var verify = (token, cb) => {
     });
 }
 
+var pushValidToken = (token, user, cb) => {
+    userApi.pushValidToken(token, user, (r) => {
+        return cb(r);
+    });
+}
+
+var pushInvalidToken = (token, user, cb) => {
+    userApi.pushInvalidToken(token, user, (r) => {
+        return cb(r);
+    });
+}
+
+var signOut = (token, cb) => {
+    userApi.signOut(token, (r) => {
+        return cb(r);
+    });
+}
+
 module.exports = {
     signIn: signIn,
     signUp: signUp,
-    verify: verify
+    signOut: signOut,
+    verify: verify,
+    pushValidToken: pushValidToken,
+    pushInvalidToken: pushInvalidToken
 }

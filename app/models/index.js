@@ -7,6 +7,7 @@ var category = require('./category');
 var brand = require('./brand');
 var role = require('./role');
 var type = require('./type');
+var invalidToken = require('./invalidToken');
 
 module.exports = {
     user: user,
@@ -15,5 +16,6 @@ module.exports = {
     category: category,
     brand: brand,
     role: role,
-    type: type
+    type: type,
+    invalidToken: invalidToken
 }

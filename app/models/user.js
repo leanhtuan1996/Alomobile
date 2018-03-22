@@ -31,6 +31,7 @@ var userSchema = new Schema({
     orders: [{
         id: { type: Schema.Types.ObjectId, ref: "Order" }
     }],
+    validTokens: [String],
     isRegisteredNewLetters: Boolean,
     lastSignIn: Number,
     created_at: Number,

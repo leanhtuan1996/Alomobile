@@ -2,12 +2,12 @@
 
 var bcrypt = require('bcryptjs');
 var config = require('config');
-var jwt = require('jsonwebtoken');
+var jwt = require('jsonwebtoken-refresh');
 
 var hashPw = (pw) => {
     var saltRounds = config.get("salt");
-	var salt = bcrypt.genSaltSync(saltRounds);
-	return bcrypt.hashSync(pw, salt);
+    var salt = bcrypt.genSaltSync(saltRounds);
+    return bcrypt.hashSync(pw, salt);
 }
 
 var comparePw = (pw, hash) => {
@@ -15,9 +15,10 @@ var comparePw = (pw, hash) => {
 }
 
 var encodeToken = (payload) => {
+    //token will expire in 3 days
     return jwt.sign({
         id: String(payload)
-    }, config.get("keyJWT"));
+    }, config.get("keyJWT"), { expiresIn: 3 * 24 * 60 * 60 });
 }
 
 var decodeToken = (token, cb) => {
@@ -42,6 +43,13 @@ var decodeToken = (token, cb) => {
     });
 }
 
+var refreshToken = (token, cb) => {
+    jwt.refresh(token, 3 * 24 * 60 * 60, config.get('keyJWT'), (err, newToken) => {
+        console.log('NEW REFRESH TOKEN: ' + newToken);
+        return cb({ error: err, newToken: newToken })
+    });
+}
+
 /**
  * supporting for ISO formation: YYYY-MM-DD
  * @param {*} date 
@@ -52,20 +60,16 @@ var dateToTimeStamp = (date) => {
     return newDate.getTime() / 1000
 }
 
-var validateISODateTime = (string) => {
-    
-}
-
 var copySync = (src, dest) => {
     if (!fs.existsSync(src)) {
-      return false;
+        return false;
     }
-      fs.readFile(src, function (err, data) {
-      if (err) throw err;
-      fs.writeFile(dest, data, function (err) {
-          if (err) throw err;
-          return true;
-      });
+    fs.readFile(src, function (err, data) {
+        if (err) throw err;
+        fs.writeFile(dest, data, function (err) {
+            if (err) throw err;
+            return true;
+        });
     });
 }
 
@@ -75,5 +79,6 @@ module.exports = {
     dateToTimeStamp: dateToTimeStamp,
     copySync: copySync,
     encodeToken: encodeToken,
-    decodeToken: decodeToken
+    decodeToken: decodeToken,
+    refreshToken: refreshToken
 }
