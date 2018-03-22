@@ -239,13 +239,13 @@
                     'sign-up',
                     user,
                     (data) => {
-                        $('input[type="submit"]').html('Đăng ký ngay').removeClass('disabled'); 
-                        
+                        $('input[type="submit"]').html('Đăng ký ngay').removeClass('disabled');   
+                                           
                         if (data.error) {
-                            console.log(data.error)
                             showNotify(data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.");
                         } else {
-                            window.location.href = window.location.host;
+                            window.localStorage.setItem('user', JSON.stringify(data.user));
+                            window.location.reload();
                         } 
                     }
                 );

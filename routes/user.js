@@ -16,11 +16,7 @@ router.get('/sign-in', (req, res) => {
 
       if (!cb.user) { res.render('sign-in', { data: {} }); return }
 
-      res.render('index', {
-        data: {
-          user: cb.user
-        }
-      });
+      res.redirect('/');
     });
   } else {
     res.render('sign-in', { data: {} });
@@ -30,23 +26,33 @@ router.get('/sign-in', (req, res) => {
 router.post('/sign-in', (req, res) => {
   User.signIn(req.body, (result) => {
     if (result.error) {
-      res.send({
+      res.json({
         error: result.error
       });
     } else {
+      var user = result.user;
+      if (!user) { res.json({ error: "User not found!" }); return; }
 
-      var id = result.user._id
+      var id = user._id
 
       var token = helper.encodeToken(id);
+
       //set token in session
       req.session.token = token
 
       //push new token to user
-      User.pushValidToken(token, result.user, (cb) => {
+      User.pushValidToken(token, user, (cb) => {
         res.json({
           error: cb.error,
-          user: cb.user,
-          token: token
+          user: {
+            id: id,
+            email: user.name,
+            fullName: user.fullName,
+            phone: user.phone,
+            role: user.role._id,
+            sex: user.sex,
+            orders: user.orders
+          }
         });
       });
     }
@@ -59,65 +65,54 @@ router.get('/sign-up', (req, res) => {
     User.verify(req.session.token, (cb) => {
       if (cb.error) {
         req.session.destroy();
-        res.render('sign-up', {
-          data: {
-
-          }
-        });
+        res.render('sign-up', { data: {} });
       } else {
         if (!cb.user) {
-          res.render('sign-up', {
-            data: {
-
-            }
-          });
+          res.render('sign-up', { data: {} });
           return
         }
 
-        res.render('index', {
-          data: {
-            user: cb.user
-          }
-        })
+        res.redirect('/');
       }
     });
   } else {
-    res.render('sign-up', {
-      data: {
-
-      }
-    });
+    res.render('sign-up', { data: {} });
   }
 });
 
 router.post('/sign-up', (req, res) => {
   User.signUp(req.body, (result) => {
-    if (result.user) {
-      var newUser = result.user;
-
-      var token = helper.encodeToken(newUser._id);
+    var user = result.user;
+    if (user) {
       //set token in session
-      req.session.token = token
+      req.session.token = helper.encodeToken(user._id);
 
       //send email to user     
       var parameters = {
-        to: newUser.email,
+        to: user.email,
         subject: "Chúc mừng bạn đã đăng kí tài khoản thành công trên Alomobile",
-        fullName: newUser.fullName
+        fullName: user.fullName
       }
+
       mailbox.sendMailWithSignUp(parameters, (cb) => { });
 
       //push new token to user
-      User.pushValidToken(token, result.user, (cb) => {
+      User.pushValidToken(token, user, (cb) => {
         res.json({
           error: cb.error,
-          user: cb.user,
-          token: token
+          user: {
+            id: user._id,
+            email: user.name,
+            fullName: user.fullName,
+            phone: user.phone,
+            role: user.role._id,
+            sex: user.sex,
+            orders: user.orders
+          }
         });
       });
-
     } else {
-      res.send(result);
+      res.json(result);
     }
   });
 }); /***/
@@ -131,104 +126,86 @@ router.put('/sign-out', (req, res) => {
 router.get('/my-account', (req, res) => {
   if (req.session.token) {
     User.verify(req.session.token, (cb) => {
-      var data = {};
 
+      var user = cb.user;
       if (cb.error) {
         req.session.destroy();
       }
 
-      if (!cb.user) {
-        res.render('sign-in', {
-          data: {
-
-          }
-        });
+      if (!user) {
+        res.redirect('/sign-in');
         return
       }
 
       res.render('my-account', {
         data: {
-          user: cb.user
+          user: {
+            id: user._id,
+            email: user.name,
+            fullName: user.fullName,
+            phone: user.phone,
+            role: user.role._id,
+            sex: user.sex,
+            orders: user.orders
+          }
         }
       });
-
     });
   } else {
-    res.render('sign-in', {
-      data: {
-
-      }
-    })
+    res.redirect('/sign-in');
   }
 });
 
 router.get('/password-recovery', (req, res) => {
-
   if (req.session.token) {
     User.verify(req.session.token, (cb) => {
-      var data = {};
-
       if (cb.error) {
         req.session.destroy();
-      }
-
-      if (!cb.user) {
-        res.render('password-recovery', {
-          data: {
-
-          }
-        });
+        res.render('password-recovery', { data: {} });
         return
       }
 
-      res.render('password-recovery', {
-        data: {
-          user: cb.user
-        }
-      });
-
+      if (!cb.user) {
+        res.render('password-recovery', { data: {} });
+        return
+      }
+      res.redirect('/');
     });
   } else {
-    res.render('password-recovery', {
-      data: {
-
-      }
-    });
+    res.render('password-recovery', { data: {} });
   }
 });
 
 router.get('/cart', (req, res) => {
-
   if (req.session.token) {
     User.verify(req.session.token, (cb) => {
-      var data = {};
-
       if (cb.error) {
         req.session.destroy();
       }
+      var user = cb.user;
 
-      if (!cb.user) {
-        res.render('cart', {
-          data: {
-
-          }
-        });
+      if (!user) {
+        res.render('cart', { data: {} });
         return
       }
 
       res.render('cart', {
         data: {
-          user: cb.user
+          user: {
+            id: user._id,
+            email: user.name,
+            fullName: user.fullName,
+            phone: user.phone,
+            role: user.role._id,
+            sex: user.sex,
+            orders: user.orders
+          }
         }
       });
 
     });
   } else {
-    res.render('cart', {
-      data: {
-
-      }
-    });
+    res.render('cart', { data: {} });
   }
 });
 

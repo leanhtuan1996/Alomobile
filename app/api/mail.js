@@ -54,6 +54,7 @@ var sendMail = (parameters, cb) => {
     });
 
     workflow.on('response', (response) => {
+        console.log(response);
         return cb(response);
     });
 

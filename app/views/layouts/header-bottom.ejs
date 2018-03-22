@@ -1,6 +1,7 @@
 <div class="header-bottom">
     <div class="megamenu">
         <div class="container">
+        
             <!-- Block categories module -->
             <div class="ma-nav-mobile-container hidden-lg-up">
                 <div class="pt_custommenu_mobile">
@@ -8,8 +9,9 @@
                         <div id="navbar-inner" class="navbar-inner navbar-inactive" style="text-align: center">
                             <a class="btn-navbar" style="text-align: center">Danh mục</a>
                             <ul id="pt_custommenu_itemmobile" class="tree dhtml  mobilemenu nav-collapse collapse" style="text-align: center; ">   
-                               
-                                <% if (data.categories) { %>
+
+                                <% if (data) { %>
+                                    <% if (data.categories) { %>
                                         <% data.categories.forEach((category) => { %>
                                             <% var subCategories = category.subCategories; %>  
                                             <% if (subCategories && subCategories.length != 0) { %>
@@ -18,8 +20,7 @@
                                                         <% subCategories.forEach((sub) => { %>  
                                                             <% if (sub) { %>
                                                                 <li><a href="/<%- category.alias %>/<%- sub.alias %>"><%- sub.name %></a></li>
-                                                            <% } %>                                
-                                                                                                                       
+                                                            <% } %>                                                 
                                                         <% }); %>
                                                     </ul>               
                                                 </li>
@@ -27,7 +28,9 @@
                                                 <li><a href="/<%- category.alias %>" style="text-align: center"><%- category.name %></a></li>
                                             <% } %>                                            
                                         <% }); %>
-                                <% } %>   
+                                    <% } %>   
+                                <% } %>
+                                
 
                             </ul>                        
                         </div>
@@ -35,6 +38,7 @@
                 </div>
             </div>
             <!-- /Block categories module -->
+
             <div class="nav-container hidden-md-down">
                 <div class="nav-inner">
                     <div id="pt_custommenu" class="pt_custommenu">
@@ -66,21 +70,3 @@
         </div>
     </div>
 </div>
-
-
-<!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/5ab1e5804b401e45400de887/default';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
-
-
-

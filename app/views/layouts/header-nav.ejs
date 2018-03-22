@@ -1,21 +1,22 @@
 <nav class="header-nav">
     <div class="container">
         <div class="user-info-block">
-            <a href="/my-account" rel="nofollow">Tài khoản của tôi</a>
-            <a href="/cart">Thanh toán</a>
+            <a href="/my-account" id="my-account" rel="nofollow">Tài khoản của tôi</a>
+            <a href="/cart" id="cart">Thanh toán</a>
 
             <% if (data.user) { %>             
                 <a href="javascript: logout()" title="Đăng xuất tài khoản của bạn" rel="nofollow">
-                    <span class="">Đăng xuất</span>
+                    <span id="logout">Đăng xuất</span>
                 </a>
                 <a class="account" href="/my-account" title="View my customer account" rel="nofollow">                    
-                    <span class=""> <%-  data.user.fullName.firstName + " " + data.user.fullName.lastName %> </span>
+                    <span id="fullName"> <%-  data.user.fullName.firstName + " " + data.user.fullName.lastName %> </span>
                 </a>
             <% } else { %>
                 <a href="/sign-in" title="Log in to your customer account" rel="nofollow">
-                    <span class="">Đăng nhập</span>
+                    <span id="sign-in">Đăng nhập</span>
                 </a>
-            <% } %>      
+            <% } %> 
+                
         </div>
     </div>
 </nav>

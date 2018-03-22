@@ -143,6 +143,7 @@
                         $("#login-button").html("Đăng nhập").removeClass('disabled');
 
                         var user = data.user;
+                        window.localStorage.setItem('user', JSON.stringify(user));
 
                         if (user) {
                             window.location.href = '/'

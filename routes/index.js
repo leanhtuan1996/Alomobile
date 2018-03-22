@@ -8,25 +8,34 @@ var auth = require('../app/middleware/index').authenticate;
 
 /* GET home page. */
 router.get('/', (req, res) => {
-
   if (req.session.token) {
     User.verify(req.session.token, (cb) => {
-      if (cb.error) {
-        req.session.destroy();
-      }
-
       Homepage.index(req, res, (result) => {
-        res.render('index', {
-          data: {
-            error: result.error,
-            user: cb.user,
-            categories: result.categories,
-            hotProducts: result.hotProducts,
-            newProducts: result.newProducts,
-            specialProducts: result.specialProducts
-          }
-        });
-      });
+        if (cb.user) {
+          res.render('index', {
+            data: {
+              error: result.error,
+              user: cb.user,
+              categories: result.categories,
+              hotProducts: result.hotProducts,
+              newProducts: result.newProducts,
+              specialProducts: result.specialProducts,
+              token: req.session.token
+            }
+          });
+        } else {
+          req.session.destroy();
+          res.render('index', {
+            data: {
+              error: result.error,
+              categories: result.categories,
+              hotProducts: result.hotProducts,
+              newProducts: result.newProducts,
+              specialProducts: result.specialProducts
+            }
+          });
+        }
+      });      
     });
   } else {
     Homepage.index(req, res, (result) => {

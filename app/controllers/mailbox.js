@@ -9,7 +9,6 @@ var mailApi = require('../api/index').mail;
 var sendMailWithSignUp = (parameters, cb) => {
 
     var file = path.join(__dirname, '..', 'views', 'emailTemplates', 'registerAccount.html');
-    console.log(file);
     fs.readFile(file, 'utf-8', (err, html) => {
 
         var $ = cheerio.load(html);   
