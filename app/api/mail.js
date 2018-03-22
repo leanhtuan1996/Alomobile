@@ -19,6 +19,7 @@ var transporter = nodemailer.createTransport({
 });
 
 var sendMail = (parameters, cb) => {
+    console.log('STARTING SEND EMAIL...');
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {      
