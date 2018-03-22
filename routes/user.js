@@ -97,7 +97,7 @@ router.post('/sign-up', (req, res) => {
       mailbox.sendMailWithSignUp(parameters, (cb) => { });
 
       //push new token to user
-      User.pushValidToken(token, user, (cb) => {
+      User.pushValidToken(req.session.token, user, (cb) => {
         res.json({
           error: cb.error,
           user: {

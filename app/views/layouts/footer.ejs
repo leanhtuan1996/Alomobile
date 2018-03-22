@@ -182,11 +182,9 @@
             url: "/sign-out",
             method: "PUT",
             success: (data) => {
-                window.localStorage.removeItem('user');
                 window.location.reload();
             },
             error: (err) => {
-                window.localStorage.removeItem('user');
                 window.location.reload();
             }
         })
