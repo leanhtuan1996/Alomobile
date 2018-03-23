@@ -328,6 +328,35 @@ var deleteUser = (id, result) => {
     workflow.emit('validate-parameters');
 }
 
+var pushValidToken = (token, user, cb) => {
+    userApi.pushValidToken(token, user, (r) => {
+        return cb(r);
+    });
+}
+
+var pushInvalidToken = (token, cb) => {
+    userApi.pushInvalidToken(token, (r) => {
+        return cb(r);
+    });
+}
+
+var signOut = (token, cb) => {
+    userApi.signOut(token, (r) => {
+        return cb(r);
+    });
+}
+
+var findInvalidToken = (token, cb) => {
+    userApi.findInvalidToken(token, (r) => {
+        return cb(r);
+    });
+}
+
+var removeValidToken = (token, id, cb) => {
+    userApi.removeValidToken(token, id, (r) => {
+        return cb(r);
+    });
+}
 
 module.exports = {
     getUsers: getUsers,
@@ -335,5 +364,10 @@ module.exports = {
     newUser: newUser,
     editUser: editUser,
     deleteUser: deleteUser,
-    signIn: signIn
+    signIn: signIn,
+    pushValidToken: pushValidToken,
+    pushInvalidToken: pushInvalidToken,
+    findInvalidToken: findInvalidToken,
+    removeValidToken: removeValidToken,
+    signOut: signOut
 }

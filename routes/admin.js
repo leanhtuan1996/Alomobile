@@ -76,20 +76,28 @@ router.post('/admin/sign-in', (req, res) => {
 
                 var token = helper.encodeToken(id);
                 //set token in session
-                req.session.token = token
+                req.session.token = token;
 
-                res.json({
-                    user: result.user,
-                    token: token,
+                //push new token to user
+                User.pushValidToken(token, id, (cb) => {
+                    res.json({
+                        error: cb.error,
+                        user: result.user
+                    });
                 });
             }
         }
     });
 });
 
-router.get('/admin/sign-out', (req, res) => {
-    req.session.destroy();
-    res.redirect('/admin');
+router.put('/admin/sign-out', (req, res) => {
+    if (req.session.token) {
+        User.signOut(req.session.token, (cb) => {
+            res.redirect('/admin/sign-in');
+        });
+    } else {
+        res.redirect('/admin/sign-in');
+    }    
 });
 
 router.get('/admin/forgot-password', (req, res) => {
@@ -175,7 +183,7 @@ router.get('/admin/products/listNew', [auth.requireAuth, auth.requireRole], (req
 
 });
 
-    //page add new product
+//page add new product
 router.get('/admin/product/add', [auth.requireAuth, auth.requireRole], (req, res) => {
 
     /** GET CATEGORIES */
@@ -281,7 +289,7 @@ router.get('/admin/product/edit/:id', [auth.requireAuth, auth.requireRole], (req
 //#endregion PRODUCT ROUTERS
 
 //#region CATEGORY ROUTERS
-    //page category
+//page category
 router.get('/admin/categories', [auth.requireAuth, auth.requireRole], (req, res) => {
     Category.getCategories((result) => {
         res.render('category', {

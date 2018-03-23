@@ -20,14 +20,14 @@ var verify = (token, cb) => {
     });
 }
 
-var pushValidToken = (token, user, cb) => {
-    userApi.pushValidToken(token, user, (r) => {
+var pushValidToken = (token, id, cb) => {
+    userApi.pushValidToken(token, id, (r) => {
         return cb(r);
     });
 }
 
 var pushInvalidToken = (token, user, cb) => {
-    userApi.pushInvalidToken(token, user, (r) => {
+    userApi.pushInvalidToken(token, (r) => {
         return cb(r);
     });
 }

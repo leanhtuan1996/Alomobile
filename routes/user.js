@@ -41,7 +41,7 @@ router.post('/sign-in', (req, res) => {
       req.session.token = token
 
       //push new token to user
-      User.pushValidToken(token, user, (cb) => {
+      User.pushValidToken(token, id, (cb) => {
         res.json({
           error: cb.error,
           user: {
@@ -49,7 +49,6 @@ router.post('/sign-in', (req, res) => {
             email: user.name,
             fullName: user.fullName,
             phone: user.phone,
-            role: user.role._id,
             sex: user.sex,
             orders: user.orders
           }
@@ -97,7 +96,7 @@ router.post('/sign-up', (req, res) => {
       mailbox.sendMailWithSignUp(parameters, (cb) => { });
 
       //push new token to user
-      User.pushValidToken(req.session.token, user, (cb) => {
+      User.pushValidToken(req.session.token, id, (cb) => {
         res.json({
           error: cb.error,
           user: {
@@ -105,7 +104,6 @@ router.post('/sign-up', (req, res) => {
             email: user.name,
             fullName: user.fullName,
             phone: user.phone,
-            role: user.role,
             sex: user.sex,
             orders: user.orders
           }
@@ -144,7 +142,6 @@ router.get('/my-account', (req, res) => {
             email: user.name,
             fullName: user.fullName,
             phone: user.phone,
-            role: user.role._id,
             sex: user.sex,
             orders: user.orders
           }
@@ -196,7 +193,6 @@ router.get('/cart', (req, res) => {
             email: user.name,
             fullName: user.fullName,
             phone: user.phone,
-            role: user.role._id,
             sex: user.sex,
             orders: user.orders
           }

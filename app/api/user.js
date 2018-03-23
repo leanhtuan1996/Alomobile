@@ -319,7 +319,7 @@ var verify = (token, cb) => {
                 findInvalidToken(token, (isExist) => {
                     if (isExist) {
                         //remove this
-                        removeValidToken(token, user, (cb) => { });
+                        removeValidToken(token, id, (cb) => { });
 
                         workflow.emit('response', {
                             error: "Invalid token!"
@@ -403,7 +403,7 @@ var getCountUsers = (result) => {
     workflow.emit('validate-parameters');
 }
 
-var pushValidToken = (token, user, cb) => {
+var pushValidToken = (token, id, cb) => {
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
@@ -414,7 +414,7 @@ var pushValidToken = (token, user, cb) => {
             return
         }
 
-        if (!user) {
+        if (!id) {
             workflow.emit('response', {
                 error: "User not found"
             });
@@ -429,14 +429,31 @@ var pushValidToken = (token, user, cb) => {
     });
 
     workflow.on('push', () => {
-        var validTokens = user.validTokens || [];
-        validTokens.push(token);
 
-        user.validTokens = validTokens;
-        user.save((err) => {
-            workflow.emit('response', {
-                error: err,
-                user: user
+        User.findById(id, (err, user) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err
+                });
+                return
+            }
+
+            if (!user) {
+                workflow.emit('response', {
+                    error: "User not found"
+                });
+                return
+            }
+
+            var validTokens = user.validTokens || [];
+            validTokens.push(token);
+    
+            user.validTokens = validTokens;
+            user.save((err) => {
+                workflow.emit('response', {
+                    error: err,
+                    user: user
+                });
             });
         });
     });
@@ -449,9 +466,7 @@ var pushInvalidToken = (token, cb) => {
 
     workflow.on('validate-parameters', () => {
         if (!token) {
-            workflow.emit('response', {
-                error: "Token not found"
-            });
+            workflow.emit('response', {});
             return
         }
 
@@ -477,7 +492,7 @@ var pushInvalidToken = (token, cb) => {
     workflow.emit('validate-parameters');
 }
 
-var removeValidToken = (token, user, cb) => {
+var removeValidToken = (token, id, cb) => {
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
@@ -488,7 +503,7 @@ var removeValidToken = (token, user, cb) => {
             return
         }
 
-        if (!user) {
+        if (!id) {
             workflow.emit('response', {
                 error: "User not found"
             });
@@ -499,18 +514,34 @@ var removeValidToken = (token, user, cb) => {
     });
 
     workflow.on('response', (response) => {
-        console.log(response);
         return cb(response);
     });
 
     workflow.on('remove', () => {
-        var validTokens = user.validTokens || [];
-        validTokens =  _.remove(validTokens, token);
-        user.validTokens = validTokens || [];
-        user.save((err) => {
-            workflow.emit('response', {
-                error: err,
-                user: user
+
+        User.findById(id, (err, user) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err
+                });
+                return
+            }
+
+            if (!user) {
+                workflow.emit('response', {
+                    error: "User not found"
+                });
+                return
+            }
+
+            var validTokens = user.validTokens || [];
+            validTokens = _.remove(validTokens, token);
+            user.validTokens = validTokens || [];
+            user.save((err) => {
+                workflow.emit('response', {
+                    error: err,
+                    user: user
+                });
             });
         });
     });
@@ -547,5 +578,7 @@ module.exports = {
     getUsers: getUsers,
     getCountUsers: getCountUsers,
     pushValidToken: pushValidToken,
-    pushInvalidToken: pushInvalidToken
+    pushInvalidToken: pushInvalidToken,
+    findInvalidToken: findInvalidToken,
+    removeValidToken: removeValidToken
 }
