@@ -21,59 +21,28 @@ var requireAuth = (req, res, next) => {
         return next(newError('The login session has expired, please log in again.', 401, 'admin/sign-in'));
     }
 
-    helper.decodeToken(token, (cb) => {
+    UserCtl.verify(token, (cb) => {
         if (cb.error) {
-            UserCtl.pushInvalidToken(token, (result) => {
-                return next(cb.error);
-            });
+            return next(newError(cb.error, 401, 'admin/sign-in'));
+        } 
+
+        if (!cb.user) {
+            return next(newError('The login session has expired, please log in again.', 401, 'admin/sign-in'));
         }
 
-        var id = cb.id;
-
-        if (!id) {
-            UserCtl.pushInvalidToken(token, (cb) => {
-                return next(newError('This token is not allows, please log in again.', 401, 'admin/sign-in'));
-            });
-        }
-
-        UserCtl.findInvalidToken(token, (exist) => {
-            if (exist) {
-                UserCtl.removeValidToken(token, id, (r) => {
-                    return next(newError('The login session has expired, please log in again.', 401, 'admin/sign-in'));
-                });
-            } else {
-                User.findById(id).populate('role').exec((err, user) => {
-                    if (err) {
-                        UserCtl.pushInvalidToken(token, (cb) => {
-                            return next(err);
-                        });
-                    }
-
-                    if (!user) {
-                        UserCtl.pushInvalidToken(token, (cb) => {
-                            return next(newError('This token is not allows, please log in again.', 401, 'admin/sign-in'));
-                        });
-                    }
-
-                    helper.refreshToken(token, (r) => {
-                        if (r.newToken) { UserCtl.pushValidToken(r.newToken, id, (cb) => { }); } 
-
-                        req.role = user.role;
-
-                        req.user = user;
-
-                        next();
-                    });
-                });
-            }
-        });
+        req.user = cb.user;
+        next();
     });
 }
 
 var requireRole = (req, res, next) => {
     //get current role of user
 
-    var role = req.role;
+    if (!req.user) {
+        return next(newError('The login session has expired, please log in again.', 401, 'admin/sign-in'));
+    }
+
+    var role = req.user.role;
 
     var err = new Error("User can not access to this page!");
     err.status = 403;

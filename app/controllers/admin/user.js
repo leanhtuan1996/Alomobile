@@ -358,6 +358,12 @@ var removeValidToken = (token, id, cb) => {
     });
 }
 
+var verify = (token, cb) => {
+    userApi.verify(token, (response) => {
+        return cb(response);
+    });
+}
+
 module.exports = {
     getUsers: getUsers,
     getUser: getUser,
@@ -369,5 +375,6 @@ module.exports = {
     pushInvalidToken: pushInvalidToken,
     findInvalidToken: findInvalidToken,
     removeValidToken: removeValidToken,
-    signOut: signOut
+    signOut: signOut,
+    verify: verify
 }

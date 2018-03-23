@@ -300,79 +300,65 @@ var verify = (token, cb) => {
                 return
             }
 
-            User.findById(id, (error, user) => {
-                if (error) {
-                    workflow.emit('response', {
-                        error: error
-                    });
-                    return
-                }
-
-                if (!user) {
-                    workflow.emit('response', {
-                        error: "User not found"
-                    });
-                    return
-                }
-
-                //the first, check token that it exist in invalidToken?
-                findInvalidToken(token, (isExist) => {
-                    if (isExist) {
-                        //remove this
-                        removeValidToken(token, id, (cb) => { });
-
+            findInvalidToken(token, (exist) => {
+                if (exist) {
+                    removeValidToken(token, id, (cb) => {
                         workflow.emit('response', {
-                            error: "Invalid token!"
+                            error: "The login session has expired, please log in again."
                         });
-                        return
-                    }
-
-                    //the second, check it in validTokens
-                    var validTokens = user.validTokens || [];
-
-                    if (validTokens.length > 0) {
-
-                        var idx = validTokens.findIndex(t => {
-                            return t == token.trim();
-                        });
-
-                        if (!idx && idx < 0) {
-                            workflow.emit('response', {
-                                error: "Invalid token - 2"
+                    });
+                } else {
+                    User.findById(id).populate('role').exec((error, user) => {
+                        if (error) {
+                            pushInvalidToken(token, (e) => {
+                                workflow.emit('response', {
+                                    error: 'This token is not allows, please log in again.'
+                                });
+                                return
                             });
                         } else {
-                            //extend expire token
-                            helper.refreshToken(token, (cb) => {
-                                if (cb.newToken) {
-
-                                    //replace this with new tokenq
-                                    user.validTokens[idx] = cb.newToken;
-
-                                    user.save((err) => {
-                                        if (err) {
+                            if (!user) {
+                                pushInvalidToken(token, (e) => {
+                                    workflow.emit('response', {
+                                        error: 'This token is not allows, please log in again.'
+                                    });
+                                    return
+                                });
+                            } else {
+                                if (!user.status || user.status == false) {
+                                    removeValidToken(token, id, (a) => {
+                                        pushInvalidToken(token, (x) => {
                                             workflow.emit('response', {
-                                                user: user
+                                                error: 'Your account is currently temporarily locked!'
                                             });
-                                        } else {
-                                            workflow.emit('response', {
-                                                user: user,
-                                                newToken: cb.newToken
-                                            });
-                                        }
+                                        });
                                     });
                                 } else {
-                                    workflow.emit('response', {
-                                        user: user
-                                    });
+                                    //the second, check it in validTokens
+                                    var validTokens = user.validTokens || [];
+
+                                    if (validTokens.length > 0) {
+                                        var t = _.find(validTokens, (element) => {
+                                            return element == token.trim();
+                                        });
+
+                                        if (t) {
+                                            workflow.emit('response', { user: user });
+                                        } else {
+                                            workflow.emit('response', {
+                                                error: "Not found"
+                                            });
+                                        }
+                                    } else {
+                                        workflow.emit('response', {
+                                            error: "Invalid token - 3"
+                                        });
+                                    }
                                 }
-                            });
+                            }
                         }
-                    } else {
-                        workflow.emit('response', {
-                            error: "Invalid token - 3"
-                        });
-                    }
-                });
+                    });
+                }
             });
         });
     });
@@ -447,7 +433,7 @@ var pushValidToken = (token, id, cb) => {
 
             var validTokens = user.validTokens || [];
             validTokens.push(token);
-    
+
             user.validTokens = validTokens;
             user.save((err) => {
                 workflow.emit('response', {
@@ -561,6 +547,77 @@ var findInvalidToken = (token, cb) => {
         }
         return cb(true)
     });
+}
+
+var findValidToken = (token, id, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!token) {
+            workflow.emit('response', {
+                error: "Token is required!"
+            });
+            return
+        }
+
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id is required!"
+            });
+            return
+        }
+
+        workflow.emit('find');
+    });
+
+    workflow.on('response', (response) => {
+        if (response.error) {
+            return cb(false);
+        }
+        return cb(true);
+    });
+
+    workflow.on('find', () => {
+        User.findById(id, (err, user) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err
+                });
+                return
+            }
+
+            if (!user) {
+                workflow.emit('response', {
+                    error: "user not found"
+                });
+                return
+            }
+            //the second, check it in validTokens
+            var validTokens = user.validTokens || [];
+
+            if (validTokens.length > 0) {
+                var t = _.find(validTokens, (element) => {
+                    return element == token.trim();
+                });
+
+                if (t) {
+                    workflow.emit('response', { token: token });
+                } else {
+                    workflow.emit('response', {
+                        error: "Not found"
+                    });
+                }
+
+            } else {
+                workflow.emit('response', {
+                    error: "Invalid token - 3"
+                });
+            }
+
+        })
+    })
+
+    workflow.emit('validate-parameters');
 }
 
 var signOut = (token, cb) => {
