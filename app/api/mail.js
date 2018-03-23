@@ -4,25 +4,16 @@ const event = require('events');
 const mongoose = require('mongoose');
 const _ = require('lodash');
 const config = require('config');
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 
 const helper = require('../helpers/index').helper;
 
-var transporter = nodemailer.createTransport({
-    host: 'us2.smtp.mailhostbox.com',
-    port: 25,
-    secure: false, // true for 465, false for other ports
-    auth: {
-        user: config.get("mailbox.user"), // generated ethereal user
-        pass: config.get("mailbox.password") // generated ethereal password
-    }
-});
+sgMail.setApiKey(config.get('mailbox.apiKey'));
 
 var sendMail = (parameters, cb) => {
-    console.log('STARTING SEND EMAIL...');
     var workflow = new event.EventEmitter();
 
-    workflow.on('validate-parameters', () => {      
+    workflow.on('validate-parameters', () => {
         if (!parameters) {
             workflow.emit('response', {
                 error: "Parameters is required!"
@@ -55,24 +46,24 @@ var sendMail = (parameters, cb) => {
     });
 
     workflow.on('response', (response) => {
-        console.log(response);
         return cb(response);
     });
 
     workflow.on('send-email', () => {
-        let mailOptions = {
-            from: '"Alomobile" <admin@alomobile.tech>', // sender address
-            to: `${parameters.to}`, // list of receivers
-            subject: `${parameters.subject}`, // Subject line
-            html: `${parameters.html}` // html body
+        const mailData = {
+            to: `${parameters.to}`,
+            from: 'Alomobile <admin@alomobile.tech>',
+            subject: `${parameters.subject}`,
+            html: `${parameters.html}`
         };
 
-        transporter.sendMail(mailOptions, (error, info) => {
+        sgMail.send(mailData, (err, result) => {
             workflow.emit('response', {
-                error: error,
-                info: info
+                error: err,
+                result: result
             });
         });
+
     });
 
     workflow.emit('validate-parameters');
