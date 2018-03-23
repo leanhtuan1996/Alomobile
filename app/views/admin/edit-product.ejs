@@ -361,8 +361,6 @@
            
            (function() {
 
-           
-
                //genaral
                 $("#product_name").val(product.name || "")
                 $("#product_alias").val(product.alias || "");
@@ -1373,7 +1371,7 @@
                             window.console.log(result);
                             var error = result.error;
                             if (error) {
-                                showAlert(error);
+                                swal('Oops', data.error, 'error')
                             } else {
                                 swal({
                                     title: "Cập nhật thành công!",
@@ -1396,8 +1394,8 @@
                                 }); 
                             }
                         },
-                        error: (error) => {
-                            //showAlert(error);
+                        error: (err) => {
+                            swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                         }
                     });
                     
@@ -1424,8 +1422,6 @@
                 //delete color
                 $("#row-color").delegate(".delete-color", "click", (e) => {
 
-
-
                     if ($('.colorpicker-component').length <= 1) { return }
 
                     var idParent = e.currentTarget.parentElement.parentElement.id;
@@ -1437,7 +1433,6 @@
                         $(`#${idParent}`).remove();
                     }, 1000);
                 });
-
             });
 
         </script>

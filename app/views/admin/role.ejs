@@ -530,7 +530,7 @@
                                 
                                 $.get(`/admin/role/${id}`, (data) => {
                                     if (data.error) {
-                                        alert(data.error);
+                                        swal('Oops', data.error, 'error')
                                     } else {
                                         var role = data.role;
                                         if (!role) {
@@ -559,7 +559,7 @@
                                         }
                                     }
                                 }).error((err) => {
-
+                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                 });
                             });
 
@@ -597,8 +597,7 @@
                                     tableAdd.rows().remove();
                                 }
                                 $("#role-add-model").modal('show'); 
-                                $.get('/admin/role/get-routers', (routers) => {                                    
-
+                                $.get('/admin/role/get-routers', (routers) => { 
                                     routers.forEach((router, index) => {
                                         if (router.path && router.methods) {
                                             var tr = `
@@ -630,7 +629,9 @@
                                     });
                                     tableAdd.rows().draw();
                                     //$('#table-role-add').DataTable();
-                                });                                
+                                }).error((err) => {
+                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
+                                });                    
                             });
                              
                             //add new role
@@ -682,13 +683,13 @@
                                     data: parameters,
                                     success: (data) => {
                                         if (data.error) {
-
+                                            swal('Oops', data.error, 'error')
                                         } else {
                                             window.location.reload();
                                         }
                                     },
                                     error: (err) => {
-                                        window.console.log(err);
+                                        swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                     }
                                 })
                             });
@@ -743,13 +744,13 @@
                                     data: parameters,
                                     success: (data) => {
                                         if (data.error) {
-
+                                            swal('Oops', data.error, 'error')
                                         } else {
                                             window.location.reload();
                                         }
                                     },
                                     error: (err) => {
-                                        window.console.log(err);
+                                        swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                     }
                                 })
                             });

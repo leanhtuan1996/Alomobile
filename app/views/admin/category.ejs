@@ -362,13 +362,13 @@
                                         contentType: false,
                                         success: (data) => {
                                             if (data.error) {
-                                                showAlert("#alert-error", data.error);
+                                                swal('Oops', data.error, 'error')
                                             } else {
                                                 location.reload(true);
                                             }
                                         },
-                                        error: (error) => {
-                                            showAlert("#alert-error", error);
+                                        error: (err) => {
+                                            swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                         }
                                     });
                                 } else {
@@ -389,13 +389,13 @@
                                         contentType: false,
                                         success: (result) => {
                                             if (result.error) {
-                                                alert(result.error);
+                                                swal('Oops', result.error, 'error')
                                             } else {
                                                 location.reload();
                                             }
                                         },
-                                        error: (error) => {
-                                            window.console.log(result);
+                                        error: (err) => {
+                                            swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                         }
                                     });
                                 }
@@ -426,12 +426,13 @@
                                                 success: (data) => {
                                                     var error = data.error;
                                                     if (error) {
+                                                        swal('Oops', error, 'error')
                                                     } else {
                                                         table.rows(rows).remove().draw('page');
                                                     }
                                                 },
                                                 error: (err) => {
-
+                                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                                 }
                                             });
                                             
@@ -448,12 +449,13 @@
                                                 success: (data) => {
                                                     var error = data.error;
                                                     if (error) {
+                                                        swal('Oops', error, 'error')
                                                     } else {
                                                         table.row(row).remove().draw('page');
                                                     }
                                                 },
                                                 error: (err) => {
-
+                                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                                 }
                                             });
                                         }

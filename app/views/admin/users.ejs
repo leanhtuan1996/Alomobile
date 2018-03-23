@@ -460,13 +460,12 @@
                                 var id = $(e.currentTarget.parentElement.parentElement).find('td.td-id').html();
                                 $.get(`/admin/user/${id.trim()}`, (data) => {
                                     if (data.error) {
-
+                                        swal('Oops', data.error, 'error');
                                     } else {
                                         var user = data.user;
                                         if (!user) {
-
+                                            swal('Oops', 'Data was missed!', 'error')
                                         } else {
-
                                             var id = user._id,
                                                 firstName = user.fullName.firstName,
                                                 lastName = user.fullName.lastName,
@@ -489,7 +488,7 @@
 
                                             $.get('/admin/get-roles', (data) => {
                                                 if (data.error) {
-
+                                                    swal('Oops', data.error, 'error')
                                                 } else {
                                                     var roles = data.roles;
                                                     if (roles) {

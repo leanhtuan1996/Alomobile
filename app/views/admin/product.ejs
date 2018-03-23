@@ -270,11 +270,10 @@
 					updateDataProducts(data.products);
 				}
 			}).error((err) => {
-				window.console.log(err);
+				swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
 			});
 
 			$(".pagination").delegate("li", "click", (e) => {
-
 				var prevButton = $(e.delegateTarget).find('.prev');
 				var nextButton = $(e.delegateTarget).find('.next');
 				var currentButton = $(e.currentTarget);
@@ -293,6 +292,8 @@
 							$(nextButton).removeAttr('data-current-page').attr('data-current-page', Number.parseInt(currentPage) + 1);
 							$(prevButton).removeAttr('data-current-page').attr('data-current-page', Number.parseInt(currentPage) + 1);
 						}
+					}).error((err) => {
+						swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
 					});
 				} else {
 					if (currentPage == 1) {
@@ -307,6 +308,8 @@
 								$(prevButton).removeAttr('data-current-page').attr('data-current-page', Number.parseInt(currentPage) - 1);
 							}
 						}
+					}).error((err) => {
+						swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
 					});
 				}				
 			});
@@ -363,10 +366,9 @@
 									}, 500, "swing", function() {
 										$(row).remove();
 								});
-								window.console.log(data);
 							},
-							error: (error) => {
-								window.console.log(error);
+							error: (err) => {
+								swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
 							}					
 						});
 					}

@@ -938,7 +938,7 @@
                         success: (result) => {
                             var error = result.error;
                             if (error) {
-                                showAlert(error);
+                                swal('Oops', error, 'error')
                             } else {
                                 swal({
                                     title: "Thêm thành công!",
@@ -962,7 +962,7 @@
                             }
                         },
                         error: (error) => {
-                            //showAlert(error);
+                            swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                         }
                     });
                     
