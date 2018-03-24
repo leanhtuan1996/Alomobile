@@ -626,6 +626,203 @@ var signOut = (token, cb) => {
     });
 }
 
+//Receive 1 token and email for recovery password
+var requireForgetPassword = (email, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!email) {
+            workflow.emit('response', {
+                error: "Email is required!"
+            });
+            return
+        }
+
+        workflow.emit('forget-password');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('forget-password', () => {
+        User.findOne({ email: email }, (err, user) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err,
+                })
+                return
+            }
+
+            if (!user) {
+                workflow.emit('response', {
+                    error: "User not found"
+                });
+                return
+            }
+
+            if (!user._id) {
+                workflow.emit('response', {
+                    error: "User not found"
+                });
+                return
+            }
+
+            if (!user.status) {
+                workflow.emit('response', {
+                    error: "Your account is currently temporarily locked!"
+                });
+                return
+            }
+
+            var token = helper.encodeToken(user._id, 30 * 60);
+            if (!token) {
+                workflow.emit('response', {
+                    error: "Request new password has been failed with error: Token can not created!"
+                });
+                return
+            }
+
+            var validTokens = user.validTokens || [];
+            validTokens.push(token);
+
+            user.validTokens = validTokens;
+
+            user.save((err) => {
+                workflow.emit('response', {
+                    error: err,
+                    user: user,
+                    token: token
+                });
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+//use token, email and newPassword for recovery password
+var recoveryPassword = (email, token, newPassword, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!email) {
+            workflow.emit('response', {
+                error: 'Email is required!'
+            });
+            return
+        }
+
+        if (!token) {
+            workflow.emit('response', {
+                error: 'Token is required!'
+            });
+            return
+        }
+
+        if (!newPassword) {
+            workflow.emit('response', {
+                error: "New password is required!"
+            });
+            return
+        }
+
+        workflow.emit('recovery-new-password');
+    });
+
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('recovery-new-password', () => {
+        helper.decodeToken(token, (result) => {
+            if (result.error) {
+                workflow.emit('response', {
+                    error: result.error
+                });
+                return
+            }
+
+            const id = result.id;
+
+            if (!id) {
+                workflow.emit('response', {
+                    error: "Token is invalid"
+                });
+                return
+            }
+
+            //find user with id
+            User.findById(id, (err, user) => {
+                if (err) {
+                    workflow.emit('response', {
+                        error: err
+                    });
+                    return
+                }
+
+                if (!user) {
+                    workflow.emit('response', {
+                        error: "Token is invalid"
+                    });
+                    return
+                }
+
+                var userEmail = user.email;
+                if (!email) {
+                    workflow.emit('response', {
+                        error: "Token is invalid"
+                    });
+                    return
+                }
+
+                if (email.trim() != userEmail.trim()) {
+                    workflow.emit('response', {
+                        error: "Token is invalid"
+                    });
+                    return
+                }
+
+                findInvalidToken(token, (exist) => {
+                    if (exist) {
+                        removeValidToken(token, id, (cb) => {
+                            workflow.emit('response', {
+                                error: "Token was expired"
+                            });
+                        });
+                    } else {
+                        findValidToken(token, id, (existToken) => {
+                            if (!existToken) {
+                                workflow.emit('response', {
+                                    error: "Token was expired!"
+                                });
+                            } else {
+                                user.password = newPassword;
+                                user.save((err) => {
+                                    if (err) {
+                                        workflow.emit('response', {
+                                            error: err
+                                        });
+                                    } else {
+                                        removeValidToken(token, id, (cb) => {
+                                            workflow.emit('response', {
+                                                user: user
+                                            });
+                                        })
+                                    }
+                                });
+                            }
+                        })
+                    }
+                });
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     signIn: signIn,
     signUp: signUp,
@@ -637,5 +834,7 @@ module.exports = {
     pushValidToken: pushValidToken,
     pushInvalidToken: pushInvalidToken,
     findInvalidToken: findInvalidToken,
-    removeValidToken: removeValidToken
+    removeValidToken: removeValidToken,
+    requireForgetPassword: requireForgetPassword,
+    recoveryPassword: recoveryPassword
 }

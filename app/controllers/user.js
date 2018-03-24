@@ -38,11 +38,25 @@ var signOut = (token, cb) => {
     });
 }
 
+var requireForgetPassword = (email, cb) => {
+    userApi.requireForgetPassword(email, (r) => {
+        return cb(r);
+    });
+}
+
+var passwordRecovery = (email, cb) => {
+    userApi.recoveryPassword(email, token, newPassword, (r) => {
+        return cb(r);
+    });
+}
+
 module.exports = {
     signIn: signIn,
     signUp: signUp,
     signOut: signOut,
     verify: verify,
     pushValidToken: pushValidToken,
-    pushInvalidToken: pushInvalidToken
+    pushInvalidToken: pushInvalidToken,
+    requireForgetPassword: requireForgetPassword,
+    passwordRecovery: passwordRecovery
 }

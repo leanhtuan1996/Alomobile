@@ -173,6 +173,19 @@ router.get('/password-recovery', (req, res) => {
   }
 });
 
+router.post('/password-recovery', (req, res) => {
+  User.requireForgetPassword(req.body.email, (result) => {
+    if (result.token && result.user) {
+      console.log(result);
+      mailbox.sendMailWithForgetPassword(result.user, result.token, (cb) => {
+       res.json(cb);
+      });
+    } else {
+      res.json(result);
+    }
+  });
+});
+
 router.get('/cart', (req, res) => {
   if (req.session.token) {
     User.verify(req.session.token, (cb) => {

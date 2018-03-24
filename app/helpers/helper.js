@@ -14,11 +14,11 @@ var comparePw = (pw, hash) => {
     return bcrypt.compareSync(pw, hash);
 }
 
-var encodeToken = (payload) => {
+var encodeToken = (payload, expire = 3 * 24 * 60 * 60) => {
     //token will expire in 3 days
     return jwt.sign({
         id: String(payload)
-    }, config.get("keyJWT"), { expiresIn: 3 * 24 * 60 * 60 });
+    }, config.get("keyJWT"), { expiresIn: expire });
 }
 
 var decodeToken = (token, cb) => {
