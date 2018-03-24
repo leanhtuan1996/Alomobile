@@ -823,6 +823,97 @@ var recoveryPassword = (email, token, newPassword, cb) => {
     workflow.emit('validate-parameters');
 }
 
+//Check whether the user is requesting password recovery or not.
+var canRecoveryPassword = (email, token, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!email) {
+            workflow.emit('response', {
+                error: "Email is required!"
+            });
+            return
+        }
+
+        if (!token) {
+            workflow.emit('response', {
+                error: "Token is required!"
+            });
+        }
+
+        workflow.emit('check');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('check', () => {
+        //validate token
+        helper.decodeToken(token, (r) => {
+            if (r.error) {
+                workflow.emit('response', {
+                    error: r.error
+                });
+                return
+            }
+
+            var id = r.id;
+            if (!id) {
+                workflow.emit('response', {
+                    error: "Token invalid!"
+                });
+                return
+            }
+
+            User.findById(id, (err, user) => {
+                if (err) {
+                    workflow.emit('response', {
+                        error: err
+                    });
+                    return
+                }
+
+                if (!user) {
+                    workflow.emit('response', {
+                        error: "Người dùng không tìm thấy!"
+                    });
+                    return
+                }
+
+                //check email
+                if (user.email != email) {
+
+                    removeValidToken(token, id, (cb) => { });
+                    pushInvalidToken(token, (cb) => { });
+
+                    workflow.emit('response', {
+                        error: "Email không hợp lệ"
+                    });
+                    return
+                }
+
+                findValidToken(token, id, (exist) => {
+                    if (exist) {
+                        workflow.emit('response', {
+
+                        });
+                    } else {
+                        pushInvalidToken(token, (cb) => {                            
+                        });
+
+                        workflow.emit('response', {
+                            error: 'Token invalid'
+                        });
+                    }
+                });
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     signIn: signIn,
     signUp: signUp,
@@ -836,5 +927,6 @@ module.exports = {
     findInvalidToken: findInvalidToken,
     removeValidToken: removeValidToken,
     requireForgetPassword: requireForgetPassword,
-    recoveryPassword: recoveryPassword
+    recoveryPassword: recoveryPassword,
+    canRecoveryPassword: canRecoveryPassword
 }

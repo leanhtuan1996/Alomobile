@@ -44,8 +44,14 @@ var requireForgetPassword = (email, cb) => {
     });
 }
 
-var passwordRecovery = (email, cb) => {
+var recoveryPassword = (email, token, newPassword, cb) => {
     userApi.recoveryPassword(email, token, newPassword, (r) => {
+        return cb(r);
+    });
+}
+
+var canRecoveryPassword = (email, token, cb) => {
+    userApi.canRecoveryPassword(email, token, (r) => {
         return cb(r);
     });
 }
@@ -58,5 +64,6 @@ module.exports = {
     pushValidToken: pushValidToken,
     pushInvalidToken: pushInvalidToken,
     requireForgetPassword: requireForgetPassword,
-    passwordRecovery: passwordRecovery
+    recoveryPassword: recoveryPassword,
+    canRecoveryPassword: canRecoveryPassword
 }
