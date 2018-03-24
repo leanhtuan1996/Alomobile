@@ -176,7 +176,6 @@ router.get('/password-recovery', (req, res) => {
 router.post('/password-recovery', (req, res) => {
   User.requireForgetPassword(req.body.email, (result) => {
     if (result.token && result.user) {
-      console.log(result);
       mailbox.sendMailWithForgetPassword(result.user, result.token, (cb) => {
         res.json(cb);
       });
@@ -186,17 +185,24 @@ router.post('/password-recovery', (req, res) => {
   });
 });
 
+router.put('/password-recovery', (req, res) => {
+  User.recoveryPassword(req.body.email, req.body.token, req.body.password, (r) => {
+    res.json(r);
+  });
+});
+
 router.get('/password-recovery/:email/:token', (req, res) => {
   User.canRecoveryPassword(req.params.email, req.params.token, (cb) => {
-    if (!cb.error) {
+    if (cb.error) {
       res.render('404', {
-        data: {
-
-        }
+        data: { }
       });
     } else {
       res.render('new-password-recovery', {
-        data: {}
+        data: {
+          email: req.params.email,
+          token: req.params.token
+        }
       });
     }
   });
