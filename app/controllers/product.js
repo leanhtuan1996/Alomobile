@@ -50,6 +50,12 @@ var getCountProducts = (result) => {
     });
 }
 
+var searchProduct = (text, result) => {
+    productApi.searchProducts(text, (response) => {
+        return result(response);
+    });
+}
+
 module.exports = {
     getProducts: getProducts,
     getProductById: getProductById,
@@ -58,5 +64,6 @@ module.exports = {
     getProductsByCategory: getProductsByCategory,
     getHotProducts: getHotProducts,
     getNewProducts: getNewProducts,
-    getCountProducts: getCountProducts
+    getCountProducts: getCountProducts,
+    searchProduct: searchProduct
 }

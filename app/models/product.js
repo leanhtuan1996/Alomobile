@@ -40,8 +40,8 @@ module.exports = mongoose.model('Product', new Schema({
         ref: "Type"
     },
     category: {
-        idRootCategory: String,
-        idCategory: String
+        idRootCategory: { type: Schema.Types.ObjectId, ref: "Category" },
+        idCategory: { type: Schema.Types.ObjectId, ref: "Category" }
     },
     totalOrders: Number,
     orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
@@ -58,5 +58,11 @@ module.exports = mongoose.model('Product', new Schema({
 
     next();
 
-}).index({ '$**': 'text' })
-);
+}).index({
+    name: "text",
+    alias: "text",
+    status: "text",
+    metaTitle: "text",
+    metaKeyword: "text",
+    price: "text"
+}));

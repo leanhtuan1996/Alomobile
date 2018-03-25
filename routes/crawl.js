@@ -93,4 +93,36 @@ router.get('/zalo', (req, res) => {
     })
 })
 
+router.get('/fptshop/dien-thoai/samsung', (req, res) => {
+    res.json({});
+    request('https://fptshop.com.vn/dien-thoai/samsung?sort=gia-cao-den-thap&trang=1', (err, response, body) => {
+        if (err) {
+            return
+        }
+
+        if (!body) {
+            return
+        }
+        var $ = cheerio.load(body);
+        var listElements = $('.fs-lpil');
+        if (listElements) {
+            _.forEach(listElements, (element) => {
+                var productHref = $(element).find('a.fs-lpil-img').attr('href');
+                request(`https://fptshop.com.vn${productHref}`, (e, r, b) => {
+                    if (body) {
+                        $ = cheerio.load(b);
+                        const div = $('.fs-dtprodif'); 
+
+                        const name = $(div).find('.fs-dttname').text();
+                        const price = $(div).find('.fs-dtprice').text();
+                        const colors = $(div).find('.choose-color');
+                        //console.log(name + " | " + price + " | ");
+                        console.log(colors);
+                    }
+                });
+            });
+        }
+    })
+});
+
 module.exports = router

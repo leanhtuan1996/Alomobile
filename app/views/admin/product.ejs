@@ -334,7 +334,7 @@
 					return
 				}
 
-				$.get(`./product/search/text=${text.trim()}`, (data) => {
+				$.get(`./products/search/text=${text.trim()}`, (data) => {
 					var products = data.products;					
 					updateDataProducts(products);					
 				});

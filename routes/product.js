@@ -63,8 +63,75 @@ router.get('/product/getCount', (req, res) => {
     });
 });
 
-router.get('/product/search/text=:text', (req, res) => {
+router.get('/products/search/text=:text', (req, res) => {
+    Product.searchProduct(req.params.text, (result) => {
+        res.json(result)
+    });
+});
 
+router.get('/:id', (req, res) => {
+    var des = req.params.id;
+    if (des) {
+        var t = des.split('-');
+
+        if (!t) {
+            res.redirect('/');
+            return
+        }
+
+        var id = t[t.length - 1];
+
+        if (!id) {
+            res.redirect('/');
+            return
+        }
+
+        Product.getProductById(id, (result) => {
+
+            if (result.error) {
+                res.redirect('/');
+                return
+            } 
+
+            var product = result.product;
+            if (!product) {
+                res.redirect('/');
+                return
+            }
+
+            console.log(product);
+
+            res.render('detail-product', {
+                data: {
+                    title: product.name,
+                    product: product
+                }
+            });            
+        });
+    } else {
+        res.redirect('/');
+    }
+});
+
+router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
+    var url = req.url;
+    if (url) {
+        var t = url.split('/');
+        if (t) {
+            var alias = t[t.length - 1];
+            if (alias) {
+                Product.searchProduct(alias, (result) => {
+                    res.json(result)
+                })
+            } else {
+                res.redirect('/');
+            }
+        } else {
+            res.redirect('/');
+        }
+    } else {
+        res.redirect('/');
+    }
 });
 
 module.exports = router;

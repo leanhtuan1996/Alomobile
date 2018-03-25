@@ -15,17 +15,17 @@
                                         <% data.categories.forEach((category) => { %>
                                             <% var subCategories = category.subCategories; %>  
                                             <% if (subCategories && subCategories.length != 0) { %>
-                                                <li><a href="/<%- category.alias %>" style="text-align: center"><%- category.name %></a>
+                                                <li><a href="/danh-muc/<%- category.alias %>" style="text-align: center"><%- category.name %></a>
                                                     <ul class="dhtml"> 
                                                         <% subCategories.forEach((sub) => { %>  
                                                             <% if (sub) { %>
-                                                                <li><a href="/<%- category.alias %>/<%- sub.alias %>"><%- sub.name %></a></li>
+                                                                <li><a href="/danh-muc/<%- category.alias %>/<%- sub.alias %>"><%- sub.name %></a></li>
                                                             <% } %>                                                 
                                                         <% }); %>
                                                     </ul>               
                                                 </li>
                                             <% } else { %>
-                                                <li><a href="/<%- category.alias %>" style="text-align: center"><%- category.name %></a></li>
+                                                <li><a href="/danh-muc/<%- category.alias %>" style="text-align: center"><%- category.name %></a></li>
                                             <% } %>                                            
                                         <% }); %>
                                     <% } %>   

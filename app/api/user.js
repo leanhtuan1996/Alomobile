@@ -656,14 +656,14 @@ var requireForgetPassword = (email, cb) => {
 
             if (!user) {
                 workflow.emit('response', {
-                    error: "User not found"
+                    error: "Email chưa đăng kí."
                 });
                 return
             }
 
             if (!user._id) {
                 workflow.emit('response', {
-                    error: "User not found"
+                    error: "Email chưa đăng kí."
                 });
                 return
             }
@@ -899,7 +899,7 @@ var canRecoveryPassword = (email, token, cb) => {
 
                         });
                     } else {
-                        pushInvalidToken(token, (cb) => {                            
+                        pushInvalidToken(token, (cb) => {
                         });
 
                         workflow.emit('response', {

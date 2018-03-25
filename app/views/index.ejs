@@ -35,7 +35,7 @@
                                                 <% if (subCategories && subCategories.length != 0){ %>    
                                                     <div class="pt_menu">
                                                         <div class="parentMenu">
-                                                            <a href="/<%- category.alias %>">
+                                                            <a href="/danh-muc/<%- category.alias %>">
                                                             <span class="cate-thumb">
                                                                 <img class="img-responsive" src="<%- category.icon %>" alt="">
                                                             </span>
@@ -56,7 +56,7 @@
                                                                                     <div class="itemMenu">
                                                                                         <% subCategories.forEach((sub) => { %>
                                                                                             <% if (sub) { %>
-                                                                                                <a class="itemMenuName" href="/<%- category.alias %>/<%- sub.alias %>" style="text-align: center;">
+                                                                                                <a class="itemMenuName" href="/danh-muc/<%- category.alias %>/<%- sub.alias %>" style="text-align: center;">
                                                                                                     <span><%- sub.name %></span>
                                                                                                 </a>
                                                                                             <% } %>
@@ -75,7 +75,7 @@
                                                         <div class="pt_menu noSub">
                                                             <!-- level 0 -->
                                                             <div class="parentMenu">
-                                                                <a href="<%- category.alias %>">
+                                                                <a href="/danh-muc/<%- category.alias %>">
                                                             <span class="cate-thumb"><img class="img-responsive" src="<%- category.icon %>" alt= ""/></span>
                                                             <span><%- category.name %></span>
                                                         </a>
@@ -201,7 +201,8 @@
                                         <% if (data.specialProducts) { %>
                                             <% data.specialProducts.forEach((product) => { %>
                                                
-                                                <% var image = product.images[0]; %>
+                                                <% var image1 = product.images[0]; %>
+                                                <% var image2 = product.images[1]; %>
                                                 <% var name = product.name; %>
                                                 <% var price = product.price; %>
                                                 <% var href = `${product.alias}-${product._id}` %>
@@ -210,8 +211,8 @@
                                                     <article class="js-product-miniature" data-id-product="<%- product._id %>" itemscope>
                                                         <div class="img_block">
                                                             <a href="<%- href %>" class="thumbnail product-thumbnail">
-                                                                <img src = "<%- image.url %>" alt = "<%- image.alt %>" data-full-size-image-url = "http://demo.posthemes.com/pos_fastbuy/layout2/250-large_default/printed-dress.jpg" />
-                                                                <img class="img-responsive second-image animation1" src="http://demo.posthemes.com/pos_fastbuy/layout2/251-home_default_4/printed-dress.jpg" alt="" itemprop="image"  />
+                                                                <img src = "<%- image1.url %>" alt = "<%- image1.alt %>" data-full-size-image-url = "<%- image1.url %>" />
+                                                                <img class="img-responsive second-image animation1" src="<%- image2.url %>" alt="" itemprop="image"  />
                                                             </a>
                                                             <ul class="product-flag">
                                                                 <li class="discount-percentage">-10%</li>

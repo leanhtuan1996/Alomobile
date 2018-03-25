@@ -91,8 +91,17 @@ var getProductById = (id, result) => {
     workflow.on('get-product', () => {
         Product
             .findById(id)
-            .populate('brand type orders')
+            .populate({
+                path: "brand"
+            })
+            .populate({
+                path: "type"
+            })
+            .populate({
+                path: "category.idRootCategory"
+            })
             .exec((err, product) => {
+                console.log(product);
                 workflow.emit('response', {
                     error: err,
                     product: product
