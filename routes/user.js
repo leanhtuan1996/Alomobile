@@ -187,7 +187,13 @@ router.post('/password-recovery', (req, res) => {
 
 router.put('/password-recovery', (req, res) => {
   User.recoveryPassword(req.body.email, req.body.token, req.body.password, (r) => {
-    res.json(r);
+    if (r.user) {
+      User.signOutAllDevices(r.user._id, (c) => {
+        res.json(c);
+      });
+    } else {
+      res.json(r);
+    }
   });
 });
 

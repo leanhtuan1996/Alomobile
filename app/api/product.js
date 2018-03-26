@@ -101,7 +101,6 @@ var getProductById = (id, result) => {
                 path: "category.idRootCategory"
             })
             .exec((err, product) => {
-                console.log(product);
                 workflow.emit('response', {
                     error: err,
                     product: product

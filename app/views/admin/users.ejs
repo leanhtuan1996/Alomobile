@@ -423,7 +423,7 @@
                             "language": {
                                 "lengthMenu": "Hiển thị _MENU_ dòng trên một trang",
                                 "zeroRecords": "Từ khoá nhập vào không khớp",
-                                "info": "Đang ở trang thứ _PAGE_ của _PAGES_",
+                                "info": "Đang ở trang thứ _PAGE_ của _PAGES_ trang",
                                 "infoEmpty": "Dữ liệu hiện không sẵn có",
                                 "infoFiltered": "(đã lọc từ _MAX_ người dùng hiện có)"
                             }
@@ -452,7 +452,6 @@
                                 }).error((err) => {
                                     swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                 });
-
                             });
 
                             $("#table-users tbody").delegate('.edit-user', 'click', (e) => {

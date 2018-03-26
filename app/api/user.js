@@ -478,6 +478,46 @@ var pushInvalidToken = (token, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var pushInvalidTokens = (tokens, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!tokens || tokens.length == 0) {
+            workflow.emit('response', {
+                error: "Tokens are required!"
+            });
+            return
+        }
+
+        workflow.emit('push');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('push', () => {
+
+        var arrayTokens = [];
+
+        _.forEach(tokens, (token) => {
+            arrayTokens.push(new InvalidToken({
+                token: token
+            }));
+        });
+
+        InvalidToken.insertMany(arrayTokens, (err, docs) => {
+            workflow.emit('response', {
+                error: err,
+                tokens: docs
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+
+}
+
 var removeValidToken = (token, id, cb) => {
     var workflow = new event.EventEmitter();
 
@@ -914,6 +954,61 @@ var canRecoveryPassword = (email, token, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var signOutAllDevices = (id, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id is required!"
+            });
+            return
+        }
+
+        workflow.emit('sign-out');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('sign-out', () => {
+        User.findById(id, (err, user) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err
+                });
+                return
+            }
+
+            if (!user) {
+                workflow.emit('response', {
+                    error: "User not found"
+                });
+                return
+            }
+
+            validTokens = user.validTokens || [];
+
+            user.validTokens = [];
+
+            user.save((err) => {
+                if (err) {
+                    workflow.emit('response', {
+                        error: err
+                    });
+                } else {
+                    pushInvalidTokens(validTokens, (r) => {
+                        workflow.emit('response', r);
+                    });
+                }
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     signIn: signIn,
     signUp: signUp,
@@ -928,5 +1023,7 @@ module.exports = {
     removeValidToken: removeValidToken,
     requireForgetPassword: requireForgetPassword,
     recoveryPassword: recoveryPassword,
-    canRecoveryPassword: canRecoveryPassword
+    canRecoveryPassword: canRecoveryPassword,
+    signOutAllDevices: signOutAllDevices,
+    pushInvalidTokens: pushInvalidTokens
 }

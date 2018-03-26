@@ -69,8 +69,8 @@ router.get('/products/search/text=:text', (req, res) => {
     });
 });
 
-router.get('/:id', (req, res) => {
-    var des = req.params.id;
+router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
+    var des = req.url;
     if (des) {
         var t = des.split('-');
 
@@ -98,8 +98,6 @@ router.get('/:id', (req, res) => {
                 res.redirect('/');
                 return
             }
-
-            console.log(product);
 
             res.render('detail-product', {
                 data: {

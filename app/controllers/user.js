@@ -56,6 +56,12 @@ var canRecoveryPassword = (email, token, cb) => {
     });
 }
 
+var signOutAllDevices = (id, cb) => {
+    userApi.signOutAllDevices(id, (r) => {
+        return cb(r);
+    });
+}
+
 module.exports = {
     signIn: signIn,
     signUp: signUp,
@@ -65,5 +71,6 @@ module.exports = {
     pushInvalidToken: pushInvalidToken,
     requireForgetPassword: requireForgetPassword,
     recoveryPassword: recoveryPassword,
-    canRecoveryPassword: canRecoveryPassword
+    canRecoveryPassword: canRecoveryPassword,
+    signOutAllDevices: signOutAllDevices
 }
