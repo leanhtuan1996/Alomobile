@@ -226,19 +226,19 @@
                                                                 <div class="hook-reviews">
                                                                     <div itemtype="http://schema.org/AggregateRating" itemscope="" itemprop="aggregateRating" class="comments_note">
                                                                         <div class="star_content clearfix">
-                                                                            <div class="star"></div>
-                                                                            <div class="star"></div>
-                                                                            <div class="star"></div>
-                                                                            <div class="star"></div>
-                                                                            <div class="star"></div>
+                                                                            <div class="star star_on"></div>
+                                                                            <div class="star star_on"></div>
+                                                                            <div class="star star_on"></div>
+                                                                            <div class="star star_on"></div>
+                                                                            <div class="star star_on"></div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="product-price-and-shipping">
-                                                                    <span itemprop="price" class="price  price_sale ">$23.39</span>
+                                                                    <span itemprop="price" class="price  price_sale "><%- price %></span>
                                                                     <span class="sr-only">Regular price</span>
-                                                                    <span class="regular-price">$25.99</span>
-                                                                    <span class="discount-percentage">-10%</span>
+                                                                    <!-- <span class="regular-price">$25.99</span>
+                                                                    <span class="discount-percentage">-10%</span> -->
                                                                     <span class="sr-only">Price</span>
                                                                 </div>
                                                                 <div class="product-desc" itemprop="description">
@@ -435,11 +435,11 @@
                                                         <div class="hook-reviews">
                                                             <div itemtype="http://schema.org/AggregateRating" itemscope="" itemprop="aggregateRating" class="comments_note">
                                                                 <div class="star_content clearfix">
-                                                                    <div class="star "></div>
-                                                                    <div class="star "></div>
-                                                                    <div class="star "></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star "></div>
+                                                                    <div class="star star_on"></div>
+                                                                    <div class="star star_on"></div>
+                                                                    <div class="star star_on"></div>
+                                                                    <div class="star star_on"></div>
+                                                                    <div class="star star_on"></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1064,11 +1064,17 @@
         </section>
         <%- include layouts/footer %>
     </main>
-    <script type="text/javascript" src="static/js/custom.js"></script>
+    <script type="text/javascript" src="/static/js/custom.js"></script>
     <div class="back-top"><a href="#" class="back-top-button"></a></div>
 
-    <script type="text/javascript">    
-    </script>
+    
 </body>
+<script type="text/javascript">    
+$('.price').each((index, price) => {
+    if ($(price).html().match(/^[0-9]{1,}$/g)) {
+        $(price).html(numberWithCommas($(price).html() + " VNĐ"));
+    }
+});
+</script>
 
 </html>
