@@ -91,7 +91,7 @@ router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
             if (result.error) {
                 res.redirect('/');
                 return
-            } 
+            }
 
             var product = result.product;
             if (!product) {
@@ -104,7 +104,7 @@ router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
                     title: product.name,
                     product: product
                 }
-            });            
+            });
         });
     } else {
         res.redirect('/');
@@ -116,13 +116,43 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
     if (url) {
         var t = url.split('/');
         if (t) {
-            var alias = t[t.length - 1];
-            if (alias) {
-                Product.searchProduct(alias, (result) => {
-                    res.json(result)
-                })
-            } else {
-                res.redirect('/');
+            var a = t[t.length - 1].split('-');
+            if (a) {
+                var matches = [];
+                a.forEach(element => {
+                    var ma = element.match(/^[a-z0-9]{24}$/g);
+                    if (ma) {
+                        matches.push(ma[0]);
+                    }                    
+                });
+                
+                if (matches.length == 0) {
+                    res.redirect('/');
+                } else {
+                    if (matches.length == 1) {
+                        Product.getProductsByCategory(matches[0], matches[0], 15, (r) => {
+                            res.render('products-by-categories', {
+                                data: {
+                                    products: r.products || [],
+                                    idRootCategory: matches[0],
+                                    idCategory: matches[0]
+                                }
+                            });
+                        });
+                    } else if (matches.length == 2) {
+                        Product.getProductsByCategory(matches[0], matches[1], 15, (r) => {
+                            res.render('products-by-categories', {
+                                data: {
+                                    products: r.products || [],
+                                    idRootCategory: matches[0],
+                                    idCategory: matches[1]
+                                }
+                            });
+                        });
+                    } else {
+                        res.redirect('/');
+                    }
+                }
             }
         } else {
             res.redirect('/');
@@ -131,5 +161,11 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
         res.redirect('/');
     }
 });
+
+router.post('/product/search', (req, res) => {
+    Product.getProductsByCategory(req.body.id, req.body.idRoot, 15, (cb) => {
+        
+    })
+})
 
 module.exports = router;

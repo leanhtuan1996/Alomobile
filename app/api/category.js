@@ -38,6 +38,37 @@ var getCategories = (result) => {
     workflow.emit('validate-parameters');
 }
 
+var getCategory = (id, result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id is required!"
+            });
+            return
+        }
+
+        workflow.emit('get-category')
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('get-category', () => {
+        Category.findById(id, (err, category) => {
+            workflow.emit('response', {
+                error: err,
+                category: category
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 var addCategory = (category, result) => {
 
     var workflow = new event.EventEmitter();
@@ -475,9 +506,9 @@ var deleteCategory = (idSub, idRoot, result) => {
                 category.subCategories = subs || [];
 
                 category.save((err) => {
-                     workflow.emit('response', {
-                         error: err,
-                     });
+                    workflow.emit('response', {
+                        error: err,
+                    });
                 });
             });
         }
@@ -488,6 +519,7 @@ var deleteCategory = (idSub, idRoot, result) => {
 
 module.exports = {
     getCategories: getCategories,
+    getCategory: getCategory,
     addCategory: addCategory,
     delCategory: delCategory,
     editCategory: editCategory

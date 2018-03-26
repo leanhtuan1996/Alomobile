@@ -45,7 +45,7 @@
                             <meta itemprop="position" content="1">
                         </li>
                         <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a itemprop="item" href="/danh-muc/<%- data.product.category.idRootCategory.alias %>">
+                            <a itemprop="item" href="/danh-muc/<%- data.product.category.idRootCategory.alias %>-<%- data.product.category.idRootCategory._id %>">
                                 <span itemprop="name"><%- data.product.category.idRootCategory.name %></span>
                             </a>
                             <meta itemprop="position" content="2">
@@ -302,6 +302,28 @@
                                                     </div>
                                                     <input class="product-refresh ps-hidden-by-js" name="refresh" type="submit" value="Refresh">
                                                 </form>
+                                            </div>
+                                            <div id="block-reassurance">
+                                                <ul>
+                                                        <li>
+                                                    <div class="block-reassurance-item">
+                                                        <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_verified_user_black_36dp_1x.png" alt="Security policy (edit with Customer reassurance module)">
+                                                        <span class="h6">Cam kết hàng chính hãng, bảo hành 12 tháng</span>
+                                                    </div>
+                                                    </li>
+                                                        <li>
+                                                    <div class="block-reassurance-item">
+                                                        <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_local_shipping_black_36dp_1x.png" alt="Delivery policy (edit with Customer reassurance module)">
+                                                        <span class="h6">Miễn phí giao hàng ở TP. Cần Thơ</span>
+                                                    </div>
+                                                    </li>
+                                                        <li>
+                                                    <div class="block-reassurance-item">
+                                                        <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_swap_horiz_black_36dp_1x.png" alt="Return policy (edit with Customer reassurance module)">
+                                                        <span class="h6">1 đổi 1 trong 3 tháng</span>
+                                                    </div>
+                                                    </li>
+                                                    </ul>
                                             </div>
                                         </div>
                                     </div>
@@ -1453,11 +1475,9 @@
         </section>
         <%- include layouts/footer %>
     </main>
-    <script type="text/javascript" src="http://demo.posthemes.com/pos_fastbuy/layout2/themes/theme_fastbuy2/assets/cache/bottom-602529.js"></script>
+    <script type="text/javascript" src="static/js/custom.js"></script>
     <div class="back-top">
         <a href="#" class="back-top-button"></a>
     </div>
 </body>
-<!-- Mirrored from demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-54-printed-dress.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 08 Feb 2018 05:06:15 GMT -->
-
 </html>

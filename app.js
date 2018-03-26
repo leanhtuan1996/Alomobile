@@ -61,6 +61,7 @@ app.use('/', error);
 app.use('/', product);
 app.use('/', admin);
 app.use('/crawl', crawl);
+app.use('/', api);
 
 // set ssl
 var ssl = {

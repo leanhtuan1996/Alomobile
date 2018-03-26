@@ -177,13 +177,22 @@ var getProductsByType = (idType, limit, result) => {
     workflow.emit('validate-parameters');
 }
 
-var getProductsByCategory = (idCategory, limit, result) => {
-    var event = event.EventEmitter();
+var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
+
+
+    var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
         if (!idCategory) {
             workflow.emit('response', {
                 error: "Category is required!"
+            });
+            return
+        }
+
+        if (!idRootCategory) {
+            workflow.emit('response', {
+                error: "Root category is required!"
             });
             return
         }
@@ -196,11 +205,12 @@ var getProductsByCategory = (idCategory, limit, result) => {
     });
 
     workflow.on('get-products', () => {
-        Product
+
+        if (idRootCategory == idCategory) {
+            Product
             .find({
-                category: idCategory
+                "category.idRootCategory": idRootCategory
             })
-            .populate('Category')
             .limit(limit)
             .exec((err, products) => {
                 workflow.emit('response', {
@@ -208,6 +218,20 @@ var getProductsByCategory = (idCategory, limit, result) => {
                     products: products
                 });
             });
+        } else {
+            Product
+            .find({
+                "category.idRootCategory": idRootCategory,
+                "category.idCategory": idCategory
+            })
+            .limit(limit)
+            .exec((err, products) => {
+                workflow.emit('response', {
+                    error: err,
+                    products: products
+                });
+            });
+        }
     });
 
     workflow.emit('validate-parameters');
@@ -411,6 +435,7 @@ var getCountProducts = (result) => {
 }
 
 var editProduct = (product, result) => {
+
     var workflow = new event.EventEmitter();
 
     var id = product.id;
@@ -552,6 +577,8 @@ var editProduct = (product, result) => {
             specifications = JSON.parse(specifications);
         }
 
+        console.log(imagesEdited);
+
         Product.findById(id, (err, product) => {
             if (err) {
                 workflow.emit('response', {
@@ -647,10 +674,18 @@ var searchProducts = (text, result) => {
     workflow.on('search-products', () => {
         Product.find({
             $text: {
-                $search: `/^${text}$/i`,
+                $search: `/${text}/gi`,
                 $caseSensitive: false
             }
-        }).populate(['type', 'brand'])
+        })
+            .populate({
+                path: "brand"
+            })
+            .populate({
+                path: "type"
+            }).populate({
+                path: "category.idRootCategory"
+            })
             .limit(15)
             .exec((err, products) => {
                 workflow.emit('response', {

@@ -64,5 +64,6 @@ module.exports = mongoose.model('Product', new Schema({
     status: "text",
     metaTitle: "text",
     metaKeyword: "text",
-    price: "text"
+    price: "text",
+    category: "text"
 }));

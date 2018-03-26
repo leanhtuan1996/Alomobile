@@ -26,14 +26,15 @@ var getSpecialProducts = (limit, result) => {
     });
 }
 
-var getProductsByType = (id, limit,  result) => {
+var getProductsByType = (id, limit, result) => {
     productApi.getProductsByType(id, limit, (response) => {
         return result(response);
     });
 }
 
-var getProductsByCategory = (idCategory, limit, result) => {
-    productApi.getProductsByCategory(idCategory, limit, (response) => {
+var getProductsByCategory = (idCategory, idRootCategory, limit = 15, result) => {
+    productApi.getProductsByCategory(idCategory, idRootCategory, limit, (response) => {
+        console.log(response.products.length);
         return result(response);
     });
 }

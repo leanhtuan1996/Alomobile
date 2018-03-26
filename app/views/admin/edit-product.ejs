@@ -755,7 +755,7 @@
                     break;
                 }
 
-                $('.dropify').dropify({
+                var dropify = $('.dropify').dropify({
                     error: {
                         'fileSize': 'Chỉ cho phép upload ảnh dưới 2 MB.',
                         'minWidth': 'Chiều dài ảnh phải lớn hơn {{ value }} pixel.',
@@ -771,7 +771,6 @@
                         'error':   'Tải ảnh lên thất bại!'
                     }
                 });
-
             })();
 
             function showAlert(notify) {
@@ -784,7 +783,6 @@
             }
 
             jQuery(document).ready(($) => {
-                
 
                 //default color of product are 2;
                 var totalColorPicker = product.colors.length;
@@ -1212,15 +1210,19 @@
                         if (previewInput) {
                             var temp = previewInput.split('/');
                             newProduct.originalImages.push(temp[temp.length - 1])
+                        } else {
+                            if ($(input).get(0).files.length > 0 ) {
+                            newProduct.images.push($(input).get(0).files[0]);
+                        }
                         }
                     });
                     
                     //
-                    $("#formNewProduct").find('input[type=file]').each((index, image) => {
-                        if ($(image).get(0).files.length > 0 ) {
-                            newProduct.images.push($(image).get(0).files[0]);
-                        }                       
-                    });
+                    // $("#formNewProduct").find('input[type=file]').each((index, image) => {
+                    //     if ($(image).get(0).files.length > 0 ) {
+                    //         newProduct.images.push($(image).get(0).files[0]);
+                    //     }                       
+                    // });
                     
                     //validate parameters
                     var productFormData = new FormData();
@@ -1397,8 +1399,7 @@
                         error: (err) => {
                             swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                         }
-                    });
-                    
+                    });                    
                 });
 
                 //click new color
@@ -1432,6 +1433,10 @@
                     setTimeout(() => {
                         $(`#${idParent}`).remove();
                     }, 1000);
+                });
+
+                $('.dropify-clear').click((e) => {
+                    $(e.currentTarget.parentElement).find('input').removeAttr('data-default-file');                    
                 });
             });
 

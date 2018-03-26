@@ -35,7 +35,7 @@
                                                 <% if (subCategories && subCategories.length != 0){ %>    
                                                     <div class="pt_menu">
                                                         <div class="parentMenu">
-                                                            <a href="/danh-muc/<%- category.alias %>">
+                                                            <a data-id-category = "<%- category._id %>" href="/danh-muc/<%- category.alias %>-<%- category._id %>" data-name-category="<%- category.name %>">
                                                             <span class="cate-thumb">
                                                                 <img class="img-responsive" src="<%- category.icon %>" alt="">
                                                             </span>
@@ -49,14 +49,14 @@
                                                                     <div class="block1">
                                                                         <div class="column first col1" style="float: left">
                                                                             <div class="itemMenu">
-                                                                                <a class="itemMenuName" href="" style="text-align: center;">
+                                                                                <a data-name-category="<%- category.name %>" data-id-category = "<%- category._id %>" class="itemMenuName" href="/danh-muc/<%- category.alias %>-<%- category._id %>" style="text-align: center;">
                                                                                     <span><%- category.name %></span>
                                                                                 </a>
                                                                                 <div class="itemSubMenu">
                                                                                     <div class="itemMenu">
                                                                                         <% subCategories.forEach((sub) => { %>
                                                                                             <% if (sub) { %>
-                                                                                                <a class="itemMenuName" href="/danh-muc/<%- category.alias %>/<%- sub.alias %>" style="text-align: center;">
+                                                                                                <a data-name-category="<%- sub.name %>" data-id-category = "<%- sub._id %>" data-root-id-category="<%- category._id %>" class="itemMenuName" href="/danh-muc/<%- category.alias %>-<%- category._id %>-<%- sub._id %>" style="text-align: center;">
                                                                                                     <span><%- sub.name %></span>
                                                                                                 </a>
                                                                                             <% } %>
@@ -75,7 +75,7 @@
                                                         <div class="pt_menu noSub">
                                                             <!-- level 0 -->
                                                             <div class="parentMenu">
-                                                                <a href="/danh-muc/<%- category.alias %>">
+                                                                <a href="/danh-muc/<%- category.alias %>-<%- category._id %>" data-id-category = "<%- category._id %>" data-name-category="<%- category.name %>">
                                                             <span class="cate-thumb"><img class="img-responsive" src="<%- category.icon %>" alt= ""/></span>
                                                             <span><%- category.name %></span>
                                                         </a>
@@ -1071,8 +1071,32 @@
     <div class="back-top"><a href="#" class="back-top-button"></a></div>
 
     <script type="text/javascript">
+        
         jQuery(document).ready(($) => {
+            $('#pt_vmegamenu').delegate('a', 'click', (e) => {
+                var aElement = $(e.currentTarget);
+                var idCategory = $(aElement).attr('data-id-category'),
+                    idRootCategory = $(aElement).attr('data-root-id-category'),
+                    nameCategory = $(aElement).attr('data-name-category');
 
+                
+                // $.ajax({
+                //     url: `/product/search`,
+                //     data: {
+                //         name: nameCategory,
+                //         idRoot: idRootCategory || idCategory,
+                //         id: idCategory
+                //     },
+                //     method: 'POST',
+                //     success: (data) => {
+                        
+                //     },
+                //     error: (err) => {
+
+                //     }
+                // })
+
+            });
 
         });
     </script>
