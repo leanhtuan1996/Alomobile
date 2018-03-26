@@ -130,7 +130,7 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
                     res.redirect('/');
                 } else {
                     if (matches.length == 1) {
-                        Product.getProductsByCategory(matches[0], matches[0], 15, (r) => {
+                        Product.getProductsByCategory(matches[0], matches[0], 12, (r) => {
                             res.render('products-by-categories', {
                                 data: {
                                     products: r.products || [],
@@ -140,7 +140,7 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
                             });
                         });
                     } else if (matches.length == 2) {
-                        Product.getProductsByCategory(matches[0], matches[1], 15, (r) => {
+                        Product.getProductsByCategory(matches[1], matches[0], 12, (r) => {
                             res.render('products-by-categories', {
                                 data: {
                                     products: r.products || [],

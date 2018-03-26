@@ -179,7 +179,6 @@ var getProductsByType = (idType, limit, result) => {
 
 var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
 
-
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
@@ -221,8 +220,8 @@ var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
         } else {
             Product
             .find({
-                "category.idRootCategory": idRootCategory,
-                "category.idCategory": idCategory
+                "category.idCategory": idCategory,
+                "category.idRootCategory": idRootCategory
             })
             .limit(limit)
             .exec((err, products) => {

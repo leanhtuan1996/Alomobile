@@ -1,4 +1,4 @@
-function showNotify(text) {    
+function showNotify(text) {
     swal({
         title: "Đăng nhập thất bại",
         text: text,
@@ -17,4 +17,21 @@ function isValidDate(dateString) {
     // return d.toISOString().slice(0, 10) === dateString;
 
     return (!isNaN(d))
+}
+
+function logout() {
+    $.ajax({
+        url: "/sign-out",
+        method: "PUT",
+        success: (data) => {
+            window.location.reload();
+        },
+        error: (err) => {
+            window.location.reload();
+        }
+    })
+}
+
+const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

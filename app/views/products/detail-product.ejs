@@ -2,13 +2,14 @@
 <html lang="vi">
 
 <head>
-    <title><%- data.title %></title>
+    <title>
+        <%- data.product.category.idRootCategory.name %> >
+            <%- data.title %>
+    </title>
     <meta name="description" content="Printed evening dress with straight sleeves with black thin waist belt and ruffled linings.">
     <meta name="keywords" content="<%- data.product.metaKeyword %>">
     <meta name="description" content="Shop powered by Alomobile">
-
     <%- include layouts/head %>
-
         <meta property="og:type" content="product">
         <meta property="og:url" content="http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-54-printed-dress.html">
         <meta property="og:title" content="<%- data.product.metaTitle %>">
@@ -80,8 +81,7 @@
                                             </ul>
                                             <div class="images-container">
                                                 <div class="product-cover">
-                                                    <img class="js-qv-product-cover" src="http://demo.posthemes.com/pos_fastbuy/layout2/226-medium_default/printed-dress.jpg"
-                                                        alt="" title="" style="width:100%;" itemprop="image">
+                                                    <img class="js-qv-product-cover" src="http://demo.posthemes.com/pos_fastbuy/layout2/226-medium_default/printed-dress.jpg" alt="" title="" style="width:100%;" itemprop="image">
                                                     <div class="layer hidden-sm-down" data-toggle="modal" data-target="#product-modal">
                                                         <i class="material-icons zoom-in">&#xE8FF;</i>
                                                     </div>
@@ -89,87 +89,75 @@
                                                 <div class="js-qv-mask mask pos_content">
                                                     <div class="product-images js-qv-product-images  owl-carousel">
                                                         <div class="thumb-container">
-                                                            <img class="thumb js-thumb  selected " data-image-medium-src="http://demo.posthemes.com/pos_fastbuy/layout2/226-medium_default/printed-dress.jpg"
-                                                                data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/226-medium_default/printed-dress.jpg"
-                                                                src="http://demo.posthemes.com/pos_fastbuy/layout2/226-small_default/printed-dress.jpg"
-                                                                alt="" title="" width="100" itemprop="image">
+                                                            <img class="thumb js-thumb  selected " data-image-medium-src="http://demo.posthemes.com/pos_fastbuy/layout2/226-medium_default/printed-dress.jpg" data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/226-medium_default/printed-dress.jpg" src="http://demo.posthemes.com/pos_fastbuy/layout2/226-small_default/printed-dress.jpg" alt="" title="" width="100" itemprop="image">
                                                         </div>
                                                         <div class="thumb-container">
-                                                            <img class="thumb js-thumb " data-image-medium-src="http://demo.posthemes.com/pos_fastbuy/layout2/227-medium_default/printed-dress.jpg"
-                                                                data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/227-medium_default/printed-dress.jpg"
-                                                                src="http://demo.posthemes.com/pos_fastbuy/layout2/227-small_default/printed-dress.jpg"
-                                                                alt="" title="" width="100" itemprop="image">
+                                                            <img class="thumb js-thumb " data-image-medium-src="http://demo.posthemes.com/pos_fastbuy/layout2/227-medium_default/printed-dress.jpg" data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/227-medium_default/printed-dress.jpg" src="http://demo.posthemes.com/pos_fastbuy/layout2/227-small_default/printed-dress.jpg" alt="" title="" width="100" itemprop="image">
                                                         </div>
                                                         <div class="thumb-container">
-                                                            <img class="thumb js-thumb " data-image-medium-src="http://demo.posthemes.com/pos_fastbuy/layout2/228-medium_default/printed-dress.jpg"
-                                                                data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/228-medium_default/printed-dress.jpg"
-                                                                src="http://demo.posthemes.com/pos_fastbuy/layout2/228-small_default/printed-dress.jpg"
-                                                                alt="" title="" width="100" itemprop="image">
+                                                            <img class="thumb js-thumb " data-image-medium-src="http://demo.posthemes.com/pos_fastbuy/layout2/228-medium_default/printed-dress.jpg" data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/228-medium_default/printed-dress.jpg" src="http://demo.posthemes.com/pos_fastbuy/layout2/228-small_default/printed-dress.jpg" alt="" title="" width="100" itemprop="image">
                                                         </div>
                                                         <div class="thumb-container">
-                                                            <img class="thumb js-thumb " data-image-medium-src="http://demo.posthemes.com/pos_fastbuy/layout2/229-medium_default/printed-dress.jpg"
-                                                                data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/229-medium_default/printed-dress.jpg"
-                                                                src="http://demo.posthemes.com/pos_fastbuy/layout2/229-small_default/printed-dress.jpg"
-                                                                alt="" title="" width="100" itemprop="image">
+                                                            <img class="thumb js-thumb " data-image-medium-src="http://demo.posthemes.com/pos_fastbuy/layout2/229-medium_default/printed-dress.jpg" data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/229-medium_default/printed-dress.jpg" src="http://demo.posthemes.com/pos_fastbuy/layout2/229-small_default/printed-dress.jpg" alt="" title="" width="100" itemprop="image">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <script type="text/javascript">
-                                                $(document).ready(function () {
-                                                    var owl = $("#product .images-container .product-images");
-                                                    owl.owlCarousel({
-                                                        autoPlay: false,
-                                                        smartSpeed: 1000,
-                                                        autoplayHoverPause: true,
-                                                        nav: true,
-                                                        dots: false,
-                                                        responsive: {
-                                                            0: {
-                                                                items: 2,
-                                                            },
-                                                            480: {
-                                                                items: 3,
-                                                            },
-                                                            768: {
-                                                                items: 2,
-                                                                nav: false,
-                                                            },
-                                                            992: {
-                                                                items: 3,
-                                                            },
-                                                            1200: {
-                                                                items: 3,
-                                                            }
+                                            $(document).ready(function() {
+                                                var owl = $("#product .images-container .product-images");
+                                                owl.owlCarousel({
+                                                    autoPlay: false,
+                                                    smartSpeed: 1000,
+                                                    autoplayHoverPause: true,
+                                                    nav: true,
+                                                    dots: false,
+                                                    responsive: {
+                                                        0: {
+                                                            items: 2,
+                                                        },
+                                                        480: {
+                                                            items: 3,
+                                                        },
+                                                        768: {
+                                                            items: 2,
+                                                            nav: false,
+                                                        },
+                                                        992: {
+                                                            items: 3,
+                                                        },
+                                                        1200: {
+                                                            items: 3,
                                                         }
-                                                    });
-                                                    var owl = $(".quickview .images-container .product-images");
-                                                    owl.owlCarousel({
-                                                        autoPlay: false,
-                                                        smartSpeed: 1000,
-                                                        autoplayHoverPause: true,
-                                                        nav: true,
-                                                        dots: false,
-                                                        responsive: {
-                                                            0: {
-                                                                items: 2,
-                                                            },
-                                                            480: {
-                                                                items: 3,
-                                                            },
-                                                            768: {
-                                                                items: 2,
-                                                                nav: false,
-                                                            },
-                                                            992: {
-                                                                items: 3,
-                                                            },
-                                                            1200: {
-                                                                items: 3,
-                                                            }
-                                                        }
-                                                    });
+                                                    }
                                                 });
+                                                var owl = $(".quickview .images-container .product-images");
+                                                owl.owlCarousel({
+                                                    autoPlay: false,
+                                                    smartSpeed: 1000,
+                                                    autoplayHoverPause: true,
+                                                    nav: true,
+                                                    dots: false,
+                                                    responsive: {
+                                                        0: {
+                                                            items: 2,
+                                                        },
+                                                        480: {
+                                                            items: 3,
+                                                        },
+                                                        768: {
+                                                            items: 2,
+                                                            nav: false,
+                                                        },
+                                                        992: {
+                                                            items: 3,
+                                                        },
+                                                        1200: {
+                                                            items: 3,
+                                                        }
+                                                    }
+                                                });
+                                            });
                                             </script>
                                             <div class="scroll-box-arrows">
                                                 <i class="material-icons left">&#xE314;</i>
@@ -210,15 +198,17 @@
                                         </div>
                                         <!--  /Module ProductComments -->
                                         <div class="product-prices">
+                                            <!-- 
                                             <div class="product-discount">
                                                 <span class="regular-price">€50.99</span>
                                             </div>
+                                            -->
                                             <div class="product-price h5 has-discount" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                                 <link itemprop="availability" href="https://schema.org/InStock" />
                                                 <meta itemprop="priceCurrency" content="EUR">
                                                 <div class="current-price">
-                                                    <span itemprop="price" content="46.91">€46.91</span>
-                                                    <span class="discount discount-percentage">Save 8%</span>
+                                                    <span class="price" itemprop="price" content="46.91"><%- data.product.price %></span>
+                                                    <!-- <span class="discount discount-percentage">Save 8%</span> -->
                                                 </div>
                                             </div>
                                             <div class="tax-shipping-delivery-label">
@@ -234,20 +224,19 @@
                                                         <div class="clearfix product-variants-item">
                                                             <span class="control-label">Màu sắc</span>
                                                             <ul id="group_3">
-
                                                                 <% var colors = data.product.colors %>
-                                                                <% if (colors) { %>
-                                                                    <% colors.forEach(color => { %>
-                                                                        <li class="float-xs-left input-container">
-                                                                            <label>
-                                                                                <input class="input-color" type="radio" data-product-attribute="3" name="group[3]" value="7" checked="checked">
-                                                                                <span class="color" style="background-color: <%- color %>">
+                                                                    <% if (colors) { %>
+                                                                        <% colors.forEach(color => { %>
+                                                                            <li class="float-xs-left input-container">
+                                                                                <label>
+                                                                                    <input class="input-color" type="radio" data-product-attribute="3" name="group[3]" value="7" checked="checked">
+                                                                                    <span class="color" style="background-color: <%- color %>">
                                                                                     <span class="sr-only">Beige</span>
-                                                                                </span>
-                                                                            </label>
-                                                                        </li>
-                                                                   <% }); %>
-                                                                <% } %>
+                                                                                    </span>
+                                                                                </label>
+                                                                            </li>
+                                                                            <% }); %>
+                                                                                <% } %>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -275,26 +264,22 @@
                                                     <div class="social-sharing">
                                                         <ul>
                                                             <li>
-                                                                <a href="http://www.facebook.com/sharer.php?u=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html"
-                                                                    title="Share" target="_blank">
+                                                                <a href="http://www.facebook.com/sharer.php?u=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html" title="Share" target="_blank">
                                                                     <i class="fa-facebook"></i>
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a href="https://twitter.com/intent/tweet?text=Printed%20Dress%20http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html"
-                                                                    title="Tweet" target="_blank">
+                                                                <a href="https://twitter.com/intent/tweet?text=Printed%20Dress%20http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html" title="Tweet" target="_blank">
                                                                     <i class="fa-twitter"></i>
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a href="https://plus.google.com/share?url=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html"
-                                                                    title="Google+" target="_blank">
+                                                                <a href="https://plus.google.com/share?url=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html" title="Google+" target="_blank">
                                                                     <i class="fa-googleplus"></i>
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a href="http://www.pinterest.com/pin/create/button/?media=http://demo.posthemes.com/pos_fastbuy/layout2/226/printed-dress.jpg&amp;url=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html"
-                                                                    title="Pinterest" target="_blank">
+                                                                <a href="http://www.pinterest.com/pin/create/button/?media=http://demo.posthemes.com/pos_fastbuy/layout2/226/printed-dress.jpg&amp;url=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html" title="Pinterest" target="_blank">
                                                                     <i class="fa-pinterest"></i>
                                                                 </a>
                                                             </li>
@@ -305,25 +290,25 @@
                                             </div>
                                             <div id="block-reassurance">
                                                 <ul>
-                                                        <li>
-                                                    <div class="block-reassurance-item">
-                                                        <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_verified_user_black_36dp_1x.png" alt="Security policy (edit with Customer reassurance module)">
-                                                        <span class="h6">Cam kết hàng chính hãng, bảo hành 12 tháng</span>
-                                                    </div>
+                                                    <li>
+                                                        <div class="block-reassurance-item">
+                                                            <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_verified_user_black_36dp_1x.png" alt="Security policy (edit with Customer reassurance module)">
+                                                            <span class="h6">Cam kết hàng chính hãng, bảo hành 12 tháng</span>
+                                                        </div>
                                                     </li>
-                                                        <li>
-                                                    <div class="block-reassurance-item">
-                                                        <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_local_shipping_black_36dp_1x.png" alt="Delivery policy (edit with Customer reassurance module)">
-                                                        <span class="h6">Miễn phí giao hàng ở TP. Cần Thơ</span>
-                                                    </div>
+                                                    <li>
+                                                        <div class="block-reassurance-item">
+                                                            <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_local_shipping_black_36dp_1x.png" alt="Delivery policy (edit with Customer reassurance module)">
+                                                            <span class="h6">Miễn phí giao hàng ở TP. Cần Thơ</span>
+                                                        </div>
                                                     </li>
-                                                        <li>
-                                                    <div class="block-reassurance-item">
-                                                        <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_swap_horiz_black_36dp_1x.png" alt="Return policy (edit with Customer reassurance module)">
-                                                        <span class="h6">1 đổi 1 trong 3 tháng</span>
-                                                    </div>
+                                                    <li>
+                                                        <div class="block-reassurance-item">
+                                                            <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_swap_horiz_black_36dp_1x.png" alt="Return policy (edit with Customer reassurance module)">
+                                                            <span class="h6">1 đổi 1 trong 3 tháng</span>
+                                                        </div>
                                                     </li>
-                                                    </ul>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
@@ -351,46 +336,30 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane fade" id="product-details" data-product="{&quot;id_shop_default&quot;:&quot;1&quot;,&quot;id_manufacturer&quot;:&quot;1&quot;,&quot;id_supplier&quot;:&quot;1&quot;,&quot;reference&quot;:&quot;demo_9&quot;,&quot;is_virtual&quot;:&quot;0&quot;,&quot;id_category_default&quot;:&quot;12&quot;,&quot;on_sale&quot;:&quot;0&quot;,&quot;online_only&quot;:&quot;0&quot;,&quot;ecotax&quot;:0,&quot;minimal_quantity&quot;:&quot;1&quot;,&quot;price&quot;:46.9108,&quot;unity&quot;:null,&quot;unit_price_ratio&quot;:&quot;0.000000&quot;,&quot;additional_shipping_cost&quot;:&quot;0.00&quot;,&quot;customizable&quot;:&quot;0&quot;,&quot;text_fields&quot;:&quot;0&quot;,&quot;uploadable_files&quot;:&quot;0&quot;,&quot;redirect_type&quot;:&quot;404&quot;,&quot;id_type_redirected&quot;:&quot;0&quot;,&quot;available_for_order&quot;:&quot;1&quot;,&quot;available_date&quot;:null,&quot;show_condition&quot;:&quot;0&quot;,&quot;condition&quot;:&quot;new&quot;,&quot;show_price&quot;:&quot;1&quot;,&quot;indexed&quot;:&quot;1&quot;,&quot;visibility&quot;:&quot;both&quot;,&quot;cache_default_attribute&quot;:&quot;54&quot;,&quot;advanced_stock_management&quot;:&quot;0&quot;,&quot;date_add&quot;:&quot;2017-11-06 03:25:28&quot;,&quot;date_upd&quot;:&quot;2017-12-12 22:43:36&quot;,&quot;pack_stock_type&quot;:&quot;3&quot;,&quot;meta_description&quot;:null,&quot;meta_keywords&quot;:null,&quot;meta_title&quot;:null,&quot;link_rewrite&quot;:&quot;printed-dress&quot;,&quot;name&quot;:&quot;Printed Dress&quot;,&quot;description&quot;:&quot;&lt;p&gt;Fashion has been creating well-designed collections since 2010. The brand offers feminine designs delivering stylish separates and statement dresses which have since evolved into a full ready-to-wear collection in which every item is a vital part of a woman&#039;s wardrobe. The result? Cool, easy, chic looks with youthful elegance and unmistakable signature style. All the beautiful pieces are made in Italy and manufactured with the greatest attention. Now Fashion extends to a range of accessories including shoes, hats, belts and more!&lt;\/p&gt;&quot;,&quot;description_short&quot;:&quot;&lt;p&gt;Printed evening dress with straight sleeves with black thin waist belt and ruffled linings.&lt;\/p&gt;&quot;,&quot;available_now&quot;:&quot;In stock&quot;,&quot;available_later&quot;:null,&quot;id&quot;:9,&quot;id_product&quot;:9,&quot;out_of_stock&quot;:2,&quot;new&quot;:1,&quot;id_product_attribute&quot;:54,&quot;quantity_wanted&quot;:1,&quot;extraContent&quot;:[],&quot;allow_oosp&quot;:0,&quot;category&quot;:&quot;electronics&quot;,&quot;category_name&quot;:&quot;Electronics&quot;,&quot;link&quot;:&quot;http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/electronics\/9-printed-dress.html&quot;,&quot;attribute_price&quot;:0,&quot;price_tax_exc&quot;:46.91,&quot;price_without_reduction&quot;:50.99,&quot;reduction&quot;:4.0792,&quot;specific_prices&quot;:{&quot;id_specific_price&quot;:&quot;15&quot;,&quot;id_specific_price_rule&quot;:&quot;0&quot;,&quot;id_cart&quot;:&quot;0&quot;,&quot;id_product&quot;:&quot;9&quot;,&quot;id_shop&quot;:&quot;0&quot;,&quot;id_shop_group&quot;:&quot;0&quot;,&quot;id_currency&quot;:&quot;0&quot;,&quot;id_country&quot;:&quot;0&quot;,&quot;id_group&quot;:&quot;0&quot;,&quot;id_customer&quot;:&quot;0&quot;,&quot;id_product_attribute&quot;:&quot;0&quot;,&quot;price&quot;:&quot;-1.000000&quot;,&quot;from_quantity&quot;:&quot;1&quot;,&quot;reduction&quot;:&quot;0.080000&quot;,&quot;reduction_tax&quot;:&quot;1&quot;,&quot;reduction_type&quot;:&quot;percentage&quot;,&quot;from&quot;:&quot;0000-00-00 00:00:00&quot;,&quot;to&quot;:&quot;2019-12-12 00:00:00&quot;,&quot;score&quot;:&quot;32&quot;},&quot;quantity&quot;:300,&quot;quantity_all_versions&quot;:1800,&quot;id_image&quot;:&quot;en-default&quot;,&quot;features&quot;:[{&quot;name&quot;:&quot;Compositions&quot;,&quot;value&quot;:&quot;Viscose&quot;,&quot;id_feature&quot;:&quot;5&quot;},{&quot;name&quot;:&quot;Styles&quot;,&quot;value&quot;:&quot;Dressy&quot;,&quot;id_feature&quot;:&quot;6&quot;},{&quot;name&quot;:&quot;Properties&quot;,&quot;value&quot;:&quot;Short Dress&quot;,&quot;id_feature&quot;:&quot;7&quot;}],&quot;attachments&quot;:[],&quot;virtual&quot;:0,&quot;pack&quot;:0,&quot;packItems&quot;:[],&quot;nopackprice&quot;:0,&quot;customization_required&quot;:false,&quot;attributes&quot;:{&quot;1&quot;:{&quot;id_attribute&quot;:&quot;1&quot;,&quot;id_attribute_group&quot;:&quot;1&quot;,&quot;name&quot;:&quot;S&quot;,&quot;group&quot;:&quot;Size&quot;,&quot;reference&quot;:null,&quot;ean13&quot;:null,&quot;isbn&quot;:null,&quot;upc&quot;:null},&quot;3&quot;:{&quot;id_attribute&quot;:&quot;7&quot;,&quot;id_attribute_group&quot;:&quot;3&quot;,&quot;name&quot;:&quot;Beige&quot;,&quot;group&quot;:&quot;Color&quot;,&quot;reference&quot;:null,&quot;ean13&quot;:null,&quot;isbn&quot;:null,&quot;upc&quot;:null}},&quot;rate&quot;:0,&quot;tax_name&quot;:&quot;&quot;,&quot;ecotax_rate&quot;:0,&quot;unit_price&quot;:0,&quot;customizations&quot;:{&quot;fields&quot;:[]},&quot;id_customization&quot;:0,&quot;is_customizable&quot;:false,&quot;show_quantities&quot;:true,&quot;quantity_label&quot;:&quot;Items&quot;,&quot;quantity_discounts&quot;:[],&quot;customer_group_discount&quot;:0}"
-                                                role="tabpanel">
-                                                <div class="product-manufacturer">
-                                                    <a href="../1_fashion-manufacturer.html">
-                                                        <img src="http://demo.posthemes.com/pos_fastbuy/layout2/img/m/1.jpg" class="img img-thumbnail manufacturer-logo" alt="Fashion Manufacturer">
-                                                    </a>
-                                                </div>
-                                                <div class="product-reference">
-                                                    <label class="label">Reference </label>
-                                                    <span itemprop="sku">demo_9</span>
-                                                </div>
-                                                <div class="product-quantities">
-                                                    <label class="label">In stock</label>
-                                                    <span>300 Items</span>
-                                                </div>
-                                                <div class="product-out-of-stock">
-                                                </div>
+                                            <div class="tab-pane fade" id="product-details" role="tabpanel">
                                                 <section class="product-features">
-                                                    <h3 class="h6">Data sheet</h3>
-                                                    <dl class="data-sheet">
-                                                        <dt class="name">Compositions</dt>
-                                                        <dd class="value">Viscose</dd>
-                                                        <dt class="name">Styles</dt>
-                                                        <dd class="value">Dressy</dd>
-                                                        <dt class="name">Properties</dt>
-                                                        <dd class="value">Short Dress</dd>
-                                                    </dl>
+                                                    <div class="col-md-12">
+                                                        <div class="specifications-product">
+                                                            <h1>Cấu hình cơ bản</h1>
+                                                            <div class="tableparameter" style="display: block;
+                                                                                            overflow: visible;">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </section>
                                             </div>
                                             <div class="tab-pane fade in" id="idTab5">
                                                 <script type="text/javascript">
-                                                    var productcomments_controller_url = '../module/productcomments/default.html';
-                                                    var confirm_report_message = 'Are you sure that you want to report this comment?';
-                                                    var secure_key = '8bcabe53026f7204cfa60d25c0f10db2';
-                                                    var productcomments_url_rewrite = '1';
-                                                    var productcomment_added = 'Your comment has been added!';
-                                                    var productcomment_added_moderation = 'Your comment has been submitted and will be available once approved by a moderator.';
-                                                    var productcomment_title = 'New comment';
-                                                    var productcomment_ok = 'OK';
-                                                    var moderation_active = 1;
+                                                var productcomments_controller_url = '../module/productcomments/default.html';
+                                                var confirm_report_message = 'Are you sure that you want to report this comment?';
+                                                var secure_key = '8bcabe53026f7204cfa60d25c0f10db2';
+                                                var productcomments_url_rewrite = '1';
+                                                var productcomment_added = 'Your comment has been added!';
+                                                var productcomment_added_moderation = 'Your comment has been submitted and will be available once approved by a moderator.';
+                                                var productcomment_title = 'New comment';
+                                                var productcomment_ok = 'OK';
+                                                var moderation_active = 1;
                                                 </script>
                                                 <div id="product_comments_block_tab">
                                                     <div class="comment clearfix">
@@ -436,9 +405,8 @@
                                                                                     <p class="product_name">
                                                                                         <strong>Printed Dress</strong>
                                                                                     </p>
-                                                                                    <p>Printed evening dress with straight sleeves
-                                                                                        with black thin waist belt and ruffled
-                                                                                        linings.</p>
+                                                                                    <p>Printed evening dress with straight sleeves with black thin waist belt and ruffled linings.
+                                                                                    </p>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="new_comment_form_content col-xs-12 col-sm-6">
@@ -552,8 +520,7 @@
                                                             <span class="sr-only">Price</span>
                                                         </div>
                                                         <div class="product-desc" itemprop="description">
-                                                            <p>Sleeveless knee-length chiffon dress. V-neckline with elastic
-                                                                under the bust lining.</p>
+                                                            <p>Sleeveless knee-length chiffon dress. V-neckline with elastic under the bust lining.</p>
                                                         </div>
                                                         <div class="variant-links">
                                                             <a href="11-69-printed-summer-dress.html#/1-size-s/8-color-white" class="color" title="White" style="background-color: #ffffff">
@@ -692,8 +659,7 @@
                                                             <span class="sr-only">Price</span>
                                                         </div>
                                                         <div class="product-desc" itemprop="description">
-                                                            <p>100% cotton double printed dress. Black and white striped top
-                                                                and orange high waisted skater skirt bottom.</p>
+                                                            <p>100% cotton double printed dress. Black and white striped top and orange high waisted skater skirt bottom.</p>
                                                         </div>
                                                         <div class="variant-links">
                                                             <a href="13-79-printed-dress.html#/2-size-m/13-color-orange" class="color" title="Orange" style="background-color: #F39C11">
@@ -833,8 +799,7 @@
                                                             <span class="sr-only">Price</span>
                                                         </div>
                                                         <div class="product-desc" itemprop="description">
-                                                            <p>Long printed dress with thin adjustable straps. V-neckline and
-                                                                wiring under the bust with ruffles at the bottom of the dress.</p>
+                                                            <p>Long printed dress with thin adjustable straps. V-neckline and wiring under the bust with ruffles at the bottom of the dress.</p>
                                                         </div>
                                                         <div class="variant-links">
                                                             <a href="5-22-printed-summer-dress.html#/1-size-s/11-color-black" class="color" title="Black" style="background-color: #434A54">
@@ -914,8 +879,7 @@
                                                             <span class="sr-only">Price</span>
                                                         </div>
                                                         <div class="product-desc" itemprop="description">
-                                                            <p>Sleeveless knee-length chiffon dress. V-neckline with elastic
-                                                                under the bust lining.</p>
+                                                            <p>Sleeveless knee-length chiffon dress. V-neckline with elastic under the bust lining.</p>
                                                         </div>
                                                         <div class="variant-links">
                                                             <a href="6-40-printed-summer-dress.html#/1-size-s/8-color-white" class="color" title="White" style="background-color: #ffffff">
@@ -988,8 +952,7 @@
                                                             <span class="sr-only">Price</span>
                                                         </div>
                                                         <div class="product-desc" itemprop="description">
-                                                            <p>100% cotton double printed dress. Black and white striped top
-                                                                and orange high waisted skater skirt bottom.</p>
+                                                            <p>100% cotton double printed dress. Black and white striped top and orange high waisted skater skirt bottom.</p>
                                                         </div>
                                                         <div class="variant-links">
                                                             <a href="3-13-printed-dress.html#/1-size-s/13-color-orange" class="color" title="Orange" style="background-color: #F39C11">
@@ -1059,8 +1022,7 @@
                                                             <span class="sr-only">Price</span>
                                                         </div>
                                                         <div class="product-desc" itemprop="description">
-                                                            <p>Printed evening dress with straight sleeves with black thin waist
-                                                                belt and ruffled linings.</p>
+                                                            <p>Printed evening dress with straight sleeves with black thin waist belt and ruffled linings.</p>
                                                         </div>
                                                         <div class="variant-links">
                                                             <a href="4-16-printed-dress.html#/1-size-s/7-color-beige" class="color" title="Beige" style="background-color: #f5f5dc">
@@ -1133,8 +1095,7 @@
                                                             <span class="sr-only">Price</span>
                                                         </div>
                                                         <div class="product-desc" itemprop="description">
-                                                            <p>100% cotton double printed dress. Black and white striped top
-                                                                and orange high waisted skater skirt bottom.</p>
+                                                            <p>100% cotton double printed dress. Black and white striped top and orange high waisted skater skirt bottom.</p>
                                                         </div>
                                                         <div class="variant-links">
                                                             <a href="8-46-printed-dress.html#/2-size-m/13-color-orange" class="color" title="Orange" style="background-color: #F39C11">
@@ -1203,9 +1164,7 @@
                                                             <span class="sr-only">Price</span>
                                                         </div>
                                                         <div class="product-desc" itemprop="description">
-                                                            <p>Faded short sleeves t-shirt with high neckline. Soft and stretchy
-                                                                material for a comfortable fit. Accessorize with a straw
-                                                                hat and you're ready for summer!</p>
+                                                            <p>Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!</p>
                                                         </div>
                                                         <div class="variant-links">
                                                             <a href="1-1-faded-short-sleeves-tshirt.html#/1-size-s/13-color-orange" class="color" title="Orange" style="background-color: #F39C11">
@@ -1279,8 +1238,7 @@
                                                             <span class="sr-only">Price</span>
                                                         </div>
                                                         <div class="product-desc" itemprop="description">
-                                                            <p>Long printed dress with thin adjustable straps. V-neckline and
-                                                                wiring under the bust with ruffles at the bottom of the dress.</p>
+                                                            <p>Long printed dress with thin adjustable straps. V-neckline and wiring under the bust with ruffles at the bottom of the dress.</p>
                                                         </div>
                                                         <div class="variant-links">
                                                             <a href="10-57-printed-summer-dress.html#/1-size-s/11-color-black" class="color" title="Black" style="background-color: #434A54">
@@ -1401,12 +1359,10 @@
                                     <div class="modal-content">
                                         <div class="modal-body">
                                             <figure>
-                                                <img class="js-modal-product-cover product-cover-modal" width="600" src="http://demo.posthemes.com/pos_fastbuy/layout2/226-large_default/printed-dress.jpg"
-                                                    alt="" title="" itemprop="image">
+                                                <img class="js-modal-product-cover product-cover-modal" width="600" src="http://demo.posthemes.com/pos_fastbuy/layout2/226-large_default/printed-dress.jpg" alt="" title="" itemprop="image">
                                                 <figcaption class="image-caption">
                                                     <div id="product-description-short" itemprop="description">
-                                                        <p>Printed evening dress with straight sleeves with black thin waist
-                                                            belt and ruffled linings.</p>
+                                                        <p>Printed evening dress with straight sleeves with black thin waist belt and ruffled linings.</p>
                                                     </div>
                                                 </figcaption>
                                             </figure>
@@ -1414,24 +1370,16 @@
                                                 <div class="js-modal-mask mask  nomargin ">
                                                     <ul class="product-images js-modal-product-images">
                                                         <li class="thumb-container">
-                                                            <img data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/226-large_default/printed-dress.jpg" class="thumb js-modal-thumb"
-                                                                src="http://demo.posthemes.com/pos_fastbuy/layout2/226-home_default_4/printed-dress.jpg"
-                                                                alt="" title="" width="267" itemprop="image">
+                                                            <img data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/226-large_default/printed-dress.jpg" class="thumb js-modal-thumb" src="http://demo.posthemes.com/pos_fastbuy/layout2/226-home_default_4/printed-dress.jpg" alt="" title="" width="267" itemprop="image">
                                                         </li>
                                                         <li class="thumb-container">
-                                                            <img data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/227-large_default/printed-dress.jpg" class="thumb js-modal-thumb"
-                                                                src="http://demo.posthemes.com/pos_fastbuy/layout2/227-home_default_4/printed-dress.jpg"
-                                                                alt="" title="" width="267" itemprop="image">
+                                                            <img data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/227-large_default/printed-dress.jpg" class="thumb js-modal-thumb" src="http://demo.posthemes.com/pos_fastbuy/layout2/227-home_default_4/printed-dress.jpg" alt="" title="" width="267" itemprop="image">
                                                         </li>
                                                         <li class="thumb-container">
-                                                            <img data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/228-large_default/printed-dress.jpg" class="thumb js-modal-thumb"
-                                                                src="http://demo.posthemes.com/pos_fastbuy/layout2/228-home_default_4/printed-dress.jpg"
-                                                                alt="" title="" width="267" itemprop="image">
+                                                            <img data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/228-large_default/printed-dress.jpg" class="thumb js-modal-thumb" src="http://demo.posthemes.com/pos_fastbuy/layout2/228-home_default_4/printed-dress.jpg" alt="" title="" width="267" itemprop="image">
                                                         </li>
                                                         <li class="thumb-container">
-                                                            <img data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/229-large_default/printed-dress.jpg" class="thumb js-modal-thumb"
-                                                                src="http://demo.posthemes.com/pos_fastbuy/layout2/229-home_default_4/printed-dress.jpg"
-                                                                alt="" title="" width="267" itemprop="image">
+                                                            <img data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/229-large_default/printed-dress.jpg" class="thumb js-modal-thumb" src="http://demo.posthemes.com/pos_fastbuy/layout2/229-home_default_4/printed-dress.jpg" alt="" title="" width="267" itemprop="image">
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -1447,26 +1395,26 @@
                                 <!-- Footer content -->
                             </footer>
                             <script>
-                                // productcomments
-                                $(document).on('click', '#product_comments_block_extra ul.comments_advices a', function (e) {
-                                    $('*[class^="tab-pane"]').removeClass('active');
-                                    $('*[class^="tab-pane"]').removeClass('in');
-                                    $('div#idTab5').addClass('active');
-                                    $('div#idTab5').addClass('in');
+                            // productcomments
+                            $(document).on('click', '#product_comments_block_extra ul.comments_advices a', function(e) {
+                                $('*[class^="tab-pane"]').removeClass('active');
+                                $('*[class^="tab-pane"]').removeClass('in');
+                                $('div#idTab5').addClass('active');
+                                $('div#idTab5').addClass('in');
 
-                                    $('ul.nav-tabs a[href^="#"]').removeClass('active');
-                                    $('a[href="#idTab5"]').addClass('active');
-                                });
-                                (function () {
-                                    $(window).on("load", function () {
+                                $('ul.nav-tabs a[href^="#"]').removeClass('active');
+                                $('a[href="#idTab5"]').addClass('active');
+                            });
+                            (function() {
+                                $(window).on("load", function() {
 
-                                        /* Page Scroll to id fn call */
-                                        $("#product_comments_block_extra ul.comments_advices a.reviews ").mPageScroll2id({
-                                            highlightSelector: "#product_comments_block_extra ul.comments_advices a.reviews ",
-                                            offset: 100,
-                                        });
+                                    /* Page Scroll to id fn call */
+                                    $("#product_comments_block_extra ul.comments_advices a.reviews ").mPageScroll2id({
+                                        highlightSelector: "#product_comments_block_extra ul.comments_advices a.reviews ",
+                                        offset: 100,
                                     });
-                                })(jQuery);
+                                });
+                            })(jQuery);
                             </script>
                         </section>
                     </div>
@@ -1480,4 +1428,328 @@
         <a href="#" class="back-top-button"></a>
     </div>
 </body>
+<script type="text/javascript">
+
+        var product = <%- JSON.stringify(data.product); %>
+		
+		function showSpecifications(product) {
+
+			var specElement = `<ul class="specifications" style="display: block; position: relative; overflow: hidden; background: #fff; padding-top: 10px;">`;
+
+			var specifications = product.specifications;
+
+			switch (product.type.alias) {
+
+				case 'may-tinh-bang':
+				case 'dien-thoai':
+					var screen = specifications.screen,
+						os = specifications.os,
+						backCamera = specifications.backCamera,
+						frontCamera = specifications.frontCamera,
+						cpu = specifications.processor.cpu,
+						ram = specifications.storage.ram,
+						storage = specifications.storage,
+						sim = specifications.connections.sim,
+						battery = specifications.battery;
+
+					if (screen) {
+						var tech = screen.displayTechnology,
+							resolution = screen.resolution,
+							width = screen.width,
+							touch = screen.touch;
+
+						var content = "";
+
+						if (tech) {
+							content += tech + ", ";
+						}
+
+						if (resolution) {
+							content += resolution + ", ";
+						}
+
+						if (width) {
+							content += width + ", ";
+						}
+
+						if (touch) {
+							content += touch + ".";
+						}
+
+						specElement = `<ul class="specifications" style="display: block; position: relative; overflow: hidden; background: #fff; padding-top: 10px;">
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Màn hình:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${content}
+										</div>
+									</li>														
+								</ul>`
+
+					} else {
+						specElement = `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Màn hình:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (os) {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Hệ điều hành:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${os}
+										</div>
+									</li> `
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Hệ điều hành:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (backCamera) {
+						if (backCamera.resolution) {
+							specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Camera sau:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${backCamera.resolution}
+										</div>
+									</li> `
+						} else {
+							specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Camera sau:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+						}
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Camera sau:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (frontCamera) {
+						if (frontCamera.resolution) {
+							specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Camera trước:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${frontCamera.resolution}
+										</div>
+									</li> `
+						} else {
+							specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Camera trước:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+						}
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Camera trước:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (cpu) {
+						var content = ``;
+
+						if (cpu.chipset) {
+							content = cpu.chipset + ", ";
+						} 
+
+						if (cpu.speed) {
+							content+= cpu.speed + ".";
+						}
+
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												CPU
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${content}
+										</div>
+									</li> `
+
+
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												CPU
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (ram) {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												RAM
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${ram || ""}
+										</div>
+									</li> `
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												RAM
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (storage) {
+						var content = ``;
+
+						if (storage.internal) {
+							content = "Bộ nhớ trong: " + storage.internal + " ,";
+						} 
+
+						if (storage.external) {
+							content = "Bộ nhớ ngoài: " + storage.external + "."
+						}
+
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Bộ nhớ trong
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${content}
+										</div>
+									</li> `
+
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Bộ nhớ trong
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (sim) {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												SIM
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${sim || ""}
+										</div>
+									</li> `
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												SIM
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}
+
+					if (battery) {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Pin
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${battery.capacity || ""}
+										</div>
+									</li> `
+					} else {
+						specElement += `
+									<li class="os" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+												Pin
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											
+										</div>
+									</li> `
+					}					
+					
+					break;
+				
+				case 'laptop': 
+				break;
+			
+				default:
+				specElement = `<p>Không có</p>`
+					break;
+			}
+
+			specElement += `</ul>`
+			specElement += `<button type="button" class="btn btn-primary btn-rounded  btn-outline" style="text-align: center; width: 100%; margin-top: 5px;" id="view-detail-spec">Xem cấu hình chi tiết</button>`
+
+			$('.tableparameter').append(specElement);
+		}
+
+		if (!product.specifications) {
+			var p = `<p>Không có</p>`
+			$('.tableparameter').append(p);
+		} else {
+			showSpecifications(product);
+        }
+        
+        $('.price').each((index, price) => {
+            if ($(price).html().match(/^[0-9]{1,}$/g)) {
+                $(price).html(numberWithCommas($(price).html() + " VNĐ"));
+            }
+        });
+
+</script>
 </html>
