@@ -1432,6 +1432,9 @@
                         </ol>
                         </nav>
                             `
+
+                        document.title = `${data.category.name} | Alomobile`
+
                     } else {
                         b = `                        
                             <nav data-depth="3" class="breadcrumb hidden-sm-down">
@@ -1464,6 +1467,8 @@
                                     <meta itemprop="position" content="3">
                                     </li>`
                             }
+
+                            document.title = `${data.category.name} > ${sub.name} | Alomobile`
                         }
 
                         b+= `</ol>
