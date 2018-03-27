@@ -18,7 +18,6 @@ var admin = require('./routes/admin');
 var product = require('./routes/product');
 var api = require('./routes/api');
 var crawl = require('./routes/crawl');
-var g3g4 = require('./routes/g3g4');
 
 var nodemailer = require('nodemailer');
 
@@ -58,7 +57,7 @@ app.use(session({
 
 //use static
 app.use('/static', express.static(path.join(__dirname, 'public'), {
-  maxage: '12h'
+  maxage: '3h'
 }));
 app.use('/', index);
 app.use('/', user);

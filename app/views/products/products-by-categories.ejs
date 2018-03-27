@@ -577,7 +577,8 @@
                         `
 
                 document.title = `${data.category.name} | Alomobile`
-                $('#left-column > div.block-categories.hidden-sm-down > ul > li > a').html(`${data.category.name}`).attr('href', `/danh-muc/${data.category.alias}-${idRootCategory}`)
+                $('#left-column > div.block-categories.hidden-sm-down > ul > li:nth-child(1) > a').html(`${data.category.name}`).attr('href', `/danh-muc/${data.category.alias}-${idRootCategory}`)
+               
 
             } else {
                 b = `                        
@@ -613,7 +614,21 @@
                     }
 
                     document.title = `${data.category.name} > ${sub.name} | Alomobile`
-                    $('#left-column > div.block-categories.hidden-sm-down > ul > li > a').html(`${data.category.name} > ${sub.name}`).attr('href', `/danh-muc/${data.category.alias}-${idRootCategory}-${idCategory}`)
+                    $('#left-column > div.block-categories.hidden-sm-down > ul > li:nth-child(1) > a').html(`${sub.name}`).attr('href', `/danh-muc/${data.category.alias}-${idRootCategory}-${idCategory}`)
+
+                    //sub
+                    var liBlock = `<li><ul class="category-sub-menu">`;
+                    subCategories.forEach(s => {                        
+                        if (s._id && s._id != idCategory ) {
+                            liBlock+=`<li data-depth="0">
+                                <a href="/danh-muc/${data.category.alias}-${idRootCategory}-${s._id}">${s.name}</a>
+                            </li>`
+                        }
+                    });
+
+                    liBlock += `</ul></li>`
+                    
+                    $('#left-column > div.block-categories.hidden-sm-down > ul').append(liBlock);                  
                 }
 
                 b += `</ol>
