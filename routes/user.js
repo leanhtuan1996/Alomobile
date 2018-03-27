@@ -9,18 +9,16 @@ var mailbox = require('../app/controllers/index').mailbox;
 /* GET users listing. */
 /* USER SIGN_IN */
 router.get('/sign-in', (req, res) => {
-  if (req.session.token) {
-    User.verify(req.session.token, (cb) => {
-
-      if (cb.error) { req.session.destroy(); res.render('sign-in', { data: {} }); return }
-
-      if (!cb.user) { res.render('sign-in', { data: {} }); return }
-
-      res.redirect('/');
-    });
-  } else {
-    res.render('sign-in', { data: {} });
+  if (req.session.token && req.session.user) {
+    res.redirect('/')
+    return
   }
+  res.render('sign-in', {
+    data: {
+      token: req.session.token,
+      user: req.session.user
+    }
+  });
 });
 
 router.post('/sign-in', (req, res) => {
@@ -29,54 +27,47 @@ router.post('/sign-in', (req, res) => {
       res.json({
         error: result.error
       });
-    } else {
-      var user = result.user;
-      if (!user) { res.json({ error: "User not found!" }); return; }
-
-      var id = user._id
-
-      var token = helper.encodeToken(id);
-
-      //set token in session
-      req.session.token = token
-
-      //push new token to user
-      User.pushValidToken(token, id, (cb) => {
-        res.json({
-          error: cb.error,
-          user: {
-            id: id,
-            email: user.name,
-            fullName: user.fullName,
-            phone: user.phone,
-            sex: user.sex,
-            orders: user.orders
-          }
-        });
-      });
+      return
     }
+
+    var user = result.user;
+
+    if (!user) { res.json({ error: "User not found!" }); return; }
+
+    var id = user._id
+
+    var token = helper.encodeToken(id);
+
+    //set token in session
+    req.session.token = token;
+    req.session.user = user;
+
+    //push new token to user
+    User.pushValidToken(token, id, (cb) => {
+      res.json({
+        error: cb.error,
+        user: {
+          id: id,
+          email: user.name,
+          fullName: user.fullName,
+          phone: user.phone,
+          sex: user.sex,
+          orders: user.orders
+        }
+      });
+    });
   });
 }); /***/
 
 /* USER SIGN_UP */
 router.get('/sign-up', (req, res) => {
-  if (req.session.token) {
-    User.verify(req.session.token, (cb) => {
-      if (cb.error) {
-        req.session.destroy();
-        res.render('sign-up', { data: {} });
-      } else {
-        if (!cb.user) {
-          res.render('sign-up', { data: {} });
-          return
-        }
-
-        res.redirect('/');
-      }
-    });
-  } else {
-    res.render('sign-up', { data: {} });
+  if (req.session.token && req.session.user) {
+    res.redirect('/');
+    return
   }
+  res.render('sign-up', {
+    data: {}
+  });
 });
 
 router.post('/sign-up', (req, res) => {
@@ -85,6 +76,7 @@ router.post('/sign-up', (req, res) => {
     if (user) {
       //set token in session
       req.session.token = helper.encodeToken(user._id);
+      req.session.user = user;
 
       //send email to user     
       var parameters = {
@@ -117,12 +109,15 @@ router.post('/sign-up', (req, res) => {
 
 router.put('/sign-out', (req, res) => {
   User.signOut(req.session.token, (r) => {
+    if (!r.error) {
+      req.session.destroy();
+    }
     res.redirect(req.headers.referer);
   });
 })
 
 router.get('/my-account', (req, res) => {
-  if (req.session.token) {
+  if (req.session.token && req.session.user) {
     User.verify(req.session.token, (cb) => {
 
       var user = cb.user;
@@ -137,6 +132,7 @@ router.get('/my-account', (req, res) => {
 
       res.render('my-account', {
         data: {
+          token: req.session.token,
           user: {
             id: user._id,
             email: user.name,
@@ -154,23 +150,11 @@ router.get('/my-account', (req, res) => {
 });
 
 router.get('/password-recovery', (req, res) => {
-  if (req.session.token) {
-    User.verify(req.session.token, (cb) => {
-      if (cb.error) {
-        req.session.destroy();
-        res.render('password-recovery', { data: {} });
-        return
-      }
-
-      if (!cb.user) {
-        res.render('password-recovery', { data: {} });
-        return
-      }
-      res.redirect('/');
-    });
-  } else {
-    res.render('password-recovery', { data: {} });
+  if (req.session.token && req.session.user) {
+    res.redirect('/');
+    return
   }
+  res.render('password-recovery', { data: {} });
 });
 
 router.post('/password-recovery', (req, res) => {
@@ -201,13 +185,18 @@ router.get('/password-recovery/:email/:token', (req, res) => {
   User.canRecoveryPassword(req.params.email, req.params.token, (cb) => {
     if (cb.error) {
       res.render('404', {
-        data: { }
+        data: {
+          email: req.params.email,
+          token: req.params.token,
+          user: req.session.user
+        }
       });
     } else {
       res.render('new-password-recovery', {
         data: {
           email: req.params.email,
-          token: req.params.token
+          token: req.params.token,
+          user: req.session.user
         }
       });
     }
@@ -229,6 +218,7 @@ router.get('/cart', (req, res) => {
 
       res.render('cart', {
         data: {
+          token: req.session.token,
           user: {
             id: user._id,
             email: user.name,

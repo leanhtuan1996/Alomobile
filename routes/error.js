@@ -6,7 +6,8 @@ var router = express.Router();
 router.get('/403', (req, res) => {
     res.render('403', {
         data: {
-            currentUser: req.session.currentUser
+            token: req.session.token,
+            user: req.session.user
         }
     });
 });
@@ -14,7 +15,8 @@ router.get('/403', (req, res) => {
 router.get('/404', (req, res) => {
     res.render('admin/404', {
         data: {
-            currentUser: req.session.currentUser
+            token: req.session.token,
+            user: req.session.user
         }
     });
 });
@@ -22,7 +24,8 @@ router.get('/404', (req, res) => {
 router.get('/500', (req, res) => {
     res.render('500', {
         data: {
-            currentUser: req.session.currentUser
+            token: req.session.token,
+            user: req.session.user
         }
     });
 });
@@ -30,7 +33,8 @@ router.get('/500', (req, res) => {
 router.get('/502', (req, res) => {
     res.render('502', {
         data: {
-            currentUser: req.session.currentUser
+            token: req.session.token,
+            user: req.session.user
         }
     });
 });
@@ -38,7 +42,8 @@ router.get('/502', (req, res) => {
 router.get('/503', (req, res) => {
     res.render('503', {
         data: {
-            currentUser: req.session.currentUser
+            token: req.session.token,
+            user: req.session.user
         }
     });
 });
@@ -46,7 +51,8 @@ router.get('/503', (req, res) => {
 router.get('/504', (req, res) => {
     res.render('504', {
         data: {
-            currentUser: req.session.currentUser
+            token: req.session.token,
+            user: req.session.user
         }
     });
 });
@@ -54,7 +60,8 @@ router.get('/504', (req, res) => {
 router.get('/rate-limit', (req, res) => {
     res.render('rate-limit', {
         data: {
-            currentUser: req.session.currentUser
+            token: req.session.token,
+            user: req.session.user
         }
     });
 });
@@ -62,7 +69,8 @@ router.get('/rate-limit', (req, res) => {
 router.get('/temporary-maintenance', (req, res) => {
     res.render('temporary-maintenance', {
         data: {
-            currentUser: req.session.currentUser
+            token: req.session.token,
+            user: req.session.user
         }
     });
 });

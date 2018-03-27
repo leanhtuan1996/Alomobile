@@ -4,7 +4,7 @@
             <a href="/my-account" id="my-account" rel="nofollow">Tài khoản của tôi</a>
             <a href="/cart" id="cart">Thanh toán</a>
 
-            <% if (data.user) { %>             
+            <% if (data.user && data.token) { %>             
                 <a href="javascript: logout()" title="Đăng xuất tài khoản của bạn" rel="nofollow">
                     <span id="logout">Đăng xuất</span>
                 </a>

@@ -101,6 +101,8 @@ router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
 
             res.render('detail-product', {
                 data: {
+                    token: req.session.token,
+                    user: req.session.user,
                     title: product.name,
                     product: product
                 }
@@ -123,9 +125,9 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
                     var ma = element.match(/^[a-z0-9]{24}$/g);
                     if (ma) {
                         matches.push(ma[0]);
-                    }                    
+                    }
                 });
-                
+
                 if (matches.length == 0) {
                     res.redirect('/');
                 } else {
@@ -133,6 +135,8 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
                         Product.getProductsByCategory(matches[0], matches[0], 12, (r) => {
                             res.render('products-by-categories', {
                                 data: {
+                                    token: req.session.token,
+                                    user: req.session.user,
                                     products: r.products || [],
                                     idRootCategory: matches[0],
                                     idCategory: matches[0]
@@ -143,6 +147,8 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
                         Product.getProductsByCategory(matches[1], matches[0], 12, (r) => {
                             res.render('products-by-categories', {
                                 data: {
+                                    token: req.session.token,
+                                    user: req.session.user,
                                     products: r.products || [],
                                     idRootCategory: matches[0],
                                     idCategory: matches[1]
@@ -164,7 +170,7 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
 
 router.post('/product/search', (req, res) => {
     Product.getProductsByCategory(req.body.id, req.body.idRoot, 15, (cb) => {
-        
+
     })
 })
 

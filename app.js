@@ -111,7 +111,8 @@ app.use(function (err, req, res, next) {
 
       res.render(`${err.href || '403'}`, {
         data: {
-          user: req.user,
+          token: req.session.token,
+          user: req.session.user,
           error: err.message,
           ref: err.ref
         }
@@ -120,7 +121,8 @@ app.use(function (err, req, res, next) {
     case 500:
       res.render(`${err.href || '500'}`, {
         data: {
-          user: req.user,
+          token: req.session.token,
+          user: req.session.user,
           error: err.message,
           ref: err.ref
         }
@@ -129,7 +131,8 @@ app.use(function (err, req, res, next) {
     case 502:
       res.render(`${err.href || '502'}`, {
         data: {
-          user: req.user,
+          token: req.session.token,
+          user: req.session.user,
           error: err.message,
           ref: err.ref
         }
@@ -138,7 +141,8 @@ app.use(function (err, req, res, next) {
     case 503:
       res.render(`${err.href || '503'}`, {
         data: {
-          user: req.user,
+          token: req.session.token,
+          user: req.session.user,
           error: err.message,
           ref: err.ref
         }
@@ -147,7 +151,8 @@ app.use(function (err, req, res, next) {
     case 504:
       res.render(`${err.href || '504'}`, {
         data: {
-          user: req.user,
+          token: req.session.token,
+          user: req.session.user,
           error: err.message,
           ref: err.ref
         }
@@ -157,7 +162,8 @@ app.use(function (err, req, res, next) {
     default:
       res.render(`${err.href || '404'}`, {
         data: {
-          user: req.user,
+          token: req.session.token,
+          user: req.session.user,
           error: err.message,
           ref: err.ref
         }
