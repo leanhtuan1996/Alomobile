@@ -4,11 +4,11 @@
 		"port" : 80
 	},
 	"mongoose": {
-		"host" : "localhost",
+		"host" : "35.201.241.250",
 		"port" : 27017,
 		"database" : "alomobile",
-		"user" : "anhtuan",
-		"password" : "tuanle"
+		"user" : "alomobile",
+		"password" : "letuananh"
     },
     "certificate": {
         "key": "/privkey.pem",

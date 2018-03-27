@@ -160,7 +160,11 @@
 
 	<script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+	<script type="text/javascript" src="/static/js/myFunc.js"></script>
+
 	<script type="text/javascript">
+
+	
 
 	function confirmDelete(cb) {
 		swal({
@@ -234,7 +238,7 @@
 								${colors}	
 							</div>														
 						</td>
-						<td class="product-price">${product.price || "Không có"}</td>
+						<td class="product-price">${numberWithCommas(product.price) + " VNĐ" || "Không có"}</td>
 						<td class="product-brand">${brand}</td>
 						<td>
 							<a href="product/${product._id}" class="view-detail-product">Xem chi tiết</a>
