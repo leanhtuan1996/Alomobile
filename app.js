@@ -10,7 +10,6 @@ var session = require("express-session");
 var MongoStore = require("connect-mongo")(session);
 var mongoose = require('mongoose');
 var auth = require('./app/middleware').authenticate;
-
 var index = require('./routes/index');
 var user = require('./routes/user');
 var error = require('./routes/error');
@@ -83,8 +82,8 @@ app.use((req, res, next) => {
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   var err = new Error('Not Found');
-  if (req.url && typeof req.url == 'string' && req.url.startsWith('/admin/')) {    
-      err.href = 'admin/404';      
+  if (req.url && typeof req.url == 'string' && req.url.startsWith('/admin/')) {
+    err.href = 'admin/404';
   } else {
     err.status = 404;
   }
@@ -103,12 +102,12 @@ app.use(function (err, req, res, next) {
 
   switch (err.status) {
     case 403:
-      
+
       res.render(`${err.href || '403'}`, {
         data: {
           user: req.user,
           error: err.message,
-          ref: err.ref 
+          ref: err.ref
         }
       });
       break;
@@ -117,7 +116,7 @@ app.use(function (err, req, res, next) {
         data: {
           user: req.user,
           error: err.message,
-          ref: err.ref           
+          ref: err.ref
         }
       });
       break;
@@ -126,7 +125,7 @@ app.use(function (err, req, res, next) {
         data: {
           user: req.user,
           error: err.message,
-          ref: err.ref 
+          ref: err.ref
         }
       });
       break;
@@ -135,7 +134,7 @@ app.use(function (err, req, res, next) {
         data: {
           user: req.user,
           error: err.message,
-          ref: err.ref 
+          ref: err.ref
         }
       });
       break;
@@ -144,7 +143,7 @@ app.use(function (err, req, res, next) {
         data: {
           user: req.user,
           error: err.message,
-          ref: err.ref 
+          ref: err.ref
         }
       });
       break;
@@ -154,7 +153,7 @@ app.use(function (err, req, res, next) {
         data: {
           user: req.user,
           error: err.message,
-          ref: err.ref 
+          ref: err.ref
         }
       });
       break;

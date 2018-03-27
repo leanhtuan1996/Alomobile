@@ -4887,43 +4887,7 @@ jQuery(document).ready(function($) { $(document).off('mouseenter').on('mouseente
             $('.bannerSlideshow3').addClass("pos_in") } }) }
 );
 
-/***/
-$(document).ready(function() {
-    var $featuredSlideConf = $('.pos-featured-products');
-    var items = parseInt($featuredSlideConf.attr('data-items'));
-    var speed = parseInt($featuredSlideConf.attr('data-speed'));
-    var autoPlay = parseInt($featuredSlideConf.attr('data-autoplay'));
-    var time = parseInt($featuredSlideConf.attr('data-time'));
-    var arrow = parseInt($featuredSlideConf.attr('data-arrow'));
-    var pagination = parseInt($featuredSlideConf.attr('data-pagination'));
-    var move = parseInt($featuredSlideConf.attr('data-move'));
-    var pausehover = parseInt($featuredSlideConf.attr('data-pausehover'));
-    var md = parseInt($featuredSlideConf.attr('data-md'));
-    var sm = parseInt($featuredSlideConf.attr('data-sm'));
-    var xs = parseInt($featuredSlideConf.attr('data-xs'));
-    var xxs = parseInt($featuredSlideConf.attr('data-xxs'));
-    if (autoPlay == 1) { if (time) { autoPlay = time } else { autoPlay = '3000' } } else { autoPlay = !1 }
-    if (pausehover) { pausehover = !0 } else { pausehover = !1 }
-    if (move) { move = !1 } else { move = !0 }
-    if (arrow) { arrow = !0 } else { arrow = !1 }
-    if (pagination == 1) { pagination = !0 } else { pagination = !1 }
-    var featuredSlide = $(".pos-featured-products .feature-item");
-    featuredSlide.owlCarousel({ autoPlay: autoPlay, smartSpeed: speed, autoplayHoverPause: pausehover, scrollPerPage: move, nav: arrow, dots: pagination, responsive: { 0: { items: xxs, }, 480: { items: xs, }, 768: { items: sm, nav: !1, }, 992: { items: md, }, 1200: { items: items, } } });
-    checkClasses();
-    featuredSlide.on('translated.owl.carousel', function(event) { checkClasses() });
 
-    function checkClasses() {
-        var total = $('.pos-featured-products .feature-item .owl-stage .owl-item.active').length;
-        $('.pos-featured-products ').each(function() {
-            $(this).find('.owl-item').removeClass('firstActiveItem');
-            $(this).find('.owl-item').removeClass('lastActiveItem');
-            $(this).find('.owl-item.active').each(function(index) {
-                if (index === 0) { $(this).addClass('firstActiveItem') }
-                if (index === total - 1 && total > 1) { $(this).addClass('lastActiveItem') }
-            })
-        })
-    }
-});
 
 /***/
 !function($) {
@@ -6254,44 +6218,6 @@ $(document).ready(function() {
                 o && e.each(ie.iScrollInstances, function() { e(this).destroy() }), o = new IScroll(n.get(0), te), ie.iScrollInstances.push(o), n.data("iscrollInstance", o) }) }, isScrolled: function(e, n) { var o = n.data("iscrollInstance"); return o ? "top" === e ? o.y >= 0 && !n.scrollTop() : "bottom" === e ? 0 - o.y + n.scrollTop() + 1 + n.innerHeight() >= n[0].scrollHeight : void 0 : !0 }, scrollable: function(e) { return e.find(F).length ? e.find(D).find(s) : e.find(s) }, scrollHeight: function(e) { return e.find(s).children().first().get(0).scrollHeight }, remove: function(e) { var n = e.find(s); if (n.length) { var o = n.data("iscrollInstance");
                 o.destroy(), n.data("iscrollInstance", null) } e.find(s).children().first().children().first().unwrap().unwrap() }, update: function(n, o) { clearTimeout(ie.refreshId), ie.refreshId = setTimeout(function() { e.each(ie.iScrollInstances, function() { e(this).get(0).refresh() }) }, 150), n.find(s).css("height", o + "px").parent().css("height", o + "px") }, wrapContent: function() { return '<div class="' + a + '"><div class="fp-scroller"></div></div>' } } }            
 );
-
-/***/
-$(document).ready(function() {
-    var $newSlideConf = $('.pos_new_product');
-    var items = parseInt($newSlideConf.attr('data-items'));
-    var speed = parseInt($newSlideConf.attr('data-speed'));
-    var autoPlay = parseInt($newSlideConf.attr('data-autoplay'));
-    var time = parseInt($newSlideConf.attr('data-time'));
-    var arrow = parseInt($newSlideConf.attr('data-arrow'));
-    var pagination = parseInt($newSlideConf.attr('data-pagination'));
-    var move = parseInt($newSlideConf.attr('data-move'));
-    var pausehover = parseInt($newSlideConf.attr('data-pausehover'));
-    var md = parseInt($newSlideConf.attr('data-md'));
-    var sm = parseInt($newSlideConf.attr('data-sm'));
-    var xs = parseInt($newSlideConf.attr('data-xs'));
-    var xxs = parseInt($newSlideConf.attr('data-xxs'));
-    if (autoPlay == 1) { if (time) { autoPlay = time } else { autoPlay = '3000' } } else { autoPlay = !1 }
-    if (pausehover) { pausehover = !0 } else { pausehover = !1 }
-    if (move) { move = !1 } else { move = !0 }
-    if (arrow) { arrow = !0 } else { arrow = !1 }
-    if (pagination == 1) { pagination = !0 } else { pagination = !1 }
-    var newSlide = $(".pos_new_product .newSlide");
-    newSlide.owlCarousel({ autoPlay: autoPlay, smartSpeed: speed, autoplayHoverPause: pausehover, scrollPerPage: move, nav: arrow, dots: pagination, responsive: { 0: { items: xxs, }, 480: { items: xs, }, 768: { items: sm, nav: !1, }, 992: { items: md, }, 1200: { items: items, } } });
-    checkClasses();
-    newSlide.on('translated.owl.carousel', function(event) { checkClasses() });
-
-    function checkClasses() {
-        var total = $('.pos_new_product .newSlide .owl-stage .owl-item.active').length;
-        $('.pos_new_product ').each(function() {
-            $(this).find('.owl-item').removeClass('firstActiveItem');
-            $(this).find('.owl-item').removeClass('lastActiveItem');
-            $(this).find('.owl-item.active').each(function(index) {
-                if (index === 0) { $(this).addClass('firstActiveItem') }
-                if (index === total - 1 && total > 1) { $(this).addClass('lastActiveItem') }
-            })
-        })
-    }
-});
 
 /***/
 ! function(a, b) {
@@ -8902,8 +8828,7 @@ $(document).ready(function() {
     }
     var owl = $(".product_accessoriesslide");
     owl.owlCarousel({ autoPlay: !1, smartSpeed: 1000, autoplayHoverPause: !0, nav: !0, dots: !1, responsive: { 0: { items: 1, }, 480: { items: 2, }, 768: { items: 3, nav: !1, }, 992: { items: 4, }, 1200: { items: 5, } } });
-    var owl = $(".product_categoryslide");
-    owl.owlCarousel({ autoPlay: !1, smartSpeed: 1000, autoplayHoverPause: !0, nav: !0, dots: !1, responsive: { 0: { items: 1, }, 480: { items: 2, }, 768: { items: 3, nav: !1, }, 992: { items: 4, }, 1200: { items: 5, } } });
+    
     bindGrid()
 });
 

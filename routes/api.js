@@ -166,6 +166,12 @@ router.get('/api/v1/product/get-products-by-category/:id', (req, res) => {
     });
 });
 
+router.get('/api/v1/product/get-products-by-category', (req, res) => {
+    Product.getProductsByCategory(req.query.idCategory, req.query.idRootCategory, 15, (cb) => {
+        res.json(cb);
+    })
+});
+
 router.get('/api/v1/product/get-new-products', (req,res) => {
     Product.getNewProducts(15, (result) => {
         res.json(result);

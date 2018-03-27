@@ -192,90 +192,13 @@
                                 <a href="#"><img class="img-responsive" src="http://demo.posthemes.com/pos_fastbuy/layout2/modules/posfeaturedproducts/img/799bad5a3b514f096e69bbc4a7896cd9.jpg" alt="" title=""/></a>
                             </div>
                         </div>
+
                         <!-- SPECIAL PRODUCTS -->
                         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9 col">
                             <div class="block-content">
                                 <div class="pos_content">
-                                    <div class="feature-item owl-carousel">
-
-                                        <% if (data.specialProducts) { %>
-                                            <% data.specialProducts.forEach((product) => { %>
-                                               
-                                                <% var image1 = product.images[0]; %>
-                                                <% var image2 = product.images[1]; %>
-                                                <% var name = product.name; %>
-                                                <% var price = product.price; %>
-                                                <% var href = `${product.alias}-${product._id}` %>
-
-                                                <div class="item-product">                                            
-                                                    <article class="js-product-miniature" data-id-product="<%- product._id %>" itemscope>
-                                                        <div class="img_block">
-                                                            <a href="<%- href %>" class="thumbnail product-thumbnail">
-                                                                <img src = "<%- image1.url %>" alt = "<%- image1.alt %>" data-full-size-image-url = "<%- image1.url %>" />
-                                                                <img class="img-responsive second-image animation1" src="<%- image2.url %>" alt="" itemprop="image"  />
-                                                            </a>
-                                                            <ul class="product-flag">
-                                                                <!-- <li class="discount-percentage">-10%</li> -->
-                                                                <li class="discount">Reduced price</li>
-                                                                <li class="new">New</li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="product_desc">
-                                                            <div class="desc_info">
-                                                                <h4><a href="<%- href %>" title="Printed Dress" itemprop="name" class="product_name"><%- name %></a></h4>
-                                                                <div class="hook-reviews">
-                                                                    <div itemtype="http://schema.org/AggregateRating" itemscope="" itemprop="aggregateRating" class="comments_note">
-                                                                        <div class="star_content clearfix">
-                                                                            <div class="star star_on"></div>
-                                                                            <div class="star star_on"></div>
-                                                                            <div class="star star_on"></div>
-                                                                            <div class="star star_on"></div>
-                                                                            <div class="star star_on"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product-price-and-shipping">
-                                                                    <span itemprop="price" class="price  price_sale "><%- price %></span>
-                                                                    <span class="sr-only">Regular price</span>
-                                                                    <!-- <span class="regular-price">$25.99</span>
-                                                                    <span class="discount-percentage">-10%</span> -->
-                                                                    <span class="sr-only">Price</span>
-                                                                </div>
-                                                                <div class="product-desc" itemprop="description">
-                                                                    <p>100% cotton double printed dress. Black and white striped top and orange high waisted skater skirt bottom.</p>
-                                                                </div>
-                                                                <div class="variant-links">
-                                                                    <a href="<%- href %>" class="color" title="Orange" style="background-color: #F39C11"><span class="sr-only">Orange</span></a>
-                                                                    <span class="js-count count"></span>
-                                                                </div>
-                                                            </div>
-                                                            <ul class="add-to-links">
-                                                                <li class="cart">
-                                                                    <div class="product-add-to-cart">
-                                                                        <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" class="add-to-cart-or-refresh">
-                                                                            <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
-                                                                            <input type="hidden" name="id_product" value="3" class="product_page_product_id">
-                                                                            <input type="hidden" name="qty" value="1">
-                                                                            <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
-                                                                                Thêm vào giỏ hàng
-                                                                            </button>
-                                                                        </form>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#" class="quick-view" data-link-action="quickview" title="Quick view">Quick view</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="<%- href %>" class="links-details" title="<%- name %>">Details</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </article>
-                                                </div>
-
-                                            <% }); %>
-                                        <% } %>
-
+                                    <div class="feature-item owl-carousel" id="special-product-block">
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -947,82 +870,6 @@
 
                             <!-- NEW PRODUCTS -->
                             <div class="newSlide owl-carousel" id="new_product">
-
-                                <% if (data.newProducts) { %>
-                                   <% data.newProducts.forEach((product) => { %>
-                                        <!-- ITEM -->
-                                        <div class="item-product">
-                                                <article class="js-product-miniature" data-id-product="<%- product._id %>" itemscope itemtype="http://schema.org/Product">
-                                                    <div class="img_block">
-                                                        <a href="/<%- product.alias %>-<%- product._id %>" class="thumbnail product-thumbnail">
-                                                            <img
-                                                                src = "<%- product.images[0].url %>"
-                                                                alt = "<%- product.images[0].alt %>"
-                                                                data-full-size-image-url = "<%- product.images[0].url %>"
-                                                            >
-                                                                                    <img class="img-responsive second-image animation1" 
-                                                                        src="<%- product.images[1].url %>" 
-                                                                    alt="<%- product.images[1].alt %>" itemprop="image"  />
-                                                                    
-                                                        </a>
-                                                        <ul class="product-flag">
-                                                            <li class=" new">New</li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="product_desc">
-                                                        <div class="desc_info">
-                                                            <h4><a href="/<%- product.alias %>-<%- product._id %>" title="Printed Summer Dress" itemprop="name" class="product_name"><%- product.name %></a></h4>
-                                                            <div class="hook-reviews">
-                                                                <div itemtype="http://schema.org/AggregateRating" itemscope="" itemprop="aggregateRating" class="comments_note">
-                                                                    <div class="star_content clearfix">
-                                                                        <div class="star "></div>
-                                                                        <div class="star "></div>
-                                                                        <div class="star "></div>
-                                                                        <div class="star"></div>
-                                                                        <div class="star "></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="product-price-and-shipping">
-                                                                <span itemprop="price" class="price ">$30.50</span>
-                                                                <span class="sr-only">Price</span>
-                                                            </div>
-                                                            <div class="product-desc" itemprop="description">
-                                                                <p>Long printed dress with thin adjustable straps. V-neckline and wiring under the bust with ruffles at the bottom of the dress.</p>
-                                                            </div>
-                                                            <div class="variant-links">
-                                                                <a href="/<%- product.alias %>-<%- product._id %>" class="color" title="Black" style="background-color: #434A54"><span class="sr-only">Black</span></a>
-                                                                <span class="js-count count"></span>
-                                                            </div>
-                                                        </div>
-                                                        <ul class="add-to-links">
-                                                            <li class="cart">
-                                                                <div class="product-add-to-cart">
-                                                                    <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" class="add-to-cart-or-refresh">
-                                                                        <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
-                                                                        <input type="hidden" name="id_product" value="5" class="product_page_product_id">
-                                                                        <input type="hidden" name="qty" value="1">
-                                                                        <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
-                                                                            Add to cart
-                                                                        </button>
-                                                                    </form>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#" class="quick-view" data-link-action="quickview" title="Quick view">Quick view</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="/<%- product.alias %>-<%- product._id %>" class="links-details" title="Details">Details</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </article>
-                                            </div>
-                                            <!-- /ITEM -->
-                                   <% }); %>
-                                <% } %>
-                                
-                                
                             </div>
                             <!-- /NEW PRODUCTS --> 
                         </div>
@@ -1066,15 +913,274 @@
     </main>
     <script type="text/javascript" src="/static/js/custom.js"></script>
     <div class="back-top"><a href="#" class="back-top-button"></a></div>
-
     
 </body>
 <script type="text/javascript">    
-$('.price').each((index, price) => {
-    if ($(price).html().match(/^[0-9]{1,}$/g)) {
-        $(price).html(numberWithCommas($(price).html() + " VNĐ"));
+    $('.price').each((index, price) => {
+        if ($(price).html().match(/^[0-9]{1,}$/g)) {
+            $(price).html(numberWithCommas($(price).html() + " VNĐ"));
+        }
+    });
+
+    $(document).ready(function() {
+        getSpecialProducts();
+        getNewProducts();
+    });
+
+    function getSpecialProducts() {
+        $.get('/api/v1/product/get-special-products', (data) => {
+            var products = data.products;
+            if (products && products.length > 0) {
+
+                var items = ``;
+              
+                products.forEach((product) => {
+                    
+                    var image1 = product.images[0];
+                    var image2 = product.images[1]; 
+                    var name = product.name;
+                    var price = product.price;
+                    var href = `${product.alias}-${product._id}`
+
+                    items+= `
+
+                    <div class="item-product">                                            
+                        <article class="js-product-miniature" data-id-product="${product._id}" itemscope>
+                            <div class="img_block">
+                                <a href="${href}" class="thumbnail product-thumbnail">
+                                    <img class="owl-lazy" src = "${image1.url}" alt = "${image1.alt}" data-full-size-image-url = "${image1.url}" />
+                                    <img class="img-responsive second-image animation1" src="${image2.url}" alt="" itemprop="image"  />
+                                </a>
+                                <ul class="product-flag">
+                                    <!-- <li class="discount-percentage">-10%</li> -->
+                                    <li class="discount">Reduced price</li>
+                                    <li class="new">New</li>
+                                </ul>
+                            </div>
+                            <div class="product_desc">
+                                <div class="desc_info">
+                                    <h4><a href="${href}" title="Printed Dress" itemprop="name" class="product_name">${name}</a></h4>
+                                    <div class="hook-reviews">
+                                        <div itemtype="http://schema.org/AggregateRating" itemscope="" itemprop="aggregateRating" class="comments_note">
+                                            <div class="star_content clearfix">
+                                                <div class="star star_on"></div>
+                                                <div class="star star_on"></div>
+                                                <div class="star star_on"></div>
+                                                <div class="star star_on"></div>
+                                                <div class="star star_on"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-price-and-shipping">
+                                        <span itemprop="price" class="price  price_sale ">${numberWithCommas(price + " VNĐ")}</span>
+                                        <span class="sr-only">Regular price</span>
+                                        <!-- <span class="regular-price">$25.99</span>
+                                        <span class="discount-percentage">-10%</span> -->
+                                        <span class="sr-only">Price</span>
+                                    </div>
+                                    <div class="product-desc" itemprop="description">
+                                        <p>100% cotton double printed dress. Black and white striped top and orange high waisted skater skirt bottom.</p>
+                                    </div>
+                                    <div class="variant-links">
+                                        <a href="${href}" class="color" title="Orange" style="background-color: #F39C11"><span class="sr-only">Orange</span></a>
+                                        <span class="js-count count"></span>
+                                    </div>
+                                </div>
+                                <ul class="add-to-links">
+                                    <li class="cart">
+                                        <div class="product-add-to-cart">
+                                            <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" class="add-to-cart-or-refresh">
+                                                <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
+                                                <input type="hidden" name="id_product" value="3" class="product_page_product_id">
+                                                <input type="hidden" name="qty" value="1">
+                                                <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
+                                                    Thêm vào giỏ hàng
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="quick-view" data-link-action="quickview" title="Quick view">Quick view</a>
+                                    </li>
+                                    <li>
+                                        <a href="${href}" class="links-details" title="${name}">Details</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </article>
+                    </div>
+                    `
+                });     
+                
+                $("#special-product-block").append(items);
+
+                initSpecialProductSlider();
+
+            } else {
+                initSpecialProductSlider();
+            }
+        });
     }
-});
+
+    function getNewProducts() {
+        $.get('/api/v1/product/get-new-products', (data) => {
+            var products = data.products;
+            if (products && products.length > 0) {
+                
+                var items = ``;
+                products.forEach((product) => { 
+                    items+= `
+                    <div class="item-product">
+                        <article class="js-product-miniature" data-id-product="${product._id}" itemscope itemtype="http://schema.org/Product">
+                            <div class="img_block">
+                                <a href="/${product.alias}-${product._id}" class="thumbnail product-thumbnail">
+                                    <img class="owl-lazy"
+                                        src = "${product.images[0].url}"
+                                        alt = "${product.images[0].alt}"
+                                        data-full-size-image-url = "${product.images[0].url}"
+                                    >
+                                    <img class="img-responsive second-image animation1" 
+                                        src="${product.images[1].url}" 
+                                        alt="${product.images[1].alt}" itemprop="image"  />
+                                            
+                                </a>
+                                <ul class="product-flag">
+                                    <li class=" new">New</li>
+                                </ul>
+                            </div>
+                            <div class="product_desc">
+                                <div class="desc_info">
+                                    <h4><a href="/${product.alias}-${product._id}" title="Printed Summer Dress" itemprop="name" class="product_name">${product.name}</a></h4>
+                                    <div class="hook-reviews">
+                                        <div itemtype="http://schema.org/AggregateRating" itemscope="" itemprop="aggregateRating" class="comments_note">
+                                            <div class="star_content clearfix">
+                                                <div class="star star_on"></div>
+                                                <div class="star star_on"></div>
+                                                <div class="star star_on"></div>
+                                                <div class="star star_on"></div>
+                                                <div class="star star_on"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-price-and-shipping">
+                                        <span itemprop="price" class="price ">${numberWithCommas(product.price + " VNĐ")}</span>
+                                        <span class="sr-only">Price</span>
+                                    </div>
+                                    <div class="variant-links">
+                                        <a href="/${product.alias}-${product._id}" class="color" title="Black" style="background-color: #434A54"><span class="sr-only">Black</span></a>
+                                        <span class="js-count count"></span>
+                                    </div>
+                                </div>
+                                <ul class="add-to-links">
+                                    <li class="cart">
+                                        <div class="product-add-to-cart">
+                                            <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" class="add-to-cart-or-refresh">
+                                                <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
+                                                <input type="hidden" name="id_product" value="5" class="product_page_product_id">
+                                                <input type="hidden" name="qty" value="1">
+                                                <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
+                                                    Add to cart
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="quick-view" data-link-action="quickview" title="Quick view">Quick view</a>
+                                    </li>
+                                    <li>
+                                        <a href="/${product.alias}-${product._id}" class="links-details" title="Details">Details</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </article>
+                    </div>
+                    `
+                });
+
+                $("#new_product").append(items);
+
+                initNewProductsSlider();
+
+            } else {
+                initNewProductsSlider();
+            }
+        })
+    }
+
+    function initSpecialProductSlider() {
+        var $featuredSlideConf = $('.pos-featured-products');
+        var items = parseInt($featuredSlideConf.attr('data-items'));
+        var speed = parseInt($featuredSlideConf.attr('data-speed'));
+        var autoPlay = parseInt($featuredSlideConf.attr('data-autoplay'));
+        var time = parseInt($featuredSlideConf.attr('data-time'));
+        var arrow = parseInt($featuredSlideConf.attr('data-arrow'));
+        var pagination = parseInt($featuredSlideConf.attr('data-pagination'));
+        var move = parseInt($featuredSlideConf.attr('data-move'));
+        var pausehover = parseInt($featuredSlideConf.attr('data-pausehover'));
+        var md = parseInt($featuredSlideConf.attr('data-md'));
+        var sm = parseInt($featuredSlideConf.attr('data-sm'));
+        var xs = parseInt($featuredSlideConf.attr('data-xs'));
+        var xxs = parseInt($featuredSlideConf.attr('data-xxs'));
+        if (autoPlay == 1) { if (time) { autoPlay = time } else { autoPlay = '3000' } } else { autoPlay = !1 }
+        if (pausehover) { pausehover = !0 } else { pausehover = !1 }
+        if (move) { move = !1 } else { move = !0 }
+        if (arrow) { arrow = !0 } else { arrow = !1 }
+        if (pagination == 1) { pagination = !0 } else { pagination = !1 }
+        var featuredSlide = $(".pos-featured-products .feature-item");
+        featuredSlide.owlCarousel({lazyLoad:true, autoPlay: autoPlay, smartSpeed: speed, autoplayHoverPause: pausehover, scrollPerPage: move, nav: arrow, dots: pagination, responsive: { 0: { items: xxs, }, 480: { items: xs, }, 768: { items: sm, nav: !1, }, 992: { items: md, }, 1200: { items: items, } } });
+        checkClasses();
+        featuredSlide.on('translated.owl.carousel', function(event) { checkClasses() });
+
+        function checkClasses() {
+            var total = $('.pos-featured-products .feature-item .owl-stage .owl-item.active').length;
+            $('.pos-featured-products ').each(function() {
+                $(this).find('.owl-item').removeClass('firstActiveItem');
+                $(this).find('.owl-item').removeClass('lastActiveItem');
+                $(this).find('.owl-item.active').each(function(index) {
+                    if (index === 0) { $(this).addClass('firstActiveItem') }
+                    if (index === total - 1 && total > 1) { $(this).addClass('lastActiveItem') }
+                })
+            })
+        }
+    }
+
+    function initNewProductsSlider() {
+        var $newSlideConf = $('.pos_new_product');
+        var items = parseInt($newSlideConf.attr('data-items'));
+        var speed = parseInt($newSlideConf.attr('data-speed'));
+        var autoPlay = parseInt($newSlideConf.attr('data-autoplay'));
+        var time = parseInt($newSlideConf.attr('data-time'));
+        var arrow = parseInt($newSlideConf.attr('data-arrow'));
+        var pagination = parseInt($newSlideConf.attr('data-pagination'));
+        var move = parseInt($newSlideConf.attr('data-move'));
+        var pausehover = parseInt($newSlideConf.attr('data-pausehover'));
+        var md = parseInt($newSlideConf.attr('data-md'));
+        var sm = parseInt($newSlideConf.attr('data-sm'));
+        var xs = parseInt($newSlideConf.attr('data-xs'));
+        var xxs = parseInt($newSlideConf.attr('data-xxs'));
+        if (autoPlay == 1) { if (time) { autoPlay = time } else { autoPlay = '3000' } } else { autoPlay = !1 }
+        if (pausehover) { pausehover = !0 } else { pausehover = !1 }
+        if (move) { move = !1 } else { move = !0 }
+        if (arrow) { arrow = !0 } else { arrow = !1 }
+        if (pagination == 1) { pagination = !0 } else { pagination = !1 }
+        var newSlide = $(".pos_new_product .newSlide");
+        newSlide.owlCarousel({lazyLoad:true, autoPlay: autoPlay, smartSpeed: speed, autoplayHoverPause: pausehover, scrollPerPage: move, nav: arrow, dots: pagination, responsive: { 0: { items: xxs, }, 480: { items: xs, }, 768: { items: sm, nav: !1, }, 992: { items: md, }, 1200: { items: items, } } });
+        checkClasses();
+        newSlide.on('translated.owl.carousel', function(event) { checkClasses() });
+
+        function checkClasses() {
+            var total = $('.pos_new_product .newSlide .owl-stage .owl-item.active').length;
+            $('.pos_new_product ').each(function() {
+                $(this).find('.owl-item').removeClass('firstActiveItem');
+                $(this).find('.owl-item').removeClass('lastActiveItem');
+                $(this).find('.owl-item.active').each(function(index) {
+                    if (index === 0) { $(this).addClass('firstActiveItem') }
+                    if (index === total - 1 && total > 1) { $(this).addClass('lastActiveItem') }
+                })
+            })
+        }
+    }
+
 </script>
 
 </html>
