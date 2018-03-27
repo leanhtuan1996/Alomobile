@@ -53,7 +53,9 @@ app.use(session({
 }));
 
 //use static
-app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use('/static', express.static(path.join(__dirname, 'public'), {
+  maxage: '12h'
+}));
 app.use('/', index);
 app.use('/', user);
 app.use('/', error);
