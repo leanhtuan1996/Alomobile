@@ -395,7 +395,7 @@
                                                             </div>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
+                                                            <a href="javascript: void(0);" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
                                                         </li>
                                                         <li>
                                                             <a href="electronics/1-1-faded-short-sleeves-tshirt.html#/1-size-s/13-color-orange" class="links-details" title="Details">Details</a>
@@ -498,7 +498,7 @@
                                                             </div>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
+                                                            <a href="javascript: void(0);" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
                                                         </li>
                                                         <li>
                                                             <a href="electronics/6-31-printed-summer-dress.html#/1-size-s/16-color-yellow" class="links-details" title="Details">Details</a>
@@ -597,7 +597,7 @@
                                                             </div>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
+                                                            <a href="javascript: void(0);" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
                                                         </li>
                                                         <li>
                                                             <a href="electronics/4-16-printed-dress.html#/1-size-s/7-color-beige" class="links-details" title="Details">Details</a>
@@ -663,7 +663,7 @@
                                                                 </div>
                                                             </li>
                                                             <li>
-                                                                <a href="#" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
+                                                                <a href="javascript: void(0);" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
                                                             </li>
                                                             <li>
                                                                 <a href="electronics/3-13-printed-dress.html#/1-size-s/13-color-orange" class="links-details" title="Details">Details</a>
@@ -739,7 +739,7 @@
                                                                 </div>
                                                             </li>
                                                             <li>
-                                                                <a href="#" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
+                                                                <a href="javascript: void(0);" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
                                                             </li>
                                                             <li>
                                                                 <a href="electronics/9-54-printed-dress.html#/1-size-s/7-color-beige" class="links-details" title="Details">Details</a>
@@ -876,12 +876,12 @@
                         <div class="row">
                             <div class="col-xs-12 col-lg-4">
                                 <div class="info"><i class="material-icons">access_time</i>
-                                    <div class="txt"><span class="txt1">Mon - Fri / 7:00 - 23:00</span> <span class="txt2">Thời gian làm việc</span></div>
+                                    <div class="txt"><span class="txt1">Thứ 2 - 7 / 7:00 - 23:00</span> <span class="txt2">Thời gian làm việc</span></div>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-lg-4">
                                 <div class="info"><i class="material-icons">speaker_phone</i>
-                                    <div class="txt"><span class="txt1">888 345 6789</span> <span class="txt2">Hỗ trợ miễn phí</span></div>
+                                    <div class="txt"><span class="txt1">+84 169 6691673</span> <span class="txt2">Hỗ trợ miễn phí</span></div>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-lg-4">
@@ -924,7 +924,7 @@
 
         $('.owl-carousel').delegate('.quick-view-product', 'click', (e) => {
             var id = $(e.currentTarget.parentElement.parentElement.parentElement.parentElement).attr('data-id-product');
-            if (id) {
+            if (id.match(/^[a-zA-z0-9]{24}$/g)) {
                 getPreviewProduct(id, (result) => {
 
                     var product = result.product;
@@ -1282,7 +1282,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <a href="#" class="quick-view quick-view-product" title="Quick view">Quick view</a>
+                                        <a href="javascript: void(0);" class="quick-view quick-view-product" title="Quick view">Quick view</a>
                                     </li>
                                     <li>
                                         <a href="/${product.alias}-${product._id}" class="links-details" title="Details">Details</a>
