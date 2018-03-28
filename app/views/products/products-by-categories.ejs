@@ -430,8 +430,8 @@
 
                                             <% if (data.products && data.products.length > 0) { %>
                                                     <% data.products.forEach(product => { %>
-                                                        <div class="item-product col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                                                                <article class="js-product-miniature" data-id-product="1" data-id-product-attribute="1" itemscope itemtype="http://schema.org/Product">
+                                                        <div class="item-product col-xs-12 col-sm-6 col-md-6 col-lg-4" data-id-product="<%- product._id %>">
+                                                                <article class="js-product-miniature" itemscope itemtype="http://schema.org/Product">
                                                                     <div class="img_block">
                                                                         <a href="/<%- product.alias %>-<%- product._id %>" class="thumbnail product-thumbnail">
                                                                             <img
@@ -441,11 +441,11 @@
                                                                             >
                                                                             <img class="img-responsive second-image animation1" src="<%- product.images[1].url %>" alt = "<%- product.images[1].alt %>" itemprop="image">
                                                                             </a>
-                                                                        <ul class="product-flag">
+                                                                        <!-- <ul class="product-flag">
                                                                             <li class="discount-percentage">-8%</li>
                                                                             <li class=" discount">Reduced price</li>
                                                                             <li class=" new">New</li>
-                                                                        </ul>
+                                                                        </ul> -->
                                                                     </div>
                                                                     <div class="product_desc">
                                                                         <div class="desc_info">
@@ -470,7 +470,7 @@
                                                                                 <span class="sr-only">Price</span> -->
                                                                             </div>
                                                                             <div class="product-desc" itemprop="description">
-                                                                                <p>Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!</p>
+                                                                                <br>
                                                                             </div>
                                                                             <div class="variant-links">
                                                                                 <a href="electronics/1-1-faded-short-sleeves-tshirt.html#/1-size-s/13-color-orange" class="color" title="Orange" style="background-color: #F39C11"><span class="sr-only">Orange</span></a>
@@ -492,10 +492,10 @@
                                                                                 </div>
                                                                             </li>
                                                                             <li>
-                                                                                <a href="#" class="quick-view" data-link-action="quickview" title="Quick view">Quick view</a>
+                                                                                <a href="javascript: void(0);" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
                                                                             </li>
                                                                             <li>
-                                                                                <a href="electronics/1-1-faded-short-sleeves-tshirt.html#/1-size-s/13-color-orange" class="links-details" title="Details">Details</a>
+                                                                                <a href="/<%- product.alias %>-<%- product._id %>" class="links-details" title="Details">Details</a>
                                                                             </li>
                                                                         </ul>
                                                                     </div>
@@ -540,106 +540,351 @@
         <%- include layouts/footer %>
     </main>
     <script type="text/javascript" src="/static/js/custom.js"></script>
-    <div class="back-top"><a href="#" class="back-top-button"></a></div>    
+    <div class="back-top"><a href="#" class="back-top-button"></a></div> 
+    <div id="quickview-modal" class="modal fade quickview in" tabindex="-1" role="dialog" style="display: none;"></div>   
 </body>
-<script type="text/javascript">
-    
+<script type="text/javascript">    
     $('.price').each((index, price) => {
         if ($(price).html().match(/^[0-9]{1,}$/g)) {
             $(price).html(numberWithCommas($(price).html() + " VNĐ"));
         }
     });
 
-(function(idCategory, idRootCategory) {
-
-    var breadcrumb = $('div.breadcrumb_container > div.container');
-    $.get(`/api/v1/category/${idRootCategory}`, (data) => {
-        if (data.category) {
-            var b = ``;
-            if (idCategory == idRootCategory) {
-                b = `                        
-                        <nav data-depth="2" class="breadcrumb hidden-sm-down">
-                    <ol itemscope itemtype="http://schema.org/BreadcrumbList">
-                        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a itemprop="item" href="/">
-                                <span itemprop="name">Trang chủ</span>
-                            </a>
-                            <meta itemprop="position" content="1">
-                        </li>
-                        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a itemprop="item" href="/danh-muc/${data.category.alias}-${idRootCategory}">
-                                <span itemprop="name">${data.category.name}</span>
-                            </a>
-                            <meta itemprop="position" content="2">
-                        </li>
-                    </ol>
-                    </nav>
-                        `
-
-                document.title = `${data.category.name} | Alomobile`
-                $('#left-column > div.block-categories.hidden-sm-down > ul > li:nth-child(1) > a').html(`${data.category.name}`).attr('href', `/danh-muc/${data.category.alias}-${idRootCategory}`)
-               
-
-            } else {
-                b = `                        
-                        <nav data-depth="3" class="breadcrumb hidden-sm-down">
-                    <ol itemscope itemtype="http://schema.org/BreadcrumbList">
-                        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a itemprop="item" href="/">
-                                <span itemprop="name">Trang chủ</span>
-                            </a>
-                            <meta itemprop="position" content="1">
-                        </li>
-                        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a itemprop="item" href="/danh-muc/${data.category.alias}-${idRootCategory}">
-                                <span itemprop="name">${data.category.name}</span>
-                            </a>
-                            <meta itemprop="position" content="2">
-                        </li>`
-
-                var subCategories = data.category.subCategories || [];
-
-                if (subCategories.length > 0) {
-                    var sub = subCategories.find(element => {
-                        return element._id == idCategory
-                    });
-
-                    if (sub) {
-                        b += `<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                                <a itemprop="item" href="/danh-muc/${data.category.alias}-${idRootCategory}-${idCategory}">
-                                    <span itemprop="name">${sub.name}</span>
+    (function(idCategory, idRootCategory) {
+        var breadcrumb = $('div.breadcrumb_container > div.container');
+        $.get(`/api/v1/category/${idRootCategory}`, (data) => {
+            if (data.category) {
+                var b = ``;
+                if (idCategory == idRootCategory) {
+                    b = `                        
+                            <nav data-depth="2" class="breadcrumb hidden-sm-down">
+                        <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+                            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="/">
+                                    <span itemprop="name">Trang chủ</span>
                                 </a>
-                                <meta itemprop="position" content="3">
+                                <meta itemprop="position" content="1">
+                            </li>
+                            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="/danh-muc/${data.category.alias}-${idRootCategory}">
+                                    <span itemprop="name">${data.category.name}</span>
+                                </a>
+                                <meta itemprop="position" content="2">
+                            </li>
+                        </ol>
+                        </nav>
+                            `
+
+                    document.title = `${data.category.name} | Alomobile`
+                    $('#left-column > div.block-categories.hidden-sm-down > ul > li:nth-child(1) > a').html(`${data.category.name}`).attr('href', `/danh-muc/${data.category.alias}-${idRootCategory}`)
+                
+
+                } else {
+                    b = `                        
+                            <nav data-depth="3" class="breadcrumb hidden-sm-down">
+                        <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+                            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="/">
+                                    <span itemprop="name">Trang chủ</span>
+                                </a>
+                                <meta itemprop="position" content="1">
+                            </li>
+                            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="/danh-muc/${data.category.alias}-${idRootCategory}">
+                                    <span itemprop="name">${data.category.name}</span>
+                                </a>
+                                <meta itemprop="position" content="2">
+                            </li>`
+
+                    var subCategories = data.category.subCategories || [];
+
+                    if (subCategories.length > 0) {
+                        var sub = subCategories.find(element => {
+                            return element._id == idCategory
+                        });
+
+                        if (sub) {
+                            b += `<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                    <a itemprop="item" href="/danh-muc/${data.category.alias}-${idRootCategory}-${idCategory}">
+                                        <span itemprop="name">${sub.name}</span>
+                                    </a>
+                                    <meta itemprop="position" content="3">
+                                    </li>`
+                        }
+
+                        document.title = `${data.category.name} > ${sub.name} | Alomobile`
+                        $('#left-column > div.block-categories.hidden-sm-down > ul > li:nth-child(1) > a').html(`${sub.name}`).attr('href', `/danh-muc/${data.category.alias}-${idRootCategory}-${idCategory}`)
+
+                        //sub
+                        var liBlock = `<li><ul class="category-sub-menu">`;
+                        subCategories.forEach(s => {                        
+                            if (s._id && s._id != idCategory ) {
+                                liBlock+=`<li data-depth="0">
+                                    <a href="/danh-muc/${data.category.alias}-${idRootCategory}-${s._id}">${s.name}</a>
                                 </li>`
+                            }
+                        });
+
+                        liBlock += `</ul></li>`
+                        
+                        $('#left-column > div.block-categories.hidden-sm-down > ul').append(liBlock);                  
                     }
 
-                    document.title = `${data.category.name} > ${sub.name} | Alomobile`
-                    $('#left-column > div.block-categories.hidden-sm-down > ul > li:nth-child(1) > a').html(`${sub.name}`).attr('href', `/danh-muc/${data.category.alias}-${idRootCategory}-${idCategory}`)
-
-                    //sub
-                    var liBlock = `<li><ul class="category-sub-menu">`;
-                    subCategories.forEach(s => {                        
-                        if (s._id && s._id != idCategory ) {
-                            liBlock+=`<li data-depth="0">
-                                <a href="/danh-muc/${data.category.alias}-${idRootCategory}-${s._id}">${s.name}</a>
-                            </li>`
-                        }
-                    });
-
-                    liBlock += `</ul></li>`
-                    
-                    $('#left-column > div.block-categories.hidden-sm-down > ul').append(liBlock);                  
+                    b += `</ol>
+                        </nav>
+                            `
                 }
 
-                b += `</ol>
-                    </nav>
-                        `
+
+                $(breadcrumb).append(b);
             }
+        });
+    })("<%- data.idCategory %>", "<%- data.idRootCategory %>");
 
+    function initPreviewProductsSlider() {
+        var owl = $("#quickview-modal > div > div > div.modal-body > div > div.col-md-5.col-sm-5 > div.images-container > div.js-qv-mask.mask.pos_content > div");
+        owl.owlCarousel({
+            lazyLoad: true,
+            autoPlay: false,
+            smartSpeed: 1000,
+            autoplayHoverPause: true,
+            nav: true,
+            dots: false,
+            responsive: {
+                0: {
+                    items: 2,
+                },
+                480: {
+                    items: 3,
+                },
+                768: {
+                    items: 2,
+                    nav: false,
+                },
+                992: {
+                    items: 3,
+                },
+                1200: {
+                    items: 3,
+                }
+            }
+        });
+    }
 
-            $(breadcrumb).append(b);
-        }
-    });
-})("<%- data.idCategory %>", "<%- data.idRootCategory %>");
+     function getPreviewProduct(id, cb) {
+        $.get('/api/v1/product/get-preview', {
+            id: id
+        }, (data) => {
+            return cb(data);
+        });
+    }
+
+    $(document).ready(($) => {
+        $('#js-product-list').delegate('.quick-view-product', 'click', (e) => {      
+
+            var id = $(e.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement).attr('data-id-product');
+
+            if (!id) {
+                id = $(e.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement).attr('data-id-product')
+            }
+            
+            if (id) {
+                getPreviewProduct(id, (result) => {
+
+                    var product = result.product;
+                    if (!product) { return }
+                    
+                    var quickViewModal = `
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-5 col-sm-5">
+                                            <div class="images-container">
+                                                <div class="product-cover">
+                                                    <img class="js-qv-product-cover" src="${product.images[0].url}"
+                                                        alt="${product.images[0].alt}" title="" style="width:100%;" itemprop="image">
+                                                    <div class="layer hidden-sm-down" data-toggle="modal" data-target="#product-modal">
+                                                        <i class="material-icons zoom-in"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="js-qv-mask mask pos_content">
+                                                    <div class="product-images js-qv-product-images owl-carousel owl-loaded owl-drag">
+                                                        
+                                        `
+                                        product.images.forEach((image, index) => {
+                                            if (index > 0) {
+                                                quickViewModal+= `
+                                                    <div class="thumb-container">
+                                                        <img class="owl-lazy thumb js-thumb " data-image-medium-src="${image.url}"
+                                                            data-image-large-src="${image.url}"
+                                                            src="${image.url}"
+                                                            alt="" title="" width="100" itemprop="image">
+                                                    </div>
+                                                `
+                                            }
+                                        });          
+
+                                        quickViewModal+= `
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="arrows js-arrows" style="display: none;">
+                                                <i class="material-icons arrow-up js-arrow-up"></i>
+                                                <i class="material-icons arrow-down js-arrow-down"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-sm-7">
+                                            <h1 class="h1 namne_details">${product.name}</h1>
+                                            <div class="product-prices">
+                                                <div class="product-price h5 " itemprop="offers" itemscope="" itemtype="https://schema.org/Offer">
+                                                    <link itemprop="availability" href="https://schema.org/InStock">
+                                                    <meta itemprop="priceCurrency" content="USD">
+                                                    <div class="current-price">
+                                                        <span itemprop="price" content="30.5">${numberWithCommas(product.price) + " VNĐ"}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="tax-shipping-delivery-label">
+                                                </div>
+                                            </div>
+                                            <div class="product-actions">
+                                                <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" id="add-to-cart-or-refresh">
+                                                    <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
+                                                    <input type="hidden" name="id_product" value="5" id="product_page_product_id">
+                                                    <input type="hidden" name="id_customization" value="0" id="product_customization_id">
+                                                    <div class="product-variants">
+                                                        <div class="clearfix product-variants-item">
+                                                            <span class="control-label">Màu sắc</span>
+                                                            <ul id="group_3">`
+
+                                        if (product.colors && product.colors.length > 0) {                       
+                                            product.colors.forEach(c => {
+                                                quickViewModal+= `
+                                                    <li class="float-xs-left input-container">
+                                                        <label>
+                                                            <input class="input-color" type="radio" data-product-attribute="3" name="group[3]" value="11">
+                                                            <span class="color" style="background-color: ${c}">
+                                                                <span class="sr-only">Black</span>
+                                                            </span>
+                                                        </label>
+                                                    </li>
+                                                `
+                                            });  
+                                        }                   
+
+                                        quickViewModal += `
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-add-to-cart">
+                                                        <span class="control-label">Quantity</span>
+                                                        <div class="product-quantity clearfix">
+                                                            <div class="qty">
+                                                                <div class="input-group bootstrap-touchspin">
+                                                                    <span class="input-group-addon bootstrap-touchspin-prefix" style="display: none;"></span>
+                                                                    <input type="text" name="qty" id="quantity_wanted" value="1" class="input-group form-control"
+                                                                        min="1" aria-label="Quantity" style="display: block;">
+                                                                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>
+                                                                    <span class="input-group-btn-vertical">
+                                                                        <button class="btn btn-touchspin js-touchspin bootstrap-touchspin-up" type="button">
+                                                                            <i class="material-icons touchspin-up"></i>
+                                                                        </button>
+                                                                        <button class="btn btn-touchspin js-touchspin bootstrap-touchspin-down"
+                                                                            type="button">
+                                                                            <i class="material-icons touchspin-down"></i>
+                                                                        </button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="add">
+                                                                <button class="btn btn-primary add-to-cart" data-button-action="add-to-cart" type="submit">
+                                                                    <i class="material-icons shopping-cart">add</i>
+                                                                    Add to cart
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <span id="product-availability">
+                                                            <i class="material-icons product-available"></i>
+                                                            In stock
+                                                        </span>
+                                                        <p class="product-minimal-quantity">
+                                                        </p>
+                                                    </div>
+                                                    <input class="product-refresh" data-url-update="false" name="refresh" type="submit" value="Refresh" hidden="">
+                                                </form>
+                                            </div>
+                                            <div id="block-reassurance">
+                                                <ul>
+                                                    <li>
+                                                        <div class="block-reassurance-item">
+                                                            <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_verified_user_black_36dp_1x.png" alt="Security policy (edit with Customer reassurance module)">
+                                                            <span class="h6" style="font-weight: 0;">Cam kết hàng chính hãng, bảo hành 12 tháng</span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="block-reassurance-item">
+                                                            <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_local_shipping_black_36dp_1x.png" alt="Delivery policy (edit with Customer reassurance module)">
+                                                            <span class="h6" style="font-weight: 0;">Miễn phí giao hàng ở TP. Cần Thơ</span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="block-reassurance-item">
+                                                            <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_swap_horiz_black_36dp_1x.png" alt="Return policy (edit with Customer reassurance module)">
+                                                            <span class="h6" style="font-weight: 0;">1 đổi 1 trong 3 tháng</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="social-sharing">
+                                        <span>Share</span>
+                                        <ul>
+                                            <li>
+                                                <a href="http://www.facebook.com/sharer.php?u=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/5-printed-summer-dress.html"
+                                                    title="Share" target="_blank">
+                                                    <i class="fa-facebook"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="https://twitter.com/intent/tweet?text=Printed Summer Dress http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/5-printed-summer-dress.html"
+                                                    title="Tweet" target="_blank">
+                                                    <i class="fa-twitter"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="https://plus.google.com/share?url=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/5-printed-summer-dress.html"
+                                                    title="Google+" target="_blank">
+                                                    <i class="fa-googleplus"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="http://www.pinterest.com/pin/create/button/?media=http://demo.posthemes.com/pos_fastbuy/layout2/242/printed-summer-dress.jpg&amp;url=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/5-printed-summer-dress.html"
+                                                    title="Pinterest" target="_blank">
+                                                    <i class="fa-pinterest"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                                           
+                    `
+                    $('#quickview-modal').find('.modal-dialog').remove();
+
+                    $('#quickview-modal').append(quickViewModal).attr('data-id-product', product._id);
+                    initPreviewProductsSlider();                    
+                });
+                $("#quickview-modal").modal('show');
+            }            
+        });
+    })
 </script>
 </html>
