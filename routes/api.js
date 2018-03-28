@@ -207,6 +207,12 @@ router.get('/api/v1/product/search-product/:text', (req, res) => {
         res.json(result);
     });
 });
+
+router.get('/api/v1/product/get-preview', (req, res) => {
+   Product.getPreviewProduct(req.query.id, (r) => {
+       res.json(r);
+   });
+});
 //** /APIS FOR PRODUCT */
 
 

@@ -2328,10 +2328,7 @@
         var _jquery = __webpack_require__(2);
         var _jquery2 = _interopRequireDefault(_jquery);
         var _prestashop = __webpack_require__(4);
-        var _prestashop2 = _interopRequireDefault(_prestashop);
-        (0, _jquery2['default'])(document).ready(function() {
-            (0, _jquery2['default'])('body').on('click', '.quick-view', function(event) { _prestashop2['default'].emit('clickQuickView', { dataset: (0, _jquery2['default'])(event.target).closest('.js-product-miniature').data() });
-                event.preventDefault() }) }); /***/
+        var _prestashop2 = _interopRequireDefault(_prestashop);       
     }), 
     (function(module, exports, __webpack_require__) {
         'use strict';
@@ -3374,10 +3371,6 @@
             
                 var p = ".js-cart-line-product-quantity",
                     h = [];
-                l.default.on("updateCart", 
-                    function() {
-                        (0, s.default)(".quickview").modal("hide")         
-                    }), 
                 l.default.on("updatedCart", function() { r() }), 
                 r(); 
                 var m = (0, s.default)("body"),
@@ -3650,21 +3643,7 @@
         var u = n(3),
             c = i(u);
         (0, s.default)(document).ready(
-            function() { 
-                l.default.on("clickQuickView", 
-                    function(e) { 
-                        var n = { 
-                            action: "quickview", 
-                            id_product: e.dataset.idProduct, 
-                            id_product_attribute: e.dataset.idProductAttribute 
-                        };
-                        s.default.post(l.default.urls.pages.product, n, null, "json").then(
-                        function(e) {
-                            (0, s.default)("body").append(e.quickview_html); var n = (0, s.default)("#quickview-modal-" + e.product.id + "-" + e.product.id_product_attribute);
-                            n.modal("show"), t(n), n.on("hidden.bs.modal", function() { n.remove() }) 
-                        }).fail(function(t) { l.default.emit("handleError", { eventType: "clickQuickView", resp: t }) }) 
-                    }
-                ); 
+            function() {                
                 var t = function(t) { 
                     var n = (0, s.default)(".js-arrows"),
                     i = t.find(".js-qv-product-images");
@@ -5281,13 +5260,6 @@ jQuery(document).ready(function($) { $(document).off('mouseenter').on('mouseente
 }(window.jQuery);
 
 /***/
-$(document).ready(function() { 
-    var $searchBox = $('#pos_query_top'); 
-    var searchURL = $('#searchbox').attr('data-search-controller-url');
-    $.widget('prestashop.psBlockSearchAutocomplete', $.ui.autocomplete, { _renderItem: function(ul, product) { if (possearch_image) { return $("<li>").append($("<a href= " + product.product_link + ">").append($('<img src="' + product.ajaxsearchimage + '" alt="" />')).append($("<span>").html(product.pname).addClass("product"))).appendTo(ul) } else { return $("<li>").append($("<a href= " + product.product_link + ">").append($("<span>").html(product.pname).addClass("product"))).appendTo(ul) } } });
-    $searchBox.psBlockSearchAutocomplete({ source: function(query, response) { $.post(searchURL, { s: query.term, resultsPerPage: possearch_number, id_lang: id_lang, id_category: $('select[name=poscats]').val() }, null, 'json').then(function(resp) { response(resp.products) }).fail(response) }, select: function(event, ui) { var url = ui.item.url;
-            window.location.href = url }, }) }
-);
 
 /***/
 $(document).ready(function() {
@@ -7605,43 +7577,6 @@ function(a) {
             a.each(this.tooltips, function(c, d) { var e = a.Event("blur");
                 e.target = e.currentTarget = d[0], b.close(e, !0), a("#" + c).remove(), d.data("ui-tooltip-title") && (d.attr("title", d.data("ui-tooltip-title")), d.removeData("ui-tooltip-title")) }) } }) 
 }(jQuery);
-
-/*
-QUICK ADD TO CART TO SHOW MODEL
-**/
-$(document).ready(function() {
-    prestashop.blockcart = prestashop.blockcart || {};
-    var showModal = prestashop.blockcart.showModal || function(modal) { 
-        var $body = $('body');
-        $body.append(modal);
-        $body.one('click', '#blockcart-modal', function(event) { if (event.target.id === 'blockcart-modal') { $(event.target).remove() } }) 
-    };
-
-    $(document).ready(function() {
-        prestashop.on('updateCart', function(event) {
-            var refreshURL = $('.blockcart').data('refresh-url');
-            var requestData = {};
-            if (event && event.reason) { 
-                requestData = { 
-                    id_product_attribute: event.reason.idProductAttribute, 
-                    id_product: event.reason.idProduct, 
-                    action: event.reason.linkAction 
-                } 
-            }
-            $.post(refreshURL, requestData).then(function(resp) {
-                $('.blockcart').replaceWith(resp.preview); 
-                if (resp.modal) { 
-                    showModal(resp.modal) 
-                } 
-            }).fail(function(resp) { 
-                prestashop.emit('handleError', { 
-                    eventType: 'updateShoppingCart', 
-                    resp: resp 
-                }) 
-            })
-        })
-    })
-});
 
 /***/
 ! function(a) { "use strict"; "function" == typeof define && define.amd ? define(["jquery"], a) : "undefined" != typeof exports ? module.exports = a(require("jquery")) : a(jQuery) 

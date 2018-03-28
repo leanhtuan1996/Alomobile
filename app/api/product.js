@@ -207,29 +207,29 @@ var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
 
         if (idRootCategory == idCategory) {
             Product
-            .find({
-                "category.idRootCategory": idRootCategory
-            })
-            .limit(limit)
-            .exec((err, products) => {
-                workflow.emit('response', {
-                    error: err,
-                    products: products
+                .find({
+                    "category.idRootCategory": idRootCategory
+                })
+                .limit(limit)
+                .exec((err, products) => {
+                    workflow.emit('response', {
+                        error: err,
+                        products: products
+                    });
                 });
-            });
         } else {
             Product
-            .find({
-                "category.idCategory": idCategory,
-                "category.idRootCategory": idRootCategory
-            })
-            .limit(limit)
-            .exec((err, products) => {
-                workflow.emit('response', {
-                    error: err,
-                    products: products
+                .find({
+                    "category.idCategory": idCategory,
+                    "category.idRootCategory": idRootCategory
+                })
+                .limit(limit)
+                .exec((err, products) => {
+                    workflow.emit('response', {
+                        error: err,
+                        products: products
+                    });
                 });
-            });
         }
     });
 
@@ -697,6 +697,37 @@ var searchProducts = (text, result) => {
     workflow.emit('validate-parameters');
 };
 
+var getPreviewProduct = (id, cb) => {
+    console.log(id);
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id is required!"
+            });
+            return
+        }
+
+        workflow.emit('get');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('get', () => {
+        Product.findById(id).select('name alias colors images quantity price').exec((err, product) => {
+            workflow.emit('response', {
+                error: err,
+                product: product
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     getProducts: getProducts,
     getProductById: getProductById,
@@ -710,5 +741,6 @@ module.exports = {
     editProduct: editProduct,
     deleteProduct: deleteProduct,
     getPrevProducts: getPrevProducts,
-    searchProducts: searchProducts
+    searchProducts: searchProducts,
+    getPreviewProduct: getPreviewProduct
 }
