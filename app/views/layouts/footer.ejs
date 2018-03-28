@@ -137,7 +137,7 @@
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-4 col-xs-12">
                         <div class="about_us ">
-                            <div class="logo_footer"><a href="#"><img src="/static/img/logo-2.png" alt="" /> </a></div>
+                            <div class="logo_footer"><a href="#"><img class="lazyload" data-src="/static/img/logo-2.png" alt="" /> </a></div>
                             <div class=" footer-info">
                                 <div class="desc_footer">Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng</div>
                                 <div class="address_footer">
@@ -161,7 +161,7 @@
             <div class="tag_payment">
                 <div class="container">
                     <div class="tag_content"><a href="#">Mua sắm trực tuyến</a> <a href="#">Khuyến mãi</a> <a href="#">Hoá đơn của tôi</a> <a href="#">Giúp đỡ</a> <a href="#">Dịch vụ khách hàng</a> <a href="#">Hỗ trợ</a> <a href="#">Sản phẩm phổ biến</a> <a href="#">Sản phẩm mới</a> <a href="#">Sản phẩm đặc biệt</a> <a href="#">Nhà sản xuất</a> <a href="#">Shipping</a> <a href="#">Thanh toán</a> <a href="#">Bảo hành</a> <a href="#">Hoàn trả</a><a href="#">Các điều khoản và sử dụng</a> <a href="#">Chính sách</a></div>
-                    <div class="payment"><img src="http://demo.posthemes.com/pos_fastbuy/layout2/img/cms/payment.png" alt="" class="img-responsive" /></div>
+                    <div class="payment"><img class="lazyload" data-src="http://demo.posthemes.com/pos_fastbuy/layout2/img/cms/payment.png" alt="" class="img-responsive" /></div>
                 </div>
             </div>
         </div>
@@ -176,3 +176,11 @@
     </div>
 </footer>
 <script type="text/javascript" src="/static/js/myFunc.js"></script>
+
+<!-- jsDeliver -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script type"text/javascript">
+    $(document).ready(($) => {
+        lazyload();
+    });
+</script>
