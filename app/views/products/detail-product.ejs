@@ -219,10 +219,10 @@
                                                             <ul id="group_3">
                                                                 <% var prices = data.product.prices %>
                                                                     <% if (prices) { %>
-                                                                        <% prices.forEach(element => { %>
+                                                                        <% prices.forEach((element, index) => { %>
                                                                             <li class="float-xs-left input-container">
                                                                                 <label>
-                                                                                    <input class="input-color" type="radio" data-price="<%- element.color.price %>" name="group[3]" value="7" checked="checked">
+                                                                                    <input class="input-color" type="radio" name="group[3]" value="7" data-price="<%- element.price %>">
                                                                                     <span class="color" style="background-color: <%- element.color.hex %>">
                                                                                     <span class="sr-only"><%- element.color.name %></span>
                                                                                     </span>
