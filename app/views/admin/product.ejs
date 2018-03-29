@@ -67,8 +67,7 @@
 														<tr>
 															<th>Tên sản phẩm</th>
 															<th>Ảnh</th>
-															<th>Màu sắc</th>
-															<th>Giá</th>
+															<th>Giá cả và màu sắc</th>
 															<th>Nhà sản xuất</th>
 															<th>Chi tiết sản phẩm</th>
 															<th>Ngày thêm</th>
@@ -83,8 +82,7 @@
 															<tr>
 																<th>Tên sản phẩm</th>
 																<th>Ảnh</th>
-																<th>Màu sắc</th>
-																<th>Giá</th>
+																<th>Giá cả và màu sắc</th>
 																<th>Nhà sản xuất</th>
 																<th>Chi tiết sản phẩm</th>
 																<th>Ngày thêm</th>
@@ -208,9 +206,16 @@
 
 				var colors = ``;
 
-				if (product.colors && product.colors.length > 0) {
-					product.colors.forEach((color) => {
-						colors += `<div style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; margin: 0px 2px;"></div>`;
+				if (product.prices && product.prices.length > 0) {
+					product.prices.forEach((element) => {
+						colors += `
+						<div margin: 5px 2px;>
+							<div style="background-color: ${element.color.hex}; border-radius: 50%; width: 20px; height: 20px;  display: inline-block">
+							</div>
+							<span style="float: right;">${numberWithCommas(element.price) + " VNĐ"}</span>
+						</div>
+						
+						`;
 					});
 				} else {
 					colors = "Không có"
@@ -225,7 +230,7 @@
 				}
 
 				var date = new Date(product.created_at);
-				var created_at = `${date.getHours()}:${date.getMinutes()} ${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
+				var created_at = `${date.getHours()}:${date.getMinutes()} ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
 
 				var tr = `
 					<tr id="${product._id}">
@@ -237,8 +242,7 @@
 							<div>
 								${colors}	
 							</div>														
-						</td>
-						<td class="product-price">${numberWithCommas(product.price) + " VNĐ" || "Không có"}</td>
+						</td>						
 						<td class="product-brand">${brand}</td>
 						<td>
 							<a href="product/${product._id}" class="view-detail-product">Xem chi tiết</a>
