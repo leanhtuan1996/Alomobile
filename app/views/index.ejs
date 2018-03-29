@@ -1003,7 +1003,7 @@
                                                 quickViewModal+= `
                                                     <li class="float-xs-left input-container">
                                                         <label>
-                                                            <input class="input-color" type="radio" data-price="${element.price}" name="group[3]" value="11">
+                                                            <input class="input-color" type="radio" data-price="${element.price}" name="group[3]" >
                                                             <span class="color" style="background-color: ${element.color.hex}">
                                                                 <span class="sr-only">${element.color.name}</span>
                                                             </span>
@@ -1122,6 +1122,11 @@
             }
             
         });
+
+        $('#quickview-modal').delegate('.input-color', 'click', (e) => {
+            $('#quickview-modal > div > div > div.modal-body > div > div.col-md-7.col-sm-7 > div.product-prices > div.product-price.h5 > div > span').text(numberWithCommas($(e.currentTarget).attr("data-price") + " VNĐ"))
+        })
+        
     });
 
     function getSpecialProducts() {

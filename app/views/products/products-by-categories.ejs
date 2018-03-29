@@ -305,23 +305,6 @@
                                             </label>
                                         </li>
                                         <li>
-                                            <label class="facet-label" for="facet_input_96104_3">
-                                                <span class="custom-radio">
-                                                    <input
-                                                    id="facet_input_96104_3"
-                                                    data-search-url="http://demo.posthemes.com/pos_fastbuy/layout2/en/20-computer-laptop?q=Price-%E2%82%AC-25-28"
-                                                    type="radio"
-                                                    name="filter Price"
-                                                                                >
-                                                    <span  class="ps-shown-by-js" ></span>
-                                                </span>
-                                                <a href="20-computer-laptop84f4.html?q=Price-%E2%82%AC-25-28" class="_gray-darker search-link js-search-link" rel="nofollow">
-                                                        5 GB
-                                                      <span class="magnitude">(2)</span>
-                                                  </a>
-                                            </label>
-                                        </li>
-                                        <li>
                                             <label class="facet-label" for="facet_input_96104_4">
                                                 <span class="custom-radio">
                                                     <input
@@ -758,7 +741,7 @@
                                                 quickViewModal+= `
                                                     <li class="float-xs-left input-container">
                                                         <label>
-                                                            <input class="input-color" type="radio" data-price="${c.price}" data-product-attribute="3" name="group[3]" value="11">
+                                                            <input class="input-color" type="radio" data-price="${c.price}"  name="group[3]">
                                                             <span class="color" style="background-color: ${c.color.hex}">
                                                                 <span class="sr-only">${c.color.name}</span>
                                                             </span>
@@ -876,6 +859,10 @@
                 $("#quickview-modal").modal('show');
             }            
         });
+
+        $('#quickview-modal').delegate('.input-color', 'click', (e) => {
+            $('#quickview-modal > div > div > div.modal-body > div > div.col-md-7.col-sm-7 > div.product-prices > div.product-price.h5 > div > span').text(numberWithCommas($(e.currentTarget).attr("data-price") + " VNĐ"))
+        })
     })
 </script>
 </html>
