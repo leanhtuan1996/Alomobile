@@ -297,7 +297,7 @@ var newProduct = (product, result) => {
     var alias = product.alias;
     var colors = product.colors;
     var brand = product.brand;
-    var price = product.price;
+    var prices = product.prices;
     var specifications = product.specifications;
     var images = product.newNames;
     var type = product.type;
@@ -319,12 +319,17 @@ var newProduct = (product, result) => {
             });
             return
         }
-        if (!price) {
+        if (!prices) {
             workflow.emit('response', {
                 error: "Please enter price of product"
             });
             return
+        } else {
+            prices = prices.map(price => {
+                return JSON.parse(price);
+            });
         }
+
         if (!images) {
             workflow.emit('response', {
                 error: "Please provide images of product"
@@ -354,6 +359,10 @@ var newProduct = (product, result) => {
                 error: "Please choose colors of product"
             });
             return
+        } else {
+            colors = colors.map((e, i) => {
+                return JSON.parse(e);                
+            })
         }
 
         if (!(category.idRootCategory && category.idCategory)) {
@@ -383,7 +392,7 @@ var newProduct = (product, result) => {
         newProduct.descriptions = descriptions;
         newProduct.metaTitle = metaTitle;
         newProduct.metaKeyword = metaKeyword;
-        newProduct.price = price;
+        newProduct.prices = prices;
 
         if (specifications) {
             newProduct.specifications = JSON.parse(specifications);
@@ -404,7 +413,6 @@ var newProduct = (product, result) => {
                 error: err
             });
         });
-
     });
 
     workflow.emit('validate-parameters');
@@ -698,7 +706,6 @@ var searchProducts = (text, result) => {
 };
 
 var getPreviewProduct = (id, cb) => {
-    console.log(id);
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
@@ -717,7 +724,7 @@ var getPreviewProduct = (id, cb) => {
     });
 
     workflow.on('get', () => {
-        Product.findById(id).select('name alias colors images quantity price').exec((err, product) => {
+        Product.findById(id).select('name alias colors images quantity prices').exec((err, product) => {
             workflow.emit('response', {
                 error: err,
                 product: product

@@ -15,11 +15,9 @@
         <meta property="og:title" content="<%- data.product.metaTitle %>">
         <meta property="og:site_name" content="Fastbuy - Responsive Prestashop Theme">
         <meta property="og:description" content="Printed evening dress with straight sleeves with black thin waist belt and ruffled linings.">
-        <meta property="og:image" content="http://demo.posthemes.com/pos_fastbuy/layout2/226-large_default/printed-dress.jpg">
-        <meta property="product:pretax_price:amount" content="46.91">
-        <meta property="product:pretax_price:currency" content="EUR">
-        <meta property="product:price:amount" content="46.91">
-        <meta property="product:price:currency" content="EUR">
+        <meta property="og:image" content="<%-  data.product.images[0].url %>">
+        <meta property="product:price:amount" content="<%- data.product.prices[0].price %>">
+        <meta property="product:price:currency" content="VND">
 </head>
 
 <body id="product" class="lang-en country-us currency-eur layout-full-width page-product tax-display-disabled product-id-9 product-printed-dress product-id-category-12 product-id-manufacturer-1 product-id-supplier-1 product-available-for-order">
@@ -66,7 +64,7 @@
                 <div class="row">
                     <div id="content-wrapper" class="col-xs-12">
                         <section id="main" itemscope itemtype="https://schema.org/Product">
-                            <meta itemprop="url" content="http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-54-printed-dress.html#/1-size-s/7-color-beige">
+                            <meta itemprop="url" content="<%- data.product.images[0].url %>">
                             <div class="primary_block">
                                 <div class="row">
                                     <div class="col-md-5">
@@ -81,25 +79,20 @@
                                             </ul>
                                             <div class="images-container">
                                                 <div class="product-cover">
-                                                    <img class="js-qv-product-cover" src="http://demo.posthemes.com/pos_fastbuy/layout2/226-medium_default/printed-dress.jpg" alt="" title="" style="width:100%;" itemprop="image">
+                                                    <img class="js-qv-product-cover" src="<%- data.product.images[0].url %>" alt="" title="" style="width:100%;" itemprop="image">
                                                     <div class="layer hidden-sm-down" data-toggle="modal" data-target="#product-modal">
                                                         <i class="material-icons zoom-in">&#xE8FF;</i>
                                                     </div>
                                                 </div>
                                                 <div class="js-qv-mask mask pos_content">
                                                     <div class="product-images js-qv-product-images  owl-carousel">
-                                                        <div class="thumb-container">
-                                                            <img class="thumb js-thumb  selected " data-image-medium-src="http://demo.posthemes.com/pos_fastbuy/layout2/226-medium_default/printed-dress.jpg" data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/226-medium_default/printed-dress.jpg" src="http://demo.posthemes.com/pos_fastbuy/layout2/226-small_default/printed-dress.jpg" alt="" title="" width="100" itemprop="image">
-                                                        </div>
-                                                        <div class="thumb-container">
-                                                            <img class="thumb js-thumb " data-image-medium-src="http://demo.posthemes.com/pos_fastbuy/layout2/227-medium_default/printed-dress.jpg" data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/227-medium_default/printed-dress.jpg" src="http://demo.posthemes.com/pos_fastbuy/layout2/227-small_default/printed-dress.jpg" alt="" title="" width="100" itemprop="image">
-                                                        </div>
-                                                        <div class="thumb-container">
-                                                            <img class="thumb js-thumb " data-image-medium-src="http://demo.posthemes.com/pos_fastbuy/layout2/228-medium_default/printed-dress.jpg" data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/228-medium_default/printed-dress.jpg" src="http://demo.posthemes.com/pos_fastbuy/layout2/228-small_default/printed-dress.jpg" alt="" title="" width="100" itemprop="image">
-                                                        </div>
-                                                        <div class="thumb-container">
-                                                            <img class="thumb js-thumb " data-image-medium-src="http://demo.posthemes.com/pos_fastbuy/layout2/229-medium_default/printed-dress.jpg" data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/229-medium_default/printed-dress.jpg" src="http://demo.posthemes.com/pos_fastbuy/layout2/229-small_default/printed-dress.jpg" alt="" title="" width="100" itemprop="image">
-                                                        </div>
+
+                                                        <% data.product.images.forEach((image) => { %>
+                                                            <div class="thumb-container">
+                                                                <img class="thumb js-thumb " data-image-medium-src="<%- image.url %>" data-image-large-src="<%- image.url %>" src="<%- image.url %>" alt="" title="" width="100" itemprop="image">
+                                                            </div> 
+                                                        <% }) %>
+                                                                                                              
                                                     </div>
                                                 </div>
                                             </div>
@@ -207,7 +200,7 @@
                                                 <link itemprop="availability" href="https://schema.org/InStock" />
                                                 <meta itemprop="priceCurrency" content="EUR">
                                                 <div class="current-price">
-                                                    <span class="price" itemprop="price" content="46.91"><%- data.product.price %></span>
+                                                    <span class="price" itemprop="price" content="46.91"><%- data.product.prices[0].price %></span>
                                                     <!-- <span class="discount discount-percentage">Save 8%</span> -->
                                                 </div>
                                             </div>
@@ -224,14 +217,14 @@
                                                         <div class="clearfix product-variants-item">
                                                             <span class="control-label">Màu sắc</span>
                                                             <ul id="group_3">
-                                                                <% var colors = data.product.colors %>
-                                                                    <% if (colors) { %>
-                                                                        <% colors.forEach(color => { %>
+                                                                <% var prices = data.product.prices %>
+                                                                    <% if (prices) { %>
+                                                                        <% prices.forEach(element => { %>
                                                                             <li class="float-xs-left input-container">
                                                                                 <label>
-                                                                                    <input class="input-color" type="radio" data-product-attribute="3" name="group[3]" value="7" checked="checked">
-                                                                                    <span class="color" style="background-color: <%- color %>">
-                                                                                    <span class="sr-only">Beige</span>
+                                                                                    <input class="input-color" type="radio" data-price="<%- element.color.price %>" name="group[3]" value="7" checked="checked">
+                                                                                    <span class="color" style="background-color: <%- element.color.hex %>">
+                                                                                    <span class="sr-only"><%- element.color.name %></span>
                                                                                     </span>
                                                                                 </label>
                                                                             </li>
@@ -364,7 +357,6 @@
                                                 <div id="product_comments_block_tab">
                                                     <div class="comment clearfix">
                                                         <div class="comment_author">
-                                                            <span>Grade&nbsp</span>
                                                             <div class="star_content clearfix">
                                                                 <div class="star star_on"></div>
                                                                 <div class="star star_on"></div>
@@ -373,13 +365,38 @@
                                                                 <div class="star star_on"></div>
                                                             </div>
                                                             <div class="comment_author_infos">
-                                                                <strong>Posthemes</strong>
-                                                                <em>11/12/2017</em>
+                                                                <strong>Lê Anh Tuấn</strong>
+                                                                <em>23:10 29/3/2018</em>
                                                             </div>
                                                         </div>
                                                         <div class="comment_details">
-                                                            <h4 class="title_block">demo</h4>
-                                                            <p>Good !</p>
+                                                            <h4 class="title_block">Sản phẩm tuyệt vời!</h4>
+                                                            <p>Rất tuyệt vời</p>
+                                                            <ul>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="comment clearfix">
+                                                        <div class="comment_author">
+                                                            <div class="star_content clearfix">
+                                                                <div class="star star_on"></div>
+                                                                <div class="star star_on"></div>
+                                                                <div class="star star_on"></div>
+                                                                <div class="star star_on"></div>
+                                                                <div class="star star_on"></div>
+                                                            </div>
+                                                            <div class="comment_author_infos">
+                                                                <strong>Lê Anh Tuấn
+                                                                    <label style="color: #2ba832;">
+                                                                        <i class="material-icons" style="font-size: 20px;">check</i>Đã mua hàng tại Alomobile.tech
+                                                                    </label>
+                                                                </strong>
+                                                                <em>23:10 29/3/2018</em>
+                                                            </div>
+                                                        </div>
+                                                        <div class="comment_details">
+                                                            <h4 class="title_block">Sản phẩm tuyệt vời!</h4>
+                                                            <p>Rất tuyệt vời</p>
                                                             <ul>
                                                             </ul>
                                                         </div>
@@ -927,7 +944,7 @@
                                         </div>
                                     </div>
                                     <div class="product-price-and-shipping">
-                                        <span itemprop="price" class="price ">${numberWithCommas(product.price + " VNĐ")}</span>
+                                        <span itemprop="price" class="price ">${numberWithCommas(product.prices[0].price + " VNĐ")}</span>
                                         <span class="sr-only">Price</span>
                                     </div>
                                     <div class="variant-links">
@@ -1094,7 +1111,7 @@
                                                     <link itemprop="availability" href="https://schema.org/InStock">
                                                     <meta itemprop="priceCurrency" content="USD">
                                                     <div class="current-price">
-                                                        <span itemprop="price" content="30.5">${numberWithCommas(product.price) + " VNĐ"}</span>
+                                                        <span itemprop="price" content="30.5">${numberWithCommas(product.prices[0].price) + " VNĐ"}</span>
                                                     </div>
                                                 </div>
                                                 <div class="tax-shipping-delivery-label">
@@ -1110,13 +1127,13 @@
                                                             <span class="control-label">Màu sắc</span>
                                                             <ul id="group_3">`
 
-                                        if (product.colors && product.colors.length > 0) {                       
-                                            product.colors.forEach(c => {
+                                        if (product.prices && product.prices.length > 0) {                       
+                                            product.prices.forEach(price => {
                                                 quickViewModal+= `
                                                     <li class="float-xs-left input-container">
                                                         <label>
                                                             <input class="input-color" type="radio" data-product-attribute="3" name="group[3]" value="11">
-                                                            <span class="color" style="background-color: ${c}">
+                                                            <span class="color" style="background-color: ${price.color.hex}">
                                                                 <span class="sr-only">Black</span>
                                                             </span>
                                                         </label>
@@ -1231,8 +1248,7 @@
                     initPreviewProductsSlider();                    
                 });
                 $("#quickview-modal").modal('show');
-            }
-            
+            }            
         });
     })
 </script>

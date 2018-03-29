@@ -982,7 +982,7 @@
                                                     <link itemprop="availability" href="https://schema.org/InStock">
                                                     <meta itemprop="priceCurrency" content="USD">
                                                     <div class="current-price">
-                                                        <span itemprop="price" content="30.5">${numberWithCommas(product.price) + " VNĐ"}</span>
+                                                        <span itemprop="price" content="30.5">${numberWithCommas(product.prices[0].price) + " VNĐ"}</span>
                                                     </div>
                                                 </div>
                                                 <div class="tax-shipping-delivery-label">
@@ -998,14 +998,14 @@
                                                             <span class="control-label">Màu sắc</span>
                                                             <ul id="group_3">`
 
-                                        if (product.colors && product.colors.length > 0) {                       
-                                            product.colors.forEach(c => {
+                                        if (product.prices && product.prices.length > 0) {                       
+                                            product.prices.forEach(element => {
                                                 quickViewModal+= `
                                                     <li class="float-xs-left input-container">
                                                         <label>
-                                                            <input class="input-color" type="radio" data-product-attribute="3" name="group[3]" value="11">
-                                                            <span class="color" style="background-color: ${c}">
-                                                                <span class="sr-only">Black</span>
+                                                            <input class="input-color" type="radio" data-price="${element.price}" name="group[3]" value="11">
+                                                            <span class="color" style="background-color: ${element.color.hex}">
+                                                                <span class="sr-only">${element.color.name}</span>
                                                             </span>
                                                         </label>
                                                     </li>
@@ -1136,7 +1136,7 @@
                     var image1 = product.images[0];
                     var image2 = product.images[1]; 
                     var name = product.name;
-                    var price = product.price;
+                    var price = product.prices[0].price;
                     var href = `${product.alias}-${product._id}`
 
                     items+= `
@@ -1260,7 +1260,7 @@
                                         </div>
                                     </div>
                                     <div class="product-price-and-shipping">
-                                        <span itemprop="price" class="price ">${numberWithCommas(product.price + " VNĐ")}</span>
+                                        <span itemprop="price" class="price ">${numberWithCommas(product.prices[0].price + " VNĐ")}</span>
                                         <span class="sr-only">Price</span>
                                     </div>
                                     <div class="variant-links">

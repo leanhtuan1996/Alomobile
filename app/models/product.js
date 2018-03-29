@@ -6,7 +6,10 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('Product', new Schema({
     name: { type: Schema.Types.String },
     alias: String,
-    colors: [String],
+    colors: [{
+        hex: String,
+        name: String
+    }],
     brand: {
         type: Schema.Types.ObjectId,
         ref: "Brand"
@@ -34,7 +37,13 @@ module.exports = mongoose.model('Product', new Schema({
     metaTitle: String,
     metaKeyword: String,
     isAvailable: Boolean,
-    price: Number,
+    prices: [{
+        color: {
+            hex: String,
+            name: String
+        },
+        price: Number
+    }],
     type: {
         type: Schema.Types.ObjectId,
         ref: "Type"
