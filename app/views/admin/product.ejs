@@ -211,11 +211,10 @@
 					product.prices.forEach((element) => {
 						colors += `
 						<div margin: 5px 2px;>
-							<div style="background-color: ${element.color.hex}; border-radius: 50%; width: 20px; height: 20px;  display: inline-block">
+							<div style="background-color: ${element.color.hex}; border-radius: 50%; width: 20px; height: 20px;  display: inline-block; border-width: 1px; border-style: solid; border-color: grey;">
 							</div>
 							<span style="float: right;">${numberWithCommas(element.price) + " VNĐ"}</span>
 						</div>
-						
 						`;
 					});
 				} else {

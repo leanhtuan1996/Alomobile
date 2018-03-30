@@ -5715,43 +5715,44 @@ function countdownproduct() { $(".time_count_down").each(function(index) { var d
 /***/
 $(document).ready(function() { countdownproduct() });
 
-/***/
-$(document).ready(function() {
-    var $listcateSlideConf = $('.poslistcateproduct');
-    var items = parseInt($listcateSlideConf.attr('data-items'));
-    var speed = parseInt($listcateSlideConf.attr('data-speed'));
-    var autoPlay = parseInt($listcateSlideConf.attr('data-autoplay'));
-    var time = parseInt($listcateSlideConf.attr('data-time'));
-    var arrow = parseInt($listcateSlideConf.attr('data-arrow'));
-    var pagination = parseInt($listcateSlideConf.attr('data-pagination'));
-    var move = parseInt($listcateSlideConf.attr('data-move'));
-    var pausehover = parseInt($listcateSlideConf.attr('data-pausehover'));
-    var md = parseInt($listcateSlideConf.attr('data-md'));
-    var sm = parseInt($listcateSlideConf.attr('data-sm'));
-    var xs = parseInt($listcateSlideConf.attr('data-xs'));
-    var xxs = parseInt($listcateSlideConf.attr('data-xxs'));
-    if (autoPlay == 1) { if (time) { autoPlay = time } else { autoPlay = '3000' } } else { autoPlay = !1 }
-    if (pausehover) { pausehover = !0 } else { pausehover = !1 }
-    if (move) { move = !1 } else { move = !0 }
-    if (arrow) { arrow = !0 } else { arrow = !1 }
-    if (pagination == 1) { pagination = !0 } else { pagination = !1 }
-    var listcateSlide = $(".poslistcateproduct .listcateSlide");
-    listcateSlide.owlCarousel({ autoPlay: autoPlay, smartSpeed: speed, autoplayHoverPause: pausehover, nav: arrow, dots: pagination, responsive: { 0: { items: xxs, }, 480: { items: xs, }, 768: { items: sm, nav: !1, }, 992: { items: md, }, 1200: { items: items, } } });
-    checkClasses();
-    listcateSlide.on('translated.owl.carousel', function(event) { checkClasses() });
 
-    function checkClasses() {
-        $('.poslistcateproduct .listcateSlide').each(function() {
-            var total = $(this).find('.owl-item.active').length;
-            $(this).find('.owl-item').removeClass('firstActiveItem');
-            $(this).find('.owl-item').removeClass('lastActiveItem');
-            $(this).find('.owl-item.active').each(function(index) {
-                if (index === 0) { $(this).addClass('firstActiveItem') }
-                if (index === total - 1 && total > 1) { $(this).addClass('lastActiveItem') }
-            })
-        })
-    }
-});
+/***/
+// $(document).ready(function() {
+    // var $listcateSlideConf = $('.poslistcateproduct');
+    // var items = parseInt($listcateSlideConf.attr('data-items'));
+    // var speed = parseInt($listcateSlideConf.attr('data-speed'));
+    // var autoPlay = parseInt($listcateSlideConf.attr('data-autoplay'));
+    // var time = parseInt($listcateSlideConf.attr('data-time'));
+    // var arrow = parseInt($listcateSlideConf.attr('data-arrow'));
+    // var pagination = parseInt($listcateSlideConf.attr('data-pagination'));
+    // var move = parseInt($listcateSlideConf.attr('data-move'));
+    // var pausehover = parseInt($listcateSlideConf.attr('data-pausehover'));
+    // var md = parseInt($listcateSlideConf.attr('data-md'));
+    // var sm = parseInt($listcateSlideConf.attr('data-sm'));
+    // var xs = parseInt($listcateSlideConf.attr('data-xs'));
+    // var xxs = parseInt($listcateSlideConf.attr('data-xxs'));
+    // if (autoPlay == 1) { if (time) { autoPlay = time } else { autoPlay = '3000' } } else { autoPlay = !1 }
+    // if (pausehover) { pausehover = !0 } else { pausehover = !1 }
+    // if (move) { move = !1 } else { move = !0 }
+    // if (arrow) { arrow = !0 } else { arrow = !1 }
+    // if (pagination == 1) { pagination = !0 } else { pagination = !1 }
+    // var listcateSlide = $(".poslistcateproduct .listcateSlide");
+    // listcateSlide.owlCarousel({ autoPlay: autoPlay, smartSpeed: speed, autoplayHoverPause: pausehover, nav: arrow, dots: pagination, responsive: { 0: { items: xxs, }, 480: { items: xs, }, 768: { items: sm, nav: !1, }, 992: { items: md, }, 1200: { items: items, } } });
+    // checkClasses();
+    // listcateSlide.on('translated.owl.carousel', function(event) { checkClasses() });
+
+    // function checkClasses() {
+    //     $('.poslistcateproduct .listcateSlide').each(function() {
+    //         var total = $(this).find('.owl-item.active').length;
+    //         $(this).find('.owl-item').removeClass('firstActiveItem');
+    //         $(this).find('.owl-item').removeClass('lastActiveItem');
+    //         $(this).find('.owl-item.active').each(function(index) {
+    //             if (index === 0) { $(this).addClass('firstActiveItem') }
+    //             if (index === total - 1 && total > 1) { $(this).addClass('lastActiveItem') }
+    //         })
+    //     })
+    // }
+// });
 
 /***/
 ! function(e, n) { "use strict"; "function" == typeof define && define.amd ? define(["jquery"], function(o) { return n(o, e, e.document, e.Math) }) : "undefined" != typeof exports ? module.exports = n(require("jquery"), e, e.document, e.Math) : n(jQuery, e, e.document, e.Math) 

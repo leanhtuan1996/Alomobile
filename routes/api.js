@@ -142,8 +142,8 @@ router.get('/api/v1/product/get-product/:id', (req, res) => {
     });
 });
 
-router.get('/api/v1/product/get-products-by-type/:typeId', (req, res) => {
-    Product.getProductsByType(req.params.typeId, 15, (result) => {
+router.get('/api/v1/product/get-products-by-type/:id', (req, res) => {
+    Product.getProductsByType(req.params.id, 15, (result) => {
         res.json(result);
     });
 });
@@ -167,7 +167,7 @@ router.get('/api/v1/product/get-products-by-category/:id', (req, res) => {
 });
 
 router.get('/api/v1/product/get-products-by-category', (req, res) => {
-    Product.getProductsByCategory(req.query.idCategory, req.query.idRootCategory, 15, (cb) => {
+    Product.getProductsByCategory(req.query.idCategory, req.query.idRootCategory, req.query.limit || 15, (cb) => {        
         res.json(cb);
     })
 });

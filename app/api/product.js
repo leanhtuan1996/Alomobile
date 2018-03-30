@@ -162,9 +162,9 @@ var getProductsByType = (idType, limit, result) => {
             .find({
                 type: idType
             })
-            .populate('brand')
-            .limit(limit || 10)
+            .limit(limit || 15)
             .sort('-created_at')
+            .select('name alias images quantity prices')
             .exec((err, products) => {
                 workflow.emit('response', {
                     error: err,
@@ -178,6 +178,10 @@ var getProductsByType = (idType, limit, result) => {
 }
 
 var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
+
+    console.log(idCategory);
+    console.log(idRootCategory);
+    console.log(limit);
 
     var workflow = new event.EventEmitter();
 
@@ -210,7 +214,7 @@ var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
                 .find({
                     "category.idRootCategory": idRootCategory
                 })
-                .limit(limit)
+                .limit(parseInt(limit))
                 .exec((err, products) => {
                     workflow.emit('response', {
                         error: err,
@@ -361,7 +365,7 @@ var newProduct = (product, result) => {
             return
         } else {
             colors = colors.map((e, i) => {
-                return JSON.parse(e);                
+                return JSON.parse(e);
             })
         }
 
@@ -540,7 +544,7 @@ var editProduct = (product, result) => {
             return
         } else {
             colors = colors.map((e, i) => {
-                return JSON.parse(e);                
+                return JSON.parse(e);
             })
         }
 
