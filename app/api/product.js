@@ -329,9 +329,13 @@ var newProduct = (product, result) => {
             });
             return
         } else {
-            prices = prices.map(price => {
-                return JSON.parse(price);
-            });
+            if (typeof prices == 'string') {
+                prices = [JSON.parse(prices)];
+            } else {
+                prices = prices.map(price => {
+                    return JSON.parse(price);
+                });
+            }
         }
 
         if (!images) {
@@ -364,9 +368,13 @@ var newProduct = (product, result) => {
             });
             return
         } else {
-            colors = colors.map((e, i) => {
-                return JSON.parse(e);
-            })
+            if (typeof colors == 'string') {
+                colors = [JSON.parse(colors)]
+            } else {
+                colors = colors.map((e, i) => {
+                    return JSON.parse(e);
+                });
+            }
         }
 
         if (!(category.idRootCategory && category.idCategory)) {
@@ -483,9 +491,13 @@ var editProduct = (product, result) => {
             });
             return
         } else {
-            prices = prices.map(price => {
-                return JSON.parse(price);
-            });
+            if (typeof prices == 'string') {
+                prices = [JSON.parse(prices)];
+            } else {
+                prices = prices.map(price => {
+                    return JSON.parse(price);
+                });
+            }
         }
 
         if (!newImages && !oldImages) {
@@ -543,9 +555,13 @@ var editProduct = (product, result) => {
             });
             return
         } else {
-            colors = colors.map((e, i) => {
-                return JSON.parse(e);
-            })
+            if (typeof colors == 'string') {
+                colors = [JSON.parse(colors)]
+            } else {
+                colors = colors.map((e, i) => {
+                    return JSON.parse(e);
+                })
+            }
         }
 
         if (!(category.idRootCategory && category.idCategory)) {
