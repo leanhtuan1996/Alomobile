@@ -19,8 +19,6 @@ var product = require('./routes/product');
 var api = require('./routes/api');
 var crawl = require('./routes/crawl');
 
-var nodemailer = require('nodemailer');
-
 var app = express();
 
 // view engine setup

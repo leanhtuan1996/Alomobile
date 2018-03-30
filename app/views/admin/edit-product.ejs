@@ -106,7 +106,7 @@
 
                                                 <!-- Row -->
                                                 <div class="row">
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label mb-10">Loại sản phẩm
                                                                 <span style="color: red">*</span>
@@ -132,7 +132,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label mb-10">Danh mục sản phẩm
                                                                 <span style="color: red">*</span>
@@ -154,41 +154,74 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label mb-10">Đơn giá
-                                                                <span style="color: red">*</span>
-                                                            </label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-addon">
-                                                                    <i class="ti-money"></i>
-                                                                </div>
-                                                                <input type="text" class="form-control" id="product_price" placeholder="12.000.000 VNĐ">
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 <!--/row-->
-                                                <div style="margin-bottom: 10px; width: 50%;"></div>
-                                                <!-- Row -->
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <label class="control-label mb-10">Màu sắc</label>
-                                                                    <button type="button" class="btn btn-primary btn-sm" style="margin-left: 15px;" id="newColor">Thêm màu mới</button>
-                                                                </div>
-                                                            </div>
-                                                            <div style="margin-top: 10px; margin-bottom: 10px;"></div>
-                                                            <div class="row" id="row-color">
-                                                                <!-- COLORS -->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- /row -->
-
+                                          
+                                                 <!-- BLOCK -->
+                                                 <div class="seprator-block"></div>
+                                                 <h6 class="txt-dark capitalize-font">
+                                                     <i class="zmdi zmdi-invert-colors mr-10"></i>Màu sắc và giá cả
+                                                     <span style="color: red">*</span>
+                                                     <button type="button" class="btn btn-primary btn-sm" style="margin-left: 15px;" id="newColor">Thêm màu mới</button>
+                                                 </h6>
+                                                 <hr class="light-grey-hr" />
+                                                 <!-- /BLOCK -->  
+                                                 
+                                                 
+                                                 <div id="color-block">
+                                                     <!-- Row -->
+                                                     <div class="row row-block" >
+                                                         <div class="col-md-12">
+                                                             <div class="form-group">
+                                                                 <div class="row">
+                                                                     <div class="col-md-6 color-price animated">
+                                                                         <div class="col-md-6">
+                                                                             <div class="colorpicker input-group colorpicker-component">
+                                                                                 <input type="text" value="#000000" class="form-control color-value" />
+                                                                                 <span class="input-group-addon">
+                                                                                     <i></i>
+                                                                                 </span>
+                                                                             </div>
+                                                                         </div>         
+                                                                         <div class="col-md-6">              
+                                                                             <div class="input-group">
+                                                                                 <div class="input-group-addon">
+                                                                                     <i class="ti-money"></i>
+                                                                                 </div>
+                                                                                 <input type="text" class="form-control price-value" placeholder="24.990.000 VNĐ">
+                                                                                 <span class="input-group-addon delete-color" style="cursor: pointer;">
+                                                                                     <i class="fa fa-trash-o"></i>
+                                                                                 </span>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                     <div class="col-md-6 color-price animated">
+                                                                         <div class="col-md-6">
+                                                                             <div class="colorpicker input-group colorpicker-component">
+                                                                                 <input type="text" value="#ebcd31" class="form-control color-value" />
+                                                                                 <span class="input-group-addon">
+                                                                                     <i></i>
+                                                                                 </span>
+                                                                             </div>
+                                                                         </div>
+                                                                         <div class="col-md-6">
+                                                                             <div class="input-group">
+                                                                                 <div class="input-group-addon">
+                                                                                     <i class="ti-money"></i>
+                                                                                 </div>
+                                                                                 <input type="text" class="form-control price-value" placeholder="28.890.000 VNĐ">
+                                                                                 <span class="input-group-addon delete-color" style="cursor: pointer;">
+                                                                                     <i class="fa fa-trash-o"></i>
+                                                                                 </span>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>                                                            
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                     <!-- /Row -->
+                                                 </div>
 
 
                                                 <div class="seprator-block"></div>
@@ -364,33 +397,9 @@
                //genaral
                 $("#product_name").val(product.name || "")
                 $("#product_alias").val(product.alias || "");
-                $("#product_price").val(product.price || "");
                 $("#product_meta_title").val(product.metaTitle || "");
                 $("#product_meta_keyword").val(product.metaKeyword || "");
                 $("#product_descriptions").html(`${product.descriptions}`);
-
-                //colors
-                for (let i = 1; i <= product.colors.length; i++) {
-                    const element = product.colors[i - 1];
-                    var blockColor = `
-                        <div class="col-md-2 animated" id="color-${i}">
-                            <div class="colorpicker input-group colorpicker-component">
-                                <input type="text" value="${element}" class="form-control color-value" id="color-value-${i}" />
-                                <span class="input-group-addon">
-                                    <i></i>
-                                </span>
-                                <span class="input-group-addon delete-color" data-id-color="color-${i}">
-                                    <i class="fa fa-trash-o"></i>
-                                </span>
-                            </div>
-                        </div>
-                    `
-
-                     $("#row-color").append(blockColor);
-
-                    $(".colorpicker").colorpicker();
-                }
-
                 $(`#selectType option[value="${product.type._id}"]`).prop('selected', true);
                 $(`#selectBrand option[value="${product.brand._id}"]`).prop('selected', true);
                 $(`#selectCategory option[value="${product.category.idCategory}"]`).prop('selected', true);
@@ -806,17 +815,31 @@
                     newProduct.alias  = $("#product_alias").val();
                     //color
 
-                    var numOfColors = $('.color-value');
+                    var numOfColors = $('.color-price');
 
                     var colors = [];
+                    var prices = [];
 
-                    if (numOfColors.length > 0) {
-                        numOfColors.each((index, element) => {
-                            colors.push($(element).val());
-                        });
-                    }
+                    numOfColors.each((index, element) => {
+                        var color = $(element).find('.color-value').val();
+                        var price = $(element).find('.price-value').val();                       
+                        if (color && price) {
+                            colors.push({
+                                hex: color,
+                                name: ntc.name(color)[1] || ""
+                            });
+                            prices.push({
+                                color: {
+                                    hex: color,
+                                    name: ntc.name(color)[1] || ""
+                                },
+                                price: price
+                            });
+                        }
+                    });
                     
                     newProduct.colors = colors;
+                    newProduct.prices = prices;
                     newProduct.brand = $("#selectBrand").find('option:selected').attr('data-id-brand');
                     newProduct.category = {
                         idRootCategory: $("#selectCategory").find('option:selected').attr('data-id-root'),
@@ -1215,14 +1238,7 @@
                             newProduct.images.push($(input).get(0).files[0]);
                         }
                         }
-                    });
-                    
-                    //
-                    // $("#formNewProduct").find('input[type=file]').each((index, image) => {
-                    //     if ($(image).get(0).files.length > 0 ) {
-                    //         newProduct.images.push($(image).get(0).files[0]);
-                    //     }                       
-                    // });
+                    });                    
                     
                     //validate parameters
                     var productFormData = new FormData();
@@ -1293,12 +1309,16 @@
                     } else {
                         productFormData.append("metaTitle", newProduct.metaTitle);
                     }
+
                     //price
-                    if (!newProduct.price) {
+                    if (!newProduct.prices) {
                         showAlert('Giá sản phẩm không được bỏ trống!');
                         return
                     } else {
-                        productFormData.append("price", newProduct.price);
+                        for (let i = 0; i < newProduct.prices.length; i++) {
+                            const element = newProduct.prices[i];
+                            productFormData.append("prices", JSON.stringify(element));
+                        }
                     }
                     //colors
                     if (!newProduct.colors || newProduct.colors.length == 0) {
@@ -1307,7 +1327,7 @@
                     } else {
                         for (let i = 0; i < newProduct.colors.length; i++) {
                             const element = newProduct.colors[i];
-                            productFormData.append("colors", element);
+                            productFormData.append("colors", JSON.stringify(element));
                         }                        
                     }
                     
@@ -1405,34 +1425,118 @@
                 //click new color
                 $("#newColor").click(() => {
 
-                    if ($('.colorpicker-component').length == 6) { return }
-
-                    totalColorPicker++;
-                    $("#row-color").append(`
-                        <div class="col-md-2 animated rotateInDownLeft" id="color-${totalColorPicker}">
-                            <div class="colorpicker input-group colorpicker-component">
-                                <input type="text" value="#00AABB" class="form-control color-value" id="color-value-${totalColorPicker}" />
-                                    <span class="input-group-addon"><i></i></span>
-                                    <span class="input-group-addon delete-color" data-id-color="color-${totalColorPicker}"><i class="fa fa-trash-o" ></i></span>
+                    var newRow = `<div class="row row-block">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6 color-price animated">
+                                        <div class="col-md-6">
+                                            <div class="colorpicker input-group colorpicker-component colorpicker-element">
+                                                <input type="text" value="#000000" class="form-control color-value">
+                                                <span class="input-group-addon">
+                                                    <i style="background-color: rgb(0, 0, 0);"></i>
+                                                </span>
+                                            </div>
+                                        </div>         
+                                        <div class="col-md-6">              
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="ti-money"></i>
+                                                </div>
+                                                <input type="text" class="form-control price-value" placeholder="24.990.000 VNĐ">
+                                                <span class="input-group-addon delete-color" style="cursor: pointer;">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 color-price animated">
+                                        <div class="col-md-6">
+                                            <div class="colorpicker input-group colorpicker-component colorpicker-element">
+                                                <input type="text" value="#ebcd31" class="form-control color-value">
+                                                <span class="input-group-addon">
+                                                    <i style="background-color: rgb(235, 205, 49);"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="ti-money"></i>
+                                                </div>
+                                                <input type="text" class="form-control price-value" placeholder="28.890.000 VNĐ">
+                                                <span class="input-group-addon delete-color" style="cursor: pointer;">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                                            
                             </div>
                         </div>
-                    `);
-                    $(".colorpicker").colorpicker();
-                });
+                    </div>`
 
+                    var newBlock = `
+                        <div class="col-md-6 color-price animated">
+                            <div class="col-md-6">
+                                <div class="colorpicker input-group colorpicker-component colorpicker-element">
+                                    <input type="text" value="#000000" class="form-control color-value">
+                                    <span class="input-group-addon">
+                                        <i style="background-color: rgb(0, 0, 0);"></i>
+                                    </span>
+                                </div>
+                            </div>         
+                            <div class="col-md-6">              
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="ti-money"></i>
+                                    </div>
+                                    <input type="text" class="form-control price-value" placeholder="24.990.000 VNĐ">
+                                    <span class="input-group-addon delete-color" style="cursor: pointer;">
+                                        <i class="fa fa-trash-o"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    `
+
+                    var numBlocks = $('#color-block').find('.row-block');
+
+                    numBlocks.each((index, block) => {
+                        var row = $(block).find('.row');
+                        if ($(row).find('.color-price').length == 1) {
+                            $(row).append(newBlock);
+                            return                        
+                        }
+
+                        if (index == numBlocks.length - 1) {
+                            $('#color-block').append(newRow);
+                        }
+                    });
+                   
+                   $(".colorpicker").colorpicker();
+                });     
+                
                 //delete color
-                $("#row-color").delegate(".delete-color", "click", (e) => {
+                $('#color-block').delegate('span.delete-color', 'click', (e) => {                    
+                    var blockColor = $("#color-block");
+                   
+                    var blockClicked = e.currentTarget.parentElement.parentElement.parentElement
 
-                    if ($('.colorpicker-component').length <= 1) { return }
+                    var rowClicked = $(blockClicked.parentElement.parentElement.parentElement.parentElement);
 
-                    var idParent = e.currentTarget.parentElement.parentElement.id;
-                    $(".colorpicker-visible").remove();
-                    $(`#${idParent}`).removeClass("rotateInDownLeft");
-                    $(`#${idParent}`).addClass("fadeOutLeft");
+                    var numRowsClicked = $(rowClicked).find('.color-price');
 
-                    setTimeout(() => {
-                        $(`#${idParent}`).remove();
-                    }, 1000);
+                    if ($('#color-block').find('.color-price').length == 1) { 
+                        return
+                    }
+                    
+                    if (numRowsClicked.length == 2) {
+                        //remove this blockClicked
+                        $(blockClicked).remove();
+                    } else {                        
+                        $(rowClicked).remove();
+                    }   
                 });
 
                 $('.dropify-clear').click((e) => {

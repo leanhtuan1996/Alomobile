@@ -450,7 +450,7 @@ var editProduct = (product, result) => {
     var alias = product.alias;
     var colors = product.colors;
     var brand = product.brand;
-    var price = product.price;
+    var prices = product.prices;
     var specifications = product.specifications;
     var newImages = product.newNames;
     var oldImages = product.originalImages;
@@ -473,12 +473,17 @@ var editProduct = (product, result) => {
             });
             return
         }
-        if (!price) {
+        if (!prices) {
             workflow.emit('response', {
                 error: "Please enter price of product"
             });
             return
+        } else {
+            prices = prices.map(price => {
+                return JSON.parse(price);
+            });
         }
+
         if (!newImages && !oldImages) {
             workflow.emit('response', {
                 error: "Please provide images of product"
@@ -527,11 +532,16 @@ var editProduct = (product, result) => {
             });
             return
         }
+
         if (!colors || colors.length == 0) {
             workflow.emit('response', {
                 error: "Please choose colors of product"
             });
             return
+        } else {
+            colors = colors.map((e, i) => {
+                return JSON.parse(e);                
+            })
         }
 
         if (!(category.idRootCategory && category.idCategory)) {
@@ -584,8 +594,6 @@ var editProduct = (product, result) => {
             specifications = JSON.parse(specifications);
         }
 
-        console.log(imagesEdited);
-
         Product.findById(id, (err, product) => {
             if (err) {
                 workflow.emit('response', {
@@ -611,7 +619,7 @@ var editProduct = (product, result) => {
             product.type = type;
             product.descriptions = descriptions;
             product.images = imagesEdited;
-            product.price = price;
+            product.prices = prices;
 
             if (specifications) {
                 product.specifications = specifications
