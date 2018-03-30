@@ -179,10 +179,6 @@ var getProductsByType = (idType, limit, result) => {
 
 var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
 
-    console.log(idCategory);
-    console.log(idRootCategory);
-    console.log(limit);
-
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {

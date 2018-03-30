@@ -1199,7 +1199,7 @@
                         <article class="js-product-miniature" data-id-product="${product._id}" itemscope>
                             <div class="img_block">
                                 <a href="${href}" class="thumbnail product-thumbnail">
-                                    <img class="owl-lazy" src = "${image1.url}" alt = "${image1.alt}" data-full-size-image-url = "${image1.url}" />
+                                    <img src = "${image1.url}" alt = "${image1.alt}" data-full-size-image-url = "${image1.url}" />
                                     <img class="img-responsive second-image animation1" src="${image2.url}" alt="" itemprop="image"  />
                                 </a>
                                 <ul class="product-flag">
@@ -1442,7 +1442,7 @@
         if (arrow) { arrow = !0 } else { arrow = !1 }
         if (pagination == 1) { pagination = !0 } else { pagination = !1 }
         var featuredSlide = $(".pos-featured-products .feature-item");
-        featuredSlide.owlCarousel({lazyLoad:true, autoPlay: autoPlay, smartSpeed: speed, autoplayHoverPause: pausehover, scrollPerPage: move, nav: arrow, dots: pagination, responsive: { 0: { items: xxs, }, 480: { items: xs, }, 768: { items: sm, nav: !1, }, 992: { items: md, }, 1200: { items: items, } } });
+        featuredSlide.owlCarousel({autoPlay: autoPlay, smartSpeed: speed, autoplayHoverPause: pausehover, scrollPerPage: move, nav: arrow, dots: pagination, responsive: { 0: { items: xxs, }, 480: { items: xs, }, 768: { items: sm, nav: !1, }, 992: { items: md, }, 1200: { items: items, } } });
         checkClasses();
         featuredSlide.on('translated.owl.carousel', function(event) { checkClasses() });
 
