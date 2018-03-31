@@ -65,9 +65,9 @@
 												<table class="table display responsive product-overview mb-30" id="table_products">
 													<thead>
 														<tr>
-															<th style="width: 80px;">Tên sản phẩm</th>
+															<th>Tên sản phẩm</th>
 															<th>Ảnh</th>
-															<th>Giá cả và màu sắc</th>
+															<th style=" width: 160px;">Giá cả và màu sắc</th>
 															<th>Thương hiệu</th>
 															<th>Chi tiết sản phẩm</th>
 															<th>Số lượng còn lại</th>
@@ -77,9 +77,9 @@
 													</thead>	
 													<tfoot>
 														<tr>
-															<th style="width: 80px;">Tên sản phẩm</th>
+															<th>Tên sản phẩm</th>
 															<th>Ảnh</th>
-															<th>Giá cả và màu sắc</th>
+															<th style=" width: 160px;">Giá cả và màu sắc</th>
 															<th>Thương hiệu</th>
 															<th>Chi tiết sản phẩm</th>
 															<th>Số lượng còn lại</th>
@@ -208,7 +208,7 @@
 				if (product.prices && product.prices.length > 0) {
 					product.prices.forEach((element) => {
 						colors += `
-						<div margin: 5px 2px;>
+						<div style="margin: 5px 2px;">
 							<div style="background-color: ${element.color.hex}; border-radius: 50%; width: 20px; height: 20px;  display: inline-block; border-width: 1px; border-style: solid; border-color: grey;">
 							</div>
 							<span style="float: right;">${numberWithCommas(element.price) + " VNĐ"}</span>
@@ -236,7 +236,7 @@
 						<td class="product-images">
 							${image}
 						</td>
-						<td class="product-colors">
+						<td class="product-colors" style=" width: 160px;position: absolute;">
 							<div>
 								${colors}	
 							</div>														

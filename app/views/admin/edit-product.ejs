@@ -548,7 +548,16 @@
                             battery = specifications.battery,
                             timeCharge = specifications.timeCharge,
                             timeUse = specifications.timeUse,
+                            jack = specifications.jack,
+                            compatible = specifications.compatible,
+                            buttonControl = specifications.buttonControl,
+                            box = specifications.box,
                             source = specifications.source;
+
+                            $('#product_jack').val(jack || "");
+                            $('#product_compatible').val(compatible || "");
+                            $('#product_button_control').val(buttonControl || "");
+                            $('#product_box').val(box || "");
 
                             $('#product_connection').val(connection || "");
                             $('#product_battery').val(battery || "");
@@ -883,6 +892,7 @@
                                 var connectionAndUtils = {
                                     connectivePort: $('#connective_port').val(),
                                     connectiveWireless:  $('#connective_wireless').val(),
+                                    cardReader:  $('#connective_card_reader').val(),
                                     opticalDrive : $('#connective_optical_drive').val(),
                                     webcam: $('#connective_webcam').val(),
                                     ligthKeyboard:  $('#connective_light_keyboard').val(),
@@ -1014,12 +1024,22 @@
                                 break;
 
                             case "tai-nghe-khong-day":  
+                                
+                                var jack = $('#product_jack').val();
+                                var product_compatible = $('#product_compatible').val();
+                                var product_button_control = $('#product_button_control').val();
+                                var product_box = $('#product_box').val();
+
                                 var product_connection = $('#product_connection').val();
                                 var product_battery = $('#product_battery').val();
                                 var product_time_charge = $('#product_time_charge').val();
                                 var product_time_use = $('#product_time_use').val();
                                 var product_source = $('#product_source').val();
 
+                                specifications.jack = jack;
+                                specifications.compatible = product_compatible;
+                                specifications.buttonControl = product_button_control;
+                                specifications.box = product_box;
                                 specifications.connection = product_connection;
                                 specifications.battery = product_battery;
                                 specifications.timeCharge = product_time_charge;
