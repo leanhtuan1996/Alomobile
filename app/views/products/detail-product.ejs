@@ -1239,7 +1239,70 @@
                     break;
 
                 case "tai-nghe-khong-day":
+
+                    if (specifications.jack) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Jack cắm: 
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.jack}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Jack cắm: 
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.compatible) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Tương thích:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.compatible}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Tương thích: 
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
                     
+                    if (specifications.buttonControl) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Phím điều khiển:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.buttonControl}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Phím điều khiển: 
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
                     if (specifications.connection) {                      
                         specElement += `
                             <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
@@ -1324,11 +1387,32 @@
                             </li>`
                     }
 
-                    if (specifications.source) {                      
+                    if (specifications.box) {                      
                         specElement += `
                             <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
                                 <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
                                     Trong hộp có:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.box}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Trong hộp có:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.source) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Xuất xứ:
                                 </span>
                                 <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
                                     ${specifications.source}
@@ -1338,7 +1422,7 @@
                         specElement += `
                             <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
                                 <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
-                                    Trong hộp có:
+                                        Xuất xứ:
                                 </span>
                                 <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
                                 </div>
