@@ -630,7 +630,7 @@
 							content += touch + ".";
 						}
 
-						specElement = `<ul class="specifications" style="display: block; position: relative; overflow: hidden; background: #fff; padding-top: 10px;">
+						specElement += `
 									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
 										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
 											Màn hình:
@@ -638,8 +638,8 @@
 										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
 											${content}
 										</div>
-									</li>														
-								</ul>`
+                                    </li>
+                                    `
 
 					} else {
 						specElement = `
@@ -878,16 +878,1827 @@
 					
 					break;
 				
-				case 'laptop': 
-				break;
-			
-				default:
-				specElement = `<p>Không có</p>`
+                case 'laptop': 
+                    var screen = specifications.screen,
+                        processor = specifications.processor.
+                        storage = specifications.storage
+                        graphicsAudio = specifications.graphicsAudio,
+                        connectionAndUtils = specifications.connectionAndUtils,
+                        sizeAndWeight = specifications.sizeAndWeight,
+                        os = specifications.os;
+
+                    if (processor) {
+                        var content = ``;
+                        if (processor.tech) {
+                            content += processor.tech + ", ";
+                        }
+
+                        if (processor.type) {
+                            content += processor.type + ", ";
+                        }
+
+                        if (processor.speed) {
+                            content += processor.speed + ", ";
+                        }
+
+                        if (processor.maxSpeed) {
+                            content += processor.maxSpeed;
+                        }
+
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											CPU:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${content}
+										</div>
+									</li>`
+
+                    } else {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											CPU:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+									</li>`
+                    }
+
+                    if (storage) {
+                        var content = "";
+                        if (storage.ram) {
+                            content += storage.ram + ", "
+                        }
+
+                        if (storage.type) {
+                            content += storage.type + ", "
+                        }
+
+                        if (storage.bus) {
+                            content += storage.bus + ", "
+                        }
+
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											RAM:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+											${content}
+										</div>
+                                    </li>`
+                                    
+                        if (storage.hardDrive) {
+                            specElement += `
+                                <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                    <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Ổ cứng:
+                                    </span>
+                                    <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                        ${storage.hardDrive}
+                                    </div>
+                                </li>`
+                        }
+
+                    } else {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                            RAM:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+                                    </li>
+                                    <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                            Ổ cứng:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+									</li>
+                                    `
+                    }
+
+                    if (screen) {
+                        var content = "";
+                        if (screen.width) {
+                            content+= screen.width + " ,"
+                        }
+
+                        if (screen.resolution) {
+                            content+= screen.resolution + " ,"
+                        }
+
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Màn hình:
+										</span>
+                                        <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                            ${content}
+										</div>
+									</li>`
+
+
+                    } else {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Màn hình:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+									</li>`
+                    }
+
+                    if (graphicsAudio) {
+
+                        var content = "";
+                        if (graphicsAudio.design) {
+                            content+= graphicsAudio.design + ", ";
+                        }
+
+                        if (graphicsAudio.cardName) {
+                            content+= graphicsAudio.cardName + ", ";
+                        }
+
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Card màn hình:
+										</span>
+                                        <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                            ${content}
+                                        </div>                                        
+									</li>`
+                    } else {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Card màn hình:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+									</li>`
+                    }
+
+                    if (connectionAndUtils) {
+
+                        var content = "";
+                        if (connectionAndUtils.connectivePort) {
+                            content+= connectionAndUtils.connectivePort + ", ";
+                        }
+
+                        if (connectionAndUtils.connectiveWireless) {
+                            content+= connectionAndUtils.connectiveWireless + ", ";
+                        }
+
+                        if (connectionAndUtils.otherUtils) {
+                            content+= connectionAndUtils.otherUtils + ", ";
+                        }
+                        
+
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Cổng kết nối:
+										</span>
+                                        <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                            ${content}
+										</div>
+									</li>`
+                    } else {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Cổng kết nối:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+									</li>`
+                    }
+
+                    if (os) {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Hệ điều hành:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${os}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Hệ điều hành:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+									</li>`
+                    }
+
+                    if (sizeAndWeight.meterial) {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Thiết kế:
+										</span>
+                                        <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                            ${sizeAndWeight.meterial}
+										</div>
+									</li>`
+                    } else {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Thiết kế:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+									</li>`
+                    }        
+                    
+                    if (sizeAndWeight.size) {
+                        var content = '';
+
+                        if (sizeAndWeight.size.long && sizeAndWeight.size.horizontal && sizeAndWeight.size.thick) {
+                            content+= `Dài ${sizeAndWeight.size.long}, ngang ${sizeAndWeight.size.horizontal}, dày ${sizeAndWeight.size.thick}`
+                        }
+
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+											Kích thước:
+										</span>
+                                        <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                            ${content}
+										</div>
+									</li>`
+                        
+                    } else {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                            Kích thước:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+									</li>`
+                    } 
+
+				    break;
+                case "tai-nghe": 
+                    
+                    if (specifications.jack) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Jack cắm:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.jack}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                            Jack cắm:
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+									</li>`
+                    }
+
+                    if (specifications.wireLength) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Độ dài: 
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.wireLength}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                            Độ dài: 
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+									</li>`
+                    }
+
+                    if (specifications.buttonControl) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Nút điều khiển:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.buttonControl}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                            Nút điều khiển: 
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+									</li>`
+                    }
+
+                    if (specifications.box) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Trong hộp có: 
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.box}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+									<li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+										<span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                            Trong hộp có: 
+										</span>
+										<div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+										</div>
+									</li>`
+                    }
+                    break;
+
+                case "tai-nghe-khong-day":
+                    
+                    if (specifications.connection) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Kết nối: 
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.connection}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Kết nối: 
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.battery) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Dung lượng pin: 
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.battery}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Dung lượng pin:  
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.timeCharge) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Thời gian sạc
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.timeCharge}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Thời gian sạc:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.timeUse) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Thời gian sử dụng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.timeUse}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Thời gian sử dụng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.source) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Trong hộp có:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.source}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Trong hộp có:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    break;
+
+                case "op-lung": 
+                    if (specifications.material) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Loại vỏ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.material}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Loại vỏ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.style) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Kiểu:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.style}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Kiểu:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    break;
+                case "sac-du-phong":  
+                    if (specifications.chargeTime) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Thời gian sạc:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.chargeTime}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Thời gian sạc:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.port) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Cổng kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.port}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Cổng kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.battery) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Dung lượng pin:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.battery}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Dung lượng pin:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.ledAlert) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Đèn cảnh báo:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.ledAlert}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Đèn cảnh báo:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.carrier) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Nhà sản xuất:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.carrier}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Nhà sản xuất:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.weight) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Trọng lượng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.weight}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Trọng lượng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+                    
+                    break;
+                case "loa":
+                case "loa-khong-day":
+                    if (specifications.model) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Model:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.model}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Model:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.length) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Chiều dài:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.length}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Chiều dài
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.size) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Kích thước:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.size}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Kích thước:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.weight) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Trọng lượng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.weight}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Trọng lượng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.totalPower) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Tổng hiệu xuất:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.totalPower}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Tổng hiệu xuất:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.power) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Hiệu xuất:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.power}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Hiệu xuất:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.connection) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.connection}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.remote) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Nút điều khiển:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.remote}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Nút điều khiển:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.battery) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Dung lượng pin:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.battery}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Dung lượng pin:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.box) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Trong hộp có:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.box}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Trong hộp có:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    break;
+
+                case "chuot":
+                    if (specifications.model) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Model:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.model}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Model:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.opticalResolution) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Độ phân giải quang học:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.opticalResolution}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Độ phân giải quang học:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.connection) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.connection}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.lengthCab) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Độ dài dây / Khoảng cách kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.lengthCab}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Độ dài dây / Khoảng cách kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.size) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Kích thước:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.size}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Kích thước:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.carrier) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Xuất xứ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.carrier}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Xuất xứ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.weight) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Trọng lượng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.weight}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Trọng lượng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    break;
+
+                case "ban-phim":
+
+                    if (specifications.carrier) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Xuất xứ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.carrier}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Xuất xứ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.model) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Model:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.model}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Model:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.numberKey) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Số phím:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.numberKey}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Số phím:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.connection) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Cách kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.connection}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Cách kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.long) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Độ dài dây / Khoảng cách kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.long}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Độ dài dây / Khoảng cách kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.size) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Kích thước:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.size}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Kích thước:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.weight) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Trọng lượng: 
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.weight}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Trọng lượng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    break;
+
+                case "cap-sac":
+                    
+                    if (specifications.jack) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Jack cắm:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.jack}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Jack cắm:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.feature) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Tính năng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.feature}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Tính năng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.maxCharge) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Sạc tối đa:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.maxCharge}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Sạc tối đa:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.maxLong) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Chiều dài tối đa:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.maxLong}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Chiều dài tối đa:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.carrier) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Xuất xứ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.carrier}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Xuất xứ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    break;
+
+                case "cu-sac":  
+                    
+                    if (specifications.power) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Jack cắm:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.power}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Jack cắm:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.feature) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Tính năng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.feature}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Tính năng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.maxCharge) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Công xuất tối đa:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.maxCharge}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Công xuất tối đa:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.carrier) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Xuất xứ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.carrier}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Xuất xứ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    break;
+
+                case "thiet-bi-luu-tru": 
+                    
+                    if (specifications.type) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Loại thiết bị:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.type}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Loại thiết bị:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.capacity) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Dung lượng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.capacity}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Dung lượng:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.speedRead) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Tốc độ đọc tối đa:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.speedRead}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Tốc độ đọc tối đa:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.speedWrite) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Tốc độ ghi tối đa:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.speedWrite}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Tốc độ ghi tối đa:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    break;
+
+                case "dong-ho-thong-minh":  
+                    if (specifications.screen) {                            
+                        if (specifications.screen.displayTechnology) {
+                            specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Công nghệ màn hình:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.screen.displayTechnology}
+                                </div>
+                            </li>`
+                        } else {
+                            specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Công nghệ màn hình:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.screen.displayTechnology}
+                                </div>
+                            </li>`
+                        } 
+
+                        if (specifications.screen.resolution && specifications.screen.wide) {
+                            var content = "";
+                           if (specifications.screen.resolution) {
+                            content+= specifications.screen.resolution + ", "
+                           }
+
+                           if (specifications.screen.wide) {
+                            content+= specifications.screen.wide;
+                           }
+
+                           specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Độ phân giải và kích thước:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${content}
+                                </div>
+                            </li>`
+
+
+                        } else {
+                            specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Độ phân giải và kích thước:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                        } 
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Màn hình:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.screen.displayTechnology}
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.detailConfiguration.ram) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    RAM:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.detailConfiguration.ram}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        RAM:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.detailConfiguration.cpu) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    CPU:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.detailConfiguration.cpu}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        CPU:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.detailConfiguration.os) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Hệ điều hành:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.detailConfiguration.os}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Hệ điều hành:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.physicalParameters.material) {                      
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Chất liệu:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.physicalParameters.material}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Chất liệu:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.physicalParameters.guardWater) { 
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Chống nước: 
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.physicalParameters.guardWater}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Chất liệu:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    Không
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.physicalParameters.battery) { 
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Pin:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.physicalParameters.battery}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Pin:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    Không
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.physicalParameters.batteryWait) { 
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Thời gian chờ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.physicalParameters.batteryWait}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Thời gian chờ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    Không
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.connection) { 
+
+                        var content = "";
+
+                        if (specifications.connection.connectiveDevice) {
+                            content+= "Tương thích: " + specifications.connection.connectiveDevice + ", ";
+                        }
+
+                        if (specifications.connection.bluetooth) {
+                            content+= specifications.connection.bluetooth + ", ";
+                        }
+
+                        if (specifications.connection.wifi) {
+                            content+= specifications.connection.wifi + ", ";
+                        }
+
+                        if (specifications.connection.connection_others) {
+                            content+= specifications.connection.connection_others;
+                        }
+
+
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${content}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                </div>
+                            </li>`
+                    }
+
+                    break;
+
+                case "gay-tu-suong":
+
+                    if (specifications.typeConnection) { 
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Loại kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.typeConnection}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Loại kết nối:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    Không
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.minLong) { 
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Chiều dài tối thiểu:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.minLong}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Chiều dài tối thiểu:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    Không
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.maxLong) { 
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Chiều dài tối đa:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.maxLong}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Chiều dài tối đa:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    Không
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.compatible) { 
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Tương thích:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.compatible}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Tương thích:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    Không
+                                </div>
+                            </li>`
+                    }
+
+                    if (specifications.carrier) { 
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                    Xuất xứ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    ${specifications.carrier}
+                                </div>
+                            </li>`
+                    } else {
+                        specElement += `
+                            <li class="screen" style="display: table; background: #fff; width: 100%; border-top: 1px solid #eee; padding: 5px 0;">
+                                <span style="display: table-cell; width: 40%;vertical-align: top;padding: 5px 0;font-size: 14px;color: #666;">
+                                        Xuất xứ:
+                                </span>
+                                <div style="display: table-cell;width: auto;vertical-align: top;padding: 6px 5px;font-size: 14px;color: #333;">
+                                    Không
+                                </div>
+                            </li>`
+                    }
+
+                    break;
+
+                default:
 					break;
 			}
 
 			specElement += `</ul>`
-			specElement += `<button type="button" class="btn btn-primary btn-rounded  btn-outline" style="text-align: center; width: 100%; margin-top: 5px;" id="view-detail-spec">Xem cấu hình chi tiết</button>`
+			//specElement += `<button type="button" class="btn btn-primary btn-rounded  btn-outline" style="text-align: center; width: 100%; margin-top: 5px;" id="view-detail-spec">Xem cấu hình chi tiết</button>`
 
 			$('.tableparameter').append(specElement);
 		}

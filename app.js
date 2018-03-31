@@ -171,9 +171,6 @@ app.use(function (err, req, res, next) {
   }
 });
 
-
-
-
 module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
 
 //module.exports = { app: app, serverHttp: serverHttp, io: io };
