@@ -31,6 +31,7 @@ var getProducts = (prevProduct, result) => {
             .populate('brand')
             .limit(15)
             .sort('-created_at')
+            .select('alias name brand images details status')
             .exec((err, products) => {
                 workflow.emit('response', {
                     error: err,
@@ -61,6 +62,7 @@ var getPrevProducts = (nextProduct, result) => {
         })
             .populate('brand')
             .limit(15)
+            .select('alias name brand images details status')
             .sort('-created_at')
             .exec((err, products) => {
                 workflow.emit('response', {
@@ -127,6 +129,7 @@ var getSpecialProducts = (limit, result) => {
             .find({})
             .limit(limit || 10)
             .sort('-created_at')
+            .select('alias name images details status')
             .exec((err, products) => {
                 workflow.emit('response', {
                     error: err,
@@ -164,7 +167,7 @@ var getProductsByType = (idType, limit, result) => {
             })
             .limit(limit || 15)
             .sort('-created_at')
-            .select('name alias images quantity prices')
+            .select('alias name brand images details status')
             .exec((err, products) => {
                 workflow.emit('response', {
                     error: err,
@@ -211,6 +214,7 @@ var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
                     "category.idRootCategory": idRootCategory
                 })
                 .limit(parseInt(limit))
+                .select('alias name brand images details status')
                 .exec((err, products) => {
                     workflow.emit('response', {
                         error: err,
@@ -224,6 +228,7 @@ var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
                     "category.idRootCategory": idRootCategory
                 })
                 .limit(limit)
+                .select('alias name brand images details status')
                 .exec((err, products) => {
                     workflow.emit('response', {
                         error: err,
@@ -252,6 +257,7 @@ var getNewProducts = (limit, result) => {
             .find({})
             .limit(parseInt(limit) || 10)
             .sort('-created_at')
+            .select('alias name brand images details status')
             .exec((err, products) => {
                 workflow.emit('response', {
                     error: err,
@@ -279,6 +285,7 @@ var getHotProducts = (limit, result) => {
             .find({})
             .limit(limit || 10)
             .sort('-created_at')
+            .select('alias name brand images details status')
             .exec((err, products) => {
                 workflow.emit('response', {
                     error: err,
@@ -295,9 +302,8 @@ var newProduct = (product, result) => {
 
     var name = product.name;
     var alias = product.alias;
-    var colors = product.colors;
+    var details = product.details;
     var brand = product.brand;
-    var prices = product.prices;
     var specifications = product.specifications;
     var images = product.newNames;
     var type = product.type;
@@ -319,17 +325,17 @@ var newProduct = (product, result) => {
             });
             return
         }
-        if (!prices) {
+        if (!details) {
             workflow.emit('response', {
-                error: "Please enter price of product"
+                error: "Please enter price, color and quantity of product"
             });
             return
         } else {
-            if (typeof prices == 'string') {
-                prices = [JSON.parse(prices)];
+            if (typeof details == 'string') {
+                details = [JSON.parse(details)];
             } else {
-                prices = prices.map(price => {
-                    return JSON.parse(price);
+                details = details.map(detail => {
+                    return JSON.parse(detail);
                 });
             }
         }
@@ -357,21 +363,7 @@ var newProduct = (product, result) => {
                 error: "Please enter descriptions of product"
             });
             return
-        }
-        if (!colors || colors.length == 0) {
-            workflow.emit('response', {
-                error: "Please choose colors of product"
-            });
-            return
-        } else {
-            if (typeof colors == 'string') {
-                colors = [JSON.parse(colors)]
-            } else {
-                colors = colors.map((e, i) => {
-                    return JSON.parse(e);
-                });
-            }
-        }
+        }       
 
         if (!(category.idRootCategory && category.idCategory)) {
             workflow.emit('response', {
@@ -393,14 +385,13 @@ var newProduct = (product, result) => {
 
         newProduct.name = name;
         newProduct.alias = alias;
-        newProduct.colors = colors;
+        newProduct.details = details;
         newProduct.brand = brand;
         newProduct.category = category;
         newProduct.type = type;
         newProduct.descriptions = descriptions;
         newProduct.metaTitle = metaTitle;
         newProduct.metaKeyword = metaKeyword;
-        newProduct.prices = prices;
 
         if (specifications) {
             newProduct.specifications = JSON.parse(specifications);
@@ -456,9 +447,8 @@ var editProduct = (product, result) => {
     var id = product.id;
     var name = product.name;
     var alias = product.alias;
-    var colors = product.colors;
+    var details = product.details;
     var brand = product.brand;
-    var prices = product.prices;
     var specifications = product.specifications;
     var newImages = product.newNames;
     var oldImages = product.originalImages;
@@ -480,20 +470,6 @@ var editProduct = (product, result) => {
                 error: "Please enter alias of product"
             });
             return
-        }
-        if (!prices) {
-            workflow.emit('response', {
-                error: "Please enter price of product"
-            });
-            return
-        } else {
-            if (typeof prices == 'string') {
-                prices = [JSON.parse(prices)];
-            } else {
-                prices = prices.map(price => {
-                    return JSON.parse(price);
-                });
-            }
         }
 
         if (!newImages && !oldImages) {
@@ -545,18 +521,18 @@ var editProduct = (product, result) => {
             return
         }
 
-        if (!colors || colors.length == 0) {
+        if (!details) {
             workflow.emit('response', {
-                error: "Please choose colors of product"
+                error: "Please enter price, color and quantity of product"
             });
             return
         } else {
-            if (typeof colors == 'string') {
-                colors = [JSON.parse(colors)]
+            if (typeof details == 'string') {
+                details = [JSON.parse(details)];
             } else {
-                colors = colors.map((e, i) => {
-                    return JSON.parse(e);
-                })
+                details = details.map(detail => {
+                    return JSON.parse(detail);
+                });
             }
         }
 
@@ -627,7 +603,6 @@ var editProduct = (product, result) => {
 
             product.name = name;
             product.alias = alias;
-            product.colors = colors;
             product.brand = brand;
             product.metaKeyword = metaKeyword;
             product.metaTitle = metaTitle;
@@ -635,7 +610,7 @@ var editProduct = (product, result) => {
             product.type = type;
             product.descriptions = descriptions;
             product.images = imagesEdited;
-            product.prices = prices;
+            product.details = details;
 
             if (specifications) {
                 product.specifications = specifications
@@ -714,10 +689,12 @@ var searchProducts = (text, result) => {
             })
             .populate({
                 path: "type"
-            }).populate({
+            })
+            .populate({
                 path: "category.idRootCategory"
             })
             .limit(15)
+            .select('alias name brand images details status')
             .exec((err, products) => {
                 workflow.emit('response', {
                     error: err,
@@ -748,7 +725,7 @@ var getPreviewProduct = (id, cb) => {
     });
 
     workflow.on('get', () => {
-        Product.findById(id).select('name alias colors images quantity prices').exec((err, product) => {
+        Product.findById(id).select('name brand alias images details').exec((err, product) => {
             workflow.emit('response', {
                 error: err,
                 product: product

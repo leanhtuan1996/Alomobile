@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('Stock', new Schema({
     product: { type: Schema.Types.ObjectId, ref: "Product" },
     color: { type: Schema.Types.ObjectId, ref: "Color" },
-    availableQuantity: Number,
+    quantity: Number,
     histories: [{
         previousQuantity: Number,
         newQuantity: Number,

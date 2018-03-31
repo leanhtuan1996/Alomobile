@@ -160,7 +160,7 @@
                                                 <!-- BLOCK -->
                                                 <div class="seprator-block"></div>
                                                 <h6 class="txt-dark capitalize-font">
-                                                    <i class="zmdi zmdi-invert-colors mr-10"></i>Màu sắc và giá cả
+                                                    <i class="zmdi zmdi-invert-colors mr-10"></i>Màu sắc, giá cả và số lượng
                                                     <span style="color: red">*</span>
                                                     <button type="button" class="btn btn-primary btn-sm" style="margin-left: 15px;" id="newColor">Thêm màu mới</button>
                                                 </h6>
@@ -175,20 +175,28 @@
                                                             <div class="form-group">
                                                                 <div class="row">
                                                                     <div class="col-md-6 color-price animated">
-                                                                        <div class="col-md-6">
+                                                                        <div class="col-md-4">
                                                                             <div class="colorpicker input-group colorpicker-component">
-                                                                                <input type="text" value="#000000" class="form-control color-value" />
+                                                                                <input type="text" value="#000000" class="form-control color" />
                                                                                 <span class="input-group-addon">
                                                                                     <i></i>
                                                                                 </span>
                                                                             </div>
                                                                         </div>         
-                                                                        <div class="col-md-6">              
+                                                                        <div class="col-md-4">              
                                                                             <div class="input-group">
                                                                                 <div class="input-group-addon">
                                                                                     <i class="ti-money"></i>
                                                                                 </div>
-                                                                                <input type="text" class="form-control price-value" placeholder="24.990.000 VNĐ">
+                                                                                <input type="text" class="form-control price" placeholder="24990000"> 
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">              
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-addon">
+                                                                                    <i class="ti-infinite"></i>
+                                                                                </div>
+                                                                                <input type="text" class="form-control quantity" placeholder="124">
                                                                                 <span class="input-group-addon delete-color" style="cursor: pointer;">
                                                                                     <i class="fa fa-trash-o"></i>
                                                                                 </span>
@@ -196,20 +204,28 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-6 color-price animated">
-                                                                        <div class="col-md-6">
+                                                                    <div class="col-md-4">
                                                                             <div class="colorpicker input-group colorpicker-component">
-                                                                                <input type="text" value="#ebcd31" class="form-control color-value" />
+                                                                                <input type="text" value="#000000" class="form-control color" />
                                                                                 <span class="input-group-addon">
                                                                                     <i></i>
                                                                                 </span>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-6">
+                                                                        </div>         
+                                                                        <div class="col-md-4">              
                                                                             <div class="input-group">
                                                                                 <div class="input-group-addon">
                                                                                     <i class="ti-money"></i>
                                                                                 </div>
-                                                                                <input type="text" class="form-control price-value" placeholder="28.890.000 VNĐ">
+                                                                                <input type="text" class="form-control price" placeholder="24990000"> 
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">              
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-addon">
+                                                                                    <i class="ti-infinite"></i>
+                                                                                </div>
+                                                                                <input type="text" class="form-control quantity" placeholder="124">
                                                                                 <span class="input-group-addon delete-color" style="cursor: pointer;">
                                                                                     <i class="fa fa-trash-o"></i>
                                                                                 </span>
@@ -438,29 +454,39 @@
 
                     var numOfColors = $('.color-price');
 
-                    var colors = [];
-                    var prices = [];
+                    var details = [];
 
-                    numOfColors.each((index, element) => {
-                        var color = $(element).find('.color-value').val();
-                        var price = $(element).find('.price-value').val();                       
+                    for (let i = 0; i < numOfColors.length; i++) {
+                        const element = numOfColors[i];
+
+                        var color = $(element).find('.color').val();
+                        var price = $(element).find('.price').val();          
+                        var quantity = $(element).find('.quantity').val();   
+                        
+                        if (!color || color == 'undefined') {
+                            showAlert('Màu sản phẩm không được bỏ trống!');
+                            return;
+                        }
+
+                        if (!price || price == 'undefined') {
+                            showAlert('Giá sản phẩm không được bỏ trống!');
+                            return;
+                        }
+
                         if (color && price) {
-                            colors.push({
-                                hex: color,
-                                name: ntc.name(color)[1] || ""
-                            });
-                            prices.push({
+                            details.push({
                                 color: {
                                     hex: color,
                                     name: ntc.name(color)[1] || ""
                                 },
-                                price: price
+                                price: price,
+                                quantity: quantity || 0
                             });
                         }
-                    });
+                        
+                    }
                     
-                    newProduct.colors = colors;
-                    newProduct.prices = prices;
+                    newProduct.details = details;
                     newProduct.brand = $("#selectBrand").find('option:selected').attr('data-id-brand');
                     newProduct.category = {
                         idRootCategory: $("#selectCategory").find('option:selected').attr('data-id-root'),
@@ -926,29 +952,18 @@
                         productFormData.append("metaTitle", newProduct.metaTitle);
                     }
                     
-                    //price
-                    if (!newProduct.prices) {
-                        showAlert('Giá sản phẩm không được bỏ trống!');
+                    //price, color and quantity
+                    if (!newProduct.details) {
+                        showAlert('Màu sắc, giá cả hoặc số lượng không được bỏ trống!');
                         return
                     } else {
-                        for (let i = 0; i < newProduct.prices.length; i++) {
-                            const element = newProduct.prices[i];
-                            productFormData.append("prices", JSON.stringify(element));
+                        for (let i = 0; i < newProduct.details.length; i++) {
+                            const element = newProduct.details[i];
+                            productFormData.append("details", JSON.stringify(element));
                         }
                     }
-                    //colors
-                    if (!newProduct.colors || newProduct.colors.length == 0) {
-                        showAlert('Màu sắc sản phẩm không được bỏ trống!');
-                        return
-                    } else {
-                        for (let i = 0; i < newProduct.colors.length; i++) {
-                            const element = newProduct.colors[i];
-                            productFormData.append("colors", JSON.stringify(element));
-                        }                        
-                    }
-                    
-                    //spec
-                    
+
+                    //spec                    
                     if (!newProduct.images || newProduct.images.length == 0 || newProduct.images.length < 2) {
                         showAlert('Sản phẩm phải có ít nhất 2 hình ảnh');
                         return
@@ -1012,20 +1027,28 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6 color-price animated">
-                                        <div class="col-md-6">
-                                            <div class="colorpicker input-group colorpicker-component colorpicker-element">
-                                                <input type="text" value="#000000" class="form-control color-value">
+                                        <div class="col-md-4">
+                                            <div class="colorpicker input-group colorpicker-component">
+                                                <input type="text" value="#000000" class="form-control color" />
                                                 <span class="input-group-addon">
-                                                    <i style="background-color: rgb(0, 0, 0);"></i>
+                                                    <i></i>
                                                 </span>
                                             </div>
                                         </div>         
-                                        <div class="col-md-6">              
+                                        <div class="col-md-4">              
                                             <div class="input-group">
                                                 <div class="input-group-addon">
                                                     <i class="ti-money"></i>
                                                 </div>
-                                                <input type="text" class="form-control price-value" placeholder="24.990.000 VNĐ">
+                                                <input type="text" class="form-control price" placeholder="24990000"> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">              
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="ti-infinite"></i>
+                                                </div>
+                                                <input type="text" class="form-control quantity" placeholder="124">
                                                 <span class="input-group-addon delete-color" style="cursor: pointer;">
                                                     <i class="fa fa-trash-o"></i>
                                                 </span>
@@ -1033,20 +1056,28 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 color-price animated">
-                                        <div class="col-md-6">
-                                            <div class="colorpicker input-group colorpicker-component colorpicker-element">
-                                                <input type="text" value="#ebcd31" class="form-control color-value">
+                                        <div class="col-md-4">
+                                            <div class="colorpicker input-group colorpicker-component">
+                                                <input type="text" value="#000000" class="form-control color" />
                                                 <span class="input-group-addon">
-                                                    <i style="background-color: rgb(235, 205, 49);"></i>
+                                                    <i></i>
                                                 </span>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                        </div>         
+                                        <div class="col-md-4">              
                                             <div class="input-group">
                                                 <div class="input-group-addon">
                                                     <i class="ti-money"></i>
                                                 </div>
-                                                <input type="text" class="form-control price-value" placeholder="28.890.000 VNĐ">
+                                                <input type="text" class="form-control price" placeholder="24990000"> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">              
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="ti-infinite"></i>
+                                                </div>
+                                                <input type="text" class="form-control quantity" placeholder="124">
                                                 <span class="input-group-addon delete-color" style="cursor: pointer;">
                                                     <i class="fa fa-trash-o"></i>
                                                 </span>
@@ -1060,20 +1091,28 @@
 
                     var newBlock = `
                         <div class="col-md-6 color-price animated">
-                            <div class="col-md-6">
-                                <div class="colorpicker input-group colorpicker-component colorpicker-element">
-                                    <input type="text" value="#000000" class="form-control color-value">
+                            <div class="col-md-4">
+                                <div class="colorpicker input-group colorpicker-component">
+                                    <input type="text" value="#000000" class="form-control color" />
                                     <span class="input-group-addon">
-                                        <i style="background-color: rgb(0, 0, 0);"></i>
+                                        <i></i>
                                     </span>
                                 </div>
                             </div>         
-                            <div class="col-md-6">              
+                            <div class="col-md-4">              
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <i class="ti-money"></i>
                                     </div>
-                                    <input type="text" class="form-control price-value" placeholder="24.990.000 VNĐ">
+                                    <input type="text" class="form-control price" placeholder="24990000"> 
+                                </div>
+                            </div>
+                            <div class="col-md-4">              
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="ti-infinite"></i>
+                                    </div>
+                                    <input type="text" class="form-control quantity" placeholder="124">
                                     <span class="input-group-addon delete-color" style="cursor: pointer;">
                                         <i class="fa fa-trash-o"></i>
                                     </span>

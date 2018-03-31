@@ -16,7 +16,7 @@
         <meta property="og:site_name" content="Fastbuy - Responsive Prestashop Theme">
         <meta property="og:description" content="Printed evening dress with straight sleeves with black thin waist belt and ruffled linings.">
         <meta property="og:image" content="<%-  data.product.images[0].url %>">
-        <meta property="product:price:amount" content="<%- data.product.prices[0].price %>">
+        <meta property="product:price:amount" content="<%- data.product.details[0].price %>">
         <meta property="product:price:currency" content="VND">
 </head>
 
@@ -189,121 +189,129 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        <!--  /Module ProductComments -->
-                                        <div class="product-prices">
-                                            <!-- 
-                                            <div class="product-discount">
-                                                <span class="regular-price">€50.99</span>
-                                            </div>
-                                            -->
-                                            <div class="product-price h5 has-discount" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                                                <link itemprop="availability" href="https://schema.org/InStock" />
-                                                <meta itemprop="priceCurrency" content="EUR">
-                                                <div class="current-price">
-                                                    <span class="price" itemprop="price" content="46.91"><%- data.product.prices[0].price %></span>
-                                                    <!-- <span class="discount discount-percentage">Save 8%</span> -->
+                                     
+                                        <% if (data.product.status) { %>
+                                            <div class="product-prices">
+                                                <!-- 
+                                                <div class="product-discount">
+                                                    <span class="regular-price">€50.99</span>
+                                                </div>
+                                                -->
+                                                <div class="product-price h5 has-discount" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                                                    <link itemprop="availability" href="https://schema.org/InStock" />
+                                                    <meta itemprop="priceCurrency" content="EUR">
+                                                    <div class="current-price">
+                                                        <span class="price" itemprop="price" content="46.91"><%- data.product.details[0].price %></span>
+                                                        <!-- <span class="discount discount-percentage">Save 8%</span> -->
+                                                    </div>
+                                                </div>
+                                                <div class="tax-shipping-delivery-label">
                                                 </div>
                                             </div>
-                                            <div class="tax-shipping-delivery-label">
-                                            </div>
-                                        </div>
-                                        <div class="product-information">
-                                            <div class="product-actions">
-                                                <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" id="add-to-cart-or-refresh">
-                                                    <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
-                                                    <input type="hidden" name="id_product" value="9" id="product_page_product_id">
-                                                    <input type="hidden" name="id_customization" value="0" id="product_customization_id">
-                                                    <div class="product-variants">
-                                                        <div class="clearfix product-variants-item">
-                                                            <span class="control-label">Màu sắc</span>
-                                                            <ul id="group_3">
-                                                                <% var prices = data.product.prices %>
-                                                                    <% if (prices) { %>
-                                                                        <% prices.forEach((element, index) => { %>
-                                                                            <li class="float-xs-left input-container">
-                                                                                <label>
-                                                                                    <input class="input-color" type="radio" name="group[3]" data-price="<%- element.price %>">
-                                                                                    <span class="color" style="background-color: <%- element.color.hex %>" title="<%- element.color.name %>">
-                                                                                        <span class="sr-only"><%- element.color.name %></span>
-                                                                                    </span>
-                                                                                </label>
-                                                                            </li>
-                                                                            <% }); %>
-                                                                                <% } %>
+                                            <div class="product-information">
+                                                <div class="product-actions">
+                                                    <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" id="add-to-cart-or-refresh">
+                                                        <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
+                                                        <input type="hidden" name="id_product" value="9" id="product_page_product_id">
+                                                        <input type="hidden" name="id_customization" value="0" id="product_customization_id">
+                                                        <div class="product-variants">
+                                                            <div class="clearfix product-variants-item">
+                                                                <span class="control-label">Màu sắc</span>
+                                                                <ul id="group_3">
+                                                                    <% var prices = data.product.details %>
+                                                                        <% if (prices) { %>
+                                                                            <% prices.forEach((element, index) => { %>
+                                                                                <li class="float-xs-left input-container">
+                                                                                    <label>
+                                                                                        <input class="input-color" type="radio" name="group[3]" data-price="<%- element.price %>" data-quantity="<%- element.quantity %>">
+                                                                                        <span class="color" style="background-color: <%- element.color.hex %>" title="<%- element.color.name %>">
+                                                                                            <span class="sr-only"><%- element.color.name %></span>
+                                                                                        </span>
+                                                                                    </label>
+                                                                                </li>
+                                                                                <% }); %>
+                                                                                    <% } %>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <section class="product-discounts">
+                                                        </section>
+                                                        <div class="product-add-to-cart">
+                                                            <span class="control-label">Số lượng</span>
+                                                            <div class="product-quantity clearfix">
+                                                                <div class="qty">
+                                                                    <input type="text" name="qty" id="quantity_wanted" value="1" class="input-group" min="1" aria-label="Quantity">
+                                                                </div>
+                                                                <div class="add">
+                                                                    <button class="btn btn-primary add-to-cart" data-button-action="add-to-cart" type="submit">
+                                                                        <i class="material-icons shopping-cart">add</i> Thêm vào giỏ hàng
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <span id="product-availability">
+                                                                <i class="material-icons product-available">&#xE5CA;</i>
+                                                                Còn hàng
+                                                            </span>
+                                                            <p class="product-minimal-quantity">
+                                                            </p>
+                                                        </div>
+                                                        <div class="social-sharing">
+                                                            <ul>
+                                                                <li>
+                                                                    <a href="http://www.facebook.com/sharer.php?u=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html" title="Share" target="_blank">
+                                                                        <i class="fa-facebook"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="https://twitter.com/intent/tweet?text=Printed%20Dress%20http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html" title="Tweet" target="_blank">
+                                                                        <i class="fa-twitter"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="https://plus.google.com/share?url=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html" title="Google+" target="_blank">
+                                                                        <i class="fa-googleplus"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="http://www.pinterest.com/pin/create/button/?media=http://demo.posthemes.com/pos_fastbuy/layout2/226/printed-dress.jpg&amp;url=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html" title="Pinterest" target="_blank">
+                                                                        <i class="fa-pinterest"></i>
+                                                                    </a>
+                                                                </li>
                                                             </ul>
                                                         </div>
-                                                    </div>
-                                                    <section class="product-discounts">
-                                                    </section>
-                                                    <div class="product-add-to-cart">
-                                                        <span class="control-label">Số lượng</span>
-                                                        <div class="product-quantity clearfix">
-                                                            <div class="qty">
-                                                                <input type="text" name="qty" id="quantity_wanted" value="1" class="input-group" min="1" aria-label="Quantity">
+                                                        <input class="product-refresh ps-hidden-by-js" name="refresh" type="submit" value="Refresh">
+                                                    </form>
+                                                </div>
+                                                <div id="block-reassurance">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="block-reassurance-item">
+                                                                <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_verified_user_black_36dp_1x.png" alt="Security policy (edit with Customer reassurance module)">
+                                                                <span class="h6">Cam kết hàng chính hãng, bảo hành 12 tháng</span>
                                                             </div>
-                                                            <div class="add">
-                                                                <button class="btn btn-primary add-to-cart" data-button-action="add-to-cart" type="submit">
-                                                                    <i class="material-icons shopping-cart">add</i> Thêm vào giỏ hàng
-                                                                </button>
+                                                        </li>
+                                                        <li>
+                                                            <div class="block-reassurance-item">
+                                                                <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_local_shipping_black_36dp_1x.png" alt="Delivery policy (edit with Customer reassurance module)">
+                                                                <span class="h6">Miễn phí giao hàng ở TP. Cần Thơ</span>
                                                             </div>
-                                                        </div>
-                                                        <span id="product-availability">
-                                                            <i class="material-icons product-available">&#xE5CA;</i>
-                                                            Còn hàng
-                                                        </span>
-                                                        <p class="product-minimal-quantity">
-                                                        </p>
-                                                    </div>
-                                                    <div class="social-sharing">
-                                                        <ul>
-                                                            <li>
-                                                                <a href="http://www.facebook.com/sharer.php?u=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html" title="Share" target="_blank">
-                                                                    <i class="fa-facebook"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="https://twitter.com/intent/tweet?text=Printed%20Dress%20http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html" title="Tweet" target="_blank">
-                                                                    <i class="fa-twitter"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="https://plus.google.com/share?url=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html" title="Google+" target="_blank">
-                                                                    <i class="fa-googleplus"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="http://www.pinterest.com/pin/create/button/?media=http://demo.posthemes.com/pos_fastbuy/layout2/226/printed-dress.jpg&amp;url=http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-printed-dress.html" title="Pinterest" target="_blank">
-                                                                    <i class="fa-pinterest"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <input class="product-refresh ps-hidden-by-js" name="refresh" type="submit" value="Refresh">
-                                                </form>
+                                                        </li>
+                                                        <li>
+                                                            <div class="block-reassurance-item">
+                                                                <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_swap_horiz_black_36dp_1x.png" alt="Return policy (edit with Customer reassurance module)">
+                                                                <span class="h6">1 đổi 1 trong 3 tháng</span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                            <div id="block-reassurance">
-                                                <ul>
-                                                    <li>
-                                                        <div class="block-reassurance-item">
-                                                            <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_verified_user_black_36dp_1x.png" alt="Security policy (edit with Customer reassurance module)">
-                                                            <span class="h6">Cam kết hàng chính hãng, bảo hành 12 tháng</span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="block-reassurance-item">
-                                                            <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_local_shipping_black_36dp_1x.png" alt="Delivery policy (edit with Customer reassurance module)">
-                                                            <span class="h6">Miễn phí giao hàng ở TP. Cần Thơ</span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="block-reassurance-item">
-                                                            <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_swap_horiz_black_36dp_1x.png" alt="Return policy (edit with Customer reassurance module)">
-                                                            <span class="h6">1 đổi 1 trong 3 tháng</span>
-                                                        </div>
-                                                    </li>
-                                                </ul>
+                                        <% } else {%>
+                                            <div style="
+                                                font-size: 30px;color: red;margin-top: 15px;;">
+                                                NGỪNG KINH DOANH
                                             </div>
-                                        </div>
+                                        <%}%> 
+
                                     </div>
                                 </div>
                             </div>
@@ -512,28 +520,24 @@
                                     <div class="modal-content">
                                         <div class="modal-body">
                                             <figure>
-                                                <img class="js-modal-product-cover product-cover-modal" width="600" src="http://demo.posthemes.com/pos_fastbuy/layout2/226-large_default/printed-dress.jpg" alt="" title="" itemprop="image">
+                                                <img class="js-modal-product-cover product-cover-modal" width="600" src="<%- data.product.images[0].url %>" alt="<%- data.product.images[0].alt %>" title="<%- data.product.images[0].alt %>" itemprop="image">
                                                 <figcaption class="image-caption">
-                                                    <div id="product-description-short" itemprop="description">
+                                                    <!-- <div id="product-description-short" itemprop="description">
                                                         <p>Printed evening dress with straight sleeves with black thin waist belt and ruffled linings.</p>
-                                                    </div>
+                                                    </div> -->
                                                 </figcaption>
                                             </figure>
                                             <aside id="thumbnails" class="thumbnails js-thumbnails text-sm-center">
                                                 <div class="js-modal-mask mask  nomargin ">
                                                     <ul class="product-images js-modal-product-images">
-                                                        <li class="thumb-container">
-                                                            <img data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/226-large_default/printed-dress.jpg" class="thumb js-modal-thumb" src="http://demo.posthemes.com/pos_fastbuy/layout2/226-home_default_4/printed-dress.jpg" alt="" title="" width="267" itemprop="image">
-                                                        </li>
-                                                        <li class="thumb-container">
-                                                            <img data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/227-large_default/printed-dress.jpg" class="thumb js-modal-thumb" src="http://demo.posthemes.com/pos_fastbuy/layout2/227-home_default_4/printed-dress.jpg" alt="" title="" width="267" itemprop="image">
-                                                        </li>
-                                                        <li class="thumb-container">
-                                                            <img data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/228-large_default/printed-dress.jpg" class="thumb js-modal-thumb" src="http://demo.posthemes.com/pos_fastbuy/layout2/228-home_default_4/printed-dress.jpg" alt="" title="" width="267" itemprop="image">
-                                                        </li>
-                                                        <li class="thumb-container">
-                                                            <img data-image-large-src="http://demo.posthemes.com/pos_fastbuy/layout2/229-large_default/printed-dress.jpg" class="thumb js-modal-thumb" src="http://demo.posthemes.com/pos_fastbuy/layout2/229-home_default_4/printed-dress.jpg" alt="" title="" width="267" itemprop="image">
-                                                        </li>
+
+                                                        <% data.product.images.forEach((image, index) => { %>
+                                                            <% if (index > 0) { %>
+                                                                <li class="thumb-container">
+                                                                    <img data-image-large-src="<%- image.url %>" class="thumb js-modal-thumb" src="<%- image.url %>" alt="" title="" width="267" itemprop="image"> 
+                                                                </li>
+                                                            <% } %>
+                                                        <% }) %>
                                                     </ul>
                                                 </div>
                                             </aside>
@@ -562,10 +566,7 @@
                                 $(window).on("load", function() {
 
                                     /* Page Scroll to id fn call */
-                                    $("#product_comments_block_extra ul.comments_advices a.reviews ").mPageScroll2id({
-                                        highlightSelector: "#product_comments_block_extra ul.comments_advices a.reviews ",
-                                        offset: 100,
-                                    });
+                                    
                                 });
                             })(jQuery);
                             </script>
@@ -880,8 +881,8 @@
 				
                 case 'laptop': 
                     var screen = specifications.screen,
-                        processor = specifications.processor.
-                        storage = specifications.storage
+                        processor = specifications.processor,
+                        storage = specifications.storage,
                         graphicsAudio = specifications.graphicsAudio,
                         connectionAndUtils = specifications.connectionAndUtils,
                         sizeAndWeight = specifications.sizeAndWeight,
@@ -2839,7 +2840,7 @@
                                         </div>
                                     </div>
                                     <div class="product-price-and-shipping">
-                                        <span itemprop="price" class="price ">${numberWithCommas(product.prices[0].price + " VNĐ")}</span>
+                                        <span itemprop="price" class="price ">${numberWithCommas(product.details[0].price + " VNĐ")}</span>
                                         <span class="sr-only">Price</span>
                                     </div>
                                     <div class="variant-links">
@@ -3006,7 +3007,7 @@
                                                     <link itemprop="availability" href="https://schema.org/InStock">
                                                     <meta itemprop="priceCurrency" content="USD">
                                                     <div class="current-price">
-                                                        <span itemprop="price" content="30.5">${numberWithCommas(product.prices[0].price) + " VNĐ"}</span>
+                                                        <span itemprop="price" content="30.5">${numberWithCommas(product.details[0].price) + " VNĐ"}</span>
                                                     </div>
                                                 </div>
                                                 <div class="tax-shipping-delivery-label">
@@ -3022,14 +3023,14 @@
                                                             <span class="control-label">Màu sắc</span>
                                                             <ul id="group_3">`
 
-                                        if (product.prices && product.prices.length > 0) {                       
-                                            product.prices.forEach(price => {
+                                        if (product.details && product.details.length > 0) {                       
+                                            product.details.forEach(element => {
                                                 quickViewModal+= `
                                                     <li class="float-xs-left input-container">
                                                         <label>
-                                                            <input class="input-color" data-price="${price.price}" type="radio" name="group[3]" value="11">
-                                                            <span class="color" style="background-color: ${price.color.hex}">
-                                                                <span class="sr-only">${price.color.name}</span>
+                                                            <input class="input-color" data-price="${element.price}" data-quantity="${element.quantity}" type="radio" name="group[3]" value="11">
+                                                            <span class="color" style="background-color: ${element.color.hex}">
+                                                                <span class="sr-only">${element.color.name}</span>
                                                             </span>
                                                         </label>
                                                     </li>

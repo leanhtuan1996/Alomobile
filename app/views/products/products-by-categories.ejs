@@ -436,10 +436,10 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="product-price-and-shipping">
-                                                                                <span itemprop="price" class="price price_sale "><%- product.prices[0].price %></span>
+                                                                                <span itemprop="price" class="price price_sale "><%- product.details[0].price %></span>
                                                                                 <span class="sr-only">Regular price</span>
                                                                                 
-                                                                                <!-- <span class="regular-price"><%- product.prices[0].price %></span>
+                                                                                <!-- <span class="regular-price"><%- product.details[0].price %></span>
                                                                                  <span class="discount-percentage">-8%</span> 
                                                                                 <span class="sr-only">Price</span> -->
                                                                             </div>
@@ -720,7 +720,7 @@
                                                     <link itemprop="availability" href="https://schema.org/InStock">
                                                     <meta itemprop="priceCurrency" content="USD">
                                                     <div class="current-price">
-                                                        <span itemprop="price" content="30.5">${numberWithCommas(product.prices[0].price) + " VNĐ"}</span>
+                                                        <span itemprop="price" content="30.5">${numberWithCommas(product.details[0].price) + " VNĐ"}</span>
                                                     </div>
                                                 </div>
                                                 <div class="tax-shipping-delivery-label">
@@ -736,12 +736,12 @@
                                                             <span class="control-label">Màu sắc</span>
                                                             <ul id="group_3">`
 
-                                        if (product.prices && product.prices.length > 0) {                       
-                                            product.prices.forEach(c => {
+                                        if (product.details && product.details.length > 0) {                       
+                                            product.details.forEach(c => {
                                                 quickViewModal+= `
                                                     <li class="float-xs-left input-container">
                                                         <label>
-                                                            <input class="input-color" type="radio" data-price="${c.price}"  name="group[3]">
+                                                            <input class="input-color" type="radio" data-price="${c.price}" data-quantity="${c.quantity}"  name="group[3]">
                                                             <span class="color" style="background-color: ${c.color.hex}">
                                                                 <span class="sr-only">${c.color.name}</span>
                                                             </span>

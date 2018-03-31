@@ -10,6 +10,14 @@ module.exports = mongoose.model('Product', new Schema({
         hex: String,
         name: String
     }],
+    details: [{
+        color: {
+            hex: String,
+            name: String
+        },
+        price: Number,
+        quantity: { type: Schema.Types.Number, default: 0 }
+    }],
     brand: {
         type: Schema.Types.ObjectId,
         ref: "Brand"
@@ -21,22 +29,24 @@ module.exports = mongoose.model('Product', new Schema({
         alt: String
     }],
     reviews: [{
-        _id: Schema.Types.ObjectId,
-        byUser: { type: Schema.Types.ObjectId, ref: "User" },
-        star: Number,
-        title: String,
-        content: String
+        type: Schema.Types.ObjectId,
+        ref: "Review"
     }],
     promotions: [{
         type: Schema.Types.ObjectId,
         ref: "Promotion"
     }],
     descriptions: String,
-    quantity: Number,
-    status: Boolean,
+    quantity: [{
+        color: {
+            hex: String,
+            name: String,
+        },
+        quantity: { type: Schema.Types.Number, default: 0 }
+    }],
+    status: { type: Schema.Types.Boolean, default: true },
     metaTitle: String,
     metaKeyword: String,
-    isAvailable: Boolean,
     prices: [{
         color: {
             hex: String,
@@ -74,5 +84,6 @@ module.exports = mongoose.model('Product', new Schema({
     metaTitle: "text",
     metaKeyword: "text",
     price: "text",
-    category: "text"
+    category: "text",
+    _id: "text"
 }));

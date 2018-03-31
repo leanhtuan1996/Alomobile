@@ -67,10 +67,9 @@
 														<tr>
 															<th>Tên sản phẩm</th>
 															<th>Ảnh</th>
-															<th style=" width: 160px;">Giá cả và màu sắc</th>
+															<th>Màu sắc, giá cả và số lượng</th>
 															<th>Thương hiệu</th>
 															<th>Chi tiết sản phẩm</th>
-															<th>Số lượng còn lại</th>
 															<th>Trạng thái</th>
 															<th>Chức năng</th>
 														</tr>
@@ -79,10 +78,9 @@
 														<tr>
 															<th>Tên sản phẩm</th>
 															<th>Ảnh</th>
-															<th style=" width: 160px;">Giá cả và màu sắc</th>
+															<th>Màu sắc, giá cả và số lượng</th>
 															<th>Thương hiệu</th>
 															<th>Chi tiết sản phẩm</th>
-															<th>Số lượng còn lại</th>
 															<th>Trạng thái</th>
 															<th>Chức năng</th>
 														</tr>
@@ -203,20 +201,24 @@
 					brand = product.brand.name || "Không có";
 				}
 
-				var colors = ``;
+				var blocks = ``;
 
-				if (product.prices && product.prices.length > 0) {
-					product.prices.forEach((element) => {
-						colors += `
-						<div style="margin: 5px 2px;">
-							<div style="background-color: ${element.color.hex}; border-radius: 50%; width: 20px; height: 20px;  display: inline-block; border-width: 1px; border-style: solid; border-color: grey;">
-							</div>
-							<span style="float: right;">${numberWithCommas(element.price) + " VNĐ"}</span>
-						</div>
+				if (product.details && product.details.length > 0) {
+					product.details.forEach((element) => {
+						blocks += `
+							<ul style="list-style-type: none;
+							margin: 0;
+							padding: 0;
+							overflow: hidden;">
+								<li style="background-color: ${element.color.hex}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin: 5px" title="${element.color.name}">
+								</li>
+								<li style="float: left; margin: 5px"><span>${numberWithCommas(element.price) + " VNĐ"}</span></li>
+								<li style="float: left; margin: 5px"><span>còn lại: ${element.quantity}</span></li>
+							</ul>
 						`;
 					});
 				} else {
-					colors = "Không có"
+					blocks = "Không có"
 				}
 
 				var image = "";
@@ -227,29 +229,30 @@
 					image = "Không có"
 				}
 
-				var date = new Date(product.created_at);
-				var created_at = `${date.getHours()}:${date.getMinutes()} ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
-
 				var tr = `
 					<tr id="${product._id}">
-						<td class="txt-dark product-name">${product.name}</td>
+						<td class="txt-dark product-name" style=" width: 200px;">${product.name}</td>
 						<td class="product-images">
 							${image}
 						</td>
-						<td class="product-colors" style=" width: 160px;position: absolute;">
+						<td class="product-colors">
 							<div>
-								${colors}	
+								${blocks}	
 							</div>														
 						</td>						
 						<td class="product-brand">${brand}</td>
 						<td>
-							<a href="product/${product._id}" class="view-detail-product">Xem chi tiết</a>
+							<a href="/admin/product/${product._id}" class="view-detail-product">Xem chi tiết</a>
 						</td>
-						<td class="product-created_at" data-original-time="${product.created_at}">
-							${created_at}
-						</td>
-						<td class="product-status">
-							<span class="label label-success font-weight-100">Active</span>
+						<td class="product-status">`
+
+						if (product.status) {
+							tr+= `<span class="label label-success font-weight-100">Đang kinh doanh</span>`
+						} else {
+							tr+= `<span class="label label-default font-weight-100">Ngừng kinh doanh</span>`
+						}
+
+						tr+= `
 						</td>
 						<td>
 							<a href="javascript:void(0)" class="text-inverse pr-10 edit-product" title="Edit" data-toggle="tooltip">

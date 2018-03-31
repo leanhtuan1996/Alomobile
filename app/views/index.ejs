@@ -699,7 +699,7 @@
                                                     <link itemprop="availability" href="https://schema.org/InStock">
                                                     <meta itemprop="priceCurrency" content="USD">
                                                     <div class="current-price">
-                                                        <span itemprop="price" content="30.5">${numberWithCommas(product.prices[0].price) + " VNĐ"}</span>
+                                                        <span itemprop="price" content="30.5">${numberWithCommas(product.details[0].price) + " VNĐ"}</span>
                                                     </div>
                                                 </div>
                                                 <div class="tax-shipping-delivery-label">
@@ -715,12 +715,12 @@
                                                             <span class="control-label">Màu sắc</span>
                                                             <ul id="group_3">`
 
-                                        if (product.prices && product.prices.length > 0) {                       
-                                            product.prices.forEach(element => {
+                                        if (product.details && product.details.length > 0) {                       
+                                            product.details.forEach(element => {
                                                 quickViewModal+= `
                                                     <li class="float-xs-left input-container">
                                                         <label>
-                                                            <input class="input-color" type="radio" data-price="${element.price}" name="group[3]" >
+                                                            <input class="input-color" type="radio" data-price="${element.price}" data-quantity="${element.quantity}" name="group[3]" >
                                                             <span class="color" style="background-color: ${element.color.hex}">
                                                                 <span class="sr-only">${element.color.name}</span>
                                                             </span>
@@ -870,7 +870,7 @@
                                 </div>
                                 <div class="product_desc">
                                     <div class="desc_info">
-                                        <h4><a href="${product.alias}-${product._id}" title="${product.name}" itemprop="name" class="product_name">${product.name}</a></h4>
+                                        <h4><a href="/${product.alias}-${product._id}" title="${product.name}" itemprop="name" class="product_name">${product.name}</a></h4>
                                         <div class="hook-reviews">
                                             <div class="comments_note" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
                                                 <div class="star_content clearfix">
@@ -887,11 +887,11 @@
                                             </div>
                                         </div>
                                         <div class="product-price-and-shipping">
-                                            <span itemprop="price" class="price ">${numberWithCommas(product.prices[0].price) + " VNĐ"}</span>
+                                            <span itemprop="price" class="price ">${numberWithCommas(product.details[0].price) + " VNĐ"}</span>
                                             <span class="sr-only">Price</span>
                                         </div>
                                         <div class="variant-links">
-                                            <a href="${product.alias}-${product._id}" class="color" title="Orange" style="background-color: #F39C11"><span class="sr-only">Orange</span></a>
+                                            <a href="/${product.alias}-${product._id}" class="color" title="Orange" style="background-color: #F39C11"><span class="sr-only">Orange</span></a>
                                             <span class="js-count count"></span>
                                         </div>
                                     </div>
@@ -912,7 +912,7 @@
                                             <a href="javascript: void(0);" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
                                         </li>
                                         <li>
-                                            <a href="${product.alias}-${product._id}" class="links-details" title="Xem chi tiết">Details</a>
+                                            <a href="/${product.alias}-${product._id}" class="links-details" title="Xem chi tiết">Details</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -970,7 +970,7 @@
                                             </div>
                                         </div>
                                         <div class="product-price-and-shipping">
-                                            <span itemprop="price" class="price ">${numberWithCommas(product.prices[0].price) + " VNĐ"}</span>
+                                            <span itemprop="price" class="price ">${numberWithCommas(product.details[0].price) + " VNĐ"}</span>
                                             <span class="sr-only">Price</span>
                                         </div>
                                         <div class="variant-links">
@@ -1053,7 +1053,7 @@
                                             </div>
                                         </div>
                                         <div class="product-price-and-shipping">
-                                            <span itemprop="price" class="price ">${numberWithCommas(product.prices[0].price) + " VNĐ"}</span>
+                                            <span itemprop="price" class="price ">${numberWithCommas(product.details[0].price) + " VNĐ"}</span>
                                             <span class="sr-only">Price</span>
                                         </div>
                                         <div class="variant-links">
@@ -1136,7 +1136,7 @@
                                             </div>
                                         </div>
                                         <div class="product-price-and-shipping">
-                                            <span itemprop="price" class="price ">${numberWithCommas(product.prices[0].price) + " VNĐ"}</span>
+                                            <span itemprop="price" class="price ">${numberWithCommas(product.details[0].price) + " VNĐ"}</span>
                                             <span class="sr-only">Price</span>
                                         </div>
                                         <div class="variant-links">
@@ -1190,7 +1190,7 @@
                     var image1 = product.images[0];
                     var image2 = product.images[1]; 
                     var name = product.name;
-                    var price = product.prices[0].price;
+                    var price = product.details[0].price;
                     var href = `${product.alias}-${product._id}`
 
                     items+= `
@@ -1314,7 +1314,7 @@
                                         </div>
                                     </div>
                                     <div class="product-price-and-shipping">
-                                        <span itemprop="price" class="price ">${numberWithCommas(product.prices[0].price + " VNĐ")}</span>
+                                        <span itemprop="price" class="price ">${numberWithCommas(product.details[0].price + " VNĐ")}</span>
                                         <span class="sr-only">Price</span>
                                     </div>
                                     <div class="variant-links">

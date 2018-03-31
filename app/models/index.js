@@ -8,6 +8,7 @@ var brand = require('./brand');
 var role = require('./role');
 var type = require('./type');
 var invalidToken = require('./invalidToken');
+var review = require('./review');
 
 module.exports = {
     user: user,
@@ -17,5 +18,6 @@ module.exports = {
     brand: brand,
     role: role,
     type: type,
-    invalidToken: invalidToken
+    invalidToken: invalidToken,
+    review: review
 }
