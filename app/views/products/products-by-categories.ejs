@@ -645,6 +645,20 @@
         });
     }
 
+    function findColorsAvailable(element = 'input[class="input-color"]') {
+        var inputs = $(element);
+        if (inputs) {
+            for (let i = 0; i < inputs.length; i++) {
+                const element = inputs[i];
+                var quantity = $(element).attr('data-quantity');
+                if (quantity && quantity > 0) {
+                    $(element).prop('checked', true);
+                    return;
+                }
+            }
+        }
+    }
+
      function getPreviewProduct(id, cb) {
         $.get('/api/v1/product/get-preview', {
             id: id
@@ -758,30 +772,15 @@
                                                     <div class="product-add-to-cart">
                                                         <span class="control-label">Quantity</span>
                                                         <div class="product-quantity clearfix">
-                                                            <div class="qty">
-                                                                <div class="input-group bootstrap-touchspin">
-                                                                    <span class="input-group-addon bootstrap-touchspin-prefix" style="display: none;"></span>
-                                                                    <input type="text" name="qty" id="quantity_wanted" value="1" class="input-group form-control"
-                                                                        min="1" aria-label="Quantity" style="display: block;">
-                                                                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>
-                                                                    <span class="input-group-btn-vertical">
-                                                                        <button class="btn btn-touchspin js-touchspin bootstrap-touchspin-up" type="button">
-                                                                            <i class="material-icons touchspin-up"></i>
-                                                                        </button>
-                                                                        <button class="btn btn-touchspin js-touchspin bootstrap-touchspin-down"
-                                                                            type="button">
-                                                                            <i class="material-icons touchspin-down"></i>
-                                                                        </button>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="add">
-                                                                <button class="btn btn-primary add-to-cart" data-button-action="add-to-cart" type="submit">
-                                                                    <i class="material-icons shopping-cart">add</i>
-                                                                    Thêm vào giỏ hàng
-                                                                </button>
-                                                            </div>
+                                                        <div class="qty">
+                                                            <input type="text" name="qty" id="quantity_want_modal" value="1" class="input-group" min="1" aria-label="Quantity">
                                                         </div>
+                                                        <div class="add">
+                                                            <button class="btn btn-primary add-to-cart" data-button-action="add-to-cart" type="submit">
+                                                                <i class="material-icons shopping-cart">add</i> Thêm vào giỏ hàng
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                         <span id="product-availability">
                                                             <i class="material-icons product-available"></i>
                                                             In stock
@@ -849,12 +848,43 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>                                           
+                        </div>        
+                        <style type="text/css">
+                        .product-quantity #quantity_want_modal {
+                        color: #232323;
+                        background-color: #fff;
+                        height: 2.75rem;
+                        padding: .175rem .5rem;
+                        width: 3rem
+                    }
+                    </style>                                   
                     `
                     $('#quickview-modal').find('.modal-dialog').remove();
 
                     $('#quickview-modal').append(quickViewModal).attr('data-id-product', product._id);
-                    initPreviewProductsSlider();                    
+                    initPreviewProductsSlider();             
+                    
+                    $("#quantity_want_modal").TouchSpin({ 
+                        verticalbuttons: true, 
+                        verticalupclass: "material-icons touchspin-up", 
+                        verticaldownclass: "material-icons touchspin-down", 
+                        buttondown_class: "btn btn-touchspin js-touchspin", 
+                        buttonup_class: "btn btn-touchspin js-touchspin", 
+                        min: 1,
+                        max: 100
+                    });
+
+                    findColorsAvailable('#quickview-modal input[class="input-color"]');      
+                    
+                    $("input[id='quantity_want_modal']").on("touchspin.on.startspin", (e) => {
+                        var colorSelected = $("#quickview-modal").find('input[class="input-color"]:checked');
+
+                        if (!colorSelected) { return }
+                        
+                        $("input[id='quantity_want_modal']").trigger("touchspin.updatesettings", {
+                            max: $(colorSelected).attr('data-quantity')
+                        });
+                    });
                 });
                 $("#quickview-modal").modal('show');
             }            
