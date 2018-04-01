@@ -3069,7 +3069,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="product-add-to-cart">
-                                                        <span class="control-label">Quantity</span>
+                                                        <span class="control-label">Số lượng</span>
                                                         <div class="product-quantity clearfix">
                                                                 <div class="qty">
                                                                     <input type="text" name="qty" id="quantity_want_modal" value="1" class="input-group" min="1" aria-label="Quantity">
@@ -3082,7 +3082,7 @@
                                                             </div>
                                                         <span id="product-availability">
                                                             <i class="material-icons product-available"></i>
-                                                            In stock
+                                                            Còn hàng
                                                         </span>
                                                         <p class="product-minimal-quantity">
                                                         </p>
@@ -3095,19 +3095,19 @@
                                                     <li>
                                                         <div class="block-reassurance-item">
                                                             <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_verified_user_black_36dp_1x.png" alt="Security policy (edit with Customer reassurance module)">
-                                                            <span class="h6" style="font-weight: 0;">Cam kết hàng chính hãng, bảo hành 12 tháng</span>
+                                                            <span class="h6" style="font-weight: 400;">Cam kết hàng chính hãng, bảo hành 12 tháng</span>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="block-reassurance-item">
                                                             <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_local_shipping_black_36dp_1x.png" alt="Delivery policy (edit with Customer reassurance module)">
-                                                            <span class="h6" style="font-weight: 0;">Miễn phí giao hàng ở TP. Cần Thơ</span>
+                                                            <span class="h6" style="font-weight: 400;">Miễn phí giao hàng ở TP. Cần Thơ</span>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="block-reassurance-item">
                                                             <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_swap_horiz_black_36dp_1x.png" alt="Return policy (edit with Customer reassurance module)">
-                                                            <span class="h6" style="font-weight: 0;">1 đổi 1 trong 3 tháng</span>
+                                                            <span class="h6" style="font-weight: 400;">1 đổi 1 trong 3 tháng</span>
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -3198,7 +3198,7 @@
 
             if ($(e.currentTarget).attr('data-quantity') > 0) {
                 $(element).html('<i class="material-icons product-available">done</i>Còn Hàng');
-                $('.add-to-cart').removeClass('disabled')
+                $('#main.primary_block button.add-to-cart').removeClass('disabled')
 
                 $("input[id='quantity_want']").trigger("touchspin.updatesettings", {
                     max: $(e.currentTarget).attr('data-quantity'),
@@ -3206,7 +3206,7 @@
                 });
             } else {
                 $(element).html('<i class="material-icons product-unavailable">clear</i>Tạm Thời Hết Hàng');
-                $('.add-to-cart').addClass('disabled')
+                $('#main div.primary_block button.add-to-cart').addClass('disabled')
 
                 $("input[id='quantity_want']").trigger("touchspin.updatesettings", {
                     min: 0,
