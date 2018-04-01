@@ -3244,7 +3244,11 @@
             $("input[id='quantity_want']").trigger("touchspin.updatesettings", {
                 max: $(colorSelected).attr('data-quantity')
             });
-        });        
+        });  
+        
+        $('#quickview-modal').on('hidden.bs.modal', (e) => {
+            $('.add-to-cart').removeClass('disabled')
+        });
     })
 </script>
 

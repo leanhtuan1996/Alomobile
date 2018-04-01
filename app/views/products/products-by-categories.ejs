@@ -910,7 +910,11 @@
                     max: 0
                 });
             }
-        })
+        });
+
+        $('#quickview-modal').on('hidden.bs.modal', (e) => {
+            $('.add-to-cart').removeClass('disabled')
+        });
     })
 </script>
 </html>

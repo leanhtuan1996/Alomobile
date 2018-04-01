@@ -894,6 +894,10 @@
 
         });
 
+        $('#quickview-modal').on('hidden.bs.modal', (e) => {
+            $('.add-to-cart').removeClass('disabled')
+        });
+
         getAccessories((cb) => {
             if (cb.length > 0) {
                 var items = ``;
