@@ -749,7 +749,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="product-add-to-cart">
-                                                        <span class="control-label">Quantity</span>
+                                                        <span class="control-label">Số lượng</span>
                                                         <div class="product-quantity clearfix">
                                                                 <div class="qty">
                                                                     <input type="text" name="qty" id="quantity_want_modal" value="1" class="input-group" min="1" aria-label="Quantity">
@@ -761,8 +761,8 @@
                                                                 </div>
                                                             </div>
                                                         <span id="product-availability">
-                                                            <i class="material-icons product-available"></i>
-                                                            In stock
+                                                                <i class="material-icons product-available">done</i>
+                                                            Còn Hàng
                                                         </span>
                                                         <p class="product-minimal-quantity">
                                                         </p>
@@ -873,6 +873,25 @@
 
         $('#quickview-modal').delegate('.input-color', 'click', (e) => {
             $('#quickview-modal > div > div > div.modal-body > div > div.col-md-7.col-sm-7 > div.product-prices > div.product-price.h5 > div > span').text(numberWithCommas($(e.currentTarget).attr("data-price") + " VNĐ"))
+           
+           var element = $('#quickview-modal span#product-availability')
+
+            if ($(e.currentTarget).attr('data-quantity') > 0) {
+                $(element).html('<i class="material-icons product-available">done</i>Còn Hàng');
+                $('.add-to-cart').removeClass('disabled')
+                $("input[id='quantity_want_modal']").trigger("touchspin.updatesettings", {
+                    max: $(e.currentTarget).attr('data-quantity'),
+                    min: 1
+                });
+            } else {
+                $(element).html('<i class="material-icons product-unavailable">clear</i>Tạm Thời Hết Hàng');
+                $('.add-to-cart').addClass('disabled')
+                $("input[id='quantity_want_modal']").trigger("touchspin.updatesettings", {
+                    min: 0,
+                    max: 0
+                });
+            }
+
         });
 
         getAccessories((cb) => {
@@ -1206,7 +1225,6 @@
             }
             initProductCate('listLaptopCateProduct')
         });
-        
     });
 
     function getSpecialProducts() {
