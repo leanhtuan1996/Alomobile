@@ -6,18 +6,18 @@
         <%- data.product.category.idRootCategory.name %> >
             <%- data.title %>
     </title>
-    <meta name="description" content="Printed evening dress with straight sleeves with black thin waist belt and ruffled linings.">
+    <meta name="description" content="Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng">
     <meta name="keywords" content="<%- data.product.metaKeyword %>">
-    <meta name="description" content="Shop powered by Alomobile">
+    <meta name="description" content="Alomobile - Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng">
     <%- include layouts/head %>
-        <meta property="og:type" content="product">
-        <meta property="og:url" content="http://demo.posthemes.com/pos_fastbuy/layout2/en/electronics/9-54-printed-dress.html">
-        <meta property="og:title" content="<%- data.product.metaTitle %>">
-        <meta property="og:site_name" content="Fastbuy - Responsive Prestashop Theme">
-        <meta property="og:description" content="Printed evening dress with straight sleeves with black thin waist belt and ruffled linings.">
-        <meta property="og:image" content="<%-  data.product.images[0].url %>">
-        <meta property="product:price:amount" content="<%- data.product.details[0].price %>">
-        <meta property="product:price:currency" content="VND">
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="http://alomobile.tech/<%- data.product.alias %>- <%- data.product._id %>">
+    <meta property="og:title" content="<%- data.product.metaTitle %>">
+    <meta property="og:site_name" content="Alomobile - Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng">
+    <meta property="og:description" content="Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng">
+    <meta property="og:image" content="<%-  data.product.images[0].url %>">
+    <meta property="product:price:amount" content="<%- data.product.details[0].price %>">
+    <meta property="product:price:currency" content="VND">
 </head>
 
 <body id="product" class="lang-en country-us currency-eur layout-full-width page-product tax-display-disabled product-id-9 product-printed-dress product-id-category-12 product-id-manufacturer-1 product-id-supplier-1 product-available-for-order">
@@ -210,7 +210,7 @@
                                             </div>
                                             <div class="product-information">
                                                 <div class="product-actions">
-                                                    <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" id="add-to-cart-or-refresh">
+                                                    <form id="add-to-cart-or-refresh">
                                                         <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
                                                         <input type="hidden" name="id_product" value="9" id="product_page_product_id">
                                                         <input type="hidden" name="id_customization" value="0" id="product_customization_id">
