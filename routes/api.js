@@ -10,6 +10,7 @@ var Category = api.category;
 var Brand = api.brand;
 var User = api.user;
 var Type = api.type;
+var Order = api.order;
 
 var multer = require('multer');
 var auth = require('../app/middleware/index').authenticate;
@@ -285,5 +286,13 @@ router.delete('/api/v1/brand/delete-brand', [auth.requireAuth, auth.requireRole]
 });
 
 //** /APIS FOR BRAND */
+
+//**APIS FOR ORDER
+router.get('/api/v1/order/checkAvailable', (req, res) => {
+    Order.checkingAvailable(req.query.id, req.query.quantity, req.query.color, (cb) => {
+        res.json(cb);
+    });
+});
+//**/APIS FOR ORDER
 
 module.exports = router;

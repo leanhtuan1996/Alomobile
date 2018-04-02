@@ -369,7 +369,7 @@
                                                         <ul class="add-to-links">
                                                             <li class="cart">
                                                                 <div class="product-add-to-cart">
-                                                                    <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" class="add-to-cart-or-refresh">
+                                                                    <form class="add-to-cart-or-refresh">
                                                                         <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
                                                                         <input type="hidden" name="id_product" value="3" class="product_page_product_id">
                                                                         <input type="hidden" name="qty" value="1">
@@ -445,7 +445,7 @@
                                                         <ul class="add-to-links">
                                                             <li class="cart">
                                                                 <div class="product-add-to-cart">
-                                                                    <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" class="add-to-cart-or-refresh">
+                                                                    <form  class="add-to-cart-or-refresh">
                                                                         <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
                                                                         <input type="hidden" name="id_product" value="9" class="product_page_product_id">
                                                                         <input type="hidden" name="qty" value="1">
@@ -638,27 +638,26 @@
     });
 
     $('#quickview-modal').delegate('.input-color', 'click', (e) => {
-            $('#quickview-modal > div > div > div.modal-body > div > div.col-md-7.col-sm-7 > div.product-prices > div.product-price.h5 > div > span').text(numberWithCommas($(e.currentTarget).attr("data-price") + " VNĐ"))
+        $('#quickview-modal > div > div > div.modal-body > div > div.col-md-7.col-sm-7 > div.product-prices > div.product-price.h5 > div > span').text(numberWithCommas($(e.currentTarget).attr("data-price") + " VNĐ"))
            
-           var element = $('#quickview-modal span#product-availability')
+        var element = $('#quickview-modal span#product-availability')
 
-            if ($(e.currentTarget).attr('data-quantity') > 0) {
-                $(element).html('<i class="material-icons product-available">done</i>Còn Hàng');
-                $('#quickview-modal button.add-to-cart').removeClass('disabled')
-                $("input[id='quantity_want_modal']").trigger("touchspin.updatesettings", {
-                    max: $(e.currentTarget).attr('data-quantity'),
-                    min: 1
-                });
-            } else {
-                $(element).html('<i class="material-icons product-unavailable">clear</i>Tạm Thời Hết Hàng');
-                $('#quickview-modal button.add-to-cart').addClass('disabled')
-                $("input[id='quantity_want_modal']").trigger("touchspin.updatesettings", {
-                    min: 0,
-                    max: 0
-                });
-            }
-
-        });
+        if ($(e.currentTarget).attr('data-quantity') > 0) {
+            $(element).html('<i class="material-icons product-available">done</i>Còn Hàng');
+            $('#quickview-modal button.add-to-cart').removeClass('disabled')
+            $("input[id='quantity_want_modal']").trigger("touchspin.updatesettings", {
+                max: $(e.currentTarget).attr('data-quantity'),
+                min: 1
+            });
+        } else {
+            $(element).html('<i class="material-icons product-unavailable">clear</i>Tạm Thời Hết Hàng');
+            $('#quickview-modal button.add-to-cart').addClass('disabled')
+            $("input[id='quantity_want_modal']").trigger("touchspin.updatesettings", {
+                min: 0,
+                max: 0
+            });
+        }
+    });
 
     function findColorsAvailable(element = 'input[class="input-color"]') {
         var inputs = $(element);
@@ -678,9 +677,7 @@
                 }
             }
         }
-    }
-
-    
+    }    
 
     function showNotification(text) {
         swal({
@@ -691,7 +688,7 @@
                 reTry: "Thử lại",
             },
         })
-    }
+    }   
 
     $(document).ready(function() {
         getSpecialProducts();
@@ -917,8 +914,6 @@
             
         });
 
-        
-
         $('#quickview-modal').on('hidden.bs.modal', (e) => {
             //$('.add-to-cart').removeClass('disabled')
         });
@@ -941,92 +936,98 @@
                 quantity: 1
             }
 
-            if (addToCart(item)) {
-                var modal = $('#blockcart-modal');
+            checkAvailable(id, 1, color, (isAvailable) => {
+                if (isAvailable) {
+                    if (addToCart(item)) {
+                        var modal = $('#blockcart-modal');
 
-                $(modal).find('div.modal-dialog').remove();
+                        $(modal).find('div.modal-dialog').remove();
 
-                var content = `
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title h6 text-sm-center" id="myModalLabel"><i class="material-icons"></i>Thêm sản phẩm vào giỏ hàng thành công</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <img class="product-image" src="${image}" alt="" title="" itemprop="image">
+                        var content = `
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                        </button>
+                                        <h4 class="modal-title h6 text-sm-center" id="myModalLabel"><i class="material-icons"></i>Thêm sản phẩm vào giỏ hàng thành công</h4>
                                     </div>
-                                    <div class="col-md-8">
-                                        <h6 class="h6 product-name">${name}</h6>
-                                        <p>${numberWithCommas(price) + " VNĐ"}</p>
-                                        <ul style="list-style-type: none;
-                                                margin: 0;
-                                                padding: 0;
-                                                overflow: hidden;">
-                                                <li style="float: left;"><strong class="product-color">Màu sắc</strong></li>
-                                                <li style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin-left: 5px" title="Cosmos">
-                                                </li>
-                                            </ul>
-                                            
-                                        </span><br>
-                                        <p style=""><strong class="product-quantity">Số lượng:</strong>&nbsp; 1</p>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <img class="product-image" src="${image}" alt="" title="" itemprop="image">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6 class="h6 product-name">${name}</h6>
+                                                <p>${numberWithCommas(price) + " VNĐ"}</p>
+                                                <ul style="list-style-type: none;
+                                                        margin: 0;
+                                                        padding: 0;
+                                                        overflow: hidden;">
+                                                        <li style="float: left;"><strong class="product-color">Màu sắc</strong></li>
+                                                        <li style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin-left: 5px" title="Cosmos">
+                                                        </li>
+                                                    </ul>
+                                                    
+                                                </span><br>
+                                                <p style=""><strong class="product-quantity">Số lượng:</strong>&nbsp; 1</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="cart-content-btn">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tiếp tục mua sắm</button>
+                                                    <a href="/cart" class="btn btn-primary"><i class="material-icons"></i>Xem giỏ hàng</a>
+                                                </div>    
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <style>
+                                    #blockcart-modal .modal-dialog {
+                                        max-width: 600px;
+                                        width: 40%;
+                                    }
+
+                                    .material-icons {
+                                        font-family: Material Icons;
+                                        font-weight: 400;
+                                        font-style: normal;
+                                        font-size: 20px;
+                                        display: inline-block;
+                                        vertical-align: middle;
+                                        width: 1em;
+                                        height: 1em;
+                                        line-height: 1;
+                                        text-transform: none;
+                                        letter-spacing: normal;
+                                        word-wrap: normal;
+                                        white-space: nowrap;
+                                        direction: ltr;
+                                        -webkit-font-smoothing: antialiased;
+                                        text-rendering: optimizeLegibility;
+                                    }
+
+                                    #blockcart-modal strong, p {
+                                        color: #333;
+                                        font-size: 14px;
+                                        font-weight: 600;
+                                    }
+                                </style>
                             </div>
-                            <div class="modal-footer">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="cart-content-btn">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tiếp tục mua sắm</button>
-                                            <a href="/cart" class="btn btn-primary"><i class="material-icons"></i>Xem giỏ hàng</a>
-                                        </div>    
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <style>
-                            #blockcart-modal .modal-dialog {
-                                max-width: 600px;
-                                width: 40%;
-                            }
+                        `
 
-                            .material-icons {
-                                font-family: Material Icons;
-                                font-weight: 400;
-                                font-style: normal;
-                                font-size: 20px;
-                                display: inline-block;
-                                vertical-align: middle;
-                                width: 1em;
-                                height: 1em;
-                                line-height: 1;
-                                text-transform: none;
-                                letter-spacing: normal;
-                                word-wrap: normal;
-                                white-space: nowrap;
-                                direction: ltr;
-                                -webkit-font-smoothing: antialiased;
-                                text-rendering: optimizeLegibility;
-                            }
-
-                            #blockcart-modal strong, p {
-                                color: #333;
-                                font-size: 14px;
-                                font-weight: 600;
-                            }
-                        </style>
-                    </div>
-                `
-
-                $(modal).append(content);                
-                $(modal).modal('show')
-            } else {
-                showNotification('Thêm vào giỏ hàng thất bại, hãy tải lại trang và thử lại.')
-            }
+                        $(modal).append(content);                
+                        $(modal).modal('show')
+                    } else {
+                        showNotification('Thêm vào giỏ hàng thất bại, hãy tải lại trang và thử lại.')
+                    }
+                } else {
+                    showNotification('Thêm vào giỏ hàng thất bại, hãy tải lại trang và thử lại.')
+                }
+            });
         });
 
         $('#quickview-modal').delegate('.add-to-cart', 'click', (e) => {
@@ -1047,95 +1048,99 @@
                 quantity: quantity
             }
 
-            if (addToCart(item)) {
-                var modal = $('#blockcart-modal');
+            checkAvailable(id, quantity, color, (result) => {
+                if (result) {
+                    if (addToCart(item)) {
+                        var modal = $('#blockcart-modal');
 
-                $(modal).find('div.modal-dialog').remove();
+                        $(modal).find('div.modal-dialog').remove();
 
-                var content = `
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title h6 text-sm-center" id="myModalLabel"><i class="material-icons"></i>Thêm sản phẩm vào giỏ hàng thành công</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <img class="product-image" src="${image}" alt="" title="" itemprop="image">
+                        var content = `
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                        </button>
+                                        <h4 class="modal-title h6 text-sm-center" id="myModalLabel"><i class="material-icons"></i>Thêm sản phẩm vào giỏ hàng thành công</h4>
                                     </div>
-                                    <div class="col-md-8">
-                                        <h6 class="h6 product-name">${name}</h6>
-                                        <p>${numberWithCommas(price) + " VNĐ"}</p>
-                                        <ul style="list-style-type: none;
-                                                margin: 0;
-                                                padding: 0;
-                                                overflow: hidden;">
-                                                <li style="float: left;"><strong class="product-color">Màu sắc</strong></li>
-                                                <li style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin-left: 5px" title="Cosmos">
-                                                </li>
-                                            </ul>
-                                            
-                                        </span><br>
-                                        <p style=""><strong class="product-quantity">Số lượng:</strong>&nbsp; ${quantity}</p>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <img class="product-image" src="${image}" alt="" title="" itemprop="image">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6 class="h6 product-name">${name}</h6>
+                                                <p>${numberWithCommas(price) + " VNĐ"}</p>
+                                                <ul style="list-style-type: none;
+                                                        margin: 0;
+                                                        padding: 0;
+                                                        overflow: hidden;">
+                                                        <li style="float: left;"><strong class="product-color">Màu sắc</strong></li>
+                                                        <li style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin-left: 5px" title="Cosmos">
+                                                        </li>
+                                                    </ul>
+                                                    
+                                                </span><br>
+                                                <p style=""><strong class="product-quantity">Số lượng:</strong>&nbsp; ${quantity}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="cart-content-btn">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tiếp tục mua sắm</button>
+                                                    <a href="/cart" class="btn btn-primary"><i class="material-icons"></i>Xem giỏ hàng</a>
+                                                </div>    
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <style>
+                                    #blockcart-modal .modal-dialog {
+                                        max-width: 600px;
+                                        width: 40%;
+                                    }
+
+                                    .material-icons {
+                                        font-family: Material Icons;
+                                        font-weight: 400;
+                                        font-style: normal;
+                                        font-size: 20px;
+                                        display: inline-block;
+                                        vertical-align: middle;
+                                        width: 1em;
+                                        height: 1em;
+                                        line-height: 1;
+                                        text-transform: none;
+                                        letter-spacing: normal;
+                                        word-wrap: normal;
+                                        white-space: nowrap;
+                                        direction: ltr;
+                                        -webkit-font-smoothing: antialiased;
+                                        text-rendering: optimizeLegibility;
+                                    }
+
+                                    #blockcart-modal strong, p {
+                                        color: #333;
+                                        font-size: 14px;
+                                        font-weight: 600;
+                                    }
+                                </style>
                             </div>
-                            <div class="modal-footer">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="cart-content-btn">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tiếp tục mua sắm</button>
-                                            <a href="/cart" class="btn btn-primary"><i class="material-icons"></i>Xem giỏ hàng</a>
-                                        </div>    
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <style>
-                            #blockcart-modal .modal-dialog {
-                                max-width: 600px;
-                                width: 40%;
-                            }
+                        `
 
-                            .material-icons {
-                                font-family: Material Icons;
-                                font-weight: 400;
-                                font-style: normal;
-                                font-size: 20px;
-                                display: inline-block;
-                                vertical-align: middle;
-                                width: 1em;
-                                height: 1em;
-                                line-height: 1;
-                                text-transform: none;
-                                letter-spacing: normal;
-                                word-wrap: normal;
-                                white-space: nowrap;
-                                direction: ltr;
-                                -webkit-font-smoothing: antialiased;
-                                text-rendering: optimizeLegibility;
-                            }
-
-                            #blockcart-modal strong, p {
-                                color: #333;
-                                font-size: 14px;
-                                font-weight: 600;
-                            }
-                        </style>
-                    </div>
-                `
-
-                $(modal).append(content);                
-                $(modal).modal('show')
-            } else {
-                showNotification('Thêm vào giỏ hàng thất bại, hãy tải lại trang và thử lại.')
-            }
-
-        })
-
+                        $(modal).append(content);                
+                        $(modal).modal('show')
+                    } else {
+                        showNotification('Thêm vào giỏ hàng thất bại, hãy tải lại trang và thử lại.')
+                    }
+                } else {
+                    showNotification('Thêm vào giỏ hàng thất bại, hãy tải lại trang và thử lại.')
+                }
+            });       
+        });
 
         getAccessories((cb) => {
             if (cb.length > 0) {
@@ -1152,16 +1157,15 @@
                             <article class="js-product-miniature" data-id-product="${product._id}" itemscope itemtype="http://schema.org/Product">
                                 <div class="img_block">
                                     <a href="${product.alias}-${product._id}" class="thumbnail product-thumbnail">
-                            <img src = "${product.images[0].url}"
-                                alt = "${product.images[0].alt}"
-                                data-full-size-image-url = "${product.images[0].url}"
-                            >
-                                                    <img class="img-responsive second-image animation1" 
-                                                    src="${product.images[1].url}" 
-                                    alt="" itemprop="image"  />
-                                    
-                            </a>
+                                        <img src = "${product.images[0].url}"
+                                            alt = "${product.images[0].alt}"
+                                            data-full-size-image-url = "${product.images[0].url}"
+                                        >
+                                        <img class="img-responsive second-image animation1" src="${product.images[1].url}" alt="" itemprop="image"  />
+                                            
+                                    </a>
                                     <ul class="product-flag">
+                                        <!-- <li class="discount-percentage" style="top: 10px;">-15%</li> -->
                                         <li class="new">New</li>
                                     </ul>
                                 </div>

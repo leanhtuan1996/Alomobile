@@ -32,6 +32,18 @@ function logout() {
     })
 }
 
+function checkAvailable(id, quantity, color, cb) {
+    $.get('/api/v1/order/checkAvailable', {
+        id: id,
+        quantity: quantity,
+        color: color
+    }, (data) => {
+        return data.error == null ? cb(true) : cb(false)
+    }).error((err) => {
+        return cb(false)
+    });
+}
+
 function addToCart(item) {      
     if (!item.id) { return false }
     if (!item.color) { return false }
