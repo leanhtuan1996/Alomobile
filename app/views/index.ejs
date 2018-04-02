@@ -625,8 +625,10 @@
         <%- include layouts/footer %>
     </main>
     <script type="text/javascript" src="/static/js/custom.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <div class="back-top"><a href="#" class="back-top-button"></a></div>
     <div id="quickview-modal" class="modal fade quickview in" tabindex="-1" role="dialog" style="display: none;"></div>
+    <div id="blockcart-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none; padding-right: 15px;"></div>
 </body>
 <script type="text/javascript">    
     $('.price').each((index, price) => {
@@ -635,18 +637,60 @@
         }
     });
 
+    $('#quickview-modal').delegate('.input-color', 'click', (e) => {
+            $('#quickview-modal > div > div > div.modal-body > div > div.col-md-7.col-sm-7 > div.product-prices > div.product-price.h5 > div > span').text(numberWithCommas($(e.currentTarget).attr("data-price") + " VNĐ"))
+           
+           var element = $('#quickview-modal span#product-availability')
+
+            if ($(e.currentTarget).attr('data-quantity') > 0) {
+                $(element).html('<i class="material-icons product-available">done</i>Còn Hàng');
+                $('#quickview-modal button.add-to-cart').removeClass('disabled')
+                $("input[id='quantity_want_modal']").trigger("touchspin.updatesettings", {
+                    max: $(e.currentTarget).attr('data-quantity'),
+                    min: 1
+                });
+            } else {
+                $(element).html('<i class="material-icons product-unavailable">clear</i>Tạm Thời Hết Hàng');
+                $('#quickview-modal button.add-to-cart').addClass('disabled')
+                $("input[id='quantity_want_modal']").trigger("touchspin.updatesettings", {
+                    min: 0,
+                    max: 0
+                });
+            }
+
+        });
+
     function findColorsAvailable(element = 'input[class="input-color"]') {
         var inputs = $(element);
         if (inputs) {
+           
             for (let i = 0; i < inputs.length; i++) {
                 const element = inputs[i];
                 var quantity = $(element).attr('data-quantity');
                 if (quantity && quantity > 0) {
                     $(element).prop('checked', true);
+                    $(element).trigger('click')
                     return;
+                }
+
+                if (i == inputs.length - 1) {
+                    $(inputs[0]).trigger('click')
                 }
             }
         }
+    }
+
+    
+
+    function showNotification(text) {
+        swal({
+            title: "Có lỗi xảy ra",
+            text: text,
+            icon: "error",
+            buttons: {
+                reTry: "Thử lại",
+            },
+        })
     }
 
     $(document).ready(function() {
@@ -720,7 +764,7 @@
                                                 </div>
                                             </div>
                                             <div class="product-actions">
-                                                <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" id="add-to-cart-or-refresh">
+                                                <form id="add-to-cart-or-refresh">
                                                     <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
                                                     <input type="hidden" name="id_product" value="5" id="product_page_product_id">
                                                     <input type="hidden" name="id_customization" value="0" id="product_customization_id">
@@ -730,20 +774,19 @@
                                                             <ul id="group_3">`
 
                                         if (product.details && product.details.length > 0) {                       
-                                            product.details.forEach(element => {
+                                            product.details.forEach(c => {
                                                 quickViewModal+= `
                                                     <li class="float-xs-left input-container">
                                                         <label>
-                                                            <input class="input-color" type="radio" data-price="${element.price}" data-quantity="${element.quantity}" name="group[3]" >
-                                                            <span class="color" style="background-color: ${element.color.hex}">
-                                                                <span class="sr-only">${element.color.name}</span>
+                                                            <input class="input-color" type="radio" data-price="${c.price}" data-quantity="${c.quantity}"  name="group[3]" data-color="${c.color.hex}">
+                                                            <span class="color" style="background-color: ${c.color.hex}">
+                                                                <span class="sr-only">${c.color.name}</span>
                                                             </span>
                                                         </label>
                                                     </li>
                                                 `
                                             });  
-                                        }                   
-
+                                        } 
                                         quickViewModal += `
                                                             </ul>
                                                         </div>
@@ -755,6 +798,9 @@
                                                                     <input type="text" name="qty" id="quantity_want_modal" value="1" class="input-group" min="1" aria-label="Quantity">
                                                                 </div>
                                                                 <div class="add">
+                                                                        <input type="hidden" name="id_product" value="${product._id}" class="product_id">
+                                                                    <input type="hidden" name="name" class="product_name" value="${product.name}">
+                                                                    <input type="hidden" name="img" class="product_img" value="${product.images[0].url}"> 
                                                                     <button class="btn btn-primary add-to-cart" data-button-action="add-to-cart" type="submit">
                                                                         <i class="material-icons shopping-cart">add</i> Thêm vào giỏ hàng
                                                                     </button>
@@ -871,37 +917,234 @@
             
         });
 
-        $('#quickview-modal').delegate('.input-color', 'click', (e) => {
-            $('#quickview-modal > div > div > div.modal-body > div > div.col-md-7.col-sm-7 > div.product-prices > div.product-price.h5 > div > span').text(numberWithCommas($(e.currentTarget).attr("data-price") + " VNĐ"))
-           
-           var element = $('#quickview-modal span#product-availability')
-
-            if ($(e.currentTarget).attr('data-quantity') > 0) {
-                $(element).html('<i class="material-icons product-available">done</i>Còn Hàng');
-                $('.add-to-cart').removeClass('disabled')
-                $("input[id='quantity_want_modal']").trigger("touchspin.updatesettings", {
-                    max: $(e.currentTarget).attr('data-quantity'),
-                    min: 1
-                });
-            } else {
-                $(element).html('<i class="material-icons product-unavailable">clear</i>Tạm Thời Hết Hàng');
-                $('.add-to-cart').addClass('disabled')
-                $("input[id='quantity_want_modal']").trigger("touchspin.updatesettings", {
-                    min: 0,
-                    max: 0
-                });
-            }
-
-        });
+        
 
         $('#quickview-modal').on('hidden.bs.modal', (e) => {
-            $('.add-to-cart').removeClass('disabled')
+            //$('.add-to-cart').removeClass('disabled')
         });
+
+        $('.owl-carousel').delegate('.add-to-cart', 'click', (e) => {  
+
+            e.preventDefault();
+
+            if ($(e.currentTarget.parentElement).find('button.disabled').length != 0) { return }
+
+            var id = $(e.currentTarget.parentElement).find('input.product_id').val();
+            var name = $(e.currentTarget.parentElement).find('input.product_name').val();
+            var image = $(e.currentTarget.parentElement).find('input.product_img').val();
+            var color = $(e.currentTarget.parentElement).find('input.product_color').val();
+            var price = $(e.currentTarget.parentElement).find('input.product_price').val();
+
+            var item = {
+                id: id,
+                color: color,
+                quantity: 1
+            }
+
+            if (addToCart(item)) {
+                var modal = $('#blockcart-modal');
+
+                $(modal).find('div.modal-dialog').remove();
+
+                var content = `
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title h6 text-sm-center" id="myModalLabel"><i class="material-icons"></i>Thêm sản phẩm vào giỏ hàng thành công</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img class="product-image" src="${image}" alt="" title="" itemprop="image">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="h6 product-name">${name}</h6>
+                                        <p>${numberWithCommas(price) + " VNĐ"}</p>
+                                        <ul style="list-style-type: none;
+                                                margin: 0;
+                                                padding: 0;
+                                                overflow: hidden;">
+                                                <li style="float: left;"><strong class="product-color">Màu sắc</strong></li>
+                                                <li style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin-left: 5px" title="Cosmos">
+                                                </li>
+                                            </ul>
+                                            
+                                        </span><br>
+                                        <p style=""><strong class="product-quantity">Số lượng:</strong>&nbsp; 1</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="cart-content-btn">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tiếp tục mua sắm</button>
+                                            <a href="/cart" class="btn btn-primary"><i class="material-icons"></i>Xem giỏ hàng</a>
+                                        </div>    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            #blockcart-modal .modal-dialog {
+                                max-width: 600px;
+                                width: 40%;
+                            }
+
+                            .material-icons {
+                                font-family: Material Icons;
+                                font-weight: 400;
+                                font-style: normal;
+                                font-size: 20px;
+                                display: inline-block;
+                                vertical-align: middle;
+                                width: 1em;
+                                height: 1em;
+                                line-height: 1;
+                                text-transform: none;
+                                letter-spacing: normal;
+                                word-wrap: normal;
+                                white-space: nowrap;
+                                direction: ltr;
+                                -webkit-font-smoothing: antialiased;
+                                text-rendering: optimizeLegibility;
+                            }
+
+                            #blockcart-modal strong, p {
+                                color: #333;
+                                font-size: 14px;
+                                font-weight: 600;
+                            }
+                        </style>
+                    </div>
+                `
+
+                $(modal).append(content);                
+                $(modal).modal('show')
+            } else {
+                showNotification('Thêm vào giỏ hàng thất bại, hãy tải lại trang và thử lại.')
+            }
+        });
+
+        $('#quickview-modal').delegate('.add-to-cart', 'click', (e) => {
+            if ($(e.currentTarget.parentElement).find('button.disabled').length != 0) { return }
+
+            var id = $(e.currentTarget.parentElement).find('input.product_id').val();
+            var name = $(e.currentTarget.parentElement).find('input.product_name').val();
+            var image = $(e.currentTarget.parentElement).find('input.product_img').val();
+
+            var colorInput = $(e.currentTarget.parentElement.parentElement.parentElement.parentElement).find('input[type="radio"]:checked');
+            var quantity = $(e.currentTarget.parentElement.parentElement.parentElement.parentElement).find('input[type="text"]').val();
+            var price = $(e.currentTarget.parentElement.parentElement.parentElement.parentElement).find('input[type="radio"]:checked').attr('data-price');
+            var color = $(e.currentTarget.parentElement.parentElement.parentElement.parentElement).find('input[type="radio"]:checked').attr('data-color');
+
+            var item = {
+                id: id,
+                color: color,
+                quantity: quantity
+            }
+
+            if (addToCart(item)) {
+                var modal = $('#blockcart-modal');
+
+                $(modal).find('div.modal-dialog').remove();
+
+                var content = `
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title h6 text-sm-center" id="myModalLabel"><i class="material-icons"></i>Thêm sản phẩm vào giỏ hàng thành công</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img class="product-image" src="${image}" alt="" title="" itemprop="image">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="h6 product-name">${name}</h6>
+                                        <p>${numberWithCommas(price) + " VNĐ"}</p>
+                                        <ul style="list-style-type: none;
+                                                margin: 0;
+                                                padding: 0;
+                                                overflow: hidden;">
+                                                <li style="float: left;"><strong class="product-color">Màu sắc</strong></li>
+                                                <li style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin-left: 5px" title="Cosmos">
+                                                </li>
+                                            </ul>
+                                            
+                                        </span><br>
+                                        <p style=""><strong class="product-quantity">Số lượng:</strong>&nbsp; ${quantity}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="cart-content-btn">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tiếp tục mua sắm</button>
+                                            <a href="/cart" class="btn btn-primary"><i class="material-icons"></i>Xem giỏ hàng</a>
+                                        </div>    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            #blockcart-modal .modal-dialog {
+                                max-width: 600px;
+                                width: 40%;
+                            }
+
+                            .material-icons {
+                                font-family: Material Icons;
+                                font-weight: 400;
+                                font-style: normal;
+                                font-size: 20px;
+                                display: inline-block;
+                                vertical-align: middle;
+                                width: 1em;
+                                height: 1em;
+                                line-height: 1;
+                                text-transform: none;
+                                letter-spacing: normal;
+                                word-wrap: normal;
+                                white-space: nowrap;
+                                direction: ltr;
+                                -webkit-font-smoothing: antialiased;
+                                text-rendering: optimizeLegibility;
+                            }
+
+                            #blockcart-modal strong, p {
+                                color: #333;
+                                font-size: 14px;
+                                font-weight: 600;
+                            }
+                        </style>
+                    </div>
+                `
+
+                $(modal).append(content);                
+                $(modal).modal('show')
+            } else {
+                showNotification('Thêm vào giỏ hàng thất bại, hãy tải lại trang và thử lại.')
+            }
+
+        })
+
 
         getAccessories((cb) => {
             if (cb.length > 0) {
                 var items = ``;
                 cb.forEach((product) => {
+
+                    var details = product.details.find(element => {
+                        return element.quantity > 0
+                    });
 
                     items += `
                     <!-- ITEM -->
@@ -940,8 +1183,14 @@
                                                 <span class="nb-comments"><span itemprop="reviewCount">1</span> Review(s)</span>
                                             </div>
                                         </div>
-                                        <div class="product-price-and-shipping">
-                                            <span itemprop="price" class="price ">${numberWithCommas(product.details[0].price) + " VNĐ"}</span>
+                                        <div class="product-price-and-shipping">`
+                                                if (details) {
+                                            items+= `<span itemprop="price" class="price ">${numberWithCommas(details.price + " VNĐ")}</span>`
+                                        } else {
+                                            items+= `<span itemprop="price" class="price ">${numberWithCommas(product.details[0].price + " VNĐ")}</span>`
+                                        }
+
+                                    items+= `  
                                             <span class="sr-only">Price</span>
                                         </div>
                                         <div class="variant-links">
@@ -952,14 +1201,27 @@
                                     <ul class="add-to-links">
                                         <li class="cart">
                                             <div class="product-add-to-cart">
-                                                <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" class="add-to-cart-or-refresh">
-                                                    <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
-                                                    <input type="hidden" name="id_product" value="8" class="product_page_product_id">
-                                                    <input type="hidden" name="qty" value="1">
-                                                    <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
-                                                        Thêm vào giỏ hàng
-                                                    </button>
-                                                </form>
+                                                <form class="add-to-cart-or-refresh">
+                                                    <input type="hidden" name="id_product" value="${product._id}" class="product_id">
+                                                    <input type="hidden" name="name" class="product_name" value="${product.name}">
+                                                    <input type="hidden" name="img" class="product_img" value="${product.images[0].url}"> 
+                                                    `
+
+                                                if (details) {
+                                                    items+= `<input type="hidden" name="color" class="product_color" value="${details.color.hex}">
+                                                    <input type="hidden" name="price" class="product_price" value="${details.price}">
+                                                <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
+                                                    Thêm vào giỏ hàng
+                                                </button>`
+                                                } else {
+                                                    items+= `
+                                                <button class="button ajax_add_to_cart_button add-to-cart btn-default disabled" data-button-action="add-to-cart" type="submit">
+                                                    Thêm vào giỏ hàng
+                                                </button>`
+                                                }
+
+                                                
+                                           items+=` </form>
                                             </div>
                                         </li>
                                         <li>
@@ -986,6 +1248,10 @@
                 var items = ``;
                 cb.forEach((product) => {
 
+                    var details = product.details.find(element => {
+                        return element.quantity > 0
+                    });
+
                     items += `
                     <!-- ITEM -->
                         <div class="item-product">
@@ -1023,8 +1289,15 @@
                                                 <span class="nb-comments"><span itemprop="reviewCount">1</span> Review(s)</span>
                                             </div>
                                         </div>
-                                        <div class="product-price-and-shipping">
-                                            <span itemprop="price" class="price ">${numberWithCommas(product.details[0].price) + " VNĐ"}</span>
+                                        <div class="product-price-and-shipping">`
+
+                                            if (details) {
+                                                items+= `<span itemprop="price" class="price ">${numberWithCommas(details.price + " VNĐ")}</span>`
+                                            } else {
+                                                items+= `<span itemprop="price" class="price ">${numberWithCommas(product.details[0].price + " VNĐ")}</span>`
+                                            }
+
+                                            items+= `   
                                             <span class="sr-only">Price</span>
                                         </div>
                                         <div class="variant-links">
@@ -1035,14 +1308,27 @@
                                     <ul class="add-to-links">
                                         <li class="cart">
                                             <div class="product-add-to-cart">
-                                                <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" class="add-to-cart-or-refresh">
-                                                    <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
-                                                    <input type="hidden" name="id_product" value="8" class="product_page_product_id">
-                                                    <input type="hidden" name="qty" value="1">
-                                                    <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
-                                                        Thêm vào giỏ hàng
-                                                    </button>
-                                                </form>
+                                                    <form class="add-to-cart-or-refresh">
+                                                    <input type="hidden" name="id_product" value="${product._id}" class="product_id">
+                                                    <input type="hidden" name="name" class="product_name" value="${product.name}">
+                                                    <input type="hidden" name="img" class="product_img" value="${product.images[0].url}"> 
+                                                    `
+
+                                                if (details) {
+                                                    items+= `<input type="hidden" name="color" class="product_color" value="${details.color.hex}">
+                                                    <input type="hidden" name="price" class="product_price" value="${details.price}">
+                                                <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
+                                                    Thêm vào giỏ hàng
+                                                </button>`
+                                                } else {
+                                                    items+= `
+                                                <button class="button ajax_add_to_cart_button add-to-cart btn-default disabled" data-button-action="add-to-cart" type="submit">
+                                                    Thêm vào giỏ hàng
+                                                </button>`
+                                                }
+
+                                                
+                                           items+=` </form>
                                             </div>
                                         </li>
                                         <li>
@@ -1068,7 +1354,9 @@
             if (cb.length > 0) {
                 var items = ``;
                 cb.forEach((product) => {
-
+                    var details = product.details.find(element => {
+                        return element.quantity > 0
+                    });
                     items += `
                     <!-- ITEM -->
                         <div class="item-product">
@@ -1106,9 +1394,16 @@
                                                 <span class="nb-comments"><span itemprop="reviewCount">1</span> Review(s)</span>
                                             </div>
                                         </div>
-                                        <div class="product-price-and-shipping">
-                                            <span itemprop="price" class="price ">${numberWithCommas(product.details[0].price) + " VNĐ"}</span>
-                                            <span class="sr-only">Price</span>
+                                        <div class="product-price-and-shipping">`
+
+                                        if (details) {
+                                            items+= `<span itemprop="price" class="price ">${numberWithCommas(details.price + " VNĐ")}</span>`
+                                        } else {
+                                            items+= `<span itemprop="price" class="price ">${numberWithCommas(product.details[0].price + " VNĐ")}</span>`
+                                        }
+
+                                        items+= `   
+                                        <span class="sr-only">Price</span>
                                         </div>
                                         <div class="variant-links">
                                             <a href="${product.alias}-${product._id}" class="color" title="Orange" style="background-color: #F39C11"><span class="sr-only">Orange</span></a>
@@ -1117,15 +1412,28 @@
                                     </div>
                                     <ul class="add-to-links">
                                         <li class="cart">
-                                            <div class="product-add-to-cart">
-                                                <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" class="add-to-cart-or-refresh">
-                                                    <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
-                                                    <input type="hidden" name="id_product" value="8" class="product_page_product_id">
-                                                    <input type="hidden" name="qty" value="1">
-                                                    <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
-                                                        Thêm vào giỏ hàng
-                                                    </button>
-                                                </form>
+                                                <div class="product-add-to-cart">
+                                                    <form class="add-to-cart-or-refresh">
+                                                    <input type="hidden" name="id_product" value="${product._id}" class="product_id">
+                                                    <input type="hidden" name="name" class="product_name" value="${product.name}">
+                                                    <input type="hidden" name="img" class="product_img" value="${product.images[0].url}"> 
+                                                    `
+
+                                                if (details) {
+                                                    items+= `<input type="hidden" name="color" class="product_color" value="${details.color.hex}">
+                                                    <input type="hidden" name="price" class="product_price" value="${details.price}">
+                                                <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
+                                                    Thêm vào giỏ hàng
+                                                </button>`
+                                                } else {
+                                                    items+= `
+                                                <button class="button ajax_add_to_cart_button add-to-cart btn-default disabled" data-button-action="add-to-cart" type="submit">
+                                                    Thêm vào giỏ hàng
+                                                </button>`
+                                                }
+
+                                                
+                                           items+=` </form>
                                             </div>
                                         </li>
                                         <li>
@@ -1151,7 +1459,9 @@
             if (cb.length > 0) {
                 var items = ``;
                 cb.forEach((product) => {
-
+                    var details = product.details.find(element => {
+                        return element.quantity > 0
+                    });
                     items += `
                     <!-- ITEM -->
                         <div class="item-product">
@@ -1189,9 +1499,16 @@
                                                 <span class="nb-comments"><span itemprop="reviewCount">1</span> Review(s)</span>
                                             </div>
                                         </div>
-                                        <div class="product-price-and-shipping">
-                                            <span itemprop="price" class="price ">${numberWithCommas(product.details[0].price) + " VNĐ"}</span>
-                                            <span class="sr-only">Price</span>
+                                        <div class="product-price-and-shipping">`
+
+                                        if (details) {
+                                            items+= `<span itemprop="price" class="price ">${numberWithCommas(details.price + " VNĐ")}</span>`
+                                        } else {
+                                            items+= `<span itemprop="price" class="price ">${numberWithCommas(product.details[0].price + " VNĐ")}</span>`
+                                        }
+
+                                        items+= `   
+                                        <span class="sr-only">Price</span>
                                         </div>
                                         <div class="variant-links">
                                             <a href="${product.alias}-${product._id}" class="color" title="Orange" style="background-color: #F39C11"><span class="sr-only">Orange</span></a>
@@ -1200,15 +1517,28 @@
                                     </div>
                                     <ul class="add-to-links">
                                         <li class="cart">
-                                            <div class="product-add-to-cart">
-                                                <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" class="add-to-cart-or-refresh">
-                                                    <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
-                                                    <input type="hidden" name="id_product" value="8" class="product_page_product_id">
-                                                    <input type="hidden" name="qty" value="1">
-                                                    <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
-                                                        Thêm vào giỏ hàng
-                                                    </button>
-                                                </form>
+                                                <div class="product-add-to-cart">
+                                                    <form class="add-to-cart-or-refresh">
+                                                    <input type="hidden" name="id_product" value="${product._id}" class="product_id">
+                                                    <input type="hidden" name="name" class="product_name" value="${product.name}">
+                                                    <input type="hidden" name="img" class="product_img" value="${product.images[0].url}"> 
+                                                    `
+
+                                                if (details) {
+                                                    items+= `<input type="hidden" name="color" class="product_color" value="${details.color.hex}">
+                                                    <input type="hidden" name="price" class="product_price" value="${details.price}">
+                                                <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
+                                                    Thêm vào giỏ hàng
+                                                </button>`
+                                                } else {
+                                                    items+= `
+                                                <button class="button ajax_add_to_cart_button add-to-cart btn-default disabled" data-button-action="add-to-cart" type="submit">
+                                                    Thêm vào giỏ hàng
+                                                </button>`
+                                                }
+
+                                                
+                                           items+=` </form>
                                             </div>
                                         </li>
                                         <li>
@@ -1243,8 +1573,11 @@
                     var image1 = product.images[0];
                     var image2 = product.images[1]; 
                     var name = product.name;
-                    var price = product.details[0].price;
                     var href = `${product.alias}-${product._id}`
+
+                    var details = product.details.find(element => {
+                        return element.quantity > 0
+                    });
 
                     items+= `
 
@@ -1275,13 +1608,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="product-price-and-shipping">
-                                        <span itemprop="price" class="price price_sale ">${numberWithCommas(price + " VNĐ")}</span>
-                                        <span class="sr-only">Regular price</span>
-                                        <!-- <span class="regular-price">$25.99</span>
-                                        <span class="discount-percentage">-10%</span> -->
-                                        <span class="sr-only">Price</span>
-                                    </div>
+                                    <div class="product-price-and-shipping">`
+
+                    if (details) {
+                        items+= `<span itemprop="price" class="price ">${numberWithCommas(details.price + " VNĐ")}</span>`
+                    } else {
+                        items+= `<span itemprop="price" class="price ">${numberWithCommas(product.details[0].price + " VNĐ")}</span>`
+                    }
+
+                    items+= `   
+                    <span class="sr-only">Price</span>
+                    </div>
                                     <div class="product-desc" itemprop="description">
                                         <p>100% cotton double printed dress. Black and white striped top and orange high waisted skater skirt bottom.</p>
                                     </div>
@@ -1292,16 +1629,29 @@
                                 </div>
                                 <ul class="add-to-links">
                                     <li class="cart">
-                                        <div class="product-add-to-cart">
-                                            <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/cart" method="post" class="add-to-cart-or-refresh">
-                                                <input type="hidden" name="token" value="ab378079e5855a38465963bba8a75c1b">
-                                                <input type="hidden" name="id_product" value="3" class="product_page_product_id">
-                                                <input type="hidden" name="qty" value="1">
+                                            <div class="product-add-to-cart">
+                                                    <form class="add-to-cart-or-refresh">
+                                                    <input type="hidden" name="id_product" value="${product._id}" class="product_id">
+                                                    <input type="hidden" name="name" class="product_name" value="${product.name}">
+                                                    <input type="hidden" name="img" class="product_img" value="${product.images[0].url}"> 
+                                                    `
+
+                                                if (details) {
+                                                    items+= `<input type="hidden" name="color" class="product_color" value="${details.color.hex}">
+                                                    <input type="hidden" name="price" class="product_price" value="${details.price}">
                                                 <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
                                                     Thêm vào giỏ hàng
-                                                </button>
-                                            </form>
-                                        </div>
+                                                </button>`
+                                                } else {
+                                                    items+= `
+                                                <button class="button ajax_add_to_cart_button add-to-cart btn-default disabled" data-button-action="add-to-cart" type="submit">
+                                                    Thêm vào giỏ hàng
+                                                </button>`
+                                                }
+
+                                                
+                                           items+=` </form>
+                                            </div>
                                     </li>
                                     <li>
                                         <a href="javascript: void(0);" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
