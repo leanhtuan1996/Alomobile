@@ -102,21 +102,6 @@ function findItemExist(products, id, color) {
     });
 }
 
-function checkRemainingQuantity(id, color, remainingQuantity, orderingQuantity) {
-
-}
-
-function updateFromCart(id, color, quantity) {
-    if (!localStorage.cart || localStorage.cart.length == 0) { return }
-    var idx = localStorage.cart.findIndex(element => {
-        return element.id = id && element.color == color
-    });
-
-    if (idx && idx > -1) {
-        localStorage.cart[idx].quantity = quantity
-    }
-}
-
 function removeFromCart(id, color) {
     if (!localStorage.cart) { return false }
     if (!id) { return false }
@@ -140,10 +125,10 @@ function removeFromCart(id, color) {
         return e.id == id && e.color == color
     });
 
-    if (idx == -1) { return false }    
+    if (idx == -1) { return false }
 
     products.splice(idx, 1);
-    
+
     try {
         localStorage.cart = JSON.stringify({ products: products });
         return products
@@ -156,12 +141,37 @@ const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-function fetchCartPreview(products) {
-    if (!products) { return }
+function getProductsCart(products = null, cb) {
+
+    if (!products) {
+        if (!localStorage.cart) { return cb([]) }
+
+        var cart;
+
+        try {
+            cart = JSON.parse(localStorage.cart);
+        } catch (error) {
+            return cb([])
+        }
+
+        products = cart.products;
+
+        if (!products || products.length == 0) { return cb([]) }
+    }
 
     $.get('/api/v1/order/detailCart', {
         products: JSON.stringify(products)
     }, (data) => {
+        return cb({
+            products: data.products
+        })
+    });
+}
+
+function fetchCartPreview(products) {
+    if (!products) { return }
+
+    getProductsCart(products, (data) => {
         if (!Array.isArray(data.products)) { return }
 
         var blockCartPreview = $('.blockcart');
@@ -249,23 +259,8 @@ jQuery(document).ready(($) => {
 });
 
 (function () {
-    if (!localStorage.cart) { return }
 
-    var cart;
-
-    try {
-        cart = JSON.parse(localStorage.cart);
-    } catch (error) {
-        return
-    }
-
-    var products = cart.products;
-
-    if (!products || products.length == 0) { return }
-
-    $.get('/api/v1/order/detailCart', {
-        products: JSON.stringify(products)
-    }, (data) => {
+    getProductsCart(null, (data) => {
         if (!Array.isArray(data.products)) { return }
 
         var blockCartPreview = $('.blockcart');
