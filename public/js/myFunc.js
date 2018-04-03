@@ -224,6 +224,65 @@ function fetchCartPreview(products) {
     });
 }
 
+function fetchCartPreview() {
+    getProductsCart(null, (data) => {
+
+        var totalPrices = 0;
+
+        var blockCartPreview = $('.blockcart');
+
+        var totalPricesHeader = $(blockCartPreview).find('div.header span.item_total');
+
+        var totalPricesContent = $(blockCartPreview).find('div.body div.price_content span.value');
+
+        var itemContentElement = $(blockCartPreview).find('div.body ul');
+
+        $(itemContentElement).find('li').remove();
+
+        if (!Array.isArray(data.products)) {
+            //set total items in header
+            $(blockCartPreview).find('div.header span.item_count').text(0);
+            $(blockCartPreview).find('div.header span.item_count').attr('data-total-items', 0)
+        } else {
+            var items = ``;
+            data.products.forEach((product, index) => {
+                totalPrices += product.detail.price * product.quantity;
+                items += `<li style="padding: 20px 0; border-bottom: 1px solid #ededed; overflow: hidden;" id="${product._id}">
+                    <div class="img_content">
+                        <img class="product-image img-responsive" src="${product.images[0].url}" width=100px; alt="" title="" style="float: left; margin: 0 20px 0 0; position: relative;">
+                        <span class="product-quantity" style="position: absolute; top: 5px; left: 5px; min-width: 25px; line-height: 23px; -webkit-border-radius: 100%; -moz-border-radius: 100%; border-radius: 100%; padding: 2px 0 0; text-align: center; background: #ff6d02; color: white; font-size: 16px;">x${product.quantity}</span>
+                    </div>
+                    <div class="right_block" style="overflow: hidden; position: relative; padding: 0 15px 0 0;">
+                        <a href="/${product.alias}-${product._id}"><span class="product-name" style="display: block; overflow: hidden; word-wrap: break-word; text-overflow: ellipsis; white-space: nowrap; color: #666666; text-transform: capitalize; font-size: 16px; line-height: 20px;">${product.name}</span></a>
+                        <span class="product-price" style="display: block; margin: 10px 0 0; color: #ff6d02;">${numberWithCommas(product.detail.price) + " VNĐ"}</span>
+                        <a class="remove-from-cart" rel="nofollow" href="javascript: void(0);" data-id-product="${product._id}" data-color-product="${product.detail.color.hex}" data-quantity="${product.quantity}" data-price="${product.detail.price}" title="Remove from cart" style="display: block; position: absolute; top: 0; right: 0; color: #777;">
+                            <i class="fa-remove"></i>
+                        </a>
+                        <div class="attributes_content" style="display: block; font-size: 14px; line-height: 20px; color: #777; margin: 5px 0 0; ">
+                            <span style="float: left;"><strong>Màu</strong>:<div style="background-color: ${product.detail.color.hex}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; margin-left: 5px ;position: absolute;" title="Cosmos"></div>
+                            </span><br>
+                        </div>
+                    </div>
+                </li> `
+            });
+
+            $(itemContentElement).append(items);
+
+            //set total items in header
+            $(blockCartPreview).find('div.header span.item_count').text(data.products.length);
+            $(blockCartPreview).find('div.header span.item_count').attr('data-total-items', data.products.length)
+        }
+
+        //set total price in header
+        $(totalPricesHeader).text(numberWithCommas(totalPrices) + " VNĐ");
+        $(totalPricesHeader).attr('data-raw-price', totalPrices)
+
+        //set total price in popup preview cart
+        $(totalPricesContent).text(numberWithCommas(totalPrices) + " VNĐ");
+        $(totalPricesContent).attr('data-raw-price', totalPrices)
+    });
+}
+
 //remove item in cart preview
 jQuery(document).ready(($) => {
     $('.blockcart').delegate('a.remove-from-cart', 'click', (e) => {

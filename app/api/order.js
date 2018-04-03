@@ -121,7 +121,7 @@ var detailCart = (products, cb) => {
         if (response.error) {
             return cb(response);
         }
-        
+
         if (response.product) {
             detailProducts.push(response.product);
         }        
@@ -142,7 +142,7 @@ var detailCart = (products, cb) => {
                     });
 
                     element.quantity = product.quantity;
-                    element.detail = detail
+                    element.detail = detail;
 
                     workflow.emit('response', {
                         product: element
