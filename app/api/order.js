@@ -85,6 +85,77 @@ var checkingAvailable = (id, quantity, color, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var detailCart = (products, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!products) {
+            workflow.emit('response', {
+                error: "Cart is empty!"
+            });
+            return
+        }
+
+        try {
+            products = JSON.parse(products);
+        } catch (error) {
+            workflow.emit('response', {
+                error: error
+            });
+            return;
+        }
+
+        if (!Array.isArray(products)) {
+            workflow.emit('response', {
+                error: "Cart is empty"
+            });
+            return;
+        }
+
+        workflow.emit('detail');
+    });
+
+    var detailProducts = [];
+
+    workflow.on('response', (response) => {
+        if (response.error) {
+            return cb(response);
+        }
+        
+        if (response.product) {
+            detailProducts.push(response.product);
+        }        
+
+        if (detailProducts.length == products.length) {
+            return cb({
+                products: detailProducts
+            });
+        }
+    });
+
+    workflow.on('detail', () => {        
+        products.forEach((product, index) => {
+            Product.findById(product.id).select('name alias details images').lean().exec((err, element) => {
+                if (product) {
+                    var detail = element.details.find((e) => {
+                        return String(e.color.hex).trim() == String(product.color).trim();
+                    });
+
+                    element.quantity = product.quantity;
+                    element.detail = detail
+
+                    workflow.emit('response', {
+                        product: element
+                    });
+                }
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
-    checkingAvailable: checkingAvailable
+    checkingAvailable: checkingAvailable,
+    detailCart: detailCart
 }

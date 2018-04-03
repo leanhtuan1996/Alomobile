@@ -293,6 +293,12 @@ router.get('/api/v1/order/checkAvailable', (req, res) => {
         res.json(cb);
     });
 });
+
+router.get('/api/v1/order/detailCart', (req, res) => {
+    Order.detailCart(req.query.products, (result) => {
+        res.json(result);
+    });
+})
 //**/APIS FOR ORDER
 
 module.exports = router;
