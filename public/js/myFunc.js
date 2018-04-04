@@ -22,12 +22,15 @@ function isValidDate(dateString) {
 function logout() {
     $.ajax({
         url: "/sign-out",
-        method: "PUT",
+        method: "GET",
         success: (data) => {
+            if (data.error) { return };
+            localStorage.removeItem('cart');
             window.location.reload();
         },
         error: (err) => {
-            window.location.reload();
+           // window.location.reload();
+           //console.log(err);
         }
     })
 }

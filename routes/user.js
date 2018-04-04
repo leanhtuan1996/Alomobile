@@ -107,8 +107,18 @@ router.post('/sign-up', (req, res) => {
   });
 }); /***/
 
+router.get('/sign-out', (req, res) => {
+  User.signOut(req.session.token, (r) => {    
+    if (!r.error) {
+      req.session.destroy();
+    }
+    res.json(r);
+  });
+})
+
 router.put('/sign-out', (req, res) => {
   User.signOut(req.session.token, (r) => {
+    console.log(r);
     if (!r.error) {
       req.session.destroy();
     }

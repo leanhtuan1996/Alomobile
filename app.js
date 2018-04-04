@@ -18,6 +18,7 @@ var admin = require('./routes/admin');
 var product = require('./routes/product');
 var api = require('./routes/api');
 var crawl = require('./routes/crawl');
+var order = require('./routes/order');
 
 var app = express();
 
@@ -55,15 +56,15 @@ app.use(session({
 
 //use static
 app.use('/static', express.static(path.join(__dirname, 'public'), {
-  maxage: '3h'
+  //maxage: '3h'
 }));
 app.use('/', index);
 app.use('/', user);
-app.use('/', error);
-app.use('/', product);
-app.use('/', admin);
-app.use('/crawl', crawl);
+app.use('/', order);
 app.use('/', api);
+app.use('/', admin);
+app.use('/', product);
+app.use('/', error);
 
 // set ssl
 var ssl = {
