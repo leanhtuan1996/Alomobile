@@ -988,7 +988,7 @@ var signOutAllDevices = (id, cb) => {
                 return
             }
 
-            validTokens = user.validTokens || [];
+            var validTokens = user.validTokens || [];
 
             user.validTokens = [];
 
@@ -998,6 +998,7 @@ var signOutAllDevices = (id, cb) => {
                         error: err
                     });
                 } else {
+                    if (validTokens.length == 0) { workflow.emit('response', {}); return; }
                     pushInvalidTokens(validTokens, (r) => {
                         workflow.emit('response', r);
                     });
