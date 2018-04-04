@@ -2190,14 +2190,11 @@
         var _prestashop2 = _interopRequireDefault(_prestashop);
         var _checkoutAddress = __webpack_require__(6);
         var _checkoutAddress2 = _interopRequireDefault(_checkoutAddress);
-        var _checkoutDelivery = __webpack_require__(7);
-        var _checkoutDelivery2 = _interopRequireDefault(_checkoutDelivery);
         var _checkoutPayment = __webpack_require__(8);
         var _checkoutPayment2 = _interopRequireDefault(_checkoutPayment);
 
         function setUpCheckout() {
             (0, _checkoutAddress2['default'])();
-            (0, _checkoutDelivery2['default'])();
             (0, _checkoutPayment2['default'])();
             handleCheckoutStepChange() }
 
@@ -2214,12 +2211,10 @@
                     $nextStep.toggleClass(currentStepClass) }
                 _prestashop2['default'].emit('changedCheckoutStep', { event: event })
             });
-            (0, _jquery2['default'])(currentStepSelector + ':not(#checkout-personal-information-step)').nextAll().on('click', function(event) {
-                (0, _jquery2['default'])(currentStepSelector + ' button.continue').click();
-                _prestashop2['default'].emit('changedCheckoutStep', { event: event }) })
+           
         }(0, _jquery2['default'])(document).ready(function() { if ((0, _jquery2['default'])('#checkout').length === 1) { setUpCheckout() } }); /***/
     }), 
-    (function(module, exports, __webpack_require__) {
+    (function(module, exports, __webpack_require__) {   //can not delete
         'use strict';
         Object.defineProperty(exports, '__esModule', { value: !0 });
 
@@ -2246,14 +2241,9 @@
         var _jquery2 = _interopRequireDefault(_jquery);
         var _prestashop = __webpack_require__(4);
         var _prestashop2 = _interopRequireDefault(_prestashop);
-        exports['default'] = function() { var $body = (0, _jquery2['default'])('body'); var deliveryFormSelector = '#js-delivery'; var summarySelector = '#js-checkout-summary'; var deliveryStepSelector = '#checkout-delivery-step'; var editDeliveryButtonSelector = '.js-edit-delivery'; var updateDeliveryForm = function updateDeliveryForm(event) { var $deliveryMethodForm = (0, _jquery2['default'])(deliveryFormSelector); var requestData = $deliveryMethodForm.serialize(); var $inputChecked = (0, _jquery2['default'])(event.currentTarget); var $newDeliveryOption = $inputChecked.parents("div.delivery-option");
-                _jquery2['default'].post($deliveryMethodForm.data('url-update'), requestData).then(function(resp) {
-                    (0, _jquery2['default'])(summarySelector).replaceWith(resp.preview);
-                    _prestashop2['default'].emit('updatedDeliveryForm', { dataForm: $deliveryMethodForm.serializeArray(), deliveryOption: $newDeliveryOption, resp: resp }) }).fail(function(resp) { _prestashop2['default'].trigger('handleError', { eventType: 'updateDeliveryOptions', resp: resp }) }) };
-            $body.on('change', deliveryFormSelector + ' input', updateDeliveryForm);
-            $body.on('click', editDeliveryButtonSelector, function(event) { event.stopPropagation();
-                (0, _jquery2['default'])(deliveryStepSelector).trigger('click');
-                _prestashop2['default'].emit('editDelivery') }) };
+        exports['default'] = function() { 
+            var $body = (0, _jquery2['default'])('body'); 
+        };
         module.exports = exports['default']; /***/
     }), (function(module, exports, __webpack_require__) {
         'use strict';
