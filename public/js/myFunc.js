@@ -513,32 +513,25 @@ function getProductsCartCheckOut() {
                 var quantity = $(e.currentTarget).val();
                 var color = $(e.currentTarget).attr('data-color-product');
                 var price = $(e.currentTarget).attr('data-price-product');
-                var subTotalPrice = $(subTotalPriceElement).attr('data-raw-price');
-                var totalPrices = $(totalPricesElement).attr('data-total-raw-price');
+                
+                var totalPrices = 0;
 
                 //adjust total price
                 $(totalPriceElement).attr('data-raw-price', quantity * price);
                 $(totalPriceElement).text(numberWithCommas(quantity * price) + " VNĐ");
 
-                if (totalPrice > quantity * price) {
-                    //sub total prices
-                    $(subTotalPriceElement).text(numberWithCommas(subTotalPrice - price) + " VNĐ");
-                    $(subTotalPriceElement).attr('data-raw-price', subTotalPrice - price);
 
-                    //total prices            
-                    $(totalPricesElement).text(numberWithCommas(totalPrices - price) + " VNĐ");
-                    $(totalPricesElement).attr('data-total-raw-price', totalPrices - price);
-                } else {
-                    //sub total prices
-                    $(subTotalPriceElement).text(numberWithCommas(Number.parseInt(subTotalPrice) + Number.parseInt(price)) + " VNĐ");
-                    $(subTotalPriceElement).attr('data-raw-price', Number.parseInt(subTotalPrice) + Number.parseInt(price));
+                $(cartOverView).find('ul.cart-items li').each((index, element)  => {
+                    totalPrices += Number.parseInt($(element).find('span.product-price strong').attr('data-raw-price'));
+                });
 
-                    //total prices            
-                    $(totalPricesElement).text(numberWithCommas(Number.parseInt(totalPrices) + Number.parseInt(price)) + " VNĐ");
-                    $(totalPricesElement).attr('data-total-raw-price', Number.parseInt(totalPrices) + Number.parseInt(price));
-                }
+                //sub total prices
+                $(subTotalPriceElement).text(numberWithCommas(totalPrices) + " VNĐ");
+                $(subTotalPriceElement).attr('data-raw-price', totalPrices);
 
-
+                //total prices            
+                $(totalPricesElement).text(numberWithCommas(totalPrices) + " VNĐ");
+                $(totalPricesElement).attr('data-total-raw-price', totalPrices);
 
                 updateQuantityItemsInCart(product._id, color, quantity)
             });
