@@ -33,6 +33,19 @@ function logout() {
 }
 
 function checkAvailable(id, quantity, color, cb) {
+
+    //get quantity of product in current cart
+    var products = getProductsInCart();
+    if (products.length > 0) {
+        var product = products.find(element => {
+            return element.id == id && element.color == color
+        });
+
+        if (product) {
+            quantity = Number.parseInt(quantity) + Number.parseInt(product.quantity);
+        }
+    }
+
     $.get('/api/v1/order/checkAvailable', {
         id: id,
         quantity: quantity,
@@ -42,6 +55,35 @@ function checkAvailable(id, quantity, color, cb) {
     }).error((err) => {
         return cb(false)
     });
+}
+
+function checkAvailableWithoutPlus(id, quantity, color, cb) {
+    $.get('/api/v1/order/checkAvailable', {
+        id: id,
+        quantity: quantity,
+        color: color
+    }, (data) => {
+        return data.error == null ? cb(true) : cb(false)
+    }).error((err) => {
+        return cb(false)
+    });
+}
+
+function getProductsInCart() {
+    if (!localStorage.cart) { return [] }
+
+    var cart;
+
+    try {
+        cart = JSON.parse(localStorage.cart);
+    } catch (error) {
+        return []
+    }
+
+    products = cart.products;
+
+    if (!products || products.length == 0) { return [] }
+    return products
 }
 
 function addToCart(item) {
@@ -137,9 +179,36 @@ function removeFromCart(id, color) {
     }
 }
 
+function updateQuantityItemsInCart(id, color, quantity) {
+    checkAvailableWithoutPlus(id, quantity, color, (isAvailable) => {
+        if (isAvailable) {
+            var products = getProductsInCart();
+            if (products.length > 0) {
+                var idx = products.findIndex(element => {
+                    return element.id == id && element.color == color
+                });
+
+                if (idx > -1) {
+                    products[idx].quantity = quantity;
+                    saveToStorage(products);
+                }
+            }
+        }
+    });
+}
+
 const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+$('.cart-items-preview').bind('DOMSubtreeModified', (e) => {
+    var product = $(e.currentTarget).find('li');
+    if (!product || product.length == 0) {
+        $(e.currentTarget.parentElement).find('div.checkout a').addClass('disabled')
+    } else {
+        $(e.currentTarget.parentElement).find('div.checkout a').removeClass('disabled')
+    }
+});
 
 function getProductsCart(products = null, cb) {
 
@@ -313,12 +382,171 @@ jQuery(document).ready(($) => {
             $(totalPricesContent).attr('data-raw-price', totalPrices)
 
             $(blockCart).find(`li#${id}`).remove();
+
+            getProductsCartCheckOut();
         }
     });
 });
 
-(function () {
+function getProductsCartCheckOut() {
+    getProductsCart(null, (data) => {
+        var items = '<ul class="cart-items">';
 
+        var products = data.products;
+
+        var cartOverView = $('#main div.cart-overview');
+        $(cartOverView).find('li').remove();
+        var cartSummary = $('#main div.cart-summary');
+
+        if (!Array.isArray(products) || products.length == 0) {
+            $(cartOverView).append(`<span class="no-items" style="text-align: center;">Không có sản phẩm nào trong giỏ hàng</span>`);
+            $('#main').find('button').addClass('disabled')
+            $('.cart-summary').find('div#cart-subtotal-products span.js-subtotal').attr('data-total-quantity', 0);
+            $('.cart-summary').find('div#cart-subtotal-products span.js-subtotal').text(0 + " sản phẩm");
+            $('.cart-summary').find('div#cart-subtotal-products span.value').text(0 + " VNĐ")
+            $('.cart-summary').find('div#cart-subtotal-products span.value').attr('data-raw-price', 0)
+            $('.cart-summary').find('div.cart-total span.value').attr('data-total-raw-price', 0);
+            $('.cart-summary').find('div.cart-total span.value').text(0 + " VNĐ")
+            return
+        }
+
+        var totalPrices = 0;
+
+        products.forEach(product => {
+            totalPrices += product.quantity * product.detail.price
+            items += `
+                <li class="cart-item" data-id-product="${product._id}">
+                    <div class="product-line-grid">
+                            <!--  product left content: image-->
+                        <div class="product-line-grid-left col-md-3 col-xs-4">
+                            <span class="product-image media-middle">
+                                <img src="${product.images[0].url}" alt="${product.images[0].alt}">
+                            </span>
+                        </div>
+                            <!--  product left body: description -->
+                        <div class="product-line-grid-body col-md-4 col-xs-8">
+                            <div class="product-line-info">
+                                <a class="label" href="/${product.alias}-${product._id}" data-id_customization="0">${product.name}</a>
+                            </div>
+                            <div class="product-line-info product-price h6 has-discount" style="margin: 5px 0px 5px 0px;">
+                                <div class="current-price">
+                                    <span class="price" style="font-size: 25px;">${numberWithCommas(product.detail.price) + " VNĐ"}</span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="product-line-info">
+                                <span class="label">Màu:</span>
+                                <div style="background-color: ${product.detail.color.hex}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; margin-left: 5px ;position: absolute;" title="Cosmos"></div>
+                            </div>
+                        </div>
+                        <!--  product left body: description -->
+                        <div class="product-line-grid-right product-line-actions col-md-5 col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-4 hidden-md-up"></div>
+                                <div class="col-md-10 col-xs-6">
+                                    <div class="row">
+                                        <div class="col-md-6 col-xs-6 qty">
+                                            <input type="text" name="qty" id="${product._id}" value="${product.quantity}" class="input-group product-quantity" min="1" max="${product.detail.quantity}" data-color-product="${product.detail.color.hex}" data-price-product="${product.detail.price}" aria-label="Quantity">
+                                        </div>
+                                        <div class="col-md-6 col-xs-2 price">
+                                            <span class="product-price" style="line-height: 25px; font-size: 16px;">
+                                                <strong data-raw-price="${product.quantity * product.detail.price}">
+                                                        ${numberWithCommas(product.quantity * product.detail.price) + " VNĐ"}
+                                                </strong>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-xs-2 text-xs-right">
+                                    <div class="cart-line-product-actions">
+                                        <a class="remove-from-cart" href="javascript: void(0)" data-id-product="${product._id}" data-color-product="${product.detail.color.hex}" data-raw-price="${product.detail.price}">
+                                            <i class="material-icons float-xs-left">delete</i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </li>
+            `
+        });
+
+        items += '</ul>'
+
+        $(cartOverView).append(items);
+
+        //sub total prices
+        $(cartSummary).find('div#cart-subtotal-products span.value').text(numberWithCommas(totalPrices) + " VNĐ");
+        $(cartSummary).find('div#cart-subtotal-products span.value').attr('data-raw-price', totalPrices);
+
+        //total prices            
+        $(cartSummary).find('div.cart-total span.value').text(numberWithCommas(totalPrices) + " VNĐ");
+        $(cartSummary).find('div.cart-total span.value').attr('data-total-raw-price', totalPrices);
+
+        //total item            
+        $(cartSummary).find('div#cart-subtotal-products span.js-subtotal').text(products.length + " sản phẩm");
+        $(cartSummary).find('div#cart-subtotal-products span.js-subtotal').attr('data-total-quantity', products.length);
+
+        //init touchSpin
+        products.forEach(product => {
+            $(`input[id=${product._id}]`).TouchSpin({
+                verticalbuttons: true,
+                verticalupclass: "material-icons touchspin-up",
+                verticaldownclass: "material-icons touchspin-down",
+                buttondown_class: "btn btn-touchspin js-touchspin",
+                buttonup_class: "btn btn-touchspin js-touchspin",
+                min: 1,
+                max: product.detail.quantity
+            });
+
+            $(`input[id=${product._id}]`).on("change", (e) => {
+                var quantity_max = $(e.currentTarget).attr('max');
+                //selector
+                var totalPriceElement = $(e.currentTarget.parentElement.parentElement.parentElement).find('span.product-price strong');
+                var subTotalPriceElement = $('#main div.cart-summary').find('div#cart-subtotal-products span.value');
+                var totalPricesElement = $('#main div.cart-summary').find('div.cart-total span.value')
+
+
+                //variable
+                var totalPrice = $(totalPriceElement).attr('data-raw-price');
+                var quantity = $(e.currentTarget).val();
+                var color = $(e.currentTarget).attr('data-color-product');
+                var price = $(e.currentTarget).attr('data-price-product');
+                var subTotalPrice = $(subTotalPriceElement).attr('data-raw-price');
+                var totalPrices = $(totalPricesElement).attr('data-total-raw-price');
+
+                //adjust total price
+                $(totalPriceElement).attr('data-raw-price', quantity * price);
+                $(totalPriceElement).text(numberWithCommas(quantity * price) + " VNĐ");
+
+                if (totalPrice > quantity * price) {
+                    //sub total prices
+                    $(subTotalPriceElement).text(numberWithCommas(subTotalPrice - price) + " VNĐ");
+                    $(subTotalPriceElement).attr('data-raw-price', subTotalPrice - price);
+
+                    //total prices            
+                    $(totalPricesElement).text(numberWithCommas(totalPrices - price) + " VNĐ");
+                    $(totalPricesElement).attr('data-total-raw-price', totalPrices - price);
+                } else {
+                    //sub total prices
+                    $(subTotalPriceElement).text(numberWithCommas(Number.parseInt(subTotalPrice) + Number.parseInt(price)) + " VNĐ");
+                    $(subTotalPriceElement).attr('data-raw-price', Number.parseInt(subTotalPrice) + Number.parseInt(price));
+
+                    //total prices            
+                    $(totalPricesElement).text(numberWithCommas(Number.parseInt(totalPrices) + Number.parseInt(price)) + " VNĐ");
+                    $(totalPricesElement).attr('data-total-raw-price', Number.parseInt(totalPrices) + Number.parseInt(price));
+                }
+
+
+
+                updateQuantityItemsInCart(product._id, color, quantity)
+            });
+        });
+    });
+}
+
+(function () {
     getProductsCart(null, (data) => {
         if (!Array.isArray(data.products)) { return }
 
