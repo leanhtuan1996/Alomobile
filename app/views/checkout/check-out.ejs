@@ -506,12 +506,189 @@
                         <h1 class="step-title h3">
                             <i class="material-icons done"></i>
                             <span class="step-number">4</span>
-                            Payment
-                            <span class="step-edit text-muted"><i class="material-icons edit">mode_edit</i> Edit</span>
+                            Phương thức thanh toán
+                            <span class="step-edit text-muted"><i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
                         </h1>
                         <div class="content">
                             <div class="payment-options ">
-                                <p class="alert alert-danger">Unfortunately, there is no payment method available.</p>
+                                <!-- <p class="alert alert-danger">Unfortunately, there is no payment method available.</p> -->
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <!--promotion method, cod, zalopay, momo-->
+                                        <div class="form-group row row-style-3  method_payment_cod">
+                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+                                                <span class="custom-radio float-xs-left">
+                                                    <input type="radio" id="payment-method-cod" name="payment-method-option" value="1" checked="">
+                                                    <span></span>
+                                                </span>
+                                            </div>
+                                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
+                                                <label for="payment-method-cod" class="control-label is-large">
+                                                    Thanh toán tiền mặt khi nhận hàng </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row row-style-3 js-payment-sub js-cybersource-group" style="display: none;">
+                                            <div class="col-lg-11 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="panel panel-default payment-sub is-small">
+                                                    <div class="panel-body">
+                                                        <div class="cybersource-form" id="paymentDetailsSection">
+                                                            <div id="frm-cybersource-token" class="div-cybersource-method">
+                                                            </div>
+                                                            <div id="frm-cybersource-card" class="div-cybersource-method">
+                                                                <div class="form-group is-modified">
+                                                                    <label for="new-card" class="icheck-wrap">
+                                                                        <div class="iradio_square-blue checked" style="position: relative;">
+                                                                            <input class="icheck js-icheck-2 input-cybersouce-method" value="" type="radio" name="payment_token" id="new-card" checked="" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial;">
+                                                                            <ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial;"></ins>
+                                                                        </div>
+                                                                    </label>
+                                                                    <label class="is-style-2" for="new-card">Nhập số thẻ mới</label>
+                                                                    <label class="new-group card-credit-list" for="new-card">
+                                                                        <span class="card-credit card-visa is-active"></span><span class="card-credit card-mastercard is-active"></span><span class="card-credit card-jcb is-active"></span>
+                                                                    </label>
+                                                                    <div class="new-group-sub" style="display:block">
+                                                                        <div class="form-group" id="div-card-num">
+                                                                            <label for="card_number">Số thẻ:</label>
+                                                                            <input type="text" class="form-control" id="card_number" name="card_number" placeholder="VD: 4123 4567 8901 2345" value="">
+                                                                            <span class="help-block"></span>
+                                                                        </div>
+                                                                        <div class="form-group" id="select-card-type">
+                                                                            <label class="select-card-type-title">Loại thẻ</label>
+                                                                            <label for="select-card-type-radio-1" class="icheck-wrap select-card-type-item is-visa">
+                                                                                <div class="iradio_square-blue" style="position: relative;">
+                                                                                    <input class="icheck" id="select-card-type-radio-1" type="radio" name="input-card-type" value="visa" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial;">
+                                                                                    <ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial;"></ins>
+                                                                                </div>
+                                                                                <span>Visa</span>
+                                                                            </label>
+                                                                            <label for="select-card-type-radio-2" class="icheck-wrap select-card-type-item is-master">
+                                                                                <div class="iradio_square-blue" style="position: relative;">
+                                                                                    <input class="icheck" id="select-card-type-radio-2" type="radio" name="input-card-type" value="mastercard" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial;">
+                                                                                    <ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial;"></ins>
+                                                                                </div>
+                                                                                <span>Master</span>
+                                                                            </label>
+                                                                            <label for="select-card-type-radio-3" class="icheck-wrap select-card-type-item is-jcb">
+                                                                                <div class="iradio_square-blue" style="position: relative;">
+                                                                                    <input class="icheck" id="select-card-type-radio-3" type="radio" name="input-card-type" value="jcb" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial;">
+                                                                                    <ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial;"></ins>
+                                                                                </div>
+                                                                                <span>JCB</span>
+                                                                            </label>
+                                                                            <span class="help-block"></span>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="bill_to_name">Tên in trên thẻ:</label>
+                                                                            <input type="text" class="form-control" id="bill_to_name" name="bill_to_name" placeholder="vd: Nguyen Van A" value="">
+                                                                        </div>
+                                                                        <div class="form-group" id="select-card-date">
+                                                                            <label for="">Ngày hết hạn:</label>
+                                                                            <div class="end-date-cvc">
+                                                                                <input type="text" id="card_expiry" class="form-control is-small-2 expiry-date-input-fake" value="" placeholder="MM/YY" autocomplete="off">
+                                                                                <input type="hidden" name="card_expiry_date" value="">
+                                                                            </div>
+                                                                            <span class="help-block"></span>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="">Mã bảo mật:</label>
+                                                                            <div class="end-date-cvc">
+                                                                                <input type="text" class="form-control is-small-2" id="card_cvn" name="card_cvn" placeholder="VD: 123" value="" autocomplete="off">
+                                                                                <i class="cvc-hint-icon"></i>
+                                                                            </div>
+                                                                            <span class="help-block"></span>
+                                                                        </div>
+                                                                        <div class="form-group has-margin">
+                                                                            <label for="card_save" class="icheck-wrap is-style-3">
+                                                                                <div class="icheckbox_square-blue checked" style="position: relative;">
+                                                                                    <input name="" type="checkbox" id="card_save" class="icheck" value="1" checked="" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial;">
+                                                                                    <ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial;"></ins>
+                                                                                </div>
+                                                                            </label>
+                                                                            <label for="card_save" class="is-style-3">Lưu và bảo mật thẻ cho lần thanh toán sau</label>
+                                                                            <label style="margin-top: 5px" class="is-style-3"><i>Tiki không trực tiếp lưu thẻ của bạn. Để đảm bảo an toàn, thông tin thẻ của bạn chỉ được lưu bởi CyberSource, công ty quản lý thanh toán lớn nhất thế giới (thuộc tổ chức VISA)</i></label>
+                                                                        </div>
+                                                                        <div class="credit-card-guide-wrap hidden-xs hidden-sm">
+                                                                            <span class="credit-card-guide"></span>
+                                                                            <p class="note">Vui lòng chú ý kiểm tra tin nhắn nếu có yêu cầu.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <input type="hidden" name="bin_code" value="">
+                                                                <input type="hidden" name="signed_field_names" value="access_key,profile_id,transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency,bill_to_forename,bill_to_surname,bill_to_email,bill_to_address_line1,bill_to_address_city,bill_to_address_country,customer_ip_address,payment_method,device_fingerprint_id">
+                                                                <input type="hidden" name="bill_to_forename" value="fgfdgdfgdf">
+                                                                <input type="hidden" name="bill_to_surname" value="dfgdfg">
+                                                                <input type="hidden" name="bill_to_email" value="tuanbinhminh1@gmail.com">
+                                                                <input type="hidden" name="bill_to_address_line1" value="123213123123">
+                                                                <input type="hidden" name="bill_to_address_line2" value="Phuong Cua Nam. Quan Hoan Kiem">
+                                                                <input type="hidden" name="bill_to_address_city" value="Ha Noi">
+                                                                <input type="hidden" name="bill_to_address_country" value="VN">
+                                                                <input type="hidden" name="unsigned_field_names" value="card_number,card_expiry_date,card_type,card_cvn">
+                                                                <input type="hidden" name="payment_method" value="card">
+                                                                <input type="hidden" name="card_type" value="002">
+                                                                <input type="hidden" name="transaction_type" value="sale">
+                                                                <input type="hidden" name="bill_to_phone" value="213123123123">
+                                                            </div>
+                                                            <span style="color: #b7071e;display: block;font-size: 11px;margin-left: 5px;margin-top: 12px;max-width: none;width: auto;" class="help-block is-modified" id="valid-failed"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--promotion method, cod, zalopay, momo-->
+                                        <div class="form-group row row-style-3  ">
+                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+                                                    <span class="custom-radio float-xs-left">
+                                                            <input type="radio" id="pay-method-vnpay" name="payment-method-option" value="2">
+                                                            <span></span>
+                                                            </span>
+                                            </div>
+                                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
+                                                <label for="pay-method-vnpay" class="control-label is-large">
+                                                    Thẻ ATM nội địa/Internet Banking (Miễn phí thanh toán) </label>
+                                            </div>
+                                        </div>
+                                        <!--123pay method-->
+                                        <div class="form-group row row-style-3 js-payment-sub" style="display: none;">
+                                            <div class="col-lg-11 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="panel panel-default payment-sub is-small js-atm-list">
+                                                    <div class="panel-body">
+                                                        <input type="hidden" name="atm-id" value="13">
+                                                        <ul class="bank">
+                                                            <li><a title="Vietcombank" alt="Vietcombank" href="javascript:void(0)" class="li-bank" data-atm-id="1"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PVCB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="Sacombank" alt="Sacombank" href="javascript:void(0)" class="li-bank" data-atm-id="2"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PSCB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="ACB" alt="ACB" href="javascript:void(0)" class="li-bank" data-atm-id="3"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PACB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="Vietinbank" alt="Vietinbank" href="javascript:void(0)" class="li-bank" data-atm-id="4"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PVTB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="DongA Bank" alt="DongA Bank" href="javascript:void(0)" class="li-bank" data-atm-id="5"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PDAB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="VIB" alt="VIB" href="javascript:void(0)" class="li-bank" data-atm-id="6"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PVIB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="TPBank" alt="TPBank" href="javascript:void(0)" class="li-bank" data-atm-id="8"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PTPB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="VPBank" alt="VPBank" href="javascript:void(0)" class="li-bank" data-atm-id="9"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PVPB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="Techcombank" alt="Techcombank" href="javascript:void(0)" class="li-bank" data-atm-id="10"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PTCB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="Eximbank" alt="Eximbank" href="javascript:void(0)" class="li-bank" data-atm-id="11"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PEIB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li class=""><a title="Maritime Bank" alt="Maritime Bank" href="javascript:void(0)" class="li-bank" data-atm-id="12"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PMRTB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li class="active"><a title="Agribank" alt="Agribank" href="javascript:void(0)" class="li-bank" data-atm-id="13"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PAGB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="Quân Đội (MBBank)" alt="Quân Đội (MBBank)" href="javascript:void(0)" class="li-bank" data-atm-id="14"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PMB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="SHB" alt="SHB" href="javascript:void(0)" class="li-bank" data-atm-id="15"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PSHB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="SeABank" alt="SeABank" href="javascript:void(0)" class="li-bank" data-atm-id="16"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PSEAB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="HDBank" alt="HDBank" href="javascript:void(0)" class="li-bank" data-atm-id="17"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PHDB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="Việt Á" alt="Việt Á" href="javascript:void(0)" class="li-bank" data-atm-id="18"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PVAB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="OceanBank" alt="OceanBank" href="javascript:void(0)" class="li-bank" data-atm-id="19"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123POCEB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="OCB" alt="OCB" href="javascript:void(0)" class="li-bank" data-atm-id="20"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123POCB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="Bac A Bank" alt="Bac A Bank" href="javascript:void(0)" class="li-bank" data-atm-id="21"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PBAB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="Nam A Bank" alt="Nam A Bank" href="javascript:void(0)" class="li-bank" data-atm-id="22"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PNAB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="NCB" alt="NCB" href="javascript:void(0)" class="li-bank" data-atm-id="23"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PNVB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="BaoVietBank" alt="BaoVietBank" href="javascript:void(0)" class="li-bank" data-atm-id="24"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PBVB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="LienVietPostBank" alt="LienVietPostBank" href="javascript:void(0)" class="li-bank" data-atm-id="25"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PLPB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="GPBank" alt="GPBank" href="javascript:void(0)" class="li-bank" data-atm-id="26"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PGPB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="Saigonbank" alt="Saigonbank" href="javascript:void(0)" class="li-bank" data-atm-id="27"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PSGB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="ABBANK" alt="ABBANK" href="javascript:void(0)" class="li-bank" data-atm-id="28"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PABB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                            <li><a title="PG Bank" alt="PG Bank" href="javascript:void(0)" class="li-bank" data-atm-id="31"><img src="https://vcdn.tikicdn.com/assets/img/123pay/123PPGB.jpg?v=1" height="74" width="120" alt=""></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <p class="ps-hidden-by-js" style="display: none;">
                                 By confirming the order, you certify that you have read and agree with all of the conditions below:
@@ -527,7 +704,7 @@
                                         </div>
                                         <div class="condition-label">
                                             <label class="js-terms" for="conditions_to_approve[terms-and-conditions]">
-                                                I agree to the <a href="http://demo.posthemes.com/pos_fastbuy/layout2/en/content/3-terms-and-conditions-of-use" id="cta-terms-and-conditions-0">terms of service</a> and will adhere to them unconditionally.
+                                                Tôi đồng ý với các điều khoản dịch vụ và sẽ tuân thủ chúng một cách vô điều kiện.
                                             </label>
                                         </div>
                                     </li>
@@ -536,7 +713,7 @@
                             <div id="payment-confirmation">
                                 <div class="ps-shown-by-js">
                                     <button type="submit" disabled="" class="btn btn-primary center-block">
-                                        Order with an obligation to pay
+                                        TIẾN HÀNH ĐẶT HÀNG
                                     </button>
                                 </div>
                                 <div class="ps-hidden-by-js" style="display: none;">
@@ -695,6 +872,16 @@
 
         $(itemsCartBlock).find('li').remove();
 
+        if (!localStorage.cart) { location.href = "/cart"; return } 
+
+        try {
+            var cart = JSON.parse(localStorage.cart);
+            if (!cart || !cart.products) { location.href = "/cart"; return }
+            if (cart.products.length == 0) { location.href = "/cart"; return }
+        } catch (error) {
+            location.href = "/cart"; return
+        }
+
         //get products in cart
         getProductsCart(null, (data) => {
             if (data.products.length != 0) {
@@ -725,6 +912,8 @@
                 $(summaryBlock).find('#cart-subtotal-products span.value').text(numberWithCommas(totalSubPrice) + " VNĐ");
                 $(summaryBlock).find('div.cart-summary-products p.total-items-cart').text(data.products.length + " sản phẩm")
                 $(summaryBlock).find('div.cart-summary-totals').find('span.value').text(numberWithCommas(totalSubPrice) + " VNĐ")
+            } else {
+                location.href = "/cart"
             }
         });
     })();

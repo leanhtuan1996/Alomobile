@@ -80,6 +80,40 @@
                                             </div>
                                             <hr class="separator">
                                             <div class="card-block">
+                                                <div class="voucher-input">
+                                                    <div class="voucher-input-inner" style="display: table;
+                                                    width: 100%;
+                                                    margin-bottom: 4px;">
+                                                        <div class="voucher-input-col" style="display: table-cell;
+                                                        vertical-align: middle">
+                                                            <span class="next-input next-input-single next-input-medium clear voucher-input-control" style="display: inline-table;
+                                                            border-collapse: separate;
+                                                            overflow: visible;
+                                                            border: 1px solid #eff0f5;
+                                                            border-spacing: 0;
+                                                            background-color: #fff;
+                                                            transition: all .3s ease-out;">
+                                                                <input type="text" id="voucher-input" placeholder="Nhập mã giảm giá" value="" height="100%" style="height: 38px;
+                                                                line-height: 38px;
+                                                                margin: 0;
+                                                                font-size: 14px;
+                                                                width: 100%;
+                                                                border: none;
+                                                                outline: none;
+                                                                padding: 0;
+                                                                font-weight: 400;
+                                                                vertical-align: baseline;
+                                                                background-color: transparent;">
+                                                            </span>
+                                                        </div>
+                                                    <div class="voucher-input-col">
+                                                        <button type="button" class="btn btn-primary">Áp dụng</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <hr class="separator">
+                                            <div class="card-block">
                                                 <div class="cart-summary-line cart-total">
                                                     <span class="label">Tổng đơn hàng</span>
                                                     <span class="value" data-total-raw-price="0">0 VNĐ</span>
@@ -108,8 +142,17 @@
     getProductsCartCheckOut();
 
     $('.checkout button').click((e) => {
-        window.location.href = '/order/check-out'
-    })
+        if (!localStorage.cart) { return } 
+
+        try {
+            var cart = JSON.parse(localStorage.cart);
+            if (!cart || !cart.products) {  return }
+            if (cart.products.length == 0) { return }
+            window.location.href = '/order/check-out'
+        } catch (error) {
+            return
+        }        
+    });
 
     $('.cart-overview').delegate('a.remove-from-cart', 'click', (e) => {
         var id = $(e.currentTarget).attr('data-id-product'),
