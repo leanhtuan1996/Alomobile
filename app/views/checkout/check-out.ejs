@@ -549,26 +549,26 @@
                             <p class="ps-hidden-by-js" style="display: none;">
                                 By confirming the order, you certify that you have read and agree with all of the conditions below:
                             </p>
-                            <form id="conditions-to-approve" method="GET">
+                            <form id="conditions-to-approve" style="margin-bottom: 5px;">
                                 <ul>
                                     <li>
                                         <div class="float-xs-left">
                                             <span class="custom-checkbox">
-                                    <input id="conditions_to_approve[terms-and-conditions]" name="conditions_to_approve[terms-and-conditions]" required="" type="checkbox" value="1" class="ps-shown-by-js">
-                                    <span><i class="material-icons checkbox-checked"></i></span>
+                                                <input id="approve_conditions" required="" type="checkbox" value="1" class="ps-shown-by-js">
+                                                <span><i class="material-icons checkbox-checked"></i></span>
                                             </span>
                                         </div>
                                         <div class="condition-label">
-                                            <label class="js-terms" for="conditions_to_approve[terms-and-conditions]">
+                                            <label class="js-terms" for="approve_conditions">
                                                 Tôi đồng ý với các điều khoản dịch vụ và sẽ tuân thủ chúng một cách vô điều kiện.
                                             </label>
                                         </div>
                                     </li>
                                 </ul>
                             </form>
-                            <div id="payment-confirmation">
+                            <div id="payment-confirmation-block">
                                 <div class="ps-shown-by-js">
-                                    <button type="submit" disabled="" class="btn btn-primary center-block">
+                                    <button type="submit" class="btn btn-primary center-block disabled">
                                         TIẾN HÀNH ĐẶT HÀNG
                                     </button>
                                 </div>
@@ -949,8 +949,16 @@
                     }                        
                 }
             );
-        });
+        });        
     });
+
+    $('#conditions-to-approve').delegate('input','click', (e) => {
+        if ($(e.currentTarget).prop('checked')) {
+            $('#payment-confirmation-block button[type="submit"]').removeClass('disabled')
+        } else {
+            $('#payment-confirmation-block button[type="submit"]').addClass('disabled');
+        }
+    })
 
 </script>
 
