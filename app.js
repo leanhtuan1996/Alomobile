@@ -56,7 +56,7 @@ app.use(session({
 
 //use static
 app.use('/static', express.static(path.join(__dirname, 'public'), {
- // maxage: '3h'
+  maxage: '3h'
 }));
 app.use('/', index);
 app.use('/', user);
@@ -96,7 +96,7 @@ app.use((req, res, next) => {
   next(err);
 });
 
-/*
+
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
@@ -171,7 +171,7 @@ app.use(function (err, req, res, next) {
   }
 });
 
-*/
+
 
 module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
 
