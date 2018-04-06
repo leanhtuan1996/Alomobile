@@ -5,29 +5,29 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('Order', new Schema({
     products: [{
         id: { type: Schema.Types.ObjectId, ref: "Product" },
-        color: { type: Schema.Types.ObjectId, ref: "Color" },
+        color: {
+            name: String,
+            hex: String
+        }, 
         price: Number,
-        quantity: Number,
-        subTotal: Number
+        quantity: Number
     }],
     byUser: { type: Schema.Types.ObjectId, ref: "User" },
-    status: String,
+    status: Number,
     toAddress: {
         fullName: String,
         phone: Number,
-        company: String,
         address: String,
         city: String,
         state: String,
-        zipPostalCode: Number,
-        country: String
+        zipPostalCode: Number
     },
     note: String,
     shippingMethod: { type: Schema.Types.ObjectId, ref: "ShippingMethod" },
-    promoCode: [{ type: Schema.Types.ObjectId, ref: "Promotion"}],
+    promoCode: [{ type: Schema.Types.ObjectId, ref: "Promotion" }],
     created_at: Number,
     updated_at: Number
-}).pre('save', function(next) {
+}).pre('save', function (next) {
     var order = this;
 
     order.updated_at = Date.now();

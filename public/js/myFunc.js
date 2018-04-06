@@ -29,12 +29,13 @@ function logout() {
             window.location.reload();
         },
         error: (err) => {
-           // window.location.reload();
-           //console.log(err);
+            // window.location.reload();
+            //console.log(err);
         }
     })
 }
 
+//for checking in add-to-cart feature
 function checkAvailable(id, quantity, color, cb) {
 
     //get quantity of product in current cart
@@ -60,18 +61,7 @@ function checkAvailable(id, quantity, color, cb) {
     });
 }
 
-function checkAvailableWithoutPlus(id, quantity, color, cb) {
-    $.get('/api/v1/order/checkAvailable', {
-        id: id,
-        quantity: quantity,
-        color: color
-    }, (data) => {
-        return data.error == null ? cb(true) : cb(false)
-    }).error((err) => {
-        return cb(false)
-    });
-}
-
+//get all products of cart in localStorage
 function getProductsInCart() {
     if (!localStorage.cart) { return [] }
 
@@ -89,6 +79,7 @@ function getProductsInCart() {
     return products
 }
 
+//add id, color & quantity of product to localStorage
 function addToCart(item) {
     if (!item.id) { return false }
     if (!item.color) { return false }
@@ -131,10 +122,11 @@ function addToCart(item) {
     }
 }
 
+//save new product to localStorage and update preview cart
 function saveToStorage(products) {
     try {
         localStorage.cart = JSON.stringify({ products: products });
-        fetchCartPreview(products);
+        fetchCartPreview();
         return products
     } catch (error) {
         return null
@@ -183,21 +175,17 @@ function removeFromCart(id, color) {
 }
 
 function updateQuantityItemsInCart(id, color, quantity) {
-    checkAvailableWithoutPlus(id, quantity, color, (isAvailable) => {
-        if (isAvailable) {
-            var products = getProductsInCart();
-            if (products.length > 0) {
-                var idx = products.findIndex(element => {
-                    return element.id == id && element.color == color
-                });
+    var products = getProductsInCart();
+    if (products.length > 0) {
+        var idx = products.findIndex(element => {
+            return element.id == id && element.color == color
+        });
 
-                if (idx > -1) {
-                    products[idx].quantity = quantity;
-                    saveToStorage(products);
-                }
-            }
+        if (idx > -1) {
+            products[idx].quantity = quantity;
+            saveToStorage(products);
         }
-    });
+    }
 }
 
 const numberWithCommas = (x) => {
@@ -213,23 +201,23 @@ $('.cart-items-preview').bind('DOMSubtreeModified', (e) => {
     }
 });
 
-function getProductsCart(products = null, cb) {
 
-    if (!products) {
-        if (!localStorage.cart) { return cb([]) }
+function getProductsCart(cb) {
 
-        var cart;
+    if (!localStorage.cart) { return cb([]) }
 
-        try {
-            cart = JSON.parse(localStorage.cart);
-        } catch (error) {
-            return cb([])
-        }
+    var cart;
 
-        products = cart.products;
-
-        if (!products || products.length == 0) { return cb([]) }
+    try {
+        cart = JSON.parse(localStorage.cart);
+    } catch (error) {
+        return cb([])
     }
+
+    products = cart.products;
+
+    if (!products || products.length == 0) { return cb([]) }
+
 
     $.get('/api/v1/order/detailCart', {
         products: JSON.stringify(products)
@@ -240,64 +228,10 @@ function getProductsCart(products = null, cb) {
     });
 }
 
-function fetchCartPreview(products) {
-    if (!products) { return }
-
-    getProductsCart(products, (data) => {
-        if (!Array.isArray(data.products)) { return }
-
-        var blockCartPreview = $('.blockcart');
-
-        var totalPricesHeader = $(blockCartPreview).find('div.header span.item_total');
-
-        //set total items in header
-        $(blockCartPreview).find('div.header span.item_count').text(data.products.length);
-        $(blockCartPreview).find('div.header span.item_count').attr('data-total-items', data.products.length)
-
-        var totalPricesContent = $(blockCartPreview).find('div.body div.price_content span.value');
-
-        var itemContentElement = $(blockCartPreview).find('div.body ul');
-
-        $(itemContentElement).find('li').remove();
-
-        var totalPrices = 0;
-        var items = ``;
-        data.products.forEach((product, index) => {
-            totalPrices += product.detail.price * product.quantity;
-            items += `<li style="padding: 20px 0; border-bottom: 1px solid #ededed; overflow: hidden;" id="${product._id}">
-                <div class="img_content">
-                    <img class="product-image img-responsive" src="${product.images[0].url}" width=100px; alt="" title="" style="float: left; margin: 0 20px 0 0; position: relative;">
-                    <span class="product-quantity" style="position: absolute; top: 5px; left: 5px; min-width: 25px; line-height: 23px; -webkit-border-radius: 100%; -moz-border-radius: 100%; border-radius: 100%; padding: 2px 0 0; text-align: center; background: #ff6d02; color: white; font-size: 16px;">x${product.quantity}</span>
-                </div>
-                <div class="right_block" style="overflow: hidden; position: relative; padding: 0 15px 0 0;">
-                    <a href="/${product.alias}-${product._Id}"><span class="product-name" style="display: block; overflow: hidden; word-wrap: break-word; text-overflow: ellipsis; white-space: nowrap; color: #666666; text-transform: capitalize; font-size: 16px; line-height: 20px;">${product.name}</span></a>
-                    <span class="product-price" style="display: block; margin: 10px 0 0; color: #ff6d02;">${numberWithCommas(product.detail.price) + " VNĐ"}</span>
-                    <a class="remove-from-cart" rel="nofollow" href="javascript: void(0);" data-id-product="${product._id}" data-color-product="${product.detail.color.hex}" data-quantity="${product.quantity}" data-price="${product.detail.price}" title="Remove from cart" style="display: block; position: absolute; top: 0; right: 0; color: #777;">
-                        <i class="fa-remove"></i>
-                    </a>
-                    <div class="attributes_content" style="display: block; font-size: 14px; line-height: 20px; color: #777; margin: 5px 0 0; ">
-                        <span style="float: left;"><strong>Color</strong>:<div style="background-color: ${product.detail.color.hex}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; margin-left: 5px ;position: absolute;" title="Cosmos"></div>
-                        </span><br>
-                    </div>
-                </div>
-            </li> `
-        });
-
-        $(itemContentElement).append(items);
-
-        //set total price in header
-
-        $(totalPricesHeader).text(numberWithCommas(totalPrices) + " VNĐ");
-        $(totalPricesHeader).attr('data-raw-price', totalPrices)
-
-        //set total price in popup preview cart
-        $(totalPricesContent).text(numberWithCommas(totalPrices) + " VNĐ");
-        $(totalPricesContent).attr('data-raw-price', totalPrices)
-    });
-}
-
+//fetch products from cart to api for get full infor
 function fetchCartPreview() {
-    getProductsCart(null, (data) => {
+
+    getProductsCart((data) => {
 
         var totalPrices = 0;
 
@@ -391,8 +325,9 @@ jQuery(document).ready(($) => {
     });
 });
 
+//for page check-out cart
 function getProductsCartCheckOut() {
-    getProductsCart(null, (data) => {
+    getProductsCart((data) => {
         var items = '<ul class="cart-items">';
 
         var products = data.products;
@@ -499,8 +434,7 @@ function getProductsCartCheckOut() {
                 verticaldownclass: "material-icons touchspin-down",
                 buttondown_class: "btn btn-touchspin js-touchspin",
                 buttonup_class: "btn btn-touchspin js-touchspin",
-                min: 1,
-                max: product.detail.quantity
+                min: 1
             });
 
             $(`input[id=${product._id}]`).on("change", (e) => {
@@ -516,7 +450,7 @@ function getProductsCartCheckOut() {
                 var quantity = $(e.currentTarget).val();
                 var color = $(e.currentTarget).attr('data-color-product');
                 var price = $(e.currentTarget).attr('data-price-product');
-                
+
                 var totalPrices = 0;
 
                 //adjust total price
@@ -524,7 +458,7 @@ function getProductsCartCheckOut() {
                 $(totalPriceElement).text(numberWithCommas(quantity * price) + " VNĐ");
 
 
-                $(cartOverView).find('ul.cart-items li').each((index, element)  => {
+                $(cartOverView).find('ul.cart-items li').each((index, element) => {
                     totalPrices += Number.parseInt($(element).find('span.product-price strong').attr('data-raw-price'));
                 });
 
@@ -542,56 +476,4 @@ function getProductsCartCheckOut() {
     });
 }
 
-(function () {
-    getProductsCart(null, (data) => {
-        if (!Array.isArray(data.products)) { return }
-
-        var blockCartPreview = $('.blockcart');
-
-        var totalPricesHeader = $(blockCartPreview).find('div.header span.item_total');
-
-        //set total items in header
-        $(blockCartPreview).find('div.header span.item_count').text(data.products.length);
-        $(blockCartPreview).find('div.header span.item_count').attr('data-total-items', data.products.length)
-
-        var totalPricesContent = $(blockCartPreview).find('div.body div.price_content span.value');
-
-        var itemContentElement = $(blockCartPreview).find('div.body ul');
-
-        $(itemContentElement).find('li').remove();
-
-        var totalPrices = 0;
-        var items = ``;
-        data.products.forEach((product, index) => {
-            totalPrices += product.detail.price * product.quantity;
-            items += `<li style="padding: 20px 0; border-bottom: 1px solid #ededed; overflow: hidden;" id="${product._id}">
-                <div class="img_content">
-                    <img class="product-image img-responsive" src="${product.images[0].url}" width=100px; alt="" title="" style="float: left; margin: 0 20px 0 0; position: relative;">
-                    <span class="product-quantity" style="position: absolute; top: 5px; left: 5px; min-width: 25px; line-height: 23px; -webkit-border-radius: 100%; -moz-border-radius: 100%; border-radius: 100%; padding: 2px 0 0; text-align: center; background: #ff6d02; color: white; font-size: 16px;">x${product.quantity}</span>
-                </div>
-                <div class="right_block" style="overflow: hidden; position: relative; padding: 0 15px 0 0;">
-                    <a href="/${product.alias}-${product._id}"><span class="product-name" style="display: block; overflow: hidden; word-wrap: break-word; text-overflow: ellipsis; white-space: nowrap; color: #666666; text-transform: capitalize; font-size: 16px; line-height: 20px;">${product.name}</span></a>
-                    <span class="product-price" style="display: block; margin: 10px 0 0; color: #ff6d02;">${numberWithCommas(product.detail.price) + " VNĐ"}</span>
-                    <a class="remove-from-cart" rel="nofollow" href="javascript: void(0);" data-id-product="${product._id}" data-color-product="${product.detail.color.hex}" data-quantity="${product.quantity}" data-price="${product.detail.price}" title="Remove from cart" style="display: block; position: absolute; top: 0; right: 0; color: #777;">
-                        <i class="fa-remove"></i>
-                    </a>
-                    <div class="attributes_content" style="display: block; font-size: 14px; line-height: 20px; color: #777; margin: 5px 0 0; ">
-                        <span style="float: left;"><strong>Màu</strong>:<div style="background-color: ${product.detail.color.hex}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; margin-left: 5px ;position: absolute;" title="Cosmos"></div>
-                        </span><br>
-                    </div>
-                </div>
-            </li> `
-        });
-
-        $(itemContentElement).append(items);
-
-        //set total price in header
-
-        $(totalPricesHeader).text(numberWithCommas(totalPrices) + " VNĐ");
-        $(totalPricesHeader).attr('data-raw-price', totalPrices)
-
-        //set total price in popup preview cart
-        $(totalPricesContent).text(numberWithCommas(totalPrices) + " VNĐ");
-        $(totalPricesContent).attr('data-raw-price', totalPrices)
-    });
-})();
+fetchCartPreview();

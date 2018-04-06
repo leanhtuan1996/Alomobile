@@ -148,7 +148,43 @@
             var cart = JSON.parse(localStorage.cart);
             if (!cart || !cart.products) {  return }
             if (cart.products.length == 0) { return }
-            window.location.href = '/order/check-out'
+
+            var promoCode = $('#voucher-input').val();
+
+            location.href = '/thanh-toan'
+
+        //     var products = [];
+
+        //     cart.products.forEach(product => {
+        //         if (!product.id) { return }
+        //         if (!product.color) { return }
+        //         if (!product.quantity) { return }
+
+        //         var p = {
+        //             id: product.id,
+        //             color: product.color,
+        //             quantity: product.quantity
+        //         }
+
+        //         products.push(p);
+        //     });
+
+        //     var parameters = {
+        //         products: products
+        //     }
+
+        //     if (promoCode && promoCode != 'undefined') {
+        //         parameters.promoCode = promoCode
+        //     }
+
+        //    $.post('/check-out', {
+        //         parameters: parameters
+        //    }, (data) => {
+
+        //    }).error((err) => {
+
+        //    })
+
         } catch (error) {
             return
         }        
