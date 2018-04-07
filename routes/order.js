@@ -139,34 +139,26 @@ router.put('/thanh-toan', (req, res) => {
     }
 
     Order.updateOrder(req.session.order, req.body, (result) => {
-
         if (result.order) {
             req.session.order = result.order;
 
             if (result.order.status == 1) {
+                delete req.session.order;
                 //insert order to user
                 
                 //send email to user
             }
 
         }
-
         res.json(result)
     });
 });
 
 router.get('/dat-hang-thanh-cong', (req, res) => {
-
-    if (!req.session.user || !req.session.token || !req.session.order) {
-        res.redirect('/404');
-        return
-    }
-
     res.render('order-successfully', {
         data: {
-            user: req.session.user,
-            order: req.session.order,
-            token: req.session.token
+            email: req.query.email,
+            id: req.query.id
         }
     });
 });
