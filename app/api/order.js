@@ -155,6 +155,36 @@ var detailCart = (products, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var verify = (id, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: 'Mã thanh toán không tồn tại!'
+            });
+            return
+        }
+
+        workflow.emit('verify');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('verify', () => {
+        Order.findById(id, (err, order) => {
+            workflow.emit('response', {
+                error: err,
+                order: order
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 var initOrder = (parameters, cb) => {
     var products = parameters.products,
         user = parameters.byUser;
@@ -225,12 +255,19 @@ var initOrder = (parameters, cb) => {
                 }
 
                 var detail = details.find(e => {
-                    return e.color.hex == product.color && e.quantity >= Number.parseInt(product.quantity)
+                    return e.color.hex == product.color
                 });
 
                 if (!detail) {
                     workflow.emit('response', {
-                        error: `Sản phẩm ${element.name} không đủ số lượng!`
+                        error: "Chi tiết sản phẩm không tìm thấy!"
+                    });
+                    return
+                }
+
+                if (detail.quantity < product.quantity) {
+                    workflow.emit('response', {
+                        error: `Số lượng sản phẩm ${element.name} hiện không đủ để tiến hành thanh toán, số lượng còn lại là: ${detail.quantity}`
                     });
                     return
                 }
@@ -244,72 +281,149 @@ var initOrder = (parameters, cb) => {
 
                 newProducts.push(newElement);
 
-                workflow.emit('update-quantity', newProducts)
+                workflow.emit('init', newProducts)
             });
-        }
-    });
-
-    workflow.on('update-quantity', (newProducts) => {
-        if (newProducts.length == products.length) {
-            for (let i = 0; i < newProducts.length; i++) {
-                const product = newProducts[i];
-                Product.find(product.id, (err, element) => {
-                    if (element) {
-                        var idx = element.details.findIndex(e => {
-                            return e.color.hex == product.color.hex
-                        });
-                        if (idx) {
-                            var oldQuantity = element.details[idx].quantity;
-                            element.details[idx].quantity = oldQuantity - Number.parseInt(product.quantity);
-                            element.save();
-                        }
-                    }
-
-                    if (i == newProducts.length - 1) {
-                        workflow.emit('init', newProducts);
-                    }
-                });
-            }
         }
     });
 
     workflow.on('init', (newProducts) => {
         var newOrder = new Order();
         newOrder.products = newProducts;
+
         if (user) {
             newOrder.byUser = user._id;
         }
 
         newOrder.status = 0;
         newOrder.save((err) => {
-            if (err) {
-                workflow.emit('response', {
-                    error: err
-                });
-            } else {
-                workflow.emit('response', {
-                    order: newOrder
-                });
-            }
+            workflow.emit('response', {
+                error: err,
+                order: newOrder
+            });
         });
     });
 
     workflow.emit('validate-parameters');
 };
 
-var updateOrder = (order, cb) => {
+var updateOrder = (order, parameters, cb) => {
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
+        if (!order) {
+            workflow.emit('response', {
+                error: "Order is required!"
+            });
+            return
+        }
 
+        if (!order._id) {
+            workflow.emit('response', {
+                error: "Id of order is required!"
+            });
+            return
+        }
+
+        if (!parameters) {
+            workflow.emit('response', {
+                error: null
+            });
+            return
+        }
+
+        workflow.emit('update');
     });
 
     workflow.on('response', (response) => {
-
+        return cb(response);
     });
 
     workflow.on('update', () => {
+        Order.findById(order._id, (err, order) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err
+                });
+                return
+            }
 
+            if (!order) {
+                workflow.emit('response', {
+                    error: "Order not found"
+                });
+                return
+            }
+
+            try {
+                if (parameters.status) {
+                    order.status = Number.parseInt(parameters.status);
+                }
+            } catch (error) {
+                workflow.emit('response', {
+                    error: error
+                });
+            }
+
+            if (parameters.byUser) {
+                if (parameters.byUser.id) {
+                    if (parameters.byUser.id.match(/^[a-z0-9]{24}$/g)) {
+                        order.byUser = parameters.byUser.id
+                    }
+                } else if (parameters.byUser._id) {
+                    if (parameters.byUser._id.match(/^[a-z0-9]{24}$/g)) {
+                        order.byUser = parameters.byUser._id
+                    }
+                    return
+                }
+            }
+
+            if (parameters.toAddress) {
+                var toAddress = parameters.toAddress;
+                var fullName = toAddress.fullName,
+                    phone = toAddress.phone,
+                    address = toAddress.address,
+                    city = toAddress.city,
+                    state = toAddress.state,
+                    zipPostalCode = toAddress.zipPostalCode;
+
+                if (!fullName) {
+                    workflow.emit('response', {
+                        error: 'Họ và tên người nhận không được bỏ trống!'
+                    });
+                } else if (!phone) {
+                    workflow.emit('response', {
+                        error: "Số điện thoại không được bỏ trống!"
+                    });
+                } else if (!address || !city || !state) {
+                    workflow.emit('response', {
+                        error: "Địa chỉ giao hàng không được bỏ trống!"
+                    });
+                } else if (!zipPostalCode) {
+                    workflow.emit('response', {
+                        error: "Mã bưu điện không được bỏ trống!"
+                    });
+                } else {
+                    order.toAddress = toAddress;
+                }
+            }
+
+            if (parameters.note) {
+                order.note = parameters.note;
+            }
+
+            if (parameters.checkoutMethod && parameters.checkoutMethod._id) {
+                if (parameters.checkoutMethod._id.match(/^[a-z0-9]{24}$/g)) {
+                    order.checkoutMethod = parameters.checkoutMethod._id;
+                }
+            }
+
+            order.save((err) => {
+                workflow.emit('response', {
+                    error: err,
+                    order: order
+                });
+            });
+        });
     });
 
     workflow.emit('validate-parameters');
@@ -412,5 +526,7 @@ var processProductBeforeCheckout = (id, color, quantity, cb) => {
 module.exports = {
     checkingAvailable: checkingAvailable,
     detailCart: detailCart,
-    initOrder: initOrder
+    initOrder: initOrder,
+    verify: verify,
+    updateOrder: updateOrder
 }

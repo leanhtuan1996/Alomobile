@@ -55,13 +55,5 @@ router.get('/terms-and-conditions-of-use', (req, res) => {
   });
 });
 
-router.get('/nganluong_ae9e54f813f9137e8d0ae7c1377f8c0a.html', (req, res) => {
-  res.render('nganluong')
-})
-
-/////
-// router.get('/zalo-pro', (req, res) => {
-//   res.render('zaloPro');
-// });
 
 module.exports = router;

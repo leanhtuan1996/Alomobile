@@ -59,12 +59,13 @@ app.use('/static', express.static(path.join(__dirname, 'public'), {
   maxage: '3h'
 }));
 app.use('/', index);
+app.use('/', error);
 app.use('/', user);
 app.use('/', order);
 app.use('/', api);
 app.use('/', admin);
 app.use('/', product);
-app.use('/', error);
+
 
 // set ssl
 var ssl = {

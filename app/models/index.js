@@ -9,6 +9,7 @@ var role = require('./role');
 var type = require('./type');
 var invalidToken = require('./invalidToken');
 var review = require('./review');
+var checkoutMethod = require('./checkoutMethod');
 
 module.exports = {
     user: user,
@@ -19,5 +20,6 @@ module.exports = {
     role: role,
     type: type,
     invalidToken: invalidToken,
-    review: review
+    review: review,
+    checkoutMethod: checkoutMethod
 }

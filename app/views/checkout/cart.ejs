@@ -135,9 +135,21 @@
         <%- include layouts/footer %>
     </main>    
     <script type="text/javascript" src="/static/js/custom.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <div class="back-top"><a href="#" class="back-top-button"></a></div>
 </body>
 <script type="text/javascript">
+
+    function showNotification(text) {
+        swal({
+            title: "Có lỗi xảy ra",
+            text: text,
+            icon: "error",
+            buttons: {
+                reTry: "Thử lại",
+            },
+        })
+    }
 
     getProductsCartCheckOut();
 
@@ -151,39 +163,49 @@
 
             var promoCode = $('#voucher-input').val();
 
-            location.href = '/thanh-toan'
+            var products = [];
 
-        //     var products = [];
+            cart.products.forEach(product => {
+                if (!product.id) { return }
+                if (!product.color) { return }
+                if (!product.quantity) { return }
 
-        //     cart.products.forEach(product => {
-        //         if (!product.id) { return }
-        //         if (!product.color) { return }
-        //         if (!product.quantity) { return }
+                var p = {
+                    id: product.id,
+                    color: product.color,
+                    quantity: product.quantity
+                }
 
-        //         var p = {
-        //             id: product.id,
-        //             color: product.color,
-        //             quantity: product.quantity
-        //         }
+                products.push(p);
+            });
 
-        //         products.push(p);
-        //     });
+            var parameters = {
+                products: products
+            }
 
-        //     var parameters = {
-        //         products: products
-        //     }
+            if (promoCode && promoCode != 'undefined') {
+                parameters.promoCode = promoCode
+            }
 
-        //     if (promoCode && promoCode != 'undefined') {
-        //         parameters.promoCode = promoCode
-        //     }
+           $.post('/thanh-toan', {
+                parameters: parameters
+           }, (data) => {
+               if (data.error) {
+                   showNotification(data.error);
+                   return
+               }
 
-        //    $.post('/check-out', {
-        //         parameters: parameters
-        //    }, (data) => {
+               var order = data.order;
+               if (!order) {
+                   showNotification('Không thể khởi tạo quá trình thanh toán, vui lòng thử lại sau!');
+                   return
+               }
 
-        //    }).error((err) => {
+               location.href = '/thanh-toan'
 
-        //    })
+           }).error((err) => {
+
+           })
 
         } catch (error) {
             return

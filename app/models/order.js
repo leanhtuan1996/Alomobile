@@ -23,7 +23,7 @@ module.exports = mongoose.model('Order', new Schema({
         zipPostalCode: Number
     },
     note: String,
-    shippingMethod: { type: Schema.Types.ObjectId, ref: "ShippingMethod" },
+    checkoutMethod: { type: Schema.Types.ObjectId, ref: "CheckoutMethod" },
     promoCode: [{ type: Schema.Types.ObjectId, ref: "Promotion" }],
     created_at: Number,
     updated_at: Number

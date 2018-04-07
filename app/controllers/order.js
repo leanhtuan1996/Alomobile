@@ -8,6 +8,20 @@ var initOrder = (parameters, cb) => {
     });
 }
 
+var verify = (id, cb) => {
+    orderApi.verify(id, (result) => {
+        return cb(result);
+    });
+}
+
+var updateOrder = (order, parameters, cb) => {
+    orderApi.updateOrder(order, parameters, (result) => {
+        return cb(result)
+    })
+}
+
 module.exports = {
-    initOrder: initOrder
+    initOrder: initOrder,
+    verify: verify,
+    updateOrder: updateOrder
 }

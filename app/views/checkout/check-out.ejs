@@ -28,138 +28,549 @@
             <section id="content">
                 <div class="row">
                     <div class="col-md-8">
-
-                        <% if (data.user && data.token) { %>
+                        <% if (data.user && data.token && data.order) { %>
                             <% var fullName = data.user.fullName.firstName + " " + data.user.fullName.lastName %>
-                            <section id="checkout-personal-information-step" class="checkout-step -reachable -complete">
-                                <h1 class="step-title h3">
-                                    <i class="material-icons done"></i>
-                                    <span class="step-number">1</span>
-                                    Thông tin cá nhân
-                                    <span class="step-edit text-muted">
-                                        <i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
-                                </h1>
-                                <div class="content">
-                                    <p class="identity">
-                                        Đã đăng nhập với tài khoản
-                                        <a href="/my-account">
-                                            <%- fullName %>
-                                        </a>.
-                                    </p>
-                                    <p>
-                                        Không phải là bạn
-                                        <a href="javascript: logout()">Đăng xuất</a>
-                                    </p>
-                                    <p>
-                                        <small>Nếu bạn đăng xuất ngay lúc này, giỏ hàng của bạn sẽ bị xoá.</small>
-                                    </p>
-                                </div>
-                            </section>
-                            <section id="checkout-addresses-step" class="checkout-step -current -reachable js-current-step">
-                                <h1 class="step-title h3">
-                                    <i class="material-icons done"></i>
-                                    <span class="step-number">2</span>
-                                    Địa chỉ nhận hàng
-                                    <span class="step-edit text-muted">
-                                    <i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
-                                </h1>
-                                <div class="content">
-                                    <div class="js-address-form">
-                                        <form>
-                                            <p>
-                                                Địa chỉ đã chọn sẽ được sử dụng làm địa chỉ cá nhân (cho hóa đơn) và địa chỉ giao hàng của bạn.
-                                            </p>
-                                            <div id="delivery-address">
-                                                <div class="js-address-form">
-                                                    <section class="form-fields">
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label required">
-                                                                Họ
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <input class="form-control" name="firstname" type="text" value="<%- data.user.fullName.firstName %>" maxlength="32" required="">
+                                <section id="checkout-personal-information-step" class="checkout-step -reachable -complete">
+                                    <h1 class="step-title h3">
+                                        <i class="material-icons done"></i>
+                                        <span class="step-number">1</span>
+                                        Thông tin cá nhân
+                                        <span class="step-edit text-muted">
+                                            <i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
+                                    </h1>
+                                    <div class="content">
+                                        <p class="identity">
+                                            Đã đăng nhập với tài khoản
+                                            <a href="/my-account">
+                                                <%- fullName %>
+                                            </a>.
+                                        </p>
+                                        <p>
+                                            Không phải là bạn
+                                            <a href="javascript: logout()">Đăng xuất</a>
+                                        </p>
+                                        <p>
+                                            <small>Nếu bạn đăng xuất ngay lúc này, giỏ hàng của bạn sẽ bị xoá.</small>
+                                        </p>
+                                    </div>
+                                </section>
+                                <% if (data.order.toAddress && data.order.toAddress != '{}') { %>
+                                    <% var toAddress = data.order.toAddress; %>
+                                    <section id="checkout-addresses-step" class="checkout-step -reachable -complete">
+                                        <h1 class="step-title h3">
+                                            <i class="material-icons done"></i>
+                                            <span class="step-number">2</span>
+                                            Địa chỉ nhận hàng
+                                            <span class="step-edit text-muted">
+                                                <i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
+                                        </h1>
+                                        <div class="content">
+                                            <div class="js-address-form">
+                                                <form>
+                                                    <p>
+                                                        Địa chỉ đã chọn sẽ được sử dụng làm địa chỉ cá nhân (cho hóa đơn) và địa chỉ giao hàng của bạn.
+                                                    </p>
+                                                    <div id="delivery-address">
+                                                        <div class="js-address-form">
+                                                            <section class="form-fields">
+                                                                <div class="form-group row ">
+                                                                    <label class="col-md-3 form-control-label required">
+                                                                        Họ và tên
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" name="fullName" type="text" value="<%- toAddress.fullName %>" required="">
+                                                                    </div>
+                                                                    <div class="col-md-3 form-control-comment">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row ">
+                                                                    <label class="col-md-3 form-control-label required">
+                                                                        Địa chỉ nhận hàng
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" name="address" type="text" value="<%- toAddress.address %>" maxlength="128" required="">
+                                                                    </div>
+                                                                    <div class="col-md-3 form-control-comment">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row ">
+                                                                    <label class="col-md-3 form-control-label required">
+                                                                        Tỉnh/ Thành Phố
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <select class="form-control form-control-select" name="id_state" required="">
+                                                                            <option value="<%- toAddress.city %>">
+                                                                                <%- toAddress.city %>
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-control-comment">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row ">
+                                                                    <label class="col-md-3 form-control-label required">
+                                                                        Huyện/ Thị xã
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <select class="form-control form-control-select" name="id_district" required="">
+                                                                            <option value="<%- toAddress.state %>">
+                                                                                <%- toAddress.state %>
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-control-comment">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row ">
+                                                                    <label class="col-md-3 form-control-label required">
+                                                                        Mã bưu điện
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" name="postcode" type="text" value="<%- toAddress.zipPostalCode %>" maxlength="12" required=""
+                                                                            pattern="[0-9]{6}">
+                                                                    </div>
+                                                                    <div class="col-md-3 form-control-comment">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row ">
+                                                                    <label class="col-md-3 form-control-label">
+                                                                        Số điện thoại
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" name="phone" type="text" value="<%- toAddress.phone %>" maxlength="32" required="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-9 col-md-offset-3">
+                                                                        <input name="use_same_address" type="checkbox" value="1" checked="">
+                                                                        <label>Use this address for invoice too</label>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                            <footer class="form-footer clearfix">
+                                                                <button type="submit" class="continue btn btn-primary float-xs-right" name="confirm-addresses" value="1">
+                                                                    Tiếp tục
+                                                                </button>
+                                                            </footer>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </section>
+                                <% } else { %>
+                                    <section id="checkout-addresses-step" class="checkout-step -current -reachable js-current-step">
+                                        <h1 class="step-title h3">
+                                            <i class="material-icons done"></i>
+                                            <span class="step-number">2</span>
+                                            Địa chỉ nhận hàng
+                                            <span class="step-edit text-muted">
+                                                <i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
+                                        </h1>
+                                        <div class="content">
+                                            <div class="js-address-form">
+                                                <form>
+                                                    <p>
+                                                        Địa chỉ đã chọn sẽ được sử dụng làm địa chỉ cá nhân (cho hóa đơn) và địa chỉ giao hàng của bạn.
+                                                    </p>
+                                                    <div id="delivery-address">
+                                                        <div class="js-address-form">
+                                                            <section class="form-fields">
+                                                                <div class="form-group row ">
+                                                                    <label class="col-md-3 form-control-label required">
+                                                                        Họ và tên
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" name="fullName" type="text" value="<%- fullName %>" maxlength="32" required="">
+                                                                    </div>
+                                                                    <div class="col-md-3 form-control-comment">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row ">
+                                                                    <label class="col-md-3 form-control-label required">
+                                                                        Địa chỉ nhận hàng
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" name="address" type="text" value="" maxlength="128" required="">
+                                                                    </div>
+                                                                    <div class="col-md-3 form-control-comment">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row ">
+                                                                    <label class="col-md-3 form-control-label required">
+                                                                        Tỉnh/ Thành Phố
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <select class="form-control form-control-select" name="id_state" required="">
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-control-comment">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row ">
+                                                                    <label class="col-md-3 form-control-label required">
+                                                                        Huyện/ Thị xã
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <select class="form-control form-control-select" name="id_district" required="">
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-control-comment">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row ">
+                                                                    <label class="col-md-3 form-control-label required">
+                                                                        Mã bưu điện
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" name="postcode" type="text" value="" maxlength="12" required="" pattern="[0-9]{6}">
+                                                                    </div>
+                                                                    <div class="col-md-3 form-control-comment">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row ">
+                                                                    <label class="col-md-3 form-control-label">
+                                                                        Số điện thoại
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" name="phone" type="text" value="<%- data.user.phone %>" maxlength="32" required="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-9 col-md-offset-3">
+                                                                        <input name="use_same_address" type="checkbox" value="1" checked="">
+                                                                        <label>Use this address for invoice too</label>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                            <footer class="form-footer clearfix">
+                                                                <button type="submit" class="continue btn btn-primary float-xs-right" name="confirm-addresses" value="1">
+                                                                    Tiếp tục
+                                                                </button>
+                                                            </footer>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </section>
+                                <% } %>
+
+                                <% if (data.order.note) { %>
+                                    <section id="checkout-delivery-step" class="checkout-step -reachable -complete">
+                                        <h1 class="step-title h3">
+                                            <i class="material-icons done"></i>
+                                            <span class="step-number">3</span>
+                                            Phương thức vận chuyển
+                                            <span class="step-edit text-muted">
+                                                <i class="material-icons edit">mode_edit</i> chỉnh sửa
+                                            </span>
+                                        </h1>
+                                        <div class="content">
+                                            <div id="hook-display-before-carrier">
+                                            </div>
+                                            <div class="delivery-options-list">
+                                                <form class="clearfix" id="js-delivery">
+                                                    <div class="form-fields">
+                                                        <div class="delivery-options">
+                                                            <div class="row delivery-option">
+                                                                <div class="col-sm-1">
+                                                                    <span class="custom-radio float-xs-left">
+                                                                        <input type="radio" name="delivery_option[27]" id="delivery_option_2" value="2," checked="">
+                                                                        <span></span>
+                                                                    </span>
+                                                                </div>
+                                                                <label for="delivery_option_2" class="col-sm-11 delivery-option-2">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-5 col-xs-12">
+                                                                            <div class="row">
+                                                                                <div class="col-xs-3">
+                                                                                    <img src="http://yankeecrosleyparts.com/wp-content/uploads/2017/08/3937634_23308449eb9f40539a4f9e4a07d78ca1_logo.png" alt="My carrier">
+                                                                                </div>
+                                                                                <div class="col-xs-9">
+                                                                                    <span class="h6 carrier-name">Viettel Post</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-4 col-xs-12">
+                                                                            <span class="carrier-delay">Chuyển hàng từ 3 -7 ngày!</span>
+                                                                        </div>
+                                                                        <div class="col-sm-3 col-xs-12">
+                                                                            <span class="carrier-price">miễn phí.</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </label>
                                                             </div>
-                                                            <div class="col-md-3 form-control-comment">
+                                                            <div class="row carrier-extra-content">
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                        <div class="order-options">
+                                                            <div id="delivery">
+                                                                <label for="delivery_message">Nếu muốn thêm ghi chú về đơn đặt hàng của bạn,
+                                                                    vui lòng ghi vào trường bên dưới.</label>
+                                                                <textarea rows="2" cols="120" id="delivery_message" name="delivery_message" value="<%- data.order.note %>"><%- data.order.note == '0' ? '' : data.order.note  %></textarea>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label required">
-                                                                Tên
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <input class="form-control" name="lastname" type="text" value="<%- data.user.fullName.lastName %>" maxlength="32" required="">
+                                                    </div>
+                                                    <button type="submit" class="continue btn btn-primary float-xs-right" name="confirmDeliveryOption" value="1">
+                                                        Tiếp tục
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div id="hook-display-after-carrier">
+                                            </div>
+                                            <div id="extra_carrier"></div>
+                                        </div>
+                                    </section>
+                                    <section id="checkout-payment-step" class="checkout-step -current -reachable js-current-step">
+                                        <h1 class="step-title h3">
+                                            <i class="material-icons done"></i>
+                                            <span class="step-number">4</span>
+                                            Phương thức thanh toán
+                                            <span class="step-edit text-muted">
+                                                <i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
+                                        </h1>
+                                        <div class="content">
+                                            <div class="payment-options ">
+                                                <!-- <p class="alert alert-danger">Unfortunately, there is no payment method available.</p> -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <!--promotion method, cod, zalopay, momo-->
+                                                        <div class="form-group row row-style-3  method_payment_cod">
+                                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+                                                                <span class="custom-radio float-xs-left">
+                                                                    <input type="radio" id="payment-method-cod" name="payment-method-option" value="1" checked="">
+                                                                    <span></span>
+                                                                </span>
                                                             </div>
-                                                            <div class="col-md-3 form-control-comment">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label required">
-                                                                Địa chỉ nhận hàng
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <input class="form-control" name="address1" type="text" value="" maxlength="128" required="">
-                                                            </div>
-                                                            <div class="col-md-3 form-control-comment">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label required">
-                                                                Tỉnh/ Thành Phố
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <select class="form-control form-control-select" name="id_state" required="">
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-md-3 form-control-comment">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label required">
-                                                                Huyện/ Thị xã
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <select class="form-control form-control-select" name="id_district" required="">
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-md-3 form-control-comment">
+                                                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
+                                                                <label for="payment-method-cod" class="control-label is-large">
+                                                                    Thanh toán tiền mặt khi nhận hàng </label>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label required">
-                                                                Mã bưu điện
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <input class="form-control" name="postcode" type="text" value="" maxlength="12" required="" pattern="[0-9]{6}" >
+                                                        <!--promotion method, cod, zalopay, momo-->
+                                                        <!-- <div class="form-group row row-style-3  ">
+                                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+                                                                    <span class="custom-radio float-xs-left">
+                                                                            <input type="radio" id="pay-method-vnpay" name="payment-method-option" value="2">
+                                                                            <span></span>
+                                                                            </span>
                                                             </div>
-                                                            <div class="col-md-3 form-control-comment">
+                                                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
+                                                                <label for="pay-method-vnpay" class="control-label is-large">
+                                                                    Thẻ ATM nội địa/Internet Banking (Miễn phí thanh toán) </label>
                                                             </div>
+                                                        </div> -->
+                                                        <!--123pay method-->
+                                                        <div class="form-group row row-style-3 js-payment-sub" style="display: block;">
+            
                                                         </div>
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label">
-                                                                Số điện thoại
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <input class="form-control" name="phone" type="text" value="<%- data.user.phone %>" maxlength="32" required="">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <div class="col-md-9 col-md-offset-3">
-                                                                <input name="use_same_address" type="checkbox" value="1" checked="">
-                                                                <label>Use this address for invoice too</label>
-                                                            </div>
-                                                        </div>
-                                                    </section>
-                                                    <footer class="form-footer clearfix">
-                                                        <button type="submit" class="continue btn btn-primary float-xs-right" name="confirm-addresses" value="1">
-                                                            Tiếp tục
-                                                        </button>
-                                                    </footer>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </section>
+                                            <p class="ps-hidden-by-js" style="display: none;">
+                                                By confirming the order, you certify that you have read and agree with all of the conditions below:
+                                            </p>
+                                            <form id="conditions-to-approve" style="margin-bottom: 5px;">
+                                                <ul>
+                                                    <li>
+                                                        <div class="float-xs-left">
+                                                            <span class="custom-checkbox">
+                                                                <input id="approve_conditions" required="" type="checkbox" value="1" class="ps-shown-by-js">
+                                                                <span>
+                                                                    <i class="material-icons checkbox-checked"></i>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                        <div class="condition-label">
+                                                            <label class="js-terms" for="approve_conditions">
+                                                                Tôi đồng ý với các điều khoản dịch vụ và sẽ tuân thủ chúng một cách vô điều kiện.
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                            <div id="payment-confirmation-block">
+                                                <div class="ps-shown-by-js">
+                                                    <button type="submit" class="btn btn-primary center-block disabled">
+                                                        TIẾN HÀNH ĐẶT HÀNG
+                                                    </button>
+                                                </div>
+                                                <div class="ps-hidden-by-js" style="display: none;">
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="modal">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                        <div class="js-modal-content"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                <% } else { %>
+                                    <section id="checkout-delivery-step" class="checkout-step -current -reachable js-current-step">
+                                        <h1 class="step-title h3">
+                                            <i class="material-icons done"></i>
+                                            <span class="step-number">3</span>
+                                            Phương thức vận chuyển
+                                            <span class="step-edit text-muted">
+                                                <i class="material-icons edit">mode_edit</i> chỉnh sửa
+                                            </span>
+                                        </h1>
+                                        <div class="content">
+                                            <div id="hook-display-before-carrier">
+                                            </div>
+                                            <div class="delivery-options-list">
+                                                <form class="clearfix" id="js-delivery">
+                                                    <div class="form-fields">
+                                                        <div class="delivery-options">
+                                                            <div class="row delivery-option">
+                                                                <div class="col-sm-1">
+                                                                    <span class="custom-radio float-xs-left">
+                                                                        <input type="radio" name="delivery_option[27]" id="delivery_option_2" value="2," checked="">
+                                                                        <span></span>
+                                                                    </span>
+                                                                </div>
+                                                                <label for="delivery_option_2" class="col-sm-11 delivery-option-2">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-5 col-xs-12">
+                                                                            <div class="row">
+                                                                                <div class="col-xs-3">
+                                                                                    <img src="http://yankeecrosleyparts.com/wp-content/uploads/2017/08/3937634_23308449eb9f40539a4f9e4a07d78ca1_logo.png" alt="My carrier">
+                                                                                </div>
+                                                                                <div class="col-xs-9">
+                                                                                    <span class="h6 carrier-name">Viettel Post</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-4 col-xs-12">
+                                                                            <span class="carrier-delay">Chuyển hàng từ 3 -7 ngày!</span>
+                                                                        </div>
+                                                                        <div class="col-sm-3 col-xs-12">
+                                                                            <span class="carrier-price">miễn phí.</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                            <div class="row carrier-extra-content">
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                        <div class="order-options">
+                                                            <div id="delivery">
+                                                                <label for="delivery_message">Nếu muốn thêm ghi chú về đơn đặt hàng của bạn,
+                                                                    vui lòng ghi vào trường bên dưới.</label>
+                                                                <textarea rows="2" cols="120" id="delivery_message" name="delivery_message"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" class="continue btn btn-primary float-xs-right" name="confirmDeliveryOption" value="1">
+                                                        Tiếp tục
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div id="hook-display-after-carrier">
+                                            </div>
+                                            <div id="extra_carrier"></div>
+                                        </div>
+                                    </section>
+                                    <section id="checkout-payment-step" class="checkout-step -unreachable">
+                                        <h1 class="step-title h3">
+                                            <i class="material-icons done"></i>
+                                            <span class="step-number">4</span>
+                                            Phương thức thanh toán
+                                            <span class="step-edit text-muted">
+                                                <i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
+                                        </h1>
+                                        <div class="content">
+                                            <div class="payment-options ">
+                                                <!-- <p class="alert alert-danger">Unfortunately, there is no payment method available.</p> -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <!--promotion method, cod, zalopay, momo-->
+                                                        <div class="form-group row row-style-3  method_payment_cod">
+                                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+                                                                <span class="custom-radio float-xs-left">
+                                                                    <input type="radio" id="payment-method-cod" name="payment-method-option" value="1" checked="">
+                                                                    <span></span>
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
+                                                                <label for="payment-method-cod" class="control-label is-large">
+                                                                    Thanh toán tiền mặt khi nhận hàng </label>
+                                                            </div>
+                                                        </div>
+                                                        <!--promotion method, cod, zalopay, momo-->
+                                                        <!-- <div class="form-group row row-style-3  ">
+                                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+                                                                    <span class="custom-radio float-xs-left">
+                                                                            <input type="radio" id="pay-method-vnpay" name="payment-method-option" value="2">
+                                                                            <span></span>
+                                                                            </span>
+                                                            </div>
+                                                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
+                                                                <label for="pay-method-vnpay" class="control-label is-large">
+                                                                    Thẻ ATM nội địa/Internet Banking (Miễn phí thanh toán) </label>
+                                                            </div>
+                                                        </div> -->
+                                                        <!--123pay method-->
+                                                        <div class="form-group row row-style-3 js-payment-sub" style="display: block;">
+            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="ps-hidden-by-js" style="display: none;">
+                                                By confirming the order, you certify that you have read and agree with all of the conditions below:
+                                            </p>
+                                            <form id="conditions-to-approve" style="margin-bottom: 5px;">
+                                                <ul>
+                                                    <li>
+                                                        <div class="float-xs-left">
+                                                            <span class="custom-checkbox">
+                                                                <input id="approve_conditions" required="" type="checkbox" value="1" class="ps-shown-by-js">
+                                                                <span>
+                                                                    <i class="material-icons checkbox-checked"></i>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                        <div class="condition-label">
+                                                            <label class="js-terms" for="approve_conditions">
+                                                                Tôi đồng ý với các điều khoản dịch vụ và sẽ tuân thủ chúng một cách vô điều kiện.
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                            <div id="payment-confirmation-block">
+                                                <div class="ps-shown-by-js">
+                                                    <button type="submit" class="btn btn-primary center-block disabled">
+                                                        TIẾN HÀNH ĐẶT HÀNG
+                                                    </button>
+                                                </div>
+                                                <div class="ps-hidden-by-js" style="display: none;">
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="modal">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                        <div class="js-modal-content"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                <% } %>
+                                
                         <% } else { %>
                             <section id="checkout-personal-information-step" class="checkout-step -reachable -current js-current-step">
                                 <h1 class="step-title h3">
@@ -280,8 +691,7 @@
                                                 </section>
                                                 <footer class="form-footer clearfix">
                                                     <input type="hidden" name="submitCreate" value="1">
-                                                    <button class="continue btn btn-primary float-xs-right" name="continue" type="submit"
-                                                        value="1">
+                                                    <button class="continue btn btn-primary float-xs-right" name="continue" type="submit" value="1">
                                                         Tiếp tục
                                                     </button>
                                                 </footer>
@@ -307,7 +717,8 @@
                                                         </label>
                                                         <div class="col-md-6">
                                                             <div class="input-group js-parent-focus">
-                                                                <input class="form-control js-child-focus js-visible-password" name="password" type="password" value="" pattern=".{5,}" required="" id="password">
+                                                                <input class="form-control js-child-focus js-visible-password" name="password" type="password" value="" pattern=".{5,}" required=""
+                                                                    id="password">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 form-control-comment">
@@ -338,255 +749,111 @@
                                     <span class="step-edit text-muted">
                                         <i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
                                 </h1>
+                                <div class="content">                                  
+                                </div>
+                            </section>
+                            <section id="checkout-delivery-step" class="checkout-step -unreachable">
+                                <h1 class="step-title h3">
+                                    <span class="step-number">3</span>
+                                    Phương thức vận chuyển
+                                </h1>
                                 <div class="content">
-                                    <div class="js-address-form">
-                                        <form>
-                                            <p>
-                                                Địa chỉ đã chọn sẽ được sử dụng làm địa chỉ cá nhân (cho hóa đơn) và địa chỉ giao hàng của bạn.
-                                            </p>
-                                            <div id="delivery-address">
-                                                <div class="js-address-form">
-                                                    <section class="form-fields">
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label required">
-                                                                Họ
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <input class="form-control" name="firstname" type="text" value="" maxlength="32" required="">
-                                                            </div>
-                                                            <div class="col-md-3 form-control-comment">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label required">
-                                                                Tên
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <input class="form-control" name="lastname" type="text" value="" maxlength="32" required="">
-                                                            </div>
-                                                            <div class="col-md-3 form-control-comment">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label required">
-                                                                Địa chỉ nhận hàng
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <input class="form-control" name="address1" type="text" value="" maxlength="128" required="">
-                                                            </div>
-                                                            <div class="col-md-3 form-control-comment">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label required">
-                                                                Tỉnh/ Thành Phố
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <select class="form-control form-control-select" name="id_state" required="">
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-md-3 form-control-comment">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label required">
-                                                                Huyện/ Thị xã
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <select class="form-control form-control-select" name="id_district" required="">
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-md-3 form-control-comment">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label required">
-                                                                Mã bưu điện
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <input class="form-control" name="postcode" type="text" value="" maxlength="12" required="" pattern="^\\d{6}$">
-                                                            </div>
-                                                            <div class="col-md-3 form-control-comment">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row ">
-                                                            <label class="col-md-3 form-control-label">
-                                                                Số điện thoại
-                                                            </label>
-                                                            <div class="col-md-6">
-                                                                <input class="form-control" name="phone" type="text" value="" maxlength="32" required="">
-                                                            </div>
-                                                        </div>
-                                                        <input type="hidden" name="saveAddress" value="delivery">
-                                                        <div class="form-group row">
-                                                            <div class="col-md-9 col-md-offset-3">
-                                                                <input name="use_same_address" type="checkbox" value="1" checked="">
-                                                                <label>Use this address for invoice too</label>
-                                                            </div>
-                                                        </div>
-                                                    </section>
-                                                    <footer class="form-footer clearfix">
-                                                        <input type="hidden" name="submitAddress" value="1">
-                                                        <button type="submit" class="continue btn btn-primary float-xs-right" name="confirm-addresses" value="1">
-                                                            Tiếp tục
-                                                        </button>
-                                                    </footer>
+                                 
+                                </div>
+                            </section>
+                            <section id="checkout-payment-step" class="checkout-step -unreachable">
+                                <h1 class="step-title h3">
+                                    <i class="material-icons done"></i>
+                                    <span class="step-number">4</span>
+                                    Phương thức thanh toán
+                                    <span class="step-edit text-muted">
+                                        <i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
+                                </h1>
+                                <div class="content">
+                                    <div class="payment-options ">
+                                        <!-- <p class="alert alert-danger">Unfortunately, there is no payment method available.</p> -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <!--promotion method, cod, zalopay, momo-->
+                                                <div class="form-group row row-style-3  method_payment_cod">
+                                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+                                                        <span class="custom-radio float-xs-left">
+                                                            <input type="radio" id="payment-method-cod" name="payment-method-option" value="1" checked="">
+                                                            <span></span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
+                                                        <label for="payment-method-cod" class="control-label is-large">
+                                                            Thanh toán tiền mặt khi nhận hàng </label>
+                                                    </div>
+                                                </div>
+                                                <!--promotion method, cod, zalopay, momo-->
+                                                <!-- <div class="form-group row row-style-3  ">
+                                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+                                                            <span class="custom-radio float-xs-left">
+                                                                    <input type="radio" id="pay-method-vnpay" name="payment-method-option" value="2">
+                                                                    <span></span>
+                                                                    </span>
+                                                    </div>
+                                                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
+                                                        <label for="pay-method-vnpay" class="control-label is-large">
+                                                            Thẻ ATM nội địa/Internet Banking (Miễn phí thanh toán) </label>
+                                                    </div>
+                                                </div> -->
+                                                <!--123pay method-->
+                                                <div class="form-group row row-style-3 js-payment-sub" style="display: block;">
+    
                                                 </div>
                                             </div>
-                                        </form>
+                                        </div>
+                                    </div>
+                                    <p class="ps-hidden-by-js" style="display: none;">
+                                        By confirming the order, you certify that you have read and agree with all of the conditions below:
+                                    </p>
+                                    <form id="conditions-to-approve" style="margin-bottom: 5px;">
+                                        <ul>
+                                            <li>
+                                                <div class="float-xs-left">
+                                                    <span class="custom-checkbox">
+                                                        <input id="approve_conditions" required="" type="checkbox" value="1" class="ps-shown-by-js">
+                                                        <span>
+                                                            <i class="material-icons checkbox-checked"></i>
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                <div class="condition-label">
+                                                    <label class="js-terms" for="approve_conditions">
+                                                        Tôi đồng ý với các điều khoản dịch vụ và sẽ tuân thủ chúng một cách vô điều kiện.
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                    <div id="payment-confirmation-block">
+                                        <div class="ps-shown-by-js">
+                                            <button type="submit" class="btn btn-primary center-block disabled">
+                                                TIẾN HÀNH ĐẶT HÀNG
+                                            </button>
+                                        </div>
+                                        <div class="ps-hidden-by-js" style="display: none;">
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="modal">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                                <div class="js-modal-content"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </section>
                         <% } %>
 
-                    <section id="checkout-delivery-step" class="checkout-step -unreachable">
-                        <h1 class="step-title h3">
-                            <span class="step-number">3</span>
-                            Phương thức vận chuyển
-                        </h1>
-                        <div class="content">
-                            <div id="hook-display-before-carrier">
-                            </div>
-                        <div class="delivery-options-list">
-                            <form class="clearfix" id="js-delivery">
-                                <div class="form-fields">
-                                    <div class="delivery-options">
-                                        <div class="row delivery-option">
-                                            <div class="col-sm-1">
-                                                <span class="custom-radio float-xs-left">
-                                                <input type="radio" name="delivery_option[27]" id="delivery_option_2" value="2," checked="">
-                                                <span></span>
-                                                </span>
-                                            </div>
-                                            <label for="delivery_option_2" class="col-sm-11 delivery-option-2">
-                                                <div class="row">
-                                                <div class="col-sm-5 col-xs-12">
-                                                    <div class="row">
-                                                        <div class="col-xs-3">
-                                                        <img src="http://yankeecrosleyparts.com/wp-content/uploads/2017/08/3937634_23308449eb9f40539a4f9e4a07d78ca1_logo.png" alt="My carrier">
-                                                    </div>
-                                                    <div class="col-xs-9">
-                                                        <span class="h6 carrier-name">Viettel Post</span>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                                <div class="col-sm-4 col-xs-12">
-                                                    <span class="carrier-delay">Chuyển hàng từ 3 -7 ngày!</span>
-                                                </div>
-                                                <div class="col-sm-3 col-xs-12">
-                                                    <span class="carrier-price">miễn phí.</span>
-                                                </div>
-                                                </div>
-                                            </label>
-                                        </div>
-                                        <div class="row carrier-extra-content">
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <div class="order-options">
-                                        <div id="delivery">
-                                            <label for="delivery_message">Nếu muốn thêm ghi chú về đơn đặt hàng của bạn, vui lòng ghi vào trường bên dưới.</label>
-                                            <textarea rows="2" cols="120" id="delivery_message" name="delivery_message"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="submit" class="continue btn btn-primary float-xs-right" name="confirmDeliveryOption" value="1">
-                                    Tiếp tục
-                                </button>
-                            </form>
-                        </div>
-                        <div id="hook-display-after-carrier">
-                        </div>
-                        <div id="extra_carrier"></div>
-                        </div>
-                    </section>
+                        
 
-                    <section id="checkout-payment-step" class="checkout-step -unreachable">
-                        <h1 class="step-title h3">
-                            <i class="material-icons done"></i>
-                            <span class="step-number">4</span>
-                            Phương thức thanh toán
-                            <span class="step-edit text-muted"><i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
-                        </h1>
-                        <div class="content">
-                            <div class="payment-options ">
-                                <!-- <p class="alert alert-danger">Unfortunately, there is no payment method available.</p> -->
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <!--promotion method, cod, zalopay, momo-->
-                                        <div class="form-group row row-style-3  method_payment_cod">
-                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-                                                <span class="custom-radio float-xs-left">
-                                                    <input type="radio" id="payment-method-cod" name="payment-method-option" value="1" checked="">
-                                                    <span></span>
-                                                </span>
-                                            </div>
-                                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
-                                                <label for="payment-method-cod" class="control-label is-large">
-                                                    Thanh toán tiền mặt khi nhận hàng </label>
-                                            </div>
-                                        </div>
-                                        <!--promotion method, cod, zalopay, momo-->
-                                        <!-- <div class="form-group row row-style-3  ">
-                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-                                                    <span class="custom-radio float-xs-left">
-                                                            <input type="radio" id="pay-method-vnpay" name="payment-method-option" value="2">
-                                                            <span></span>
-                                                            </span>
-                                            </div>
-                                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
-                                                <label for="pay-method-vnpay" class="control-label is-large">
-                                                    Thẻ ATM nội địa/Internet Banking (Miễn phí thanh toán) </label>
-                                            </div>
-                                        </div> -->
-                                        <!--123pay method-->
-                                        <div class="form-group row row-style-3 js-payment-sub" style="display: block;">
-                                           
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="ps-hidden-by-js" style="display: none;">
-                                By confirming the order, you certify that you have read and agree with all of the conditions below:
-                            </p>
-                            <form id="conditions-to-approve" style="margin-bottom: 5px;">
-                                <ul>
-                                    <li>
-                                        <div class="float-xs-left">
-                                            <span class="custom-checkbox">
-                                                <input id="approve_conditions" required="" type="checkbox" value="1" class="ps-shown-by-js">
-                                                <span><i class="material-icons checkbox-checked"></i></span>
-                                            </span>
-                                        </div>
-                                        <div class="condition-label">
-                                            <label class="js-terms" for="approve_conditions">
-                                                Tôi đồng ý với các điều khoản dịch vụ và sẽ tuân thủ chúng một cách vô điều kiện.
-                                            </label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </form>
-                            <div id="payment-confirmation-block">
-                                <div class="ps-shown-by-js">
-                                    <button type="submit" class="btn btn-primary center-block disabled">
-                                        TIẾN HÀNH ĐẶT HÀNG
-                                    </button>
-                                </div>
-                                <div class="ps-hidden-by-js" style="display: none;">
-                                </div>
-                            </div>
-                            <div class="modal fade" id="modal">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                        <div class="js-modal-content"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
                     </div>
                     <div class="col-md-4">
                         <section id="js-checkout-summary" class="card js-cart">
@@ -728,7 +995,7 @@
 
         $(itemsCartBlock).find('li').remove();
 
-        if (!localStorage.cart) { location.href = "/cart"; return } 
+        if (!localStorage.cart) { location.href = "/cart"; return }
 
         try {
             var cart = JSON.parse(localStorage.cart);
@@ -778,16 +1045,16 @@
         $.get('https://raw.githubusercontent.com/linhmtran168/vietnam-gis-crawler/master/data.json', (data) => {
             var optionSelectState = $('#checkout-addresses-step').find('select[name="id_state"]');
             var optionSelectDistrict = $('#checkout-addresses-step').find('select[name="id_district"]');
-            var raw = JSON.parse(data);          
+            var raw = JSON.parse(data);
 
             var options = "";
             for (const key in raw) {
-                options+= `<option value="${key}">${raw[key].name}</option>` 
+                options += `<option value="${key}">${raw[key].name}</option>`
             }
 
             var optionsDictricts = "";
             for (const key in raw['1'].districts) {
-                optionsDictricts+= `<option value="${key}">${raw['1'].districts[key]}</option>`
+                optionsDictricts += `<option value="${key}">${raw['1'].districts[key]}</option>`
             }
 
             $(optionSelectState).append(options);
@@ -799,40 +1066,91 @@
                     if (key == value) {
                         var optionsNewDictricts = '';
                         for (const key_district in raw[`${key}`].districts) {
-                            optionsNewDictricts+= `<option value="${key_district}">${raw[`${key}`].districts[key_district]}</option>`
+                            optionsNewDictricts += `<option value="${key_district}">${raw[`${key}`].districts[key_district]}</option>`
                         }
                         $(optionSelectDistrict).find('option').remove();
                         $(optionSelectDistrict).append(optionsNewDictricts);
-                         return
+                        return
                     }
-                } 
+                }
             });
         });
 
         $('.js-address-form form').submit((e) => {
             e.preventDefault();
-            $('#checkout-addresses-step').removeClass('-current js-current-step')
-            $('#checkout-addresses-step').addClass('-complete');
 
-            $('#checkout-delivery-step').removeClass('-unreachable');
-            $('#checkout-delivery-step').addClass('-reachable -current js-current-step')
+            var fullName = $(e.currentTarget).find('input[name="fullName"]').val(),
+                phone = $(e.currentTarget).find('input[name="phone"]').val(),
+                address = $(e.currentTarget).find('input[name="address"]').val(),
+                city = $(e.currentTarget).find('select[name="id_state"] option:selected').text(),
+                zipPostalCode = $(e.currentTarget).find('input[name="postcode"]').val(),
+                state = $(e.currentTarget).find('select[name="id_district"] option:selected').text();
+
+            var toAddress = {
+                fullName: fullName,
+                phone: phone,
+                address: address,
+                city: city,
+                state: state,
+                zipPostalCode: zipPostalCode
+            };
+
+            $.ajax({
+                url: '/thanh-toan',
+                data: {
+                    toAddress: toAddress    
+                },
+                method: 'PUT',
+                success: (data) => {
+                    if (!data.error) {
+                        location.reload();
+                    }
+                }, 
+                error: (err) => {
+
+                }
+            })
+
+
+            // $('#checkout-addresses-step').removeClass('-current js-current-step')
+            //$('#checkout-addresses-step').addClass('-complete');
+
+            //$('#checkout-delivery-step').removeClass('-unreachable');
+            //$('#checkout-delivery-step').addClass('-reachable -current js-current-step')
         });
 
         $('.delivery-options-list form').submit((e) => {
             e.preventDefault();
-            $('#checkout-delivery-step').removeClass('-current js-current-step')
-            $('#checkout-delivery-step').addClass('-complete');
 
-            if($('#checkout-delivery-step').find('h1.step-title i.material-icons').length == 0) {
-                $('#checkout-delivery-step').find('h1.step-title span.step-number').before('<i class="material-icons done"></i>')
-            }
+            $.ajax({
+                url: '/thanh-toan',
+                data: {
+                    note: $('#delivery_message').val() || '0'    
+                },
+                method: 'PUT',
+                success: (data) => {
+                    if (!data.error) {
+                        location.reload();
+                    }
+                }, 
+                error: (err) => {
 
-            if($('#checkout-delivery-step').find('h1.step-title span.step-edit').length == 0) {
-                $('#checkout-delivery-step').find('h1.step-title span.step-number').after('<span class="step-edit text-muted"><i class="material-icons edit">mode_edit</i> chỉnh sửa</span>')
-            }    
+                }
+            })
 
-            $('#checkout-payment-step').removeClass('-unreachable');
-            $('#checkout-payment-step').addClass('-reachable -current js-current-step');            
+            // $('#checkout-delivery-step').removeClass('-current js-current-step')
+            // $('#checkout-delivery-step').addClass('-complete');
+
+            // if ($('#checkout-delivery-step').find('h1.step-title i.material-icons').length == 0) {
+            //     $('#checkout-delivery-step').find('h1.step-title span.step-number').before('<i class="material-icons done"></i>')
+            // }
+
+            // if ($('#checkout-delivery-step').find('h1.step-title span.step-edit').length == 0) {
+            //     $('#checkout-delivery-step').find('h1.step-title span.step-number').after('<span class="step-edit text-muted"><i class="material-icons edit">mode_edit</i> chỉnh sửa</span>')
+            // }
+
+            // $('#checkout-payment-step').removeClass('-unreachable');
+            // $('#checkout-payment-step').addClass('-reachable -current js-current-step');
         });
 
         //sign up
@@ -847,7 +1165,7 @@
                 birthday = $('input[name="birthday"]').val(),
                 sex = $('input[name="id_gender"]:checked').val(),
                 isRegistered_NewLetters = $('input[name="option"]:checked').val() == 1 ? true : false;
-                
+
             if (!firstName) {
                 showNotify("Vui lòng nhập họ của bạn.");
                 return
@@ -889,12 +1207,28 @@
             $.post(
                 '/sign-up',
                 user,
-                (data) => {                                           
+                (data) => {
                     if (data.error) {
                         showNotify(data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.");
                     } else {
-                        location.reload();
-                    } 
+                        if (data.user) {
+                            $.ajax({
+                                url: '/thanh-toan',
+                                data: {
+                                    byUser: data.user
+                                },
+                                method: 'PUT',
+                                success: (data) => {
+                                    if (!data.error) {
+                                        location.reload();
+                                    }
+                                },
+                                error: (err) => {
+
+                                }
+                            })
+                        }
+                    }
                 }
             );
 
@@ -928,31 +1262,32 @@
                 user,
                 (data) => {
                     if (data.user) {
-                        // $('#checkout-personal-information-step').removeClass('-current js-current-step')
-                        // $('#checkout-personal-information-step').addClass('-complete');
+                        $.ajax({
+                            url: '/thanh-toan',
+                            data: {
+                                byUser: data.user
+                            },
+                            method: 'PUT',
+                            success: (data) => {
+                                if (!data.error) {
+                                    location.reload();
+                                }
+                            },
+                            error: (err) => {
 
-                        // if($('#checkout-personal-information-step').find('h1.step-title i.material-icons').length == 0) {
-                        //     $('#checkout-personal-information-step').find('h1.step-title span.step-number').before('<i class="material-icons done"></i>')
-                        // }
-
-                        // if($('#checkout-personal-information-step').find('h1.step-title span.step-edit').length == 0) {
-                        //     $('#checkout-personal-information-step').find('h1.step-title span.step-number').after('<span class="step-edit text-muted"><i class="material-icons edit">mode_edit</i> chỉnh sửa</span>')
-                        // }  
-
-                        // $('#checkout-addresses-step').removeClass('-unreachable');
-                        // $('#checkout-addresses-step').addClass('-reachable -current js-current-step');
-                        location.reload();
+                            }
+                        })
                     } else {
-                        var err = data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.";                            
+                        var err = data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.";
                         showNotify(err);
-                        return 
-                    }                        
+                        return
+                    }
                 }
             );
-        });        
+        });
     });
 
-    $('#conditions-to-approve').delegate('input','click', (e) => {
+    $('#conditions-to-approve').delegate('input', 'click', (e) => {
         if ($(e.currentTarget).prop('checked')) {
             $('#payment-confirmation-block button[type="submit"]').removeClass('disabled')
         } else {

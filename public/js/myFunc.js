@@ -26,7 +26,7 @@ function logout() {
         success: (data) => {
             if (data.error) { return };
             localStorage.removeItem('cart');
-            window.location.reload();
+            window.location.href = document.referrer;
         },
         error: (err) => {
             // window.location.reload();
