@@ -154,6 +154,14 @@ router.put('/thanh-toan', (req, res) => {
     });
 });
 
+router.get('/confirm-checkout', (req, res) => {
+    console.log(req);
+});
+
+router.post('/confirm-checkout', (req, res) => {
+    console.log(req);
+});
+
 router.get('/dat-hang-thanh-cong', (req, res) => {
     res.render('order-successfully', {
         data: {
