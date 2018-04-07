@@ -353,13 +353,13 @@
                                                         <div class="form-group row row-style-3  ">
                                                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
                                                                 <span class="custom-radio float-xs-left">
-                                                                    <input type="radio" id="pay-method-nganluong" name="payment-method-option" data-method-payment="ngan-luong" value="2">
+                                                                    <input type="radio" id="pay-method-vtc-pay" name="payment-method-option" data-method-payment="vtc-pay" value="2">
                                                                         <span></span>
                                                                     </span>
                                                             </div>
                                                             <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
-                                                                <label for="pay-method-nganluong" class="control-label is-large">
-                                                                    Thẻ ATM nội địa/Internet Banking (Miễn phí thanh toán) </label>
+                                                                <label for="pay-method-vtc-pay" class="control-label is-large">
+                                                                    Thanh toán qua VTC Pay </label>
                                                             </div>
                                                         </div>
                                                         <!--123pay method-->
@@ -1150,7 +1150,34 @@
                 });
                 
                 break;
-            case 'ngan-luong':
+            case 'vtc-pay':
+                $.post('/request-payment', {
+                    method: 'vtc-pay'
+                }, (data) => {
+                    if (data.error) {
+                        var error = data.error;
+                        if (typeof error == 'Object') {
+                            error = 'Lỗi không xác định, vui lòng tải lại trang và thử lại'
+                        }
+                        showNotification(error)
+                        return
+                    } 
+
+                    var href = data.href;
+                    if (!href) {
+                        showNotification('Lỗi không xác định, vui lòng tải lại trang và thử lại');
+                        return
+                    }
+
+                    location.href = href
+
+                }).error((err) => {
+                    var error = err;
+                    if (typeof error == 'Object') {
+                        error = 'Lỗi không xác định, vui lòng tải lại trang và thử lại'
+                    }
+                    showNotification(error)
+                })
                 break;
         }    
     });

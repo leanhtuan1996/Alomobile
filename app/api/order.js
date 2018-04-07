@@ -524,10 +524,153 @@ var processProductBeforeCheckout = (id, color, quantity, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var getOrder = (id, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Mã đơn hàng không tìm thấy"
+            });
+            return;
+        };
+
+        workflow.emit('get');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('get', () => {
+        Order.findById(id).populate('byUser').exec((err, order) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err
+                });
+                return
+            }
+
+            if (!order) {
+                workflow.emit('response', {
+                    error: "Đơn hàng không tìm thấy"
+                });
+                return
+            }
+
+            if (order.status != 0) {
+                workflow.emit('response', {
+                    error: "Đơn hàng đã được chấp nhận"
+                });
+                return
+            }
+
+            workflow.emit('response', {
+                order: order
+            });
+        });
+    })
+
+    workflow.emit('validate-parameters');
+}
+
+var requestPayment = (id, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Mã đơn hàng không được bỏ trống"
+            });
+            return
+        }
+
+        workflow.emit('get-order', id);
+    })
+
+    workflow.on('get-order', (id) => {
+        getOrder(id, (result) => {
+            if (result.error) {
+                workflow.emit('response', {
+                    error: result.error
+                });
+                return
+            }
+            if (!result.order) {
+                workflow.emit('response', {
+                    error: "Đơn hàng không được tìm thấy!"
+                });
+                return
+            }
+
+            workflow.emit('request-payment', result.order);
+        })
+    });
+
+    workflow.on('request-payment', (order) => {
+        if (!order) {
+            workflow.emit('response', {
+                error: "Đơn hàng không được tìm thấy"
+            });
+            return
+        }
+
+        var products = order.products,
+            user = order.byUser,
+            address = order.toAddress,
+            note = order.note;
+        if (!products) {
+            workflow.emit('response', {
+                error: "Sản phẩm trong đơn hàng không được tìm thấy"
+            });
+            return
+        }
+        if (!user) {
+            workflow.emit('response', {
+                error: "Người mua không tìm thấy"
+            });
+            return
+        }
+        if (!address) {
+            workflow.emit('response', {
+                error: "Địa chỉ giao hàng không tìm thấy"
+            });
+            return
+        }
+
+        var total = 0;
+        products.forEach(product => {
+            total = product.price * product.quantity
+        });
+
+        var website_id = 5737,  //39088
+        currency = 'VND',
+        receiver_account = '01629680825',
+        reference_number = id,
+        amount = total;
+
+        var sign = helper.signSHA(`${amount}|${currency}|${receiver_account}|${reference_number}|${website_id}|@LeAnhTuan11051996`);
+
+        var href = `https://pay.vtc.vn/bank-gateway/checkout.html?website_id=${website_id}&currency=${currency}&reference_number=${reference_number}&amount=${amount}&receiver_account=${receiver_account}&signature=${sign}`
+
+        workflow.emit('response', {
+            href: href
+        });
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    })
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     checkingAvailable: checkingAvailable,
     detailCart: detailCart,
     initOrder: initOrder,
     verify: verify,
-    updateOrder: updateOrder
+    updateOrder: updateOrder,
+    getOrder: getOrder,
+    requestPayment: requestPayment
 }

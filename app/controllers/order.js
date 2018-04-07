@@ -20,8 +20,22 @@ var updateOrder = (order, parameters, cb) => {
     })
 }
 
+var getOrder = (id, cb) => {
+    orderApi.getOrder(id, (result) => {
+        return cb(result)
+    });
+}
+
+var requestPayment = (id, cb) => {
+   orderApi.requestPayment(id, (result) => {
+       return cb(result);
+   });
+}
+
 module.exports = {
     initOrder: initOrder,
     verify: verify,
-    updateOrder: updateOrder
+    updateOrder: updateOrder,
+    getOrder: getOrder,
+    requestPayment: requestPayment
 }

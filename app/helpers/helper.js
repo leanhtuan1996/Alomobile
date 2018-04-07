@@ -3,6 +3,7 @@
 var bcrypt = require('bcryptjs');
 var config = require('config');
 var jwt = require('jsonwebtoken-refresh');
+const crypto = require('crypto');
 
 var hashPw = (pw) => {
     var saltRounds = config.get("salt");
@@ -49,6 +50,10 @@ var refreshToken = (token, cb) => {
     });
 }
 
+var signSHA = (string) => {
+    return crypto.createHash('sha256').update(string, 'utf8').digest('hex');
+}
+
 /**
  * supporting for ISO formation: YYYY-MM-DD
  * @param {*} date 
@@ -79,5 +84,6 @@ module.exports = {
     copySync: copySync,
     encodeToken: encodeToken,
     decodeToken: decodeToken,
-    refreshToken: refreshToken
+    refreshToken: refreshToken,
+    signSHA: signSHA
 }

@@ -154,8 +154,24 @@ router.put('/thanh-toan', (req, res) => {
     });
 });
 
-router.get('/confirm-checkout', (req, res) => {
-    console.log(req);
+router.post('/request-payment', (req, res) => {
+    if (!req.session.order || !req.session.token) {
+        res.json({
+            error: "Đơn hàng không hợp lệ hoặc đã bị lỗi."
+        });
+        return
+    }
+
+    var id = req.session.order._id;
+    if (!id) {
+        res.json({
+            error: "Đơn hàng không hợp lệ hoặc đã bị lỗi."
+        });
+    }
+
+    Order.requestPayment(id, (result) => {
+        res.json(result);
+    });
 });
 
 router.post('/confirm-checkout', (req, res) => {
