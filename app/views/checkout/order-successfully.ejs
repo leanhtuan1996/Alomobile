@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <title>Đặt hàng thành công</title>
+    <meta name="description" content="Shop powered by Alomobile">
+    <meta name="keywords" content="">
+    
+    <%- include layouts/head %>
+</head>
+
+<body id="index" class="lang-en country-us currency-usd layout-full-width page-index tax-display-disabled">
+    <main>
+        <header id="header">
+            <div class="header-banner">
+            </div>
+            <%- include layouts/header-nav %>
+            <%- include layouts/header-top %>
+            <%- include layouts/header-bottom %>
+        </header>
+        <aside id="notifications">
+            <div class="container">
+            </div>
+        </aside>        
+        <!-- SECTION IS HERE -->
+        <section id="wrapper">
+            <div class="container">
+                <div class="row">
+                    <div id="content-wrapper" class="col-xs-12">
+                        <div id="main">
+                            <header class="page-header">
+                                <h1>
+                                    Đặt hàng thành công!
+                                </h1>
+                            </header>
+                            <section id="content" class="page-content card card-block">
+                                    <div class="col-lg-12">
+                                            <div class="panel panel-default success">
+                                                <div class="panel-body">
+                                                    <div class="row row-style-12">
+                                                        <div class="col-lg-3 col-md-3 visible-lg-block visible-md-block">
+                                                            <img src="https://vcdn.tikicdn.com/assets/img/ico12.png" height="178" width="195" class="img-responsive" alt="Image">
+                                                        </div>
+                                                        <div class="col-lg-9 col-md-9">
+                                                            <h3 style="margin: 0px 0px 5px 0px">Cảm ơn bạn đã mua hàng tại Alomobile!</h3>
+                                                      
+                                                            <p style="line-height: 20px;">
+                                                                Thông tin chi tiết về đơn hàng đã được gửi đến địa chỉ mail <span><%- data.user.email %></span>. Nếu không tìm thấy vui lòng kiểm tra trong hộp thư <strong>Spam</strong> hoặc <strong>Junk Folder</strong>.
+                                                            </p>
+                                                            <div class="alert alert-success no-icon" role="alert">
+                                                                <p>Nhằm giúp việc xử lý đơn hàng nhanh hơn nữa, Alomobile sẽ không gọi điện cho bạn để xác nhận đơn hàng.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                            </section>
+                            <footer class="page-footer" style="margin-bottom: 1.563rem">
+                                <a href="/" class="account-link">
+                                    <i class="material-icons">&#xE5CB;</i>
+                                    <span>Tiếp tục mua sắm</span>
+                                </a>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END SECTION IS HERE  -->
+        <%- include layouts/footer %>
+    </main>
+    <script type="text/javascript" src="/static/js/custom.js"></script>
+    <div class="back-top"><a href="#" class="back-top-button"></a></div>
+</body>
+</html>

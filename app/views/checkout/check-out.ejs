@@ -340,7 +340,7 @@
                                                         <div class="form-group row row-style-3  method_payment_cod">
                                                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
                                                                 <span class="custom-radio float-xs-left">
-                                                                    <input type="radio" id="payment-method-cod" name="payment-method-option" value="1" checked="">
+                                                                    <input type="radio" id="payment-method-cod" name="payment-method-option" data-method-payment="cod" value="1" checked="">
                                                                     <span></span>
                                                                 </span>
                                                             </div>
@@ -350,18 +350,18 @@
                                                             </div>
                                                         </div>
                                                         <!--promotion method, cod, zalopay, momo-->
-                                                        <!-- <div class="form-group row row-style-3  ">
+                                                        <div class="form-group row row-style-3  ">
                                                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-                                                                    <span class="custom-radio float-xs-left">
-                                                                            <input type="radio" id="pay-method-vnpay" name="payment-method-option" value="2">
-                                                                            <span></span>
-                                                                            </span>
+                                                                <span class="custom-radio float-xs-left">
+                                                                    <input type="radio" id="pay-method-nganluong" name="payment-method-option" data-method-payment="ngan-luong" value="2">
+                                                                        <span></span>
+                                                                    </span>
                                                             </div>
                                                             <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
-                                                                <label for="pay-method-vnpay" class="control-label is-large">
+                                                                <label for="pay-method-nganluong" class="control-label is-large">
                                                                     Thẻ ATM nội địa/Internet Banking (Miễn phí thanh toán) </label>
                                                             </div>
-                                                        </div> -->
+                                                        </div>
                                                         <!--123pay method-->
                                                         <div class="form-group row row-style-3 js-payment-sub" style="display: block;">
             
@@ -390,26 +390,17 @@
                                                         </div>
                                                     </li>
                                                 </ul>
-                                            </form>
-                                            <div id="payment-confirmation-block">
-                                                <div class="ps-shown-by-js">
-                                                    <button type="submit" class="btn btn-primary center-block disabled">
-                                                        TIẾN HÀNH ĐẶT HÀNG
-                                                    </button>
-                                                </div>
-                                                <div class="ps-hidden-by-js" style="display: none;">
-                                                </div>
-                                            </div>
-                                            <div class="modal fade" id="modal">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">×</span>
-                                                        </button>
-                                                        <div class="js-modal-content"></div>
+                                                <div id="payment-confirmation-block" style="margin-top: 10px;">
+                                                        <div class="ps-shown-by-js">
+                                                            <button type="submit" class="btn btn-primary center-block disabled">
+                                                                TIẾN HÀNH ĐẶT HÀNG
+                                                            </button>
+                                                        </div>
+                                                        <div class="ps-hidden-by-js" style="display: none;">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                            </form>
+                                            
                                         </div>
                                     </section>
 
@@ -488,85 +479,7 @@
                                             <span class="step-edit text-muted">
                                                 <i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
                                         </h1>
-                                        <div class="content">
-                                            <div class="payment-options ">
-                                                <!-- <p class="alert alert-danger">Unfortunately, there is no payment method available.</p> -->
-                                                <div class="panel panel-default">
-                                                    <div class="panel-body">
-                                                        <!--promotion method, cod, zalopay, momo-->
-                                                        <div class="form-group row row-style-3  method_payment_cod">
-                                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-                                                                <span class="custom-radio float-xs-left">
-                                                                    <input type="radio" id="payment-method-cod" name="payment-method-option" value="1" checked="">
-                                                                    <span></span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
-                                                                <label for="payment-method-cod" class="control-label is-large">
-                                                                    Thanh toán tiền mặt khi nhận hàng </label>
-                                                            </div>
-                                                        </div>
-                                                        <!--promotion method, cod, zalopay, momo-->
-                                                        <!-- <div class="form-group row row-style-3  ">
-                                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-                                                                    <span class="custom-radio float-xs-left">
-                                                                            <input type="radio" id="pay-method-vnpay" name="payment-method-option" value="2">
-                                                                            <span></span>
-                                                                            </span>
-                                                            </div>
-                                                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
-                                                                <label for="pay-method-vnpay" class="control-label is-large">
-                                                                    Thẻ ATM nội địa/Internet Banking (Miễn phí thanh toán) </label>
-                                                            </div>
-                                                        </div> -->
-                                                        <!--123pay method-->
-                                                        <div class="form-group row row-style-3 js-payment-sub" style="display: block;">
-            
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <p class="ps-hidden-by-js" style="display: none;">
-                                                By confirming the order, you certify that you have read and agree with all of the conditions below:
-                                            </p>
-                                            <form id="conditions-to-approve" style="margin-bottom: 5px;">
-                                                <ul>
-                                                    <li>
-                                                        <div class="float-xs-left">
-                                                            <span class="custom-checkbox">
-                                                                <input id="approve_conditions" required="" type="checkbox" value="1" class="ps-shown-by-js">
-                                                                <span>
-                                                                    <i class="material-icons checkbox-checked"></i>
-                                                                </span>
-                                                            </span>
-                                                        </div>
-                                                        <div class="condition-label">
-                                                            <label class="js-terms" for="approve_conditions">
-                                                                Tôi đồng ý với các điều khoản dịch vụ và sẽ tuân thủ chúng một cách vô điều kiện.
-                                                            </label>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </form>
-                                            <div id="payment-confirmation-block">
-                                                <div class="ps-shown-by-js">
-                                                    <button type="submit" class="btn btn-primary center-block disabled">
-                                                        TIẾN HÀNH ĐẶT HÀNG
-                                                    </button>
-                                                </div>
-                                                <div class="ps-hidden-by-js" style="display: none;">
-                                                </div>
-                                            </div>
-                                            <div class="modal fade" id="modal">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">×</span>
-                                                        </button>
-                                                        <div class="js-modal-content"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="content">                                         
                                         </div>
                                     </section>
                                 <% } %>
@@ -770,84 +683,6 @@
                                         <i class="material-icons edit">mode_edit</i> chỉnh sửa</span>
                                 </h1>
                                 <div class="content">
-                                    <div class="payment-options ">
-                                        <!-- <p class="alert alert-danger">Unfortunately, there is no payment method available.</p> -->
-                                        <div class="panel panel-default">
-                                            <div class="panel-body">
-                                                <!--promotion method, cod, zalopay, momo-->
-                                                <div class="form-group row row-style-3  method_payment_cod">
-                                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-                                                        <span class="custom-radio float-xs-left">
-                                                            <input type="radio" id="payment-method-cod" name="payment-method-option" value="1" checked="">
-                                                            <span></span>
-                                                        </span>
-                                                    </div>
-                                                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
-                                                        <label for="payment-method-cod" class="control-label is-large">
-                                                            Thanh toán tiền mặt khi nhận hàng </label>
-                                                    </div>
-                                                </div>
-                                                <!--promotion method, cod, zalopay, momo-->
-                                                <!-- <div class="form-group row row-style-3  ">
-                                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-                                                            <span class="custom-radio float-xs-left">
-                                                                    <input type="radio" id="pay-method-vnpay" name="payment-method-option" value="2">
-                                                                    <span></span>
-                                                                    </span>
-                                                    </div>
-                                                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 pad-right-10">
-                                                        <label for="pay-method-vnpay" class="control-label is-large">
-                                                            Thẻ ATM nội địa/Internet Banking (Miễn phí thanh toán) </label>
-                                                    </div>
-                                                </div> -->
-                                                <!--123pay method-->
-                                                <div class="form-group row row-style-3 js-payment-sub" style="display: block;">
-    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="ps-hidden-by-js" style="display: none;">
-                                        By confirming the order, you certify that you have read and agree with all of the conditions below:
-                                    </p>
-                                    <form id="conditions-to-approve" style="margin-bottom: 5px;">
-                                        <ul>
-                                            <li>
-                                                <div class="float-xs-left">
-                                                    <span class="custom-checkbox">
-                                                        <input id="approve_conditions" required="" type="checkbox" value="1" class="ps-shown-by-js">
-                                                        <span>
-                                                            <i class="material-icons checkbox-checked"></i>
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                                <div class="condition-label">
-                                                    <label class="js-terms" for="approve_conditions">
-                                                        Tôi đồng ý với các điều khoản dịch vụ và sẽ tuân thủ chúng một cách vô điều kiện.
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </form>
-                                    <div id="payment-confirmation-block">
-                                        <div class="ps-shown-by-js">
-                                            <button type="submit" class="btn btn-primary center-block disabled">
-                                                TIẾN HÀNH ĐẶT HÀNG
-                                            </button>
-                                        </div>
-                                        <div class="ps-hidden-by-js" style="display: none;">
-                                        </div>
-                                    </div>
-                                    <div class="modal fade" id="modal">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">×</span>
-                                                </button>
-                                                <div class="js-modal-content"></div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </section>
                         <% } %>
@@ -898,95 +733,29 @@
                     </div>
                 </div>
             </section>
-            <div class="pos_logo product_block_container">
-                <div class="row pos_content">
-                    <div class="logo-slider owl-carousel owl-loaded owl-drag">
-                        <div class="owl-stage-outer">
-                            <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: 0s; width: 1622px;">
-                                <div class="owl-item active" style="width: 231.6px;">
-                                    <div>
-                                        <div class="item-banklogo">
-                                            <a href="http://posthemes.com/">
-                                                <img class="replace-2x img-responsive" src="http://demo.posthemes.com/pos_fastbuy/layout2/img/blocklogo/1.jpg" alt="Logo">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="owl-item active" style="width: 231.6px;">
-                                    <div>
-                                        <div class="item-banklogo">
-                                            <a href="http://posthemes.com/">
-                                                <img class="replace-2x img-responsive" src="http://demo.posthemes.com/pos_fastbuy/layout2/img/blocklogo/2.jpg" alt="Logo">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="owl-item active" style="width: 231.6px;">
-                                    <div>
-                                        <div class="item-banklogo">
-                                            <a href="http://posthemes.com/">
-                                                <img class="replace-2x img-responsive" src="http://demo.posthemes.com/pos_fastbuy/layout2/img/blocklogo/3.jpg" alt="Logo">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="owl-item active" style="width: 231.6px;">
-                                    <div>
-                                        <div class="item-banklogo">
-                                            <a href="http://posthemes.com/">
-                                                <img class="replace-2x img-responsive" src="http://demo.posthemes.com/pos_fastbuy/layout2/img/blocklogo/4.jpg" alt="Logo">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="owl-item active" style="width: 231.6px;">
-                                    <div>
-                                        <div class="item-banklogo">
-                                            <a href="http://posthemes.com/">
-                                                <img class="replace-2x img-responsive" src="http://demo.posthemes.com/pos_fastbuy/layout2/img/blocklogo/5.jpg" alt="Logo">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="owl-item" style="width: 231.6px;">
-                                    <div>
-                                        <div class="item-banklogo">
-                                            <a href="http://posthemes.com/">
-                                                <img class="replace-2x img-responsive" src="http://demo.posthemes.com/pos_fastbuy/layout2/img/blocklogo/6.jpg" alt="Logo">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="owl-item" style="width: 231.6px;">
-                                    <div>
-                                        <div class="item-banklogo">
-                                            <a href="http://posthemes.com/">
-                                                <img class="replace-2x img-responsive" src="http://demo.posthemes.com/pos_fastbuy/layout2/img/blocklogo/7.jpg" alt="Logo">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="owl-nav">
-                            <div class="owl-prev disabled">prev</div>
-                            <div class="owl-next">next</div>
-                        </div>
-                        <div class="owl-dots disabled"></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
     <%- include layouts/footer %>
         <script type="text/javascript" src="/static/js/custom.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <div class="back-top">
             <a href="#" class="back-top-button"></a>
         </div>
 </body>
 
 <script type="text/javascript">
+
+    function showNotification(text) {
+        swal({
+            title: "Có lỗi xảy ra",
+            text: text,
+            icon: "error",
+            buttons: {
+                reTry: "Thử lại",
+            },
+        })
+    }
 
     (function () {
         //html element
@@ -1104,10 +873,20 @@
                 success: (data) => {
                     if (!data.error) {
                         location.reload();
+                    } else {
+                        var error = data.error;
+                        if (typeof error == 'Object') {
+                            error = 'Lỗi không xác định, vui lòng tải lại trang và thử lại'
+                        }
+                        showNotification(error)
                     }
                 }, 
                 error: (err) => {
-
+                    var error = err;
+                    if (typeof error == 'Object') {
+                        error = 'Lỗi không xác định, vui lòng tải lại trang và thử lại'
+                    }
+                    showNotification(error)
                 }
             })
 
@@ -1131,10 +910,20 @@
                 success: (data) => {
                     if (!data.error) {
                         location.reload();
+                    } else {
+                        var error = data.error;
+                        if (typeof error == 'Object') {
+                            error = 'Lỗi không xác định, vui lòng tải lại trang và thử lại'
+                        }
+                        showNotification(error)
                     }
                 }, 
                 error: (err) => {
-
+                    var error = err;
+                    if (typeof error == 'Object') {
+                        error = 'Lỗi không xác định, vui lòng tải lại trang và thử lại'
+                    }
+                    showNotification(error)
                 }
             })
 
@@ -1221,10 +1010,20 @@
                                 success: (data) => {
                                     if (!data.error) {
                                         location.reload();
+                                    } else {
+                                        var error = data.error;
+                                        if (typeof error == 'Object') {
+                                            error = 'Lỗi không xác định, vui lòng tải lại trang và thử lại'
+                                        }
+                                        showNotification(error)
                                     }
                                 },
                                 error: (err) => {
-
+                                    var error = err;
+                                    if (typeof error == 'Object') {
+                                        error = 'Lỗi không xác định, vui lòng tải lại trang và thử lại'
+                                    }
+                                    showNotification(error)
                                 }
                             })
                         }
@@ -1271,10 +1070,20 @@
                             success: (data) => {
                                 if (!data.error) {
                                     location.reload();
+                                } else {
+                                    var error = data.error;
+                                    if (typeof error == 'Object') {
+                                        error = 'Lỗi không xác định, vui lòng tải lại trang và thử lại'
+                                    }
+                                    showNotification(error)
                                 }
                             },
                             error: (err) => {
-
+                                var error = err;
+                                if (typeof error == 'Object') {
+                                    error = 'Lỗi không xác định, vui lòng tải lại trang và thử lại'
+                                }
+                                showNotification(error)
                             }
                         })
                     } else {
@@ -1293,7 +1102,59 @@
         } else {
             $('#payment-confirmation-block button[type="submit"]').addClass('disabled');
         }
-    })
+    });
+
+    $('#conditions-to-approve').submit((e) => {
+
+        e.preventDefault();
+
+        if ($('#payment-confirmation-block button[type="submit"]').hasClass('disabled')) { return }
+
+        //get payment method
+        var method = $('#checkout-payment-step').find('input[type="radio"]:checked').attr('data-method-payment');
+
+        if (!method) { return }
+
+        switch (method) {
+            case 'cod':
+
+                var parameters = {
+                    status: 1,
+                    checkoutMethod: 'Cod'
+                }
+
+                $.ajax({
+                    url: '/thanh-toan',
+                    data: parameters,
+                    method: 'PUT',
+                    success: (data) => {
+                        if (!data.error) {
+                            //remove cart
+                            localStorage.removeItem('cart');
+                            location.href = `/dat-hang-thanh-cong?order=${data.order._id}&email=${data.order.byUser.email}`
+                        } else {
+                            var error = data.error;
+                            if (typeof error == 'Object') {
+                                error = 'Lỗi không xác định, vui lòng tải lại trang và thử lại'
+                            }
+                            showNotification(error)
+                        }
+                    },
+                    error: (err) => {
+                        var error = err;
+                        if (typeof error == 'Object') {
+                            error = 'Lỗi không xác định, vui lòng tải lại trang và thử lại'
+                        }
+                        showNotification(error)
+                    }
+                });
+                
+                break;
+            case 'ngan-luong':
+                break;
+        }    
+    });
+
 
 </script>
 

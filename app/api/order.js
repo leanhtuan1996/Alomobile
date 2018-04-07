@@ -339,7 +339,7 @@ var updateOrder = (order, parameters, cb) => {
     });
 
     workflow.on('update', () => {
-        Order.findById(order._id, (err, order) => {
+        Order.findById(order._id).populate('byUser').exec((err, order) => {
             if (err) {
                 workflow.emit('response', {
                     error: err
@@ -362,6 +362,7 @@ var updateOrder = (order, parameters, cb) => {
                 workflow.emit('response', {
                     error: error
                 });
+                return;
             }
 
             if (parameters.byUser) {

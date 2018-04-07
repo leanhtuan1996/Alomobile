@@ -14,9 +14,12 @@ router.post('/order/beginOrder', (req, res) => {
 
 router.get('/thanh-toan', (req, res) => {
     if (!req.session.order) {
+        console.log('1');
         res.redirect('/cart');
         return
     }
+
+    console.log(req.session.order);
 
     if (req.session.order && !req.session.token) {
         Order.verify(req.session.order._id, (cb) => {
@@ -30,6 +33,11 @@ router.get('/thanh-toan', (req, res) => {
             if (!cb.order) {
                 req.session.destroy();
                 res.redirect('/cart');
+                return
+            }
+
+            if (cb.order.status == 1) {
+                res.redirect('/dat-hang-thanh-cong');
                 return
             }
 
@@ -131,9 +139,36 @@ router.put('/thanh-toan', (req, res) => {
     }
 
     Order.updateOrder(req.session.order, req.body, (result) => {
-        console.log(result);
+
+        if (result.order) {
+            req.session.order = result.order;
+
+            if (result.order.status == 1) {
+                //insert order to user
+                
+                //send email to user
+            }
+
+        }
+
         res.json(result)
     });
-})
+});
+
+router.get('/dat-hang-thanh-cong', (req, res) => {
+
+    if (!req.session.user || !req.session.token || !req.session.order) {
+        res.redirect('/404');
+        return
+    }
+
+    res.render('order-successfully', {
+        data: {
+            user: req.session.user,
+            order: req.session.order,
+            token: req.session.token
+        }
+    });
+});
 
 module.exports = router
