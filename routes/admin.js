@@ -461,11 +461,13 @@ var getAllRouter = (stack, cb) => {
         for (var method in element.methods) {
             methods += method;
         }
-
-        response.push({
-            method: methods,
-            path: element.path
-        });
+        //just get all router of admin
+        if (element.path.startsWith('/admin')) {
+            response.push({
+                method: methods,
+                path: element.path
+            });
+        }
 
         if (i == routes.length - 1) {
             if (response && response.length > 0) {
@@ -494,10 +496,6 @@ var getAllRouter = (stack, cb) => {
                     } else {
                         //find this path in newRouters
                         var index = _.findIndex(newRouters, (e) => {
-
-                            //var matchMethod = _.findIndex(e.methods, (temp) => {
-                            //return temp == method;
-                            //});
                             return e.path == path;
                         });
 
