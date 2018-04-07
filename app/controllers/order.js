@@ -27,15 +27,51 @@ var getOrder = (id, cb) => {
 }
 
 var requestPayment = (id, cb) => {
-   orderApi.requestPayment(id, (result) => {
-       return cb(result);
-   });
+    orderApi.requestPayment(id, (result) => {
+        return cb(result);
+    });
 }
+
+var compareCurrentOrder = (id, currentProducts, requestProducts) => {
+    if (currentProducts.length != requestProducts.length) {
+        deleteOrder(id, (cb) => {
+
+        });
+        return false
+    } else {
+        for (let i = 0; i < currentProducts.length; i++) {
+            const currentProduct = currentProducts[i];
+            var idProduct = currentProduct.id;
+
+            var requestProduct = requestProducts.find(e => {
+                return e.id == idProduct;
+            });
+
+            if (!requestProduct) {
+                return false
+            } 
+
+            if (Number.parseInt(currentProduct.quantity) != Number.parseInt(requestProduct.quantity)) {
+                return false
+            }
+        }
+        return true
+    }
+
+    return true
+}
+
+var deleteOrder = (id, cb) => {
+
+}
+
 
 module.exports = {
     initOrder: initOrder,
     verify: verify,
     updateOrder: updateOrder,
     getOrder: getOrder,
-    requestPayment: requestPayment
+    requestPayment: requestPayment,
+    compareCurrentOrder: compareCurrentOrder,
+    deleteOrder: deleteOrder
 }

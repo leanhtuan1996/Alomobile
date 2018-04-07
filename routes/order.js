@@ -14,12 +14,9 @@ router.post('/order/beginOrder', (req, res) => {
 
 router.get('/thanh-toan', (req, res) => {
     if (!req.session.order) {
-        console.log('1');
         res.redirect('/cart');
         return
     }
-
-    console.log(req.session.order);
 
     if (req.session.order && !req.session.token) {
         Order.verify(req.session.order._id, (cb) => {
@@ -87,10 +84,13 @@ router.get('/thanh-toan', (req, res) => {
 router.post('/thanh-toan', (req, res) => {
 
     if (req.session.order) {
-        res.json({
-            order: req.session.order
-        });
-        return
+        if (Order.compareCurrentOrder(req.session.order._id, req.session.order.products, req.body.parameters.products)) {
+            res.json({
+                order: req.session.order
+            });
+            return
+        } 
+        delete req.session.order;
     }
 
     if (!req.body.parameters) {
@@ -145,7 +145,7 @@ router.put('/thanh-toan', (req, res) => {
             if (result.order.status == 1) {
                 delete req.session.order;
                 //insert order to user
-                
+
                 //send email to user
             }
 
@@ -175,7 +175,6 @@ router.post('/request-payment', (req, res) => {
 });
 
 router.post('/confirm-checkout', (req, res) => {
-    console.log(req);
 });
 
 router.get('/dat-hang-thanh-cong', (req, res) => {
