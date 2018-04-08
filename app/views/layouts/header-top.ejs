@@ -95,7 +95,7 @@
 <script type="text/javascript">
     jQuery(document).ready(($) => {
         
-        $('#searchbox input').bind('keyup keypress keydown change', (e) => {
+        $('#searchbox input').bind('keyup change', (e) => {
             var text = $(e.currentTarget).val();
             var ul = $('#searchbox ul.wrap-suggestion');
 
