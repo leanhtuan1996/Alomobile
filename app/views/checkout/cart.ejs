@@ -190,6 +190,7 @@
            $.post('/thanh-toan', {
                 parameters: parameters
            }, (data) => {
+               console.log(data);
                if (data.error) {
                    showNotification(data.error);
                    return
@@ -204,7 +205,7 @@
                location.href = '/thanh-toan'
 
            }).error((err) => {
-
+               console.log(err);
            })
 
         } catch (error) {

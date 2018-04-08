@@ -99,23 +99,24 @@ router.post('/thanh-toan', (req, res) => {
         });
         return
     }
-    var parameters = {};
-    parameters.products = req.body.parameters.products;
+    var parameters = {
+        products: req.body.parameters.products
+    };
+
     if (req.session.token) {
-        User.verify(req.session.token, (cb) => {
-            var user;
+        User.verify(req.session.token, (cb) => {           
             if (cb.error || !cb.user) {
                 req.session.destroy();
             } else {
-                user = cb.user
+                parameters.byUser = cb.user
             }
-
-            parameters.byUser = user;
-
+            
             Order.initOrder(parameters, (response) => {
                 if (response.order) {
                     req.session.order = response.order;
                 }
+
+                console.log(response);
 
                 res.json(response);
             });

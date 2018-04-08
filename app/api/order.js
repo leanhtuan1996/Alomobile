@@ -208,50 +208,32 @@ var initOrder = (parameters, cb) => {
 
     workflow.on('find-products', (products) => {
         var newProducts = [];
+        var errors = [];
         for (let i = 0; i < products.length; i++) {
             const product = products[i];
-            if (!product.id) {
+            if (!product.id || !product.color || !product.quantity) {
                 workflow.emit('response', {
                     error: `Sản phẩm thứ ${i + 1} bị thiếu tham số!`
                 });
-                break;
-            }
-
-            if (!product.color) {
-                workflow.emit('response', {
-                    error: `Sản phẩm thứ ${i + 1} bị thiếu tham số!`
-                });
-                break;
-            }
-
-            if (!product.quantity) {
-                workflow.emit('response', {
-                    error: `Sản phẩm thứ ${i + 1} bị thiếu tham số!`
-                });
-                break;
+                return
             }
 
             Product.findById(product.id).select('name details').exec((err, element) => {
                 if (err) {
-                    workflow.emit('response', {
-                        error: err
-                    });
-                    return
+                    errors.push(err)
                 }
 
                 if (!element) {
-                    workflow.emit('response', {
+                    errors.push({
                         error: "Sản phẩm không tìm thấy!"
                     });
-                    return
                 }
 
                 var details = element.details;
                 if (!details) {
-                    workflow.emit('response', {
+                    errors.push({
                         error: "Chi tiết sản phẩm không tìm thấy!"
                     });
-                    return
                 }
 
                 var detail = details.find(e => {
@@ -259,17 +241,15 @@ var initOrder = (parameters, cb) => {
                 });
 
                 if (!detail) {
-                    workflow.emit('response', {
+                    errors.push({
                         error: "Chi tiết sản phẩm không tìm thấy!"
                     });
-                    return
                 }
 
                 if (detail.quantity < product.quantity) {
-                    workflow.emit('response', {
+                    errors.push({
                         error: `Số lượng sản phẩm ${element.name} hiện không đủ để tiến hành thanh toán, số lượng còn lại là: ${detail.quantity}`
                     });
-                    return
                 }
 
                 var newElement = {
@@ -281,9 +261,22 @@ var initOrder = (parameters, cb) => {
 
                 newProducts.push(newElement);
 
-                workflow.emit('init', newProducts)
+                if (i == products.length - 1) {
+                    if (errors.length > 0) {
+                        workflow.emit('response', {
+                            error: errors
+                        });
+                        return
+                    } 
+
+                    if (newProducts.length - 1 == i) {
+                        workflow.emit('init', newProducts);
+                    }
+                }
             });
         }
+
+        
     });
 
     workflow.on('init', (newProducts) => {
