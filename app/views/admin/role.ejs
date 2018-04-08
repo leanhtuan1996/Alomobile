@@ -352,7 +352,6 @@
                         $.get(`/admin/role/${id}`, (data) => {
                             return cb(data);
                         }).error((err) => {
-                            window.console.log(err);
                         });
                     }
 
@@ -360,7 +359,6 @@
                         $.get('/admin/role/get-routers', (data) => {
                             return cb(data);
                         }).error((err) => {
-                            window.console.log(err);
                         })
                     }
 
@@ -762,7 +760,6 @@
 
                             $('#table-role-add tbody, #table-role-edit tbody').delegate('.select-method', 'click', (e) => {
                                  var numMethods = $(e.currentTarget.parentElement.parentElement).find('.checkbox');
-                                 // console.log(e);
                                  if (numMethods.length == 1) {
                                      //find row
                                     var input = $(numMethods[0].parentElement.parentElement).find('input');

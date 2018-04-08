@@ -26,8 +26,8 @@ var getOrder = (id, cb) => {
     });
 }
 
-var requestPayment = (id, cb) => {
-    orderApi.requestPayment(id, (result) => {
+var requestPayment = (id, method, cb) => {
+    orderApi.requestPayment(id, method, (result) => {
         return cb(result);
     });
 }
@@ -41,17 +41,13 @@ var compareCurrentOrder = (id, currentProducts, requestProducts) => {
     } else {
         for (let i = 0; i < currentProducts.length; i++) {
             const currentProduct = currentProducts[i];
-            var idProduct = currentProduct.id;
 
             var requestProduct = requestProducts.find(e => {
-                return e.id == idProduct;
+                return e.id == currentProduct.id && currentProduct.color.hex == e.color && Number.parseInt(currentProduct.quantity) == Number.parseInt(e.quantity);
             });
 
             if (!requestProduct) {
-                return false
-            } 
-
-            if (Number.parseInt(currentProduct.quantity) != Number.parseInt(requestProduct.quantity)) {
+                deleteOrder(id, (cb) => { })
                 return false
             }
         }
@@ -62,7 +58,9 @@ var compareCurrentOrder = (id, currentProducts, requestProducts) => {
 }
 
 var deleteOrder = (id, cb) => {
-
+    orderApi.deleteOrder(id, (result) => {
+        return cb(result);
+    })
 }
 
 

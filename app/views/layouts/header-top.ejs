@@ -3,23 +3,23 @@
         <div class="row">
             <div class="header_logo col col-lg-3 col-md-12 col-xs-12">
                 <a href="/">
-                    <img class="logo img-responsive" src= "/static/img/logo-2.png" alt="Alomobile">
+                    <img class="logo img-responsive" src="/static/img/logo-2.png" alt="Alomobile">
                 </a>
             </div>
             <div class="col col-xs-12 col-lg-9 col-md-12 display_top">
                 <div class="blockcart cart-preview dropdown js-dropdown" style="float: right; position: relative;">
                     <div class="header" data-target="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button" style="position: relative; display: inline-block;">
-                        <a rel="nofollow" href="/cart" style="position: relative; display: inline-block; background: transparent; height: 48px; color: #2c2c2c; font-size: 13px; line-height: 20px; display: block; font-weight: 400; text-transform: capitalize; padding: 5px 0 0 65px; -webkit-transition: none; -moz-transition: none; -o-transition: none; transition: none; font-family: 'Open Sans', sans-serif;">
-                            <span class="item_txt">Giỏ hàng 
+                        <a rel="nofollow" href="/gio-hang" style="position: relative; display: inline-block; background: transparent; height: 48px; color: #2c2c2c; font-size: 13px; line-height: 20px; display: block; font-weight: 400; text-transform: capitalize; padding: 5px 0 0 65px; -webkit-transition: none; -moz-transition: none; -o-transition: none; transition: none; font-family: 'Open Sans', sans-serif;">
+                            <span class="item_txt">Giỏ hàng
                                 <span class="item_count" data-total-items="0">0</span>
                             </span>
                             <span class="item_total" data-raw-price="0">0 VNĐ</span>
                         </a>
                     </div>
-                    <div class="body dropdown-menu" style="display: hidden;"> 
+                    <div class="body dropdown-menu" style="display: hidden;">
                         <ul class="cart-items-preview">
-                            <!-- ITEMS -->    
-                        </ul>                       
+                            <!-- ITEMS -->
+                        </ul>
                         <div class="price_content">
                             <div class="cart-total price_inline">
                                 <span class="label">Tổng cộng</span>
@@ -27,17 +27,21 @@
                             </div>
                         </div>
                         <div class="checkout">
-                            <a href="/cart" class="btn btn-primary disabled">Thanh toán</a>
+                            <a href="/gio-hang" class="btn btn-primary disabled">Thanh toán</a>
                         </div>
                     </div>
                 </div>
                 <!-- pos search module TOP -->
-                <div id="pos_search_top" class="col-lg-8 col-md-8 col-sm-12 col-xs-12" >
+                <div id="pos_search_top" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                     <form method="get" action="" id="searchbox" class="form-inline form_search">
-                        <input type="text" name="s" value="" placeholder="Nhập tên sản phẩm bạn muốn tìm kiếm" id="pos_query_top" class="search_query form-control ac_input" style="padding: 0 60px 0 20px">
-                        <button type="submit" class="btn btn-default search_submit">
+                        <input type="text" name="s" value="" placeholder="Nhập tên sản phẩm bạn muốn tìm kiếm" id="pos_query_top" class="search_query form-control ac_input"
+                            style="padding: 0 60px 0 20px">
+                        <button type="button" class="btn btn-default search_submit">
                             <i class="material-icons">search</i>
                         </button>
+                        <ul class="wrap-suggestion">
+                           
+                        </ul>
                     </form>
                 </div>
                 <!-- /pos search module TOP -->
@@ -45,3 +49,107 @@
         </div>
     </div>
 </div>
+<style>
+    .wrap-suggestion {
+        display: none;
+        border: 1px solid #e2e2e2;
+        background: #fff;
+        position: absolute;
+        left: 0;
+        width: 100%;
+        top: 45px;
+        z-index: 9;
+        list-style: none;
+        -webkit-margin-before: 1em;
+        -webkit-margin-after: 1em;
+        -webkit-margin-start: 0px;
+        -webkit-margin-end: 0px;
+        -webkit-padding-start: 20px;
+        -webkit-padding-end: 20px;
+    }
+    .wrap-suggestion li a {
+        display: block;
+        overflow: hidden;
+        padding: 10px;
+        color: #333;
+        font-size: 12px;
+        text-decoration: none;
+    }
+
+    .wrap-suggestion li a img {
+        float: left;
+        width: 50px;
+        height: auto;
+        margin: 0 6px 0 0;
+    }
+
+    .wrap-suggestion li {
+        display: block;
+        background: #fff;
+        overflow: hidden;
+        list-style: none;
+        border-bottom: 1px dotted #ccc;
+    }
+</style>
+
+<script type="text/javascript">
+    jQuery(document).ready(($) => {
+        
+        $('#searchbox input').bind('keyup keypress keydown change', (e) => {
+            var text = $(e.currentTarget).val();
+            var ul = $('#searchbox ul.wrap-suggestion');
+
+            $(ul).find('li').remove();
+
+            if (!text || text == 'undefined' || text == '') {                
+                $('#searchbox ul.wrap-suggestion').css('display', 'none');
+                return
+            }
+
+            $.get('/api/v1/product/search-product/' + text, (data) => {
+                if (data.products && data.products.length > 0) {
+
+                    var items = '';
+
+                    data.products.forEach((product, index) => {
+
+                        if (product._id && product.images && product.details) {
+                            items += `
+                                <li style="display: block;
+                                        background: #fff;
+                                        overflow: hidden;
+                                        list-style: none;
+                                        border-bottom: 1px dotted #ccc;">
+                                    <a href="/${product.alias}-${product._id}" style="display: block;
+                                            overflow: hidden;
+                                            padding: 10px;
+                                            color: #333;
+                                            font-size: 12px;
+                                            text-decoration: none;">
+                                        <img src="http://alomobile.tech${product.images[0].url}" style="float: left;
+                                            width: 50px;
+                                            height: auto;
+                                            margin: 0 6px 0 0;">
+                                        <h3>${product.name}</h3>
+                                        <span class="price">${numberWithCommas(product.details[0].price) + " VNĐ"}</span>
+                                        <cite style="font-style: normal; text-decoration: line-through"></cite>
+                                    </a>
+                                </li>
+                            `
+                        }                        
+                    });
+
+                    $(ul).find('li').remove();
+                    $(ul).append(items);
+
+                    if (items != '') {
+                        $('#searchbox ul.wrap-suggestion').css('display', 'block');
+                    } else {
+                        $('#searchbox ul.wrap-suggestion').css('display', 'none');
+                    }
+
+                }
+            })
+        })
+    });    
+</script>

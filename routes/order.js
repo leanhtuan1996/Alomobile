@@ -14,7 +14,7 @@ router.post('/order/beginOrder', (req, res) => {
 
 router.get('/thanh-toan', (req, res) => {
     if (!req.session.order) {
-        res.redirect('/cart');
+        res.redirect('/gio-hang');
         return
     }
 
@@ -23,13 +23,13 @@ router.get('/thanh-toan', (req, res) => {
 
             if (cb.error) {
                 req.session.destroy();
-                res.redirect('/cart');
+                res.redirect('/gio-hang');
                 return
             }
 
             if (!cb.order) {
                 req.session.destroy();
-                res.redirect('/cart');
+                res.redirect('/gio-hang');
                 return
             }
 
@@ -49,10 +49,10 @@ router.get('/thanh-toan', (req, res) => {
             Order.verify(req.session.order._id, (result1) => {
                 if (result1.error || !result1.order) {
                     if (result.error || !result.user) {
-                        res.redirect('/cart');
+                        res.redirect('/gio-hang');
                     } else {
                         req.session.destroy();
-                        res.redirect('/cart');
+                        res.redirect('/gio-hang');
                     }
                 } else {
                     req.session.order = result1.order;
@@ -77,7 +77,7 @@ router.get('/thanh-toan', (req, res) => {
         });
     } else {
         req.session.destroy();
-        res.redirect('/cart');
+        res.redirect('/gio-hang');
     }
 });
 
@@ -155,6 +155,7 @@ router.put('/thanh-toan', (req, res) => {
 });
 
 router.post('/request-payment', (req, res) => {
+
     if (!req.session.order || !req.session.token) {
         res.json({
             error: "Đơn hàng không hợp lệ hoặc đã bị lỗi."
@@ -169,7 +170,14 @@ router.post('/request-payment', (req, res) => {
         });
     }
 
-    Order.requestPayment(id, (result) => {
+    if (!req.body.method) {
+        workflow.emit('response', {
+            error: "Không tìm thấy phương thức thanh toán vui lòng chọn loại phương thức khác!"
+        });
+        return
+    }
+
+    Order.requestPayment(id, req.body.method, (result) => {
         res.json(result);
     });
 });

@@ -118,7 +118,6 @@ router.get('/sign-out', (req, res) => {
 
 router.put('/sign-out', (req, res) => {
   User.signOut(req.session.token, (r) => {
-    console.log(r);
     if (!r.error) {
       req.session.destroy();
     }
@@ -213,7 +212,7 @@ router.get('/password-recovery/:email/:token', (req, res) => {
   });
 });
 
-router.get('/cart', (req, res) => {
+router.get('/gio-hang', (req, res) => {
   if (req.session.token) {
     User.verify(req.session.token, (cb) => {
       if (cb.error) {

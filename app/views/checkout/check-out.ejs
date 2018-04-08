@@ -764,14 +764,14 @@
 
         $(itemsCartBlock).find('li').remove();
 
-        if (!localStorage.cart) { location.href = "/cart"; return }
+        if (!localStorage.cart) { location.href = "/gio-hang"; return }
 
         try {
             var cart = JSON.parse(localStorage.cart);
-            if (!cart || !cart.products) { location.href = "/cart"; return }
-            if (cart.products.length == 0) { location.href = "/cart"; return }
+            if (!cart || !cart.products) { location.href = "/gio-hang"; return }
+            if (cart.products.length == 0) { location.href = "/gio-hang"; return }
         } catch (error) {
-            location.href = "/cart"; return
+            location.href = "/gio-hang"; return
         }
 
         //get products in cart
@@ -805,7 +805,7 @@
                 $(summaryBlock).find('div.cart-summary-products p.total-items-cart').text(data.products.length + " sản phẩm")
                 $(summaryBlock).find('div.cart-summary-totals').find('span.value').text(numberWithCommas(totalSubPrice) + " VNĐ")
             } else {
-                location.href = "/cart"
+                location.href = "/gio-hang"
             }
         });
     })();

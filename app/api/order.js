@@ -574,13 +574,20 @@ var getOrder = (id, cb) => {
     workflow.emit('validate-parameters');
 }
 
-var requestPayment = (id, cb) => {
+var requestPayment = (id, method, cb) => {
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
         if (!id) {
             workflow.emit('response', {
                 error: "Mã đơn hàng không được bỏ trống"
+            });
+            return
+        }
+
+        if (!method) {
+            workflow.emit('response', {
+                error: "Không tìm thấy phương thức thanh toán vui lòng chọn loại phương thức khác!"
             });
             return
         }
@@ -643,15 +650,25 @@ var requestPayment = (id, cb) => {
             total = product.price * product.quantity
         });
 
-        var website_id = 5737,  //39088
-        currency = 'VND',
-        receiver_account = '01629680825',
-        reference_number = id,
-        amount = total;
+        var href;
 
-        var sign = helper.signSHA(`${amount}|${currency}|${receiver_account}|${reference_number}|${website_id}|@LeAnhTuan11051996`);
+        switch (method) {
+            case 'vtc-pay':
+                var website_id = 5737,  //39088, 5737
+                    currency = 'VND',
+                    receiver_account = '01629680825',
+                    reference_number = id,
+                    amount = total;
 
-        var href = `https://pay.vtc.vn/bank-gateway/checkout.html?website_id=${website_id}&currency=${currency}&reference_number=${reference_number}&amount=${amount}&receiver_account=${receiver_account}&signature=${sign}`
+                var sign = helper.signSHA(`${amount}|${currency}|${receiver_account}|${reference_number}|${website_id}|@LeAnhTuan11051996`);
+
+                href = `https://pay.vtc.vn/bank-gateway/checkout.html?website_id=${website_id}&currency=${currency}&reference_number=${reference_number}&amount=${amount}&receiver_account=${receiver_account}&signature=${sign}`
+
+                break;
+
+            default:
+                break;
+        }
 
         workflow.emit('response', {
             href: href
@@ -665,6 +682,35 @@ var requestPayment = (id, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var deleteOrder = (id, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Mã đơn hàng không tìm thấy"
+            });
+            return
+        };
+
+        workflow.emit('delete');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('delete', () => {
+        Order.findByIdAndRemove(id, (err) => {
+            workflow.emit('response', {
+                error: err
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     checkingAvailable: checkingAvailable,
     detailCart: detailCart,
@@ -672,5 +718,6 @@ module.exports = {
     verify: verify,
     updateOrder: updateOrder,
     getOrder: getOrder,
-    requestPayment: requestPayment
+    requestPayment: requestPayment,
+    deleteOrder: deleteOrder
 }
