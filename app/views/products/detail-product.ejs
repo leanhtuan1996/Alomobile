@@ -167,17 +167,13 @@
                                                     <div class="star star_on"></div>
                                                     <div class="star star_on"></div>
                                                     <div class="star star_on"></div>
-                                                    <meta itemprop="worstRating" content="0" />
-                                                    <meta itemprop="ratingValue" content="5" />
-                                                    <meta itemprop="bestRating" content="5" />
                                                 </div>
                                             </div>
                                             <!-- .comments_note -->
                                             <ul class="comments_advices">
                                                 <li>
                                                     <a href="#idTab5" class="reviews">
-                                                        Đọc những nhận xét (
-                                                        <span itemprop="reviewCount">24</span>)
+                                                        Đọc những nhận xét (<span itemprop="reviewCount"></span>)
                                                     </a>
                                                 </li>
                                                 <li>
@@ -3527,7 +3523,7 @@
             })
         });
 
-        $('#content-wrapper ul.comments_advices a.open-comment-form').click((e) => {
+        $('#content-wrapper ul.comments_advices a.open-comment-form, #new_comment_tab_btn').click((e) => {
             var modal = $('#myModal');
             $(modal).modal('show');
         });
@@ -3583,19 +3579,30 @@
                 
                 if (!reviews || reviews.length == 0) { return }
 
+                $('ul.comments_advices a.reviews span').text(reviews.length);
+
+                var averageStar = 0;
+                var totalStar = 0;
                 var blockComment = $('#product_comments_block_tab');
-                var items = '';
+                var items = '';                
                 reviews.forEach(review => {
+
+                    totalStar+= Number.parseInt(review.star);
+
                     items += `
                         <div class="comment clearfix">
                             <div class="comment_author">
-                                <div class="star_content clearfix">
-                                    <div class="star star_on"></div>
-                                    <div class="star star_on"></div>
-                                    <div class="star star_on"></div>
-                                    <div class="star star_on"></div>
-                                    <div class="star star_on"></div>
-                                </div>
+                                <div class="star_content clearfix">`
+
+                                    for (let i = 1; i <= 5; i++) {
+                                        if (i <= review.star) {
+                                            items+= `<div class="star star_on"></div>`   
+                                        } else {
+                                            items+= `<div class="star"></div>`   
+                                        }                                                               
+                                    }
+
+                                items+= `</div>
                                 <div class="comment_author_infos">
                                     <strong>${review.byUser.fullName.firstName} ${review.byUser.fullName.lastName}`
 
@@ -3633,6 +3640,17 @@
                         </div>
                     `
                 });  
+
+                averageStar = Math.round(totalStar / reviews.length)
+
+                var star = $('#main div.comments_note div.star_content').find('div.star');
+                star.each((index, element) => {
+                    if (index < averageStar) {
+                        $(element).addClass('star_on');
+                    } else {
+                        $(element).removeClass('star_on')
+                    }
+                });
                 
                 $(blockComment).find('div.comment').remove();
                 $(blockComment).append(items);
