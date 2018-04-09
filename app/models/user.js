@@ -28,9 +28,10 @@ var userSchema = new Schema({
         Country: String
     }],
     status: { type: Schema.Types.Boolean, default: true },
-    orders: [{
-        id: { type: Schema.Types.ObjectId, ref: "Order" }
-    }],
+    orders: [
+        { type: Schema.Types.ObjectId, ref: "Order" }
+    ],
+    reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
     validTokens: [String],
     isRegisteredNewLetters: Boolean,
     lastSignIn: Number,
@@ -40,18 +41,18 @@ var userSchema = new Schema({
 
 var User = mongoose.model('User', userSchema);
 
-userSchema.pre('save', function(next) {
+userSchema.pre('save', function (next) {
     var user = this;
 
-    user.updated_at = Date.now(); 
+    user.updated_at = Date.now();
 
     if (!user.isModified("password")) {
         return next();
     }
-   
+
     if (!user.created_at) {
         user.created_at = Date.now();
-    }   
+    }
 
     var salt = config.get("salt");
     if (!salt) {
@@ -68,7 +69,7 @@ userSchema.pre('save', function(next) {
             if (e) {
                 return next(e);
             }
-            
+
             user.password = hash
 
             next();

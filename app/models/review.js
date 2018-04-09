@@ -4,9 +4,11 @@ var Schema = mongoose.Schema;
 
 module.exports = mongoose.model('Review', new Schema({
     byUser: { type: Schema.Types.ObjectId, ref: "User" },
+    product: { type: Schema.Types.ObjectId, ref: "Product" },
     star: Number,
     title: String,
     content: String,
+    status: { type: Schema.Types.Boolean, default: false },
     created_at: Number,
     updated_at: Number
 }).pre('save', function(next) {

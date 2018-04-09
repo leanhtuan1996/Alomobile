@@ -412,10 +412,40 @@ var updateOrder = (order, parameters, cb) => {
             }
 
             order.save((err) => {
-                workflow.emit('response', {
-                    error: err,
-                    order: order
-                });
+
+                //save to user
+                if (!err && order.status == 1) {
+                    User.findById(order.byUser).select('orders').exec((err, user) => {
+                        if (err) {
+                            workflow.emit('response', {
+                                error: err
+                            });
+                            return
+                        }
+
+                        if (!user) {
+                            workflow.emit('response', {
+                                error: "Không tìm thấy người dùng, vui lòng đăng nhập để tiếp tục"
+                            });
+                            return
+                        }
+
+                        var orders = user.orders || [];
+                        orders.push(order);
+                        user.orders = orders;
+                        user.save((err) => {                            
+                            workflow.emit('response', {
+                                error: err,
+                                order: order
+                            })
+                        })
+                    })
+                } else {
+                    workflow.emit('response', {
+                        error: err,
+                        order: order
+                    });
+                }
             });
         });
     });

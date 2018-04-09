@@ -214,6 +214,13 @@ router.get('/api/v1/product/get-preview', (req, res) => {
        res.json(r);
    });
 });
+
+router.get('/api/v1/product/get-reviews', (req, res) => {
+    Product.getReviews(req.query.product, 1, (cb) => {
+        res.json(cb);
+    })
+})
+
 //** /APIS FOR PRODUCT */
 
 

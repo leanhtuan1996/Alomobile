@@ -56,6 +56,12 @@ var searchProduct = (text, result) => {
     });
 }
 
+var reviewProduct = (user, review, result) => {
+    productApi.reviewProduct(user, review, (cb) => {
+        return result(cb);
+    });
+}
+
 module.exports = {
     getProducts: getProducts,
     getProductById: getProductById,
@@ -65,5 +71,6 @@ module.exports = {
     getHotProducts: getHotProducts,
     getNewProducts: getNewProducts,
     getCountProducts: getCountProducts,
-    searchProduct: searchProduct
+    searchProduct: searchProduct,
+    reviewProduct: reviewProduct
 }

@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+var auth = require('../app/middleware/index').authenticate;
+
+var User = require('../app/controllers/index').user;
 var Product = require('../app/controllers/index').product;
 
 router.get('/product/list', (req, res) => {
@@ -173,5 +176,36 @@ router.post('/product/search', (req, res) => {
 
     })
 })
+
+router.post('/product/review', (req, res) => {
+    var token = req.body.token || req.params.token || req.session.token;
+
+    if (!token) {
+        res.json({
+            error: "Vui lòng đăng nhập để có thể sử dụng chức năng này!"
+        });
+        return
+    }
+
+    User.verify(token, (cb) => {
+        if (cb.error) {
+            res.json({
+                error: "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại để tiếp tục thực hiện chức năng này."
+            })
+            return
+        } 
+
+        if (!cb.user) {
+            res.json({
+                error: "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại để tiếp tục thực hiện chức năng này."
+            })
+            return
+        }
+
+        Product.reviewProduct(cb.user, req.body.review, (result) => {
+            res.json(result);
+        });
+    });
+});
 
 module.exports = router;

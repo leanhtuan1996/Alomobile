@@ -345,54 +345,8 @@
                                             </div>
                                             <div class="tab-pane fade in" id="idTab5">
                                                 <div id="product_comments_block_tab">
-                                                    <div class="comment clearfix">
-                                                        <div class="comment_author">
-                                                            <div class="star_content clearfix">
-                                                                <div class="star star_on"></div>
-                                                                <div class="star star_on"></div>
-                                                                <div class="star star_on"></div>
-                                                                <div class="star star_on"></div>
-                                                                <div class="star star_on"></div>
-                                                            </div>
-                                                            <div class="comment_author_infos">
-                                                                <strong>Lê Anh Tuấn</strong>
-                                                                <em>23:10 29/3/2018</em>
-                                                            </div>
-                                                        </div>
-                                                        <div class="comment_details">
-                                                            <h4 class="title_block">Sản phẩm tuyệt vời!</h4>
-                                                            <p>Rất tuyệt vời</p>
-                                                            <ul>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="comment clearfix">
-                                                        <div class="comment_author">
-                                                            <div class="star_content clearfix">
-                                                                <div class="star star_on"></div>
-                                                                <div class="star star_on"></div>
-                                                                <div class="star star_on"></div>
-                                                                <div class="star star_on"></div>
-                                                                <div class="star star_on"></div>
-                                                            </div>
-                                                            <div class="comment_author_infos">
-                                                                <strong>Lê Anh Tuấn
-                                                                    <label style="color: #2ba832;">
-                                                                        <i class="material-icons" style="font-size: 20px;">check</i>Đã mua hàng tại Alomobile.tech
-                                                                    </label>
-                                                                </strong>
-                                                                <em>23:10 29/3/2018</em>
-                                                            </div>
-                                                        </div>
-                                                        <div class="comment_details">
-                                                            <h4 class="title_block">Sản phẩm tuyệt vời!</h4>
-                                                            <p>Rất tuyệt vời</p>
-                                                            <ul>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
                                                     <p class="align_center">
-                                                        <a id="new_comment_tab_btn" class="open-comment-form btn btn-secondary">Write your review !</a>
+                                                        <a id="new_comment_tab_btn" class="open-comment-form btn btn-secondary">Viết bình luận của bạn !</a>
                                                     </p>
                                                 </div>
                                                 <div class="container">
@@ -404,25 +358,23 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-body">
                                                                     <div id="new_comment_form">
-                                                                        <form id="id_new_comment_form" action="#">
-                                                                            <h2 class="title">Write your review</h2>
-                                                                                                <div class="product clearfix col-xs-12 col-sm-6">
-                                                                                <img src="http://demo.posthemes.com/pos_fastbuy/layout2/226-medium_default/printed-dress.jpg" alt="Printed Dress">
+                                                                        <form id="id_new_comment_form">
+                                                                            <h2 class="title">Nhận xét về sản phẩm</h2>
+                                                                            <div class="product clearfix col-xs-12 col-sm-6">
+                                                                                <img src="<%- data.product.images[0].url %>" class="product_img" alt="data.product.images[0].alt">
                                                                                 <div class="product_desc">
-                                                                                    <p class="product_name"><strong>Printed Dress</strong></p>
-                                                                                    <p>Printed evening dress with straight sleeves with black thin waist belt and ruffled linings.</p>
+                                                                                    <p class="product_name"><strong><%- data.product.name %></strong></p>
                                                                                 </div>
                                                                             </div>
-                                                                                                <div class="new_comment_form_content col-xs-12 col-sm-6">
-                                                                                <h2>Write your review</h2>
+                                                                            <div class="new_comment_form_content col-xs-12 col-sm-6">
+                                                                                <h2>Viết nhận xét của bạn</h2>
                                                                                 <div id="new_comment_form_error" class="error" style="display:none;padding:15px 25px">
                                                                                     <ul></ul>
                                                                                 </div>
-                                                                                                        <ul id="criterions_list">
-                                                                                                            <li>
-                                                                                    <label>Quality</label>
+                                                                                <ul id="criterions_list">
+                                                                                    <li>
                                                                                     <div class="star_content">
-                                                                                        <input type="hidden" name="criterion[1]" value="3"><div class="cancel"><a title="Cancel Rating"></a></div><div class="star star_on"><a title="1">1</a></div>
+                                                                                        <div class="star star_on"><a title="1">1</a></div>
                                                                                         <div class="star star_on"><a title="2">2</a></div>
                                                                                         <div class="star star_on"><a title="3">3</a></div>
                                                                                         <div class="star"><a title="4">4</a></div>
@@ -431,19 +383,19 @@
                                                                                     <div class="clearfix"></div>
                                                                                     </li>
                                                                                                             </ul>
-                                                                                                        <label for="comment_title">Title for your review<sup class="required">*</sup></label>
-                                                                                <input id="comment_title" name="title" type="text" value="">
-                                                                                <label for="content">Your review<sup class="required">*</sup></label>
-                                                                                <textarea id="content" name="content"></textarea>
-                                                                                                        <div id="new_comment_form_footer">
-                                                                                    <input id="id_product_comment_send" name="id_product" type="hidden" value="9">
-                                                                                    <p class="fl required"><sup>*</sup> Required fields</p>
+                                                                                                        <label for="comment_title">Tiêu đề<sup class="required">*</sup></label>
+                                                                                <input id="comment_title" name="title" type="text" value="" required>
+                                                                                <label for="content">Nội dung<sup class="required">*</sup></label>
+                                                                                <textarea id="content" name="content" required></textarea>
+                                                                                <div id="new_comment_form_footer">
+                                                                                    <input id="id_product_comment_send" name="id_product" type="hidden" value="<%- data.product._id %>">
+                                                                                    <p class="fl required"><sup>*</sup> Những trường bắt buộc</p>
                                                                                     <p class="fr">
-                                                                                    <button id="submitNewMessage" class="btn btn-secondary" name="submitMessage" type="submit">Send</button>
+                                                                                    <button id="submitNewMessage" class="btn btn-secondary" name="submitMessage" type="submit">Gửi</button>
                                                                                     &nbsp;
-                                                                                    or&nbsp;
+                                                                                    hoặc&nbsp;
                                                                                     <button type="button" class="closefb btn btn-secondary" data-dismiss="modal" aria-label="Close">
-                                                                                    <span aria-hidden="true">Cancel</span>
+                                                                                    <span aria-hidden="true">Huỷ bỏ</span>
                                                                                     </button>
                                                                                     </p>
                                                                                     <div class="clearfix"></div>
@@ -455,12 +407,12 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                                                                            </div>
+                                                    </div>
                                                     <div class="modal fade" id="result_comment" role="dialog">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-body">
-                                                                    <h2>Your comment is submitted</h2>
+                                                                    <h2>Bạn đã nhận xét thành công, bình luận sẽ được phê duyệt trước khi hiển thị.</h2>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -3577,11 +3529,7 @@
 
         $('#content-wrapper ul.comments_advices a.open-comment-form').click((e) => {
             var modal = $('#myModal');
-
-            //$(modal).find('div.modal-dialog').remove();
-            //$(modal).append(commentModal);
             $(modal).modal('show');
-
         });
         
         $('.new_comment_form_content div.star').mouseenter((e) => {
@@ -3589,6 +3537,107 @@
             $(e.currentTarget).prevAll('div.star').addClass('star_on');
             $(e.currentTarget).nextAll('div.star').removeClass('star_on')
         });
+
+        $('#id_new_comment_form').submit((e) => {
+            e.preventDefault();
+
+            //variable
+            var title = $(e.currentTarget).find('input#comment_title').val(),
+                id = $(e.currentTarget).find('input#id_product_comment_send').val(),
+                content = $(e.currentTarget).find('textarea#content').val(),
+                star = $(e.currentTarget).find('ul#criterions_list div.star_content div.star_on').length;
+
+            var parameters = {
+                product: id,
+                title: title,
+                content: content,
+                star: star
+            }
+
+            $.post('/product/review', {
+                review: parameters
+            }, (data) => {
+                if (data.error) {
+                    showNotification(data.error);
+                    return
+                }
+
+                $('#myModal').modal('hide')
+
+                if (data.review) {
+                    $('#result_comment').modal('show');
+
+                    setTimeout(() => {
+                        $('#result_comment').modal('hide');
+                    }, 3000);
+                }
+            }).error((err) => {
+                showNotification("Lỗi không xác định, vui lòng tại lại trang để thử lại.")
+            });
+
+        });
+
+        $.get(`/api/v1/product/get-reviews?product=${product._id}`, (data) => {
+            if (data.product) {
+                var reviews = data.product.reviews;
+                
+                if (!reviews || reviews.length == 0) { return }
+
+                var blockComment = $('#product_comments_block_tab');
+                var items = '';
+                reviews.forEach(review => {
+                    items += `
+                        <div class="comment clearfix">
+                            <div class="comment_author">
+                                <div class="star_content clearfix">
+                                    <div class="star star_on"></div>
+                                    <div class="star star_on"></div>
+                                    <div class="star star_on"></div>
+                                    <div class="star star_on"></div>
+                                    <div class="star star_on"></div>
+                                </div>
+                                <div class="comment_author_infos">
+                                    <strong>${review.byUser.fullName.firstName} ${review.byUser.fullName.lastName}`
+
+                                var userOrders = review.byUser.orders;
+                                if (userOrders && userOrders.length > 0) {                                    
+                                    if (userOrders.find(order => {
+                                        if (order.products) {
+                                            if (order.products.find(element => {
+                                                return element.id == product._id
+                                            })) {
+                                                return order
+                                            }
+                                        } else {
+                                            return null
+                                        }
+                                    })) {
+                                        items += `<label style="color: #2ba832;">
+                                            <i class="material-icons" style="font-size: 20px;">check</i>Đã mua hàng tại Alomobile.tech
+                                        </label>`
+                                    }
+                                }       
+                                    
+                                var date = new Date(review.created_at);
+
+                                    items += `</strong>
+                                    <em>${date.getHours()}:${date.getMinutes()} ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}</em>
+                                </div>
+                            </div>
+                            <div class="comment_details">
+                                <h4 class="title_block">${review.title}</h4>
+                                <p>${review.content}</p>
+                                <ul>
+                                </ul>
+                            </div>
+                        </div>
+                    `
+                });  
+                
+                $(blockComment).find('div.comment').remove();
+                $(blockComment).append(items);
+            }
+        })
     });
 
 </script>

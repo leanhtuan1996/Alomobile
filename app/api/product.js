@@ -10,6 +10,7 @@ var User = require('../models/index').user;
 var Product = require('../models/index').product;
 var Brand = require('../models/index').brand;
 var Category = require('../models/index').category;
+var Review = require('../models/index').review;
 
 var getProducts = (prevProduct, result) => {
     var workflow = new event.EventEmitter();
@@ -363,7 +364,7 @@ var newProduct = (product, result) => {
                 error: "Please enter descriptions of product"
             });
             return
-        }       
+        }
 
         if (!(category.idRootCategory && category.idCategory)) {
             workflow.emit('response', {
@@ -736,6 +737,158 @@ var getPreviewProduct = (id, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var reviewProduct = (user, review, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!user) {
+            workflow.emit('response', {
+                error: "Vui lòng đăng nhập để sử dụng chức năng này!"
+            });
+            return
+        }
+
+        if (!review) {
+            workflow.emit('response', {
+                error: "Vui lòng nhập nhận xét!"
+            });
+            return
+        } else {
+            if (!review.product) {
+                workflow.emit('response', {
+                    error: "Sản phẩm vừa nhận xét không được tìm thấy!"
+                });
+                return
+            }
+
+            if (!review.star) {
+                workflow.emit('response', {
+                    error: "Vui lòng đánh giá chất lượng sản phẩm!"
+                });
+                return
+            }
+
+            if (!review.title) {
+                workflow.emit('response', {
+                    error: "Vui lòng nhập tiêu đề đánh giá!"
+                });
+                return
+            }
+
+            if (!review.content) {
+                workflow.emit('response', {
+                    error: "Vui lòng nhập nội dung đánh giá!"
+                });
+                return
+            }
+        }
+
+        workflow.emit('review');
+
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('review', () => {
+        Product.findById(review.product, (err, product) => {
+            if (err || !product) {
+                workflow.emit('response', {
+                    error: "Sản phẩm không tìm thấy, vui lòng tải lại trang và thử lại."
+                });
+                return
+            }
+
+            var newReview = new Review({
+                byUser: user._id,
+                product: review.product,
+                star: review.star,
+                title: review.title,
+                content: review.content
+            });
+
+            newReview.save((err) => {
+                if (!err) {
+                    var reviewsOfProduct = product.reviews || [];
+                    var reviewsOfUser = user.reviews || [];
+                    reviewsOfProduct.push(newReview._id);
+                    reviewsOfUser.push(newReview._id);
+
+                    product.reviews = reviewsOfProduct;
+                    user.reviews = reviewsOfUser;
+
+                    product.save((err) => {
+                        user.save((err) => {
+                            workflow.emit('response', {
+                                error: err,
+                                review: newReview
+                            });
+                        });
+                    });
+                }
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var getReviews = (cb) => {
+
+}
+
+var getReviewsWithProduct = (product, status = true, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!product) {
+            workflow.emit('response', {
+                error: "Sản phẩm không được tìm thấy!"
+            });
+            return
+        }
+
+        workflow.emit('get-reviews');
+    });
+
+    workflow.on('get-reviews', () => {
+        Product.findById(product).select('reviews').populate({
+            path: "reviews",
+            model: "Review",
+            match: { status: true }
+        }).exec((err, docs) => {
+            if (docs) {
+                Product.populate(docs, {
+                    path: 'reviews.byUser',
+                    model: 'User',                    
+                    select: 'orders reviews email fullName'
+                }, (err, docs2) => {
+                    Product.populate(docs2, {
+                        path: 'reviews.byUser.orders',
+                        model: "Order",
+                        select: 'products'
+                    }, (err, product) => {
+                        workflow.emit('response', {
+                            error: err,
+                            product: product
+                        });
+                    })                    
+                });
+            } else {
+                workflow.emit('response', {
+                    error: err
+                });
+            }
+        });
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    })
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     getProducts: getProducts,
     getProductById: getProductById,
@@ -750,5 +903,7 @@ module.exports = {
     deleteProduct: deleteProduct,
     getPrevProducts: getPrevProducts,
     searchProducts: searchProducts,
-    getPreviewProduct: getPreviewProduct
+    getPreviewProduct: getPreviewProduct,
+    reviewProduct: reviewProduct,
+    getReviews: getReviewsWithProduct
 }
