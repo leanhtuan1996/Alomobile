@@ -3094,7 +3094,7 @@
 
                 if (!reviews || reviews.length == 0) { return }
 
-                $('ul.comments_advices a.reviews span').text(reviews.length);
+                $('ul.comments_advices a.reviews span').text(reviews.length || 0);
 
                 var averageStar = 0;
                 var totalStar = 0;

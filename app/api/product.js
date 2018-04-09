@@ -867,7 +867,6 @@ var reviewProduct = (user, review, cb) => {
 var getReviews = (cb) => {
 
 }
-
 var getReviewsWithProduct = (product, status = true, cb) => {
     var workflow = new event.EventEmitter();
 

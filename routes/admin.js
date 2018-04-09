@@ -10,6 +10,7 @@ var Brand = require('../app/controllers/admin/index').brand;
 var User = require('../app/controllers/admin/index').user;
 var Type = require('../app/controllers/admin/index').type;
 var Role = require('../app/controllers/admin/index').role;
+var Review = require('../app/controllers/admin/index').review;
 
 var mail = require('../app/api/index').mail;
 
@@ -564,5 +565,32 @@ router.delete('/admin/role', [auth.requireAuth, auth.requireRole], (req, res) =>
 });
 
 //#endregion ROLE ROUTERS
+
+//#region COMMENT ROUTERS
+router.get('/admin/review', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Review.getRequestReviews((result) => {
+        res.render('admin/review', {
+            data: {
+                title: "Alomobile Control Panel > Trang quản lý nhận xét",
+                error: result.error,
+                reviews: result.reviews
+            }
+        })
+    })
+});
+
+router.put('/admin/review', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Review.updateReview(req.body.id, req.body.parameters, (result) => {
+        res.json(result)
+    });
+});
+
+router.delete('/admin/review', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Review.deleteReview(req.body.id, (result) => {
+        res.json(result);
+    });
+});
+
+//#endregion COMMENT ROUTERS
 
 module.exports = router;
