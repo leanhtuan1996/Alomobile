@@ -281,10 +281,6 @@ $(document).ready(function() {
         
     });
 
-    $('#quickview-modal').on('hidden.bs.modal', (e) => {
-        //$('.add-to-cart').removeClass('disabled')
-    });
-
     $('.owl-carousel').delegate('.add-to-cart', 'click', (e) => {  
 
         e.preventDefault();
@@ -541,16 +537,34 @@ $(document).ready(function() {
                                     <h4><a href="/${product.alias}-${product._id}" title="${product.name}" itemprop="name" class="product_name">${product.name}</a></h4>
                                     <div class="hook-reviews">
                                         <div class="comments_note" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
-                                            <div class="star_content clearfix">
+                                            <div class="star_content clearfix">`
+
+                                            if (product.reviews && product.reviews.length > 0) {
+                                                var totalStar = 0;
+                                                var avg = 0;
+                                                product.reviews.forEach(r => {
+                                                    totalStar+= r.star;
+                                                });
+    
+                                                avg = Math.round(totalStar / product.reviews.length);
+    
+                                                for (let i = 1; i <= 5; i++) {
+                                                    if (i <= avg) {
+                                                        items+= `<div class="star star_on"></div>`
+                                                    } else {
+                                                        items+= `<div class="star"></div>`
+                                                    }                                      
+                                                }
+    
+                                            } else {
+                                                items+=`<div class="star star_on"></div>
                                                 <div class="star star_on"></div>
                                                 <div class="star star_on"></div>
                                                 <div class="star star_on"></div>
-                                                <div class="star star_on"></div>
-                                                <div class="star star_on"></div>
-                                                <meta itemprop="worstRating" content="0" />
-                                                <meta itemprop="ratingValue" content="5" />
-                                                <meta itemprop="bestRating" content="5" />
-                                            </div>
+                                                <div class="star star_on"></div>`
+                                            }
+
+                                            items+= `</div>
                                             <span class="nb-comments"><span itemprop="reviewCount">1</span> Review(s)</span>
                                         </div>
                                     </div>
@@ -647,16 +661,34 @@ $(document).ready(function() {
                                     <h4><a href="${product.alias}-${product._id}" title="${product.name}" itemprop="name" class="product_name">${product.name}</a></h4>
                                     <div class="hook-reviews">
                                         <div class="comments_note" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
-                                            <div class="star_content clearfix">
+                                            <div class="star_content clearfix">`
+
+                                            if (product.reviews && product.reviews.length > 0) {
+                                                var totalStar = 0;
+                                                var avg = 0;
+                                                product.reviews.forEach(r => {
+                                                    totalStar+= r.star;
+                                                });
+    
+                                                avg = Math.round(totalStar / product.reviews.length);
+    
+                                                for (let i = 1; i <= 5; i++) {
+                                                    if (i <= avg) {
+                                                        items+= `<div class="star star_on"></div>`
+                                                    } else {
+                                                        items+= `<div class="star"></div>`
+                                                    }                                      
+                                                }
+    
+                                            } else {
+                                                items+=`<div class="star star_on"></div>
                                                 <div class="star star_on"></div>
                                                 <div class="star star_on"></div>
                                                 <div class="star star_on"></div>
-                                                <div class="star star_on"></div>
-                                                <div class="star star_on"></div>
-                                                <meta itemprop="worstRating" content="0" />
-                                                <meta itemprop="ratingValue" content="5" />
-                                                <meta itemprop="bestRating" content="5" />
-                                            </div>
+                                                <div class="star star_on"></div>`
+                                            }
+
+                                            items+= `</div>
                                             <span class="nb-comments"><span itemprop="reviewCount">1</span> Review(s)</span>
                                         </div>
                                     </div>
@@ -752,16 +784,34 @@ $(document).ready(function() {
                                     <h4><a href="${product.alias}-${product._id}" title="${product.name}" itemprop="name" class="product_name">${product.name}</a></h4>
                                     <div class="hook-reviews">
                                         <div class="comments_note" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
-                                            <div class="star_content clearfix">
+                                            <div class="star_content clearfix">`
+
+                                            if (product.reviews && product.reviews.length > 0) {
+                                                var totalStar = 0;
+                                                var avg = 0;
+                                                product.reviews.forEach(r => {
+                                                    totalStar+= r.star;
+                                                });
+    
+                                                avg = Math.round(totalStar / product.reviews.length);
+    
+                                                for (let i = 1; i <= 5; i++) {
+                                                    if (i <= avg) {
+                                                        items+= `<div class="star star_on"></div>`
+                                                    } else {
+                                                        items+= `<div class="star"></div>`
+                                                    }                                      
+                                                }
+    
+                                            } else {
+                                                items+=`<div class="star star_on"></div>
                                                 <div class="star star_on"></div>
                                                 <div class="star star_on"></div>
                                                 <div class="star star_on"></div>
-                                                <div class="star star_on"></div>
-                                                <div class="star star_on"></div>
-                                                <meta itemprop="worstRating" content="0" />
-                                                <meta itemprop="ratingValue" content="5" />
-                                                <meta itemprop="bestRating" content="5" />
-                                            </div>
+                                                <div class="star star_on"></div>`
+                                            }
+
+                                            items+= `</div>
                                             <span class="nb-comments"><span itemprop="reviewCount">1</span> Review(s)</span>
                                         </div>
                                     </div>
@@ -857,16 +907,35 @@ $(document).ready(function() {
                                     <h4><a href="${product.alias}-${product._id}" title="${product.name}" itemprop="name" class="product_name">${product.name}</a></h4>
                                     <div class="hook-reviews">
                                         <div class="comments_note" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
-                                            <div class="star_content clearfix">
+                                            <div class="star_content clearfix">`
+                                                
+
+                                            if (product.reviews && product.reviews.length > 0) {
+                                                var totalStar = 0;
+                                                var avg = 0;
+                                                product.reviews.forEach(r => {
+                                                    totalStar+= r.star;
+                                                });
+    
+                                                avg = Math.round(totalStar / product.reviews.length);
+    
+                                                for (let i = 1; i <= 5; i++) {
+                                                    if (i <= avg) {
+                                                        items+= `<div class="star star_on"></div>`
+                                                    } else {
+                                                        items+= `<div class="star"></div>`
+                                                    }                                      
+                                                }
+    
+                                            } else {
+                                                items+=`<div class="star star_on"></div>
                                                 <div class="star star_on"></div>
                                                 <div class="star star_on"></div>
                                                 <div class="star star_on"></div>
-                                                <div class="star star_on"></div>
-                                                <div class="star star_on"></div>
-                                                <meta itemprop="worstRating" content="0" />
-                                                <meta itemprop="ratingValue" content="5" />
-                                                <meta itemprop="bestRating" content="5" />
-                                            </div>
+                                                <div class="star star_on"></div>`
+                                            }
+
+                                            items+= `</div>
                                             <span class="nb-comments"><span itemprop="reviewCount">1</span> Review(s)</span>
                                         </div>
                                     </div>
@@ -950,6 +1019,7 @@ function getSpecialProducts() {
                     return element.quantity > 0
                 });
 
+
                 items+= `
 
                 <div class="item-product">                                            
@@ -970,16 +1040,40 @@ function getSpecialProducts() {
                                 <h4><a href="${href}" title="Printed Dress" itemprop="name" class="product_name">${name}</a></h4>
                                 <div class="hook-reviews">
                                     <div itemtype="http://schema.org/AggregateRating" itemscope="" itemprop="aggregateRating" class="comments_note">
-                                        <div class="star_content clearfix">
+                                        <div class="star_content clearfix">`
+
+
+                                        if (product.reviews && product.reviews.length > 0) {
+                                            var totalStar = 0;
+                                            var avg = 0;
+                                            product.reviews.forEach(r => {
+                                                totalStar+= r.star;
+                                            });
+
+                                            avg = Math.round(totalStar / product.reviews.length);
+
+                                            for (let i = 1; i <= 5; i++) {
+                                                if (i <= avg) {
+                                                    items+= `<div class="star star_on"></div>`
+                                                } else {
+                                                    items+= `<div class="star"></div>`
+                                                }                                      
+                                            }
+
+                                        } else {
+                                            items+=`<div class="star star_on"></div>
                                             <div class="star star_on"></div>
                                             <div class="star star_on"></div>
                                             <div class="star star_on"></div>
-                                            <div class="star star_on"></div>
-                                            <div class="star star_on"></div>
-                                        </div>
+                                            <div class="star star_on"></div>`
+                                        }
+                                        
+
+
+                                        items +=`</div>
                                     </div>
                                 </div>
-                                                <div class="product-price-and-shipping">`
+                                <div class="product-price-and-shipping">`
 
                                 if (details) {
                                     items+= `<span itemprop="price" class="price ">${numberWithCommas(details.price + " VNĐ")}</span>`
@@ -1085,13 +1179,34 @@ function getNewProducts() {
                                 <h4><a href="/${product.alias}-${product._id}" title="Printed Summer Dress" itemprop="name" class="product_name">${product.name}</a></h4>
                                 <div class="hook-reviews">
                                     <div itemtype="http://schema.org/AggregateRating" itemscope="" itemprop="aggregateRating" class="comments_note">
-                                        <div class="star_content clearfix">
+                                        <div class="star_content clearfix">`
+
+                                        if (product.reviews && product.reviews.length > 0) {
+                                            var totalStar = 0;
+                                            var avg = 0;
+                                            product.reviews.forEach(r => {
+                                                totalStar+= r.star;
+                                            });
+
+                                            avg = Math.round(totalStar / product.reviews.length);
+
+                                            for (let i = 1; i <= 5; i++) {
+                                                if (i <= avg) {
+                                                    items+= `<div class="star star_on"></div>`
+                                                } else {
+                                                    items+= `<div class="star"></div>`
+                                                }                                      
+                                            }
+
+                                        } else {
+                                            items+=`<div class="star star_on"></div>
                                             <div class="star star_on"></div>
                                             <div class="star star_on"></div>
                                             <div class="star star_on"></div>
-                                            <div class="star star_on"></div>
-                                            <div class="star star_on"></div>
-                                        </div>
+                                            <div class="star star_on"></div>`
+                                        }
+
+                                        items+= `</div>
                                     </div>
                                 </div>
                                 <div class="product-price-and-shipping">`

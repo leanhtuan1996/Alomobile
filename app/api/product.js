@@ -130,7 +130,12 @@ var getSpecialProducts = (limit, result) => {
             .find({})
             .limit(limit || 10)
             .sort('-created_at')
-            .select('alias name images details status')
+            .select('alias name images details status reviews')
+            .populate({
+                path: "reviews",
+                model: "Review",
+                match: { status: true }
+            })
             .exec((err, products) => {
                 workflow.emit('response', {
                     error: err,
@@ -168,7 +173,12 @@ var getProductsByType = (idType, limit, result) => {
             })
             .limit(limit || 15)
             .sort('-created_at')
-            .select('alias name brand images details status')
+            .select('alias name brand images details status reviews')
+            .populate({
+                path: "reviews",
+                model: "Review",
+                match: { status: true }
+            })
             .exec((err, products) => {
                 workflow.emit('response', {
                     error: err,
@@ -215,7 +225,12 @@ var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
                     "category.idRootCategory": idRootCategory
                 })
                 .limit(parseInt(limit))
-                .select('alias name brand images details status')
+                .select('alias name brand images details status reviews')
+                .populate({
+                    path: "reviews",
+                    model: "Review",
+                    match: { status: true }
+                })
                 .exec((err, products) => {
                     workflow.emit('response', {
                         error: err,
@@ -229,7 +244,12 @@ var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
                     "category.idRootCategory": idRootCategory
                 })
                 .limit(limit)
-                .select('alias name brand images details status')
+                .select('alias name brand images details status reviews')
+                .populate({
+                    path: "reviews",
+                    model: "Review",
+                    match: { status: true }
+                })
                 .exec((err, products) => {
                     workflow.emit('response', {
                         error: err,
@@ -258,7 +278,12 @@ var getNewProducts = (limit, result) => {
             .find({})
             .limit(parseInt(limit) || 10)
             .sort('-created_at')
-            .select('alias name brand images details status')
+            .select('alias name brand images details status reviews')
+            .populate({
+                path: "reviews",
+                model: "Review",
+                match: { status: true }
+            })
             .exec((err, products) => {
                 workflow.emit('response', {
                     error: err,
@@ -286,7 +311,12 @@ var getHotProducts = (limit, result) => {
             .find({})
             .limit(limit || 10)
             .sort('-created_at')
-            .select('alias name brand images details status')
+            .select('alias name brand images details status reviews')
+            .populate({
+                path: "reviews",
+                model: "Review",
+                match: { status: true }
+            })
             .exec((err, products) => {
                 workflow.emit('response', {
                     error: err,
@@ -861,7 +891,7 @@ var getReviewsWithProduct = (product, status = true, cb) => {
             if (docs) {
                 Product.populate(docs, {
                     path: 'reviews.byUser',
-                    model: 'User',                    
+                    model: 'User',
                     select: 'orders reviews email fullName'
                 }, (err, docs2) => {
                     Product.populate(docs2, {
@@ -873,7 +903,7 @@ var getReviewsWithProduct = (product, status = true, cb) => {
                             error: err,
                             product: product
                         });
-                    })                    
+                    })
                 });
             } else {
                 workflow.emit('response', {

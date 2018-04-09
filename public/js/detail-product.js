@@ -2247,13 +2247,34 @@
                                 </h4>
                                 <div class="hook-reviews">
                                     <div itemtype="http://schema.org/AggregateRating" itemscope="" itemprop="aggregateRating" class="comments_note">
-                                        <div class="star_content clearfix">
+                                        <div class="star_content clearfix">`
+
+                                        if (product.reviews && product.reviews.length > 0) {
+                                            var totalStar = 0;
+                                            var avg = 0;
+                                            product.reviews.forEach(r => {
+                                                totalStar+= r.star;
+                                            });
+
+                                            avg = Math.round(totalStar / product.reviews.length);
+
+                                            for (let i = 1; i <= 5; i++) {
+                                                if (i <= avg) {
+                                                    items+= `<div class="star star_on"></div>`
+                                                } else {
+                                                    items+= `<div class="star"></div>`
+                                                }                                      
+                                            }
+
+                                        } else {
+                                            items+=`<div class="star star_on"></div>
                                             <div class="star star_on"></div>
                                             <div class="star star_on"></div>
                                             <div class="star star_on"></div>
-                                            <div class="star star_on"></div>
-                                            <div class="star star_on"></div>
-                                        </div>
+                                            <div class="star star_on"></div>`
+                                        }
+                                           
+                                       items+=`</div>
                                     </div>
                                 </div>
                                 <div class="product-price-and-shipping">`
