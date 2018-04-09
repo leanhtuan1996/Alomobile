@@ -7,7 +7,7 @@
 var app = require('../app').app;
 var debug = require('debug')('Alomobile:server');
 var serverHttp = require('../app').serverHttp;
-var serverHttps = require('../app').serverHttps;
+//var serverHttps = require('../app').serverHttps;
 var io = require('../routes/io');
 
 /**
@@ -15,10 +15,10 @@ var io = require('../routes/io');
  */
 
 var portHttp = normalizePort(process.env.PORT || '3000');
-var portHttps = normalizePort(process.env.PORT || '8443');
+//var portHttps = normalizePort(process.env.PORT || '8443');
 
 app.set('portHttp', portHttp);
-app.set('portHttps', portHttps);
+//app.set('portHttps', portHttps);
 
 /**
  * Listen on provided port, on all network interfaces.

@@ -67,13 +67,13 @@ app.use('/', admin);
 app.use('/', product);
 
 // set ssl
-var ssl = {
-  key: fs.readFileSync("privkey.pem"),
-  cert: fs.readFileSync("fullchain.pem"),
-  ca: fs.readFileSync("chain.pem")
-};
+// var ssl = {
+//   key: fs.readFileSync("privkey.pem"),
+//   cert: fs.readFileSync("fullchain.pem"),
+//   ca: fs.readFileSync("chain.pem")
+// };
 
-var serverHttps = require('https').Server(ssl, app);
+//var serverHttps = require('https').Server(ssl, app);
 var serverHttp = require('http').Server(app);
 var io = app.io = require('./routes/io')
 
@@ -173,6 +173,6 @@ app.use(function (err, req, res, next) {
 
 
 
-module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
+//module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
 
-//module.exports = { app: app, serverHttp: serverHttp, io: io };
+module.exports = { app: app, serverHttp: serverHttp, io: io };
