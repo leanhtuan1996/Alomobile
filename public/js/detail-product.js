@@ -2595,19 +2595,19 @@
                                                 <ul>
                                                     <li>
                                                         <div class="block-reassurance-item">
-                                                            <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_verified_user_black_36dp_1x.png" alt="Security policy (edit with Customer reassurance module)">
+                                                            <img src="/static/img/ic_verified_user_black_36dp_1x.png" alt="Security policy (edit with Customer reassurance module)">
                                                             <span class="h6" style="font-weight: 400;">Cam kết hàng chính hãng, bảo hành 12 tháng</span>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="block-reassurance-item">
-                                                            <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_local_shipping_black_36dp_1x.png" alt="Delivery policy (edit with Customer reassurance module)">
+                                                            <img src="/static/img/ic_local_shipping_black_36dp_1x.png" alt="Delivery policy (edit with Customer reassurance module)">
                                                             <span class="h6" style="font-weight: 400;">Miễn phí giao hàng</span>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="block-reassurance-item">
-                                                            <img src="http://demo.posthemes.com/pos_fastbuy/modules/blockreassurance/img/ic_swap_horiz_black_36dp_1x.png" alt="Return policy (edit with Customer reassurance module)">
+                                                            <img src="/static/img/ic_swap_horiz_black_36dp_1x.png" alt="Return policy (edit with Customer reassurance module)">
                                                             <span class="h6" style="font-weight: 400;">1 đổi 1 trong 3 tháng</span>
                                                         </div>
                                                     </li>
