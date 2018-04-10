@@ -2,6 +2,17 @@
 var mongoose = require('../../config/db').mongoose;;
 var Schema = mongoose.Schema;
 
+/**
+ * STATUS
+ * 0: KHOI TAO
+ * 1: DANG DOI DUYET
+ * 2: DA DUYET
+ * 3: BI TU CHOI
+ * 4: BI HUY
+ * 5: DANG GIAO HANG
+ * 6: DA GIAO   
+ */
+
 module.exports = mongoose.model('Order', new Schema({
     products: [{
         id: { type: Schema.Types.ObjectId, ref: "Product" },

@@ -267,7 +267,7 @@ var initOrder = (parameters, cb) => {
                             error: errors
                         });
                         return
-                    } 
+                    }
 
                     if (newProducts.length - 1 == i) {
                         workflow.emit('init', newProducts);
@@ -276,7 +276,7 @@ var initOrder = (parameters, cb) => {
             });
         }
 
-        
+
     });
 
     workflow.on('init', (newProducts) => {
@@ -405,10 +405,8 @@ var updateOrder = (order, parameters, cb) => {
                 order.note = parameters.note;
             }
 
-            if (parameters.checkoutMethod && parameters.checkoutMethod._id) {
-                if (parameters.checkoutMethod._id.match(/^[a-z0-9]{24}$/g)) {
-                    order.checkoutMethod = parameters.checkoutMethod._id;
-                }
+            if (parameters.checkoutMethod) {
+                order.checkoutMethod = parameters.checkoutMethod;
             }
 
             order.save((err) => {
@@ -433,7 +431,7 @@ var updateOrder = (order, parameters, cb) => {
                         var orders = user.orders || [];
                         orders.push(order);
                         user.orders = orders;
-                        user.save((err) => {                            
+                        user.save((err) => {
                             workflow.emit('response', {
                                 error: err,
                                 order: order
@@ -597,6 +595,55 @@ var getOrder = (id, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var getDetailOrder = (id, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Mã đơn hàng không tìm thấy"
+            });
+            return
+        }
+
+        workflow.emit('get')
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    })
+
+    workflow.on('get', () => {
+        Order.findById(id).populate('byUser').exec((err, doc) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err
+                });
+                return
+            }
+
+            if (!doc) {
+                workflow.emit('response', {
+                    error: "Đơn hàng không được tìm thấy"
+                });
+                return
+            }
+
+            Order.populate(doc, {
+                path: 'products.id',
+                model: 'Product'
+            }, (err, order) => {
+                workflow.emit('response', {
+                    error: err,
+                    order: order
+                });
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters')
+}
+
 var requestPayment = (id, method, cb) => {
     var workflow = new event.EventEmitter();
 
@@ -734,6 +781,76 @@ var deleteOrder = (id, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var getOrders = (cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    });
+
+    workflow.on('get', () => {
+        Order.find({
+            status: {
+                $gt: 0
+            }
+        }).select('products byUser status created_at').populate({
+            path: "byUser",
+            model: "User",
+            select: "fullName"
+        }).exec((err, docs) => {
+            Order.populate(docs, {
+                path: "products.id",
+                model: "Product",
+                select: "images name"
+            }, (err, orders) => {
+                workflow.emit('response', {
+                    error: err,
+                    orders: orders
+                });
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters')
+}
+
+var getPendingOrders = (cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    });
+
+    workflow.on('get', () => {
+        Order.find({ status: 1 }).select('products byUser status created_at').populate({
+            path: "byUser",
+            model: "User",
+            select: "fullName"
+        }).exec((err, docs) => {
+            Order.populate(docs, {
+                path: "products.id",
+                model: "Product",
+                select: "images name"
+            }, (err, orders) => {
+                workflow.emit('response', {
+                    error: err,
+                    orders: orders
+                });
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters')
+}
+
 module.exports = {
     checkingAvailable: checkingAvailable,
     detailCart: detailCart,
@@ -742,5 +859,8 @@ module.exports = {
     updateOrder: updateOrder,
     getOrder: getOrder,
     requestPayment: requestPayment,
-    deleteOrder: deleteOrder
+    deleteOrder: deleteOrder,
+    getOrders: getOrders,
+    getPendingOrders: getPendingOrders,
+    getDetailOrder: getDetailOrder
 }

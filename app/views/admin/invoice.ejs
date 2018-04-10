@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include layouts/header %>
+
+</head>
+
+<body>
+    <!--Preloader-->
+    <div class="preloader-it">
+        <div class="la-anim-1"></div>
+    </div>
+    <!--/Preloader-->
+    <div class="wrapper theme-5-active pimary-color-green">
+        <% include layouts/menu %>
+            <!-- Main Content -->
+            <div class="page-wrapper">
+                <div class="container-fluid">
+                    <!-- Title -->
+                    <div class="row heading-bg">
+                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                            <h5 class="txt-dark">Duyệt đơn hàng</h5>
+                        </div>
+                    </div>
+                    <!-- /Title -->
+                    <!-- Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default card-view">
+                                <div class="panel-heading">
+                                    <div class="pull-left">
+                                        <h6 class="panel-title txt-dark">Chi tiết đơn hàng</h6>
+                                    </div>
+                                    <div class="pull-right">
+                                        <h6 class="txt-dark">Đơn hàng #<%- data.order._id %></h6>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <span class="txt-dark head-font inline-block capitalize-font mb-5">Địa chỉ nhận hàng:</span>
+                                                <address class="mb-15">
+                                                    <span class="address-head mb-5"><%- data.order.toAddress.address %>.</span> 
+                                                    <%- data.order.toAddress.state %>
+                                                    <br><%- data.order.toAddress.city %>
+                                                    <br> Mã bưu điện: <%- data.order.toAddress.zipPostalCode %>
+                                                </address>
+                                            </div>
+                                            <div class="col-xs-6 text-right">
+                                                <span class="txt-dark head-font inline-block capitalize-font mb-5">Người nhận:</span>
+                                                <address class="mb-15">
+                                                    <span class="address-head mb-5"><%- data.order.toAddress.fullName %></span>
+                                                    Phone: <%- data.order.toAddress.phone %>
+                                                    <br>
+                                                </address>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <address>
+                                                    <span class="txt-dark head-font capitalize-font mb-5">Phương thức thanh toán:</span>
+                                                    <br> <%- data.order.checkoutMethod || "Không rõ"%>
+                                                </address>
+                                            </div>
+                                            <div class="col-xs-6 text-right">
+                                                <address>
+                                                    <span class="txt-dark head-font capitalize-font mb-5">Ngày mua hàng:</span>
+                                                    <% var date = new Date(data.order.created_at) %>
+                                                    <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" +date.getFullYear() %>
+                                                    <br> <%- dateCreated %>
+                                                    <br>
+                                                    <br>
+                                                </address>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                                <div class="col-xs-6">
+                                                    <address>
+                                                        <span class="txt-dark head-font capitalize-font mb-5">Ghi chú đơn hàng:</span>
+                                                        <br> <%- data.order.note == 0 ? "Không có" : data.order.note %>
+                                                    </address>
+                                                </div>
+                                                <div class="col-xs-6 text-right">
+                                                    <address>
+                                                        <span class="txt-dark head-font capitalize-font mb-5">Mã giảm giá:</span>
+                                                        <br> Không có
+                                                    </address>
+                                                </div>
+                                            </div>
+
+                                        <div class="seprator-block"></div>
+
+                                        <div class="invoice-bill-table">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sản phẩm</th>
+                                                            <th>Hình ảnh</th>
+                                                            <th>Màu sắc, số lượng & đơn giá</th>
+                                                            <th>Tổng cộng</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>BS-200</td>
+                                                            <td>$10.99</td>
+                                                            <td>1</td>
+                                                            <td>$10.99</td>
+                                                        </tr>
+                                                        <tr class="txt-dark">
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>Tổng phụ</td>
+                                                            <td>$670.99</td>
+                                                        </tr>
+                                                        <tr class="txt-dark">
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>Phí vận chuyển</td>
+                                                            <td>$15</td>
+                                                        </tr>
+                                                        <tr class="txt-dark">
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>Giảm giá</td>
+                                                            <td>$15</td>
+                                                        </tr>
+                                                        <tr class="txt-dark">
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>Tổng cộng</td>
+                                                            <td>$685.99</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="button-list pull-right">
+                                                <button type="submit" class="btn btn-success mr-10" id="confirm-order" data-id-order="<%- data.order._id %>">
+                                                    Xác nhận đơn hàng
+                                                </button>
+                                                <button type="button" class="btn btn-primary btn-outline btn-icon left-icon" onclick="javascript:window.print();">
+                                                    <i class="fa fa-print"></i>
+                                                    <span>In hoá đơn</span>
+                                                </button>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Row -->
+
+                </div>
+                <!-- /#wrapper -->
+                <% include layouts/footer %>                   
+                    <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                    <script type="text/javascript">
+
+                        function confirmOrder(cb) {
+                            swal({
+                                title: "Hãy xác nhận trước khi thực hiện thao tác!",
+                                text: "Nhấn vào 'Xác nhận' để xác nhận đơn hàng.",
+                                icon: "info",
+                                buttons: {
+                                    cancel: true,
+                                    yes: "Xác nhận"
+                                },
+                            })
+                                .then((value) => {
+                                    switch (value) {
+                                        case "yes":
+                                            return cb(true);
+                                            break;
+                                        default:
+                                            return cb(false);
+                                            break;
+                                    }
+                                });
+                        }
+
+                    </script>
+                    <script>
+                        jQuery(document).ready(($) => {
+                            
+                            var status = '<%- data.order.status %>'
+                            
+                            $('#confirm-order').click((e) => {
+
+                                if (status >= 2) {
+                                    swal('Thông báo', 'Đơn hàng dường như đã được duyệt trước đó!', 'info');
+                                    return
+                                }
+
+                                confirmOrder((isConfirm) => {
+                                    if (isConfirm) {
+                                        $.ajax({
+                                            url: '/admin/order',
+                                            method: "PUT",
+                                            data: {
+                                                id: $(e.currentTarget).attr('data-id-order'),
+                                                parameters: {
+                                                    status: 2
+                                                }
+                                            },
+                                            success: (data) => {
+                                                if (data.order) {
+                                                    swal('Thành công', 'Đơn hàng đã được xác nhận.', 'info')
+                                                    location.href = document.referrer;
+                                                } else {
+                                                    swal('Oops', data.error || "Lỗi không xác định, vui lòng thử lại", 'error')
+                                                }
+                                                
+                                            },
+                                            error: (err) => {
+                                                swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
+                                            }
+                                        })
+                                    } 
+                                })
+                            })
+                        });
+                    </script>
+</body>
+
+</html>

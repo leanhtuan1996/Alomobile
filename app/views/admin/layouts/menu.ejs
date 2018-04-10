@@ -191,13 +191,15 @@
             </a>
         </li>
         <li>
-            <a href='/admin/orders'>
-                <div class="pull-left">
-                    <i class="zmdi zmdi-shopping-cart mr-20"></i>
-                    <span class="right-nav-text">Đơn hàng</span>
-                </div>
-                <div class="clearfix"></div>
-            </a>
+            <a href="javascript:void(0);" data-toggle="collapse" data-target="#order_product"><div class="pull-left"><i class="zmdi zmdi-shopping-cart mr-20"></i><span class="right-nav-text">Đơn hàng</span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
+            <ul id="order_product" class="collapse collapse-level-1">
+                <li>
+                    <a href="/admin/orders">Danh sách đơn hàng</a>
+                </li>
+                <li>
+                    <a href="/admin/orders/approval">Đơn hàng chờ duyệt</a>
+                </li>
+            </ul>
         </li>
         <li>
             <a href="javascript:void(0);" data-toggle="collapse" data-target="#menu_product"><div class="pull-left"><i class="zmdi zmdi-smartphone-iphone mr-20"></i><span class="right-nav-text">Sản phẩm</span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>

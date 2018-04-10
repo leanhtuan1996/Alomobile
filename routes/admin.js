@@ -11,6 +11,7 @@ var User = require('../app/controllers/admin/index').user;
 var Type = require('../app/controllers/admin/index').type;
 var Role = require('../app/controllers/admin/index').role;
 var Review = require('../app/controllers/admin/index').review;
+var Order = require('../app/controllers/admin/index').order;
 
 var mail = require('../app/api/index').mail;
 
@@ -616,5 +617,57 @@ router.delete('/admin/review', [auth.requireAuth, auth.requireRole], (req, res) 
 });
 
 //#endregion COMMENT ROUTERS
+
+//#region ORDER ROUTERS
+
+router.get('/admin/orders', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Order.getOrders((result) => {
+        res.render('admin/orders', {
+            data: {
+                title: "Alomobile Control Panel > Trang quản lý đơn hàng",
+                error: result.error,
+                orders: result.orders
+            }
+        });
+    });
+});
+
+router.get('/admin/orders/approval', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Order.getRequestOrders((result) => {
+        res.render('admin/waiting-orders.ejs', {
+            data: {
+                title: "Alomobile Control Panel > Trang quản lý đơn hàng",
+                error: result.error,
+                orders: result.orders
+            }
+        });
+    })
+});
+
+router.get('/admin/invoice/:id', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Order.getOrder(req.params.id, (result) => {
+        if (!result.order) {
+            res.render('admin/404', {
+                data: { }
+            });
+            return
+        }
+        res.render('admin/invoice', {
+            data: {
+                title: "Alomobile Control Panel > Trang quản lý đơn hàng",
+                error: result.error,
+                order: result.order
+            }
+        });
+    });
+});
+
+router.put('/admin/order', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Order.updateOrder(req.body.id, req.body.parameters, (result) => {
+        res.json(result)
+    })
+})
+
+//#endregion ORDER ROUTERS
 
 module.exports = router;

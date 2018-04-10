@@ -7,6 +7,7 @@ var user = require('./user');
 var type = require('./type');
 var role = require('./role');
 var review = require('./review');
+var order = require('./order');
 
 module.exports = {
     dashboard: dashboard,
@@ -16,5 +17,6 @@ module.exports = {
     user: user,
     type: type,
     role: role,
-    review: review
+    review: review,
+    order: order
 }
