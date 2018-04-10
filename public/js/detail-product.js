@@ -2540,8 +2540,7 @@
                                                 </div>
                                             </div>
                                             <div class="product-actions">
-                                                <form action="http://demo.posthemes.com/pos_fastbuy/layout2/en/gio-hang" method="post" id="add-to-cart-or-refresh">
-                                                   
+                                                <form id="add-to-cart-or-refresh">
                                                     <div class="product-variants">
                                                         <div class="clearfix product-variants-item">
                                                             <span class="control-label">Màu sắc</span>

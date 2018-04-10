@@ -567,9 +567,33 @@ router.delete('/admin/role', [auth.requireAuth, auth.requireRole], (req, res) =>
 //#endregion ROLE ROUTERS
 
 //#region COMMENT ROUTERS
-router.get('/admin/review', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Review.getRequestReviews((result) => {
+router.get('/admin/reviews', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Review.getReviews((result) => {
         res.render('admin/review', {
+            data: {
+                title: "Alomobile Control Panel > Trang quản lý nhận xét",
+                error: result.error,
+                reviews: result.reviews
+            }
+        });
+    });
+});
+
+router.get('/admin/reviews/approval', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Review.getRequestReviews((result) => {
+        res.render('admin/waiting-reviews', {
+            data: {
+                title: "Alomobile Control Panel > Trang quản lý nhận xét",
+                error: result.error,
+                reviews: result.reviews
+            }
+        })
+    })
+});
+
+router.get('/admin/reviews/dismiss', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Review.getDismissReviews((result) => {
+        res.render('admin/dismissed-reviews', {
             data: {
                 title: "Alomobile Control Panel > Trang quản lý nhận xét",
                 error: result.error,

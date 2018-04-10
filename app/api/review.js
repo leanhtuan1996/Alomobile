@@ -138,8 +138,36 @@ var reviewProduct = (user, review, cb) => {
     workflow.emit('validate-parameters');
 }
 
-var getReviews = (status = true, cb) => {
+var getReviews = (cb) => {
+    var workflow = new event.EventEmitter();
 
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get');
+    });
+
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('get', () => {
+        Review.find({ }).populate({
+            path: 'product',
+            model: 'Product',
+            select: 'name'
+        }).populate({
+            path: 'byUser',
+            model: 'User',
+            select: 'fullName'
+        }).exec((err, reviews) => {
+            workflow.emit('response', {
+                error: err,
+                reviews: reviews
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
 }
 
 var getRequestReviews = (cb) => {
@@ -155,7 +183,39 @@ var getRequestReviews = (cb) => {
     });
 
     workflow.on('get', () => {
-        Review.find({ status: false }).populate({
+        Review.find({ status: 0 }).populate({
+            path: 'product',
+            model: 'Product',
+            select: 'name'
+        }).populate({
+            path: 'byUser',
+            model: 'User',
+            select: 'fullName'
+        }).exec((err, reviews) => {
+            workflow.emit('response', {
+                error: err,
+                reviews: reviews
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var getDismissReviews = (cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get');
+    });
+
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('get', () => {
+        Review.find({ status: 2 }).populate({
             path: 'product',
             model: 'Product',
             select: 'name'
@@ -192,7 +252,7 @@ var getReviewsWithProduct = (product, status = true, cb) => {
         Product.findById(product).select('reviews').populate({
             path: "reviews",
             model: "Review",
-            match: { status: true }
+            match: { status: 1 }
         }).exec((err, docs) => {
             if (docs) {
                 Product.populate(docs, {
@@ -328,8 +388,12 @@ var deleteReview = (id, cb) => {
     workflow.emit('validate-parameters');
 }
 
+
+
 module.exports = {
     getRequestReviews: getRequestReviews,
     updateReview: updateReview,
-    deleteReview: deleteReview
+    deleteReview: deleteReview,
+    getDismissReviews: getDismissReviews,
+    getReviews: getReviews
 }

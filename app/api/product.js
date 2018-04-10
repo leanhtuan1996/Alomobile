@@ -885,7 +885,7 @@ var getReviewsWithProduct = (product, status = true, cb) => {
         Product.findById(product).select('reviews').populate({
             path: "reviews",
             model: "Review",
-            match: { status: true }
+            match: { status: 1 }
         }).exec((err, docs) => {
             if (docs) {
                 Product.populate(docs, {

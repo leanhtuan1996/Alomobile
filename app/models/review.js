@@ -8,7 +8,7 @@ module.exports = mongoose.model('Review', new Schema({
     star: Number,
     title: String,
     content: String,
-    status: { type: Schema.Types.Boolean, default: false },
+    status: { type: Schema.Types.Number, default: 0 },
     created_at: Number,
     updated_at: Number
 }).pre('save', function(next) {

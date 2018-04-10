@@ -24,7 +24,7 @@
                     <!-- Title -->
                     <div class="row heading-bg">
                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12" style="width: 100%">
-                            <h5 class="txt-dark" style="float: left;">Trang quản lý nhận xét</h5>
+                            <h5 class="txt-dark" style="float: left;">Trang quản lý nhận xét đang đợi duyệt</h5>
                         </div>
                     </div>
                     <!-- /Title -->
@@ -96,41 +96,25 @@
                                                                     <td class="td-date-created">
                                                                         <%- dateCreated %>
                                                                     </td>
-                                                                    <td class="td-status">
-                                                                        <% if (review.status == 0) { %>
-                                                                            <span class="label label-success font-weight-100">Chờ duyệt</span>
-                                                                        <% } else if (review.status == 1) { %>
-                                                                            <span class="label label-primary font-weight-100">Đã duyệt</span>
+                                                                    <td>
+                                                                    <% if (review.status == 0) { %>
+                                                                    <span class="label label-success font-weight-100">Chờ duyệt</span>
+                                                                   <% } else if (review.status == 1) { %>
+                                                                   <span class="label label-primary font-weight-100">Đã duyệt</span>
                                                                         <% } else { %>
-                                                                            <span class="label label-default font-weight-100">Bị từ chối</span>
-                                                                        <% } %>
+                                                                        <span class="label label-default font-weight-100">Bị từ chối</span>
+                                                                <% } %>
                                                                     </td>
                                                                     <td class="action-brand">
-                                                                        <% if (review.status == 1) { %>
-                                                                            <a href="javascript:void(0)" class="text-inverse dismiss-review pr-10" title="" data-id-review="<%- review._id %>">
-                                                                                <i class="zmdi zmdi-close txt-danger"></i>
-                                                                            </a>
-                                                                            <a href="javascript:void(0)" class="text-inverse delete-review" title="" data-id-review="<%- review._id %>">
-                                                                                <i class="zmdi zmdi-delete txt-danger"></i>
-                                                                            </a>
-                                                                        <% } else if (review.status == 0) { %>
-                                                                            <a href="javascript:void(0)" class="text-inverse pr-10 allow-review" title="" data-id-review="<%- review._id %>">
-                                                                                <i class="zmdi zmdi-check txt-warning"></i>
-                                                                            </a>
-                                                                            <a href="javascript:void(0)" class="text-inverse delete-review" title="" data-id-review="<%- review._id %>">
-                                                                                <i class="zmdi zmdi-delete txt-danger"></i>
-                                                                            </a>
-                                                                        <% } else { %>
-                                                                            <a href="javascript:void(0)" class="text-inverse pr-10 allow-review" title="" data-id-review="<%- review._id %>">
-                                                                                <i class="zmdi zmdi-check txt-warning"></i>
-                                                                            </a>
-                                                                            <a href="javascript:void(0)" class="text-inverse dismiss-review pr-10" title="" data-id-review="<%- review._id %>">
-                                                                                <i class="zmdi zmdi-close txt-danger"></i>
-                                                                            </a>
-                                                                            <a href="javascript:void(0)" class="text-inverse delete-review" title="" data-id-review="<%- review._id %>">
-                                                                                <i class="zmdi zmdi-delete txt-danger"></i>
-                                                                            </a>
-                                                                        <% } %>
+                                                                        <a href="javascript:void(0)" class="text-inverse pr-10 allow-review" title="" data-id-review="<%- review._id %>">
+                                                                            <i class="zmdi zmdi-check txt-warning"></i>
+                                                                        </a>
+                                                                        <a href="javascript:void(0)" class="text-inverse dismiss-review pr-10" title="" data-id-review="<%- review._id %>">
+                                                                            <i class="zmdi zmdi-close txt-danger"></i>
+                                                                        </a>
+                                                                        <a href="javascript:void(0)" class="text-inverse delete-review" title="" data-id-review="<%- review._id %>">
+                                                                            <i class="zmdi zmdi-delete txt-danger"></i>
+                                                                        </a>
                                                                     </td>
                                                                 </tr>
                                                             <% }); %>
@@ -189,110 +173,7 @@
                         jQuery(document).ready(($) => {
                             //configation datatable jquery
                             var table = $('#table-review').DataTable();
-
-                            //add and update brand
-                            $("form").submit((e) => {
-
-                                e.preventDefault();
-
-                                //remove alert
-                                $('.alert').remove();
-
-                                //get purpose
-                                var purpose = $('.btn-save-changes').attr('id');
-
-                                var brand_name,
-                                    brand_alias,
-                                    brand_icon,
-                                    brand_url;
-
-                                //receive parameters
-                                $("#form-add-brand :input").each((index, element) => {
-
-                                    var id = $(element).attr('id');
-
-                                    switch (id) {
-                                        case 'brand-name':
-                                            brand_name = $(element).val();
-
-                                            if (!brand_name) {
-                                                showAlert("#alert-error", "Tên thương hiệu là bắt buộc!");
-                                                return
-                                            }
-
-                                            break;
-                                        case 'brand-alias':
-                                            brand_alias = $(element).val();
-
-                                            if (!brand_alias) {
-                                                showAlert("#alert-error", "SEO URL là bắt buộc!");
-                                                return
-                                            }
-                                            break;
-                                        case 'brand-icon':
-                                            if ($(element).get(0).files.length != 0) {
-                                                brand_icon = $(element).get(0).files[0];
-                                            };
-                                            break;
-                                        case 'brand-url':
-                                            brand_url = $(element).val();
-                                            break;
-                                    }
-                                });
-
-                                var formData = new FormData();
-
-                                if (purpose == "btn-add-brand") {                                    
-                                    formData.append("name", brand_name);
-                                    formData.append("image", brand_icon);
-                                    formData.append("url", brand_url);
-                                    formData.append("alias", brand_alias);
-
-                                    $.ajax({
-                                        url: '/admin/brand',
-                                        method: 'POST',
-                                        data: formData,
-                                        processData: false,
-                                        contentType: false,
-                                        success: (data) => {
-                                            if (data.error) {
-                                                swal('Oops', data.error, 'error')
-                                            } else {
-                                                location.reload(true);
-                                            }
-                                        },
-                                        error: (err) => {
-                                            swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
-                                        }
-                                    });
-                                } else {
-
-                                    formData.append("name", brand_name);
-                                    formData.append("alias", brand_alias);
-                                    formData.append("id", $('#brand-id').attr('data-id-brand'));
-                                    formData.append("image", brand_icon);
-                                    formData.append("url", brand_url);
-
-                                    $.ajax({
-                                        url: '/admin/brand',
-                                        method: 'PUT',
-                                        data: formData,
-                                        processData: false,
-                                        contentType: false,
-                                        success: (result) => {
-                                            if (result.error) {
-                                                swal('Oops', result.error, 'error')
-                                            } else {
-                                                location.reload();
-                                            }
-                                        },
-                                        error: (err) => {
-                                            swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
-                                        }
-                                    });
-                                }
-                            });
-
+                         
                             //delete brand
                             $("#table-review tbody").delegate('.delete-review', 'click', (e) => {
 
@@ -342,7 +223,7 @@
                                             swal('Oops', error, 'error')
                                         } else {
                                             swal('Thành công', 'Nhận xét đã được chấp nhận', 'info')
-                                            location.reload();
+                                            table.row(row).remove().draw('page');
                                         }
                                     },
                                     error: (err) => {
@@ -370,7 +251,7 @@
                                             swal('Oops', error, 'error')
                                         } else {
                                             swal('Thành công', 'Nhận xét đã bị từ chối', 'info')
-                                            location.reload();
+                                            table.row(row).remove().draw('page');
                                         }
                                     },
                                     error: (err) => {

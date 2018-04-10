@@ -18,9 +18,24 @@ var deleteReview = (id, cb) => {
     });
 }
 
+var getReviews = (cb) => {
+    reviewApi.getReviews((result) => {
+        return cb(result)
+    })
+}
+
+var getDismissReviews = (cb) => {
+    reviewApi.getDismissReviews((result) => {
+        return cb(result)
+    })
+
+    
+}
 
 module.exports = {
     getRequestReviews: getRequestReviews,
     updateReview: updateReview,
-    deleteReview: deleteReview
+    deleteReview: deleteReview,
+    getDismissReviews: getDismissReviews,
+    getReviews: getReviews
 }

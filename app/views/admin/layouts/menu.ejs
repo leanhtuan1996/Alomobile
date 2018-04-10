@@ -22,6 +22,7 @@
     <div id="mobile_only_nav" class="mobile-only-nav pull-right">
         <ul class="nav navbar-right top-nav pull-right">
             <li class="dropdown alert-drp">
+                
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="zmdi zmdi-notifications top-nav-icon"></i>
                     <span class="top-nav-icon-badge">5</span>
@@ -237,15 +238,19 @@
             </a>
         </li>
         <li>
-            <a href='/admin/review'>
-                <div class="pull-left">
-                    <i class="zmdi zmdi-twitch mr-20"></i>
-                    <span class="right-nav-text">Nhận xét</span>
-                </div>
-                <div class="clearfix"></div>
-            </a>
+            <a href="javascript:void(0);" data-toggle="collapse" data-target="#review_product"><div class="pull-left"><i class="zmdi zmdi-twitch mr-20"></i><span class="right-nav-text">Nhận xét</span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
+            <ul id="review_product" class="collapse collapse-level-1">
+                <li>
+                    <a href="/admin/reviews">Danh sách nhận xét</a>
+                </li>
+                <li>
+                    <a href="/admin/reviews/approval">Nhận xét đang đợi</a>
+                </li>
+                <li>
+                    <a href="/admin/reviews/dismiss">Nhận xét bị loại</a>
+                </li>
+            </ul>
         </li>
-
         <li><hr class="light-grey-hr"></li>
         <li class="navigation-header">
             <span style="text-align: center;">Chức năng khác</span>
@@ -265,6 +270,15 @@
                 <div class="pull-left">
                     <i class="zmdi zmdi zmdi-settings mr-20"></i>
                     <span class="right-nav-text">Thiết lập</span>
+                </div>
+                <div class="clearfix"></div>
+            </a>
+        </li>
+        <li>
+            <a href='/'>
+                <div class="pull-left">
+                    <i class="zmdi zmdi-shopping-cart mr-20"></i>
+                    <span class="right-nav-text">Trang bán hàng</span>
                 </div>
                 <div class="clearfix"></div>
             </a>
