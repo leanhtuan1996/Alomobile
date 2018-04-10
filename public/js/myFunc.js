@@ -188,7 +188,7 @@ function updateQuantityItemsInCart(id, color, quantity) {
     }
 }
 
-const numberWithCommas = (x) => {
+function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
