@@ -8,6 +8,7 @@ var type = require('./type');
 var role = require('./role');
 var review = require('./review');
 var order = require('./order');
+var cron = require('./cron');
 
 module.exports = {
     dashboard: dashboard,
@@ -18,5 +19,6 @@ module.exports = {
     type: type,
     role: role,
     review: review,
-    order: order
+    order: order,
+    cron: cron
 }

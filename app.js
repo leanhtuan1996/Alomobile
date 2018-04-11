@@ -20,6 +20,8 @@ var api = require('./routes/api');
 var crawl = require('./routes/crawl');
 var order = require('./routes/order');
 
+var cron = require('./app/controllers/admin/index').cron;
+
 var app = express();
 
 // view engine setup
@@ -53,6 +55,10 @@ app.use(session({
   }),
   expires: 15 * 24 * 60 * 60 //15 days
 }));
+
+
+//cron job
+cron.removeUncompleteOrder();
 
 //use static
 app.use('/static', express.static(path.join(__dirname, 'public'), {
