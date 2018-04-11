@@ -54,7 +54,8 @@ router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
             data: {
                 title: "Alomobile Control Panel - Trang quản trị",
                 countProducts: result.countProducts,
-                countUsers: result.countUsers
+                countUsers: result.countUsers,
+                countOrders: result.countOrders
             }
         });
     });
@@ -464,7 +465,7 @@ var getAllRouter = (stack, cb) => {
             methods += method;
         }
         //just get all router of admin
-        if (element.path.startsWith('/admin')) {
+        if (element.path.startsWith('/admin') || element.path.startsWith('/api')) {
             response.push({
                 method: methods,
                 path: element.path

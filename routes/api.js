@@ -11,6 +11,7 @@ var Brand = api.brand;
 var User = api.user;
 var Type = api.type;
 var Order = api.order;
+var Review = api.review;
 
 var multer = require('multer');
 var auth = require('../app/middleware/index').authenticate;
@@ -168,12 +169,12 @@ router.get('/api/v1/product/get-products-by-category/:id', (req, res) => {
 });
 
 router.get('/api/v1/product/get-products-by-category', (req, res) => {
-    Product.getProductsByCategory(req.query.idCategory, req.query.idRootCategory, req.query.limit || 15, (cb) => {        
+    Product.getProductsByCategory(req.query.idCategory, req.query.idRootCategory, req.query.limit || 15, (cb) => {
         res.json(cb);
     })
 });
 
-router.get('/api/v1/product/get-new-products', (req,res) => {
+router.get('/api/v1/product/get-new-products', (req, res) => {
     Product.getNewProducts(15, (result) => {
         res.json(result);
     });
@@ -210,9 +211,9 @@ router.get('/api/v1/product/search-product/:text', (req, res) => {
 });
 
 router.get('/api/v1/product/get-preview', (req, res) => {
-   Product.getPreviewProduct(req.query.id, (r) => {
-       res.json(r);
-   });
+    Product.getPreviewProduct(req.query.id, (r) => {
+        res.json(r);
+    });
 });
 
 router.get('/api/v1/product/get-reviews', (req, res) => {
@@ -306,6 +307,30 @@ router.get('/api/v1/order/detailCart', (req, res) => {
         res.json(result);
     });
 })
+
+router.get('/api/v1/order/getNewerOrders', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Order.getNewOrders((result) => {
+        res.json(result)
+    })
+});
+
 //**/APIS FOR ORDER
+
+//APIS FOR REVIEW
+router.get('/api/v1/reviews', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Review.getReviews((result) => {
+        res.json(result);
+    })
+});
+
+router.get('/api/v1/newerReviews', [auth.requireAuth, auth.requireRole], (req, res) => {
+    
+    Review.getNewReviews((result) => {
+        res.json(result);
+    })
+    
+})
+
+//**/APIS FOR REVIEW
 
 module.exports = router;

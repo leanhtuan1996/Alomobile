@@ -71,8 +71,10 @@
                                                                                 <ul style="list-style-type: none;
                                                                             margin: 0;
                                                                             padding: 0;
-                                                                            overflow: hidden;" data-id-product="<%- product._id %>" >
-                                                                                    <li style="float: left; margin: 5px"><span><%- product.id.name %> - </span></li>
+                                                                            overflow: hidden;" data-id-product="<%- product.id._id %>" >
+                                                                                    <li style="float: left; margin: 5px">
+                                                                                        <a href="/admin/product/<%- product.id._id %>"><span><%- product.id.name %> - </span></a>  
+                                                                                    </li>
                                                                                     <li style="background-color: <%- product.color.hex %>; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin: 5px" title="<%- product.color.name %>">
                                                                                     </li>
                                                                                     <li style="float: left; margin: 5px"><span>- <%- product.price %></span></li>

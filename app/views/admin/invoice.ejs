@@ -114,7 +114,10 @@
                                                             <% data.order.products.forEach(product => { %>
                                                                 <% subTotal+= product.quantity * product.price %>
                                                                 <tr>
-                                                                    <td><%- product.id.name %></td>
+                                                                    <td>
+                                                                        <a href="/admin/product/<%- product.id._id %>">
+                                                                            <span><%- product.id.name %> - </span>
+                                                                        </a>  
                                                                     <td>
                                                                         <img src="<%- product.id.images[0].url %>" alt="<%- product.id.images[0].alt %>" width="80">
                                                                     </td>

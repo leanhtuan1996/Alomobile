@@ -5,6 +5,7 @@ var event = require('events');
 
 var productApi = require('../../api/index').product;
 var userApi = require('../../api/index').user;
+var orderApi = require('../../api/index').order;
 
 var dashboard = (result) => {
     var workflow = new event.EventEmitter();
@@ -22,10 +23,13 @@ var dashboard = (result) => {
         //get count
         productApi.getCountProducts((r1) => {
             userApi.getCountUsers((r2) => {
-                workflow.emit('response', {
-                    error: null,
-                    countUsers: r2.count,
-                    countProducts: r1.count
+                orderApi.getCountOrders((r3) => {
+                    workflow.emit('response', {
+                        error: null,
+                        countUsers: r2.count,
+                        countProducts: r1.count,
+                        countOrders: r3.count
+                    });
                 });
             });
         });

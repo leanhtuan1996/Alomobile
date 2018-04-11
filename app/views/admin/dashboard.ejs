@@ -58,7 +58,13 @@
 											<div class="row">
 												<div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
 													<span class="txt-dark block counter">
-														<span class="counter-anim">914,001</span>
+														<span class="counter-anim">														<h1><%- data.count %></h1>
+															<% if (data.countOrders) { %>
+																<%- data.countOrders %>
+															<% } else { %>
+																NaN
+															<% } %>	
+														</span>
 													</span>
 													<span class="weight-500 uppercase-font block">Tổng số đơn hàng</span>
 												</div>
@@ -252,123 +258,21 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+					<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" id="review-block">
 						<div class="panel panel-default border-panel  review-box card-view">
 							<div class="panel-heading">
 								<div class="pull-left">
 									<h6 class="panel-title txt-dark">Nhận xét mới nhất</h6>
 								</div>
 								<div class="pull-right">
-										<a href="javascript:void(0)" class="pull-left btn btn-success btn-xs mr-15">Xem tất cả</a>
+										<a href="/admin/reviews" class="pull-left btn btn-success btn-xs mr-15">Xem tất cả</a>
 								</div>
 								<div class="clearfix"></div>
 							</div>
 							<div class="panel-wrapper collapse in">
 								<div class="panel-body row pa-0">
-									<div class="streamline">
-										<div class="sl-item">
-											<div class="sl-content">
-												<div class="per-rating inline-block pull-left">
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star-outline"></a>
-													<span class="inline-block">for Paleo Bars</span>
-												</div>
-												<a href="javascript:void(0);" class=" pull-right txt-grey">
-													<i class="zmdi zmdi-mail-reply"></i>
-												</a>
-												<div class="clearfix"></div>
-												<div class="inline-block pull-left">
-													<span class="reviewer font-13">
-														<span>By</span>
-														<a href="javascript:void(0)" class="inline-block capitalize-font  mb-5">Jens Brincker</a>
-													</span>
-													<span class="inline-block font-13  mb-5">11 day ago</span>
-												</div>
-												<div class="clearfix"></div>
-												<p class="mt-5">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
-											</div>
-										</div>
-										<hr class="light-grey-hr">
-										<div class="sl-item">
-											<div class="sl-content">
-												<div class="per-rating inline-block pull-left">
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<span class="inline-block">for Bow Ties</span>
-												</div>
-												<a href="javascript:void(0);" class=" pull-right txt-grey">
-													<i class="zmdi zmdi-mail-reply"></i>
-												</a>
-												<div class="clearfix"></div>
-												<div class="inline-block pull-left">
-													<span class="reviewer font-13">
-														<span>By</span>
-														<a href="javascript:void(0)" class="inline-block capitalize-font  mb-5">Madalyn Rascon</a>
-													</span>
-													<span class="inline-block font-13  mb-5">11 day ago</span>
-												</div>
-												<div class="clearfix"></div>
-												<p class="mt-5">Neque porro quisquam est qui dolorem ipsum quiipsum quia dolor sit amet.</p>
-											</div>
-										</div>
-										<hr class="light-grey-hr">
-										<div class="sl-item">
-											<div class="sl-content">
-												<div class="per-rating inline-block pull-left">
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star-outline"></a>
-													<span class="inline-block">for Pocket Squares</span>
-												</div>
-												<a href="javascript:void(0);" class=" pull-right txt-grey">
-													<i class="zmdi zmdi-mail-reply"></i>
-												</a>
-												<div class="clearfix"></div>
-												<div class="inline-block pull-left">
-													<span class="reviewer font-13">
-														<span>By</span>
-														<a href="javascript:void(0)" class="inline-block capitalize-font  mb-5">Evie Ono</a>
-													</span>
-													<span class="inline-block font-13  mb-5">13 day ago</span>
-												</div>
-												<div class="clearfix"></div>
-												<p class="mt-5">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur.ipsum quia dolor sit amet.</p>
-											</div>
-										</div>
-										<hr class="light-grey-hr">
-										<div class="sl-item">
-											<div class="sl-content">
-												<div class="per-rating inline-block pull-left">
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star"></a>
-													<a href="javascript:void(0);" class="zmdi zmdi-star-outline"></a>
-													<span class="inline-block">for Wood Sunglasses</span>
-												</div>
-												<a href="javascript:void(0);" class=" pull-right txt-grey">
-													<i class="zmdi zmdi-mail-reply"></i>
-												</a>
-												<div class="clearfix"></div>
-												<div class="inline-block pull-left">
-													<span class="reviewer font-13">
-														<span>By</span>
-														<a href="javascript:void(0)" class="inline-block capitalize-font  mb-5">Evie Ono</a>
-													</span>
-													<span class="inline-block font-13  mb-5">13 day ago</span>
-												</div>
-												<div class="clearfix"></div>
-												<p class="mt-5">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur.ipsum quia dolor sit amet, consectetur.</p>
-											</div>
-										</div>
+									<div class="streamline review-items">
+										<!-- REVIEW -->
 									</div>
 								</div>
 							</div>
@@ -438,7 +342,7 @@
 
 				<!-- Row -->
 				<div class="row">
-					<div class="col-lg-12 col-md-6 col-xs-12">
+					<div class="col-lg-12 col-md-6 col-xs-12" id="order-block">
 						<div class="panel panel-default card-view panel-refresh">
 							<div class="refresh-container">
 								<div class="la-anim-1"></div>
@@ -448,7 +352,7 @@
 									<h6 class="panel-title txt-dark">Danh sách đơn hàng gần đây</h6>
 								</div>
 								<div class="pull-right">
-									<a href="javascript:void(0)" class="pull-left btn btn-success btn-xs mr-15">Xem tất cả</a>
+									<a href="/admin/orders" class="pull-left btn btn-success btn-xs mr-15">Xem tất cả</a>
 								</div>
 								<div class="clearfix"></div>
 							</div>
@@ -457,124 +361,19 @@
 									<div class="table-wrap">
 										<div class="table-responsive">
 											<div id="datable_1_wrapper" class="dataTables_wrapper no-footer">
-												<table id="datable_1" class="table  display table-hover border-none dataTable no-footer" role="grid">
+												<table id="table-order" class="table display table-hover border-none dataTable no-footer" role="grid">
 													<thead>
 														<tr role="row">
-															<th class="sorting_asc" tabindex="0" aria-controls="datable_1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#Invoice: activate to sort column descending"
-															 style="width: 60px;">#Invoice</th>
-															<th class="sorting" tabindex="0" aria-controls="datable_1" rowspan="1" colspan="1" aria-label="Description: activate to sort column ascending"
-															 style="width: 190px;">Description</th>
-															<th class="sorting" tabindex="0" aria-controls="datable_1" rowspan="1" colspan="1" aria-label="Amount: activate to sort column ascending"
-															 style="width: 65px;">Amount</th>
-															<th class="sorting" tabindex="0" aria-controls="datable_1" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending"
-															 style="width: 59px;">Status</th>
-															<th class="sorting" tabindex="0" aria-controls="datable_1" rowspan="1" colspan="1" aria-label="issue date: activate to sort column ascending"
-															 style="width: 83px;">issue date</th>
-															<th class="sorting" tabindex="0" aria-controls="datable_1" rowspan="1" colspan="1" aria-label="due date: activate to sort column ascending"
-															 style="width: 83px;">due date</th>
-															<th class="sorting" tabindex="0" aria-controls="datable_1" rowspan="1" colspan="1" aria-label="View: activate to sort column ascending"
-															 style="width: 33px;">View</th>
+															<th>#INVOICE</th>
+                                                            <th>Người mua</th>            
+                                                            <th>Sản phẩm</th>
+                                                            <th>Ngày mua</th>
+                                                            <th>Trạng thái</th>
+                                                            <th>Chức năng</th>
 														</tr>
 													</thead>
-
 													<tbody>
-
-
-
-
-
-
-
-														<tr role="row" class="odd">
-															<td class="sorting_1">#5010</td>
-															<td>Integration Specialist</td>
-															<td>$205,500</td>
-															<td>
-																<span class="label label-success">paid</span>
-															</td>
-															<td>2010/10/14</td>
-															<td>2014/09/15</td>
-															<td>
-																<a href="#">
-																	<i class="fa fa-file-text-o" aria-hidden="true"></i>
-																</a>
-															</td>
-														</tr>
-														<tr role="row" class="even">
-															<td class="sorting_1">#5011</td>
-															<td>Javascript Developer</td>
-															<td>$205,500</td>
-															<td>
-																<span class="label label-success">paid</span>
-															</td>
-															<td>2009/09/15</td>
-															<td>2013/09/15</td>
-															<td>
-																<a href="#">
-																	<i class="fa fa-file-text-o" aria-hidden="true"></i>
-																</a>
-															</td>
-														</tr>
-														<tr role="row" class="odd">
-															<td class="sorting_1">#5012</td>
-															<td>System Architect</td>
-															<td>$205,500</td>
-															<td>
-																<span class="label label-danger">unpaid</span>
-															</td>
-															<td>2011/04/25</td>
-															<td>2012/12/02</td>
-															<td>
-																<a href="#">
-																	<i class="fa fa-file-text-o" aria-hidden="true"></i>
-																</a>
-															</td>
-														</tr>
-														<tr role="row" class="even">
-															<td class="sorting_1">#5013</td>
-															<td>Accountant</td>
-															<td>$205,500</td>
-															<td>
-																<span class="label label-success">paid</span>
-															</td>
-															<td>2011/07/25</td>
-															<td>2012/12/02</td>
-															<td>
-																<a href="#">
-																	<i class="fa fa-file-text-o" aria-hidden="true"></i>
-																</a>
-															</td>
-														</tr>
-														<tr role="row" class="odd">
-															<td class="sorting_1">#5014</td>
-															<td>Junior Technical Author</td>
-															<td>$205,500</td>
-															<td>
-																<span class="label label-warning">pending</span>
-															</td>
-															<td>2009/01/12</td>
-															<td>2012/12/02</td>
-															<td>
-																<a href="#">
-																	<i class="fa fa-file-text-o" aria-hidden="true"></i>
-																</a>
-															</td>
-														</tr>
-														<tr role="row" class="even">
-															<td class="sorting_1">#5015</td>
-															<td>Senior Javascript Developer</td>
-															<td>$205,500</td>
-															<td>
-																<span class="label label-success">paid</span>
-															</td>
-															<td>2012/03/29</td>
-															<td>2012/12/02</td>
-															<td>
-																<a href="#">
-																	<i class="fa fa-file-text-o" aria-hidden="true"></i>
-																</a>
-															</td>
-														</tr>
+														
 													</tbody>
 												</table>
 											</div>
@@ -607,5 +406,154 @@
 	<% include layouts/footer %>
 
 </body>
+
+<script type="text/javascript">
+	jQuery(document).ready(($) => {
+
+		//get reviews
+		$.get('/api/v1/newerReviews', (data) => {
+			if (data.reviews) {
+
+				var reviewBlock = $('#review-block div.panel-wrapper div.review-items');
+
+				var items = '';
+
+				data.reviews.forEach((review, index) => {
+				
+					var fullName = review.byUser.fullName.firstName + " " + review.byUser.fullName.lastName 
+				
+					var date = new Date(review.created_at)
+					var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" +date.getFullYear()
+
+					items+= `					
+						<div class="sl-item">
+							<div class="sl-content">
+								<div class="per-rating inline-block pull-left">`
+
+									for (let i = 1; i <= 5; i++) {
+										if (i <= review.star) {
+											items+= `<a href="javascript:void(0);" class="zmdi zmdi-star"></a>`
+										} else {
+											items+= `<a href="javascript:void(0);" class="zmdi zmdi-star-outline"></a>`
+										}							
+									}
+
+									items += `<span class="inline-block">Cho ${review.product.name}</span>
+								</div>
+								<a href="javascript:void(0);" class="pull-right txt-grey">
+									<i class="zmdi zmdi-mail-reply"></i>
+								</a>
+								<div class="clearfix"></div>
+								<div class="inline-block pull-left">
+									<span class="reviewer font-13">
+										<span>Bởi</span>
+										<a href="javascript:void(0)" class="inline-block capitalize-font mb-5">${fullName}</a>
+									</span>
+									<span class="inline-block font-13  mb-5">${dateCreated}</span>
+								</div>
+								<div class="clearfix"></div>
+								<p class="mt-5">${review.content}</p>
+							</div>
+						</div>						
+					`
+
+					if (index != data.reviews.count - 1) {
+						items += `<hr class="light-grey-hr">`
+					}
+					
+				});
+				$(reviewBlock).append(items);
+			}
+		});
+
+		$.get('/api/v1/order/getNewerOrders', (data) => {
+			if (data.orders) {
+
+				var orderBlock = $('#table-order tbody')
+
+				var items = '';
+
+				data.orders.forEach((order, index) => {
+					if (index % 2 == 0) {
+						items += `<tr role="row" class="odd" id="${order._id}">`
+					} else {
+						items += `<tr role="row" class="even" id="${order._id}">`
+					}         
+					
+					var fullName = order.byUser.fullName.firstName + " " + order.byUser.fullName.lastName
+					var date = new Date(order.created_at)
+					var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" +date.getFullYear()
+
+					items += `					
+						<td class="txt-dark td-id">
+							${order._id}
+						</td>
+						<td style="color: blue;" class="td-name-user">
+							<a href="javascript: void(0)"> ${fullName}</a>
+						</td>
+						<td class="txt-dark td-product">
+							<div>`
+								order.products.forEach(product => {
+									items += `<ul style="list-style-type: none;
+												margin: 0;
+												padding: 0;
+												overflow: hidden;" data-id-product="${product.id._id}">
+										<li style="float: left; margin: 5px">
+											<a href="/admin/product/${product.id._id}"><span>${product.id.name} - </span></a>  
+										</li>
+										<li style="background-color: ${product.color.hex}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin: 5px" title="${product.color.name}">
+										</li>
+										<li style="float: left; margin: 5px"><span>- ${product.price} </span></li>
+										<li style="float: left; margin: 5px"><span>- số lượng: ${ product.quantity}</span></li>
+									</ul>	`
+								}) 
+								items += `
+							</div>                                 
+						</td>
+						<td class="td-date-order">
+							${dateCreated}
+						</td>
+						<td>`
+							var status = order.status
+							if (status == 0) { 
+								items += `<span class="label label-success font-weight-100">Khởi tạo</span>`
+							} else if (status == 1) {
+								items += `<span class="label label-primary font-weight-100">Đang đợi duyệt</span>`
+							} else if (status == 2) {
+								items += `<span class="label label-default font-weight-100">Đã duyệt</span>`
+							} else if (status == 3) {
+								items += `<span class="label label-default font-weight-100">Bị từ chối</span>`
+							} else if (status == 4) {
+								items += `<span class="label label-default font-weight-100">Người dùng huỷ đơn</span>`
+							} else if (status == 5) {
+								items += `<span class="label label-default font-weight-100">Đang giao</span>`
+							} else {
+								items += `<span class="label label-default font-weight-100">Đã giao</span>`
+							}
+						items += `</td>
+						<td class="action-brand">
+							<a href="/admin/invoice/${order._id}" class="text-inverse pr-10 review-order" title="Duyệt đơn hàng" data-id-order="${order._id}">
+								<i class="zmdi zmdi-eye txt-warning"></i>
+							</a>
+						</td>
+					</tr>
+					`
+					
+				});
+
+				$(orderBlock).append(items);
+			}
+
+			$('#table-order').DataTable({
+				"bFilter": false,
+				"bLengthChange": false,
+				"bPaginate": false,
+				"bInfo": false			
+			});
+		})
+
+		//get orders
+	});
+</script>
 
 </html>

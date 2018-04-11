@@ -851,6 +851,73 @@ var getPendingOrders = (cb) => {
     workflow.emit('validate-parameters')
 }
 
+var getCountOrders = (cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get-count');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('get-count', () => {
+        Order.count({
+            status: {
+                $gt: 0
+            }
+        }, (err, count) => {
+            workflow.emit('response', {
+                error: err,
+                count: count
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var getNewOrders = (cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    });
+
+    workflow.on('get', () => {
+        Order.find({
+            status: {
+                $gt: 0
+            }
+        }).select('products byUser status created_at').populate({
+            path: "byUser",
+            model: "User",
+            select: "fullName"
+        })
+        .limit(10)
+        .sort('-created_at')
+        .exec((err, docs) => {
+            Order.populate(docs, {
+                path: "products.id",
+                model: "Product",
+                select: "images name"
+            }, (err, orders) => {
+                workflow.emit('response', {
+                    error: err,
+                    orders: orders
+                });
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters')
+}
+
 module.exports = {
     checkingAvailable: checkingAvailable,
     detailCart: detailCart,
@@ -862,5 +929,7 @@ module.exports = {
     deleteOrder: deleteOrder,
     getOrders: getOrders,
     getPendingOrders: getPendingOrders,
-    getDetailOrder: getDetailOrder
+    getDetailOrder: getDetailOrder,
+    getCountOrders: getCountOrders,
+    getNewOrders: getNewOrders
 }

@@ -388,6 +388,41 @@ var deleteReview = (id, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var getNewReviews = (cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('get');
+    });
+
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('get', () => {
+        Review.find({ })
+        .limit(5)
+        .sort('-created_at')
+        .populate({
+            path: 'product',
+            model: 'Product',
+            select: 'name'
+        }).populate({
+            path: 'byUser',
+            model: 'User',
+            select: 'fullName'
+        }).exec((err, reviews) => {
+            workflow.emit('response', {
+                error: err,
+                reviews: reviews
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 
 
 module.exports = {
@@ -395,5 +430,6 @@ module.exports = {
     updateReview: updateReview,
     deleteReview: deleteReview,
     getDismissReviews: getDismissReviews,
-    getReviews: getReviews
+    getReviews: getReviews,
+    getNewReviews: getNewReviews
 }
