@@ -407,7 +407,27 @@
 
 </body>
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+
 <script type="text/javascript">
+
+  	socket.on('newOrder', function (data) {
+    	
+	});
+
+	socket.on('newReview', (data) => {
+		console.log(data);
+	});
+
+	socket.on('newUser', (data) => {
+
+	});
+
+	socket.on('update-current-user', (users) => {
+		console.log();
+		console.log(users);
+	});
+
 	jQuery(document).ready(($) => {
 
 		//get reviews

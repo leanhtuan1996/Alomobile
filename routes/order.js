@@ -8,10 +8,6 @@ var helper = require('../app/helpers/index').helper;
 var middleware = require('../app/middleware/index').middleware
 var mailbox = require('../app/controllers/index').mailbox;
 
-router.post('/order/beginOrder', (req, res) => {
-
-});
-
 router.get('/thanh-toan', (req, res) => {
     if (!req.session.order) {
         res.redirect('/gio-hang');

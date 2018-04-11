@@ -48,7 +48,7 @@ var upload = multer({
 /* USER SIGN_IN */
 
 //page admin
-router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => { 
     Dashboard.dashboard((result) => {
         res.render('dashboard', {
             data: {

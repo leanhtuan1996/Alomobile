@@ -42,7 +42,11 @@
 	<!-- Init JavaScript -->
 	<script type="text/javascript" src="/static/admin/js/init.js"></script>
 
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+
+
 	<script type="text/javascript">
+	var socket = io.connect(window.location.host);
     function logout() {
         $.ajax({
             url: "/admin/sign-out",

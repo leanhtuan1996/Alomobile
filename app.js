@@ -60,10 +60,21 @@ app.use(session({
 //cron job
 cron.removeUncompleteOrder();
 
+//io
+var serverHttp = require('http').Server(app);
+var io = app.io = require('./routes/io');
+
+//middleware socket.io
+app.use((req, res, next) => {
+  res.io = io;
+  next();
+});
+
 //use static
 app.use('/static', express.static(path.join(__dirname, 'public'), {
   maxage: '3h'
 }));
+
 app.use('/', index);
 app.use('/', error);
 app.use('/', user);
@@ -71,25 +82,6 @@ app.use('/', order);
 app.use('/', api);
 app.use('/', admin);
 app.use('/', product);
-
-// set ssl
-// var ssl = {
-//   key: fs.readFileSync("privkey.pem"),
-//   cert: fs.readFileSync("fullchain.pem"),
-//   ca: fs.readFileSync("chain.pem")
-// };
-
-//var serverHttps = require('https').Server(ssl, app);
-var serverHttp = require('http').Server(app);
-var io = app.io = require('./routes/io')
-
-//middleware socket.io
-app.use((req, res, next) => {
-  //res.io = io;
-  next();
-});
-
-
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
