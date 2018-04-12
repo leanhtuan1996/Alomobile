@@ -54,6 +54,10 @@ var signSHA = (string) => {
     return crypto.createHash('sha256').update(string, 'utf8').digest('hex');
 }
 
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 /**
  * supporting for ISO formation: YYYY-MM-DD
  * @param {*} date 
@@ -85,5 +89,6 @@ module.exports = {
     encodeToken: encodeToken,
     decodeToken: decodeToken,
     refreshToken: refreshToken,
-    signSHA: signSHA
+    signSHA: signSHA,
+    numberWithCommas: numberWithCommas
 }

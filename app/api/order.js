@@ -412,7 +412,7 @@ var updateOrder = (order, parameters, cb) => {
             order.save((err) => {
 
                 //save to user
-                if (!err && order.status == 1) {
+                if (!err && order.status >= 1) {
                     User.findById(order.byUser).select('orders').exec((err, user) => {
                         if (err) {
                             workflow.emit('response', {
@@ -432,12 +432,24 @@ var updateOrder = (order, parameters, cb) => {
                         orders.push(order);
                         user.orders = orders;
                         user.save((err) => {
-                            workflow.emit('response', {
-                                error: err,
-                                order: order
-                            })
-                        })
-                    })
+                            //send Email
+                            if (!err) {  
+                                Order.populate(order, {
+                                    path: 'products.id',
+                                    model: 'Product'
+                                }, (err, order) => {
+                                    workflow.emit('response', {
+                                        error: err,
+                                        order: order
+                                    });
+                                });
+                            } else {
+                                workflow.emit('response', {
+                                    error: err
+                                });
+                            }                            
+                        });
+                    });
                 } else {
                     workflow.emit('response', {
                         error: err,
@@ -916,6 +928,10 @@ var getNewOrders = (cb) => {
     });
 
     workflow.emit('validate-parameters')
+}
+
+var sendEmailConfirmOrder = (order, cb = null) => {
+
 }
 
 module.exports = {

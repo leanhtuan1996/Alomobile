@@ -1,6 +1,7 @@
 'use strict';
 
 var orderApi = require('../../api/index').order;
+var mailBox = require('../mailbox');
 
 var getRequestOrders = (cb) => {
     orderApi.getPendingOrders((result) => {
@@ -9,6 +10,11 @@ var getRequestOrders = (cb) => {
 }
 var updateOrder = (id, parameters, cb) => {
     orderApi.updateOrder({ _id: id }, parameters, (result) => {
+
+        if (result.order && result.order.status == 2) {
+            mailBox.sendMailWithSuccessOrder(result.order);
+        }
+
         return cb(result)
     });
 }
