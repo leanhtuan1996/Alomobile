@@ -87,7 +87,7 @@ var sendMailWithConfirmOrder = (parameters) => {
 
         var fullName = toAddress.fullName,
             phone = toAddress.phone,
-            address = `${toAddress.address} ${toAddress.state} ${toAddress.city}`,
+            address = `${toAddress.address}, ${toAddress.state}, ${toAddress.city}`,
             email = user.email,
             note = parameters.note,
             checkoutMethod = parameters.checkoutMethod,
@@ -96,7 +96,7 @@ var sendMailWithConfirmOrder = (parameters) => {
         if (checkoutMethod) {
             switch (checkoutMethod) {
                 case 'Cod':
-                    checkoutMethod = "Thanh toán sau khi nhận hàng"
+                    checkoutMethod = "Thanh toán tiền mặt khi nhận hàng"
                     break;            
                 default:
                     checkoutMethod = "Đã thanh toán trực tuyến"
@@ -178,7 +178,7 @@ var sendMailWithSuccessOrder = (parameters) => {
 
         var fullName = toAddress.fullName,
             phone = toAddress.phone,
-            address = `${toAddress.address} ${toAddress.state} ${toAddress.city}`,
+            address = `${toAddress.address}, ${toAddress.state}, ${toAddress.city}`,
             email = user.email,
             note = parameters.note,
             checkoutMethod = parameters.checkoutMethod,

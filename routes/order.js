@@ -111,9 +111,6 @@ router.post('/thanh-toan', (req, res) => {
                 if (response.order) {
                     req.session.order = response.order;
                 }
-
-                console.log(response);
-
                 res.json(response);
             });
         });
@@ -140,12 +137,9 @@ router.put('/thanh-toan', (req, res) => {
             req.session.order = result.order;
 
             if (result.order.status == 1) {
-                delete req.session.order;
-                //insert order to user
-
-                //send email to user
+                res.io.emit('new-order', [result.order])
+                delete req.session.order;            
             }
-
         }
         res.json(result)
     });

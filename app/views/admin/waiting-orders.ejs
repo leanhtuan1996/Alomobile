@@ -232,7 +232,7 @@
                                 });
                             });
 
-                            $("#table-waiting-ordertbody").delegate('.review-order', 'click', (e) => {
+                            $("#table-waiting-order tbody").delegate('.review-order', 'click', (e) => {
                                 var id = $(e.currentTarget).attr('data-id-order'); 
                                 location.href = '/admin/invoice/' + id
                             });

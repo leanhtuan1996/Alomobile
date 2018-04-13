@@ -204,7 +204,7 @@ router.post('/product/review', (req, res) => {
 
         Product.reviewProduct(cb.user, req.body.review, (result) => {
             if (result.review) {
-                res.io.emit('newReview', [result.review])
+                res.io.emit('new-comment')
             }
             res.json(result);
         });
