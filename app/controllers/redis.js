@@ -21,12 +21,16 @@ client.on("error", function (err) {
 //     client.quit();
 // });
 
+
+
 function set(key, field, value) {
     if (!key || !value) { return callback({}) }   
     
     var string = JSON.stringify(value);      
 
     client.hset(key, field, string, redis.print);
+
+    client.hset
 
     console.log('SET TO CACHE: '+ `${key}:${field}`);
 }
