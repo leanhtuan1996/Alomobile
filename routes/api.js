@@ -122,7 +122,6 @@ router.post('/api/v1/user/deactive-user', [auth.requireAuth, auth.requireRole], 
 
 router.get('/api/v1/product/get-products', (req, res) => {
     Product.getProducts(null, (result) => {
-
         res.json(result);
     });
 });
@@ -146,24 +145,59 @@ router.get('/api/v1/product/get-product/:id', (req, res) => {
 });
 
 router.get('/api/v1/product/get-products-by-type/:id', (req, res) => {
-    Product.getProductsByType(req.params.id, 15, (result) => {
-        res.json(result);
+
+    var id = req.params.id;
+    if (!id) {
+        res.json({
+            error: "Id is required!"
+        });
+        return
+    }
+
+    res.redis.getItem('products', `get-products-by-type?id=${id}`, (result) => {
+        if (result) {
+            res.json({
+                products: result
+            })
+        } else {
+            Product.getProductsByType(id, 15, (result) => {
+                if (result.products && result.products.length > 0) {
+                    res.redis.setItem('products', `get-products-by-type?id=${id}`, result.products);
+                }
+                res.json(result);
+            });
+        }
     });
 });
 
-router.get('/api/v1/product/get-hot-products', (req, res) => {
-    Product.getHotProducts(15, (result) => {
-        res.json(result);
+router.get('/api/v1/product/get-hot-products', (req, res) => {    
+    res.redis.getItem('products', 'get-hot-products', (result) => {
+        if (result) {
+            res.json({
+                products: result
+            })
+        } else {
+            Product.getHotProducts(15, (result) => {
+                if (result.products && result.products.length > 0) {
+                    res.redis.setItem('products', 'get-hot-products', result.products);
+                }
+                res.json(result);
+            });
+        }
     });
 });
 
 router.get('/api/v1/product/get-special-products', (req, res) => {
-    res.redis.getItem('/api/v1/product/get-special-products', (result) => {     
+    res.redis.getItem('products', '/api/v1/product/get-special-products', (result) => {
         if (result) {
-            res.json(result)
+            res.json({
+                products: result
+            })
         } else {
             Product.getSpecialProducts(15, (result) => {
-                res.redis.setItem('/api/v1/product/get-special-products', result.products);
+                if (result.products && result.products.length > 0) {
+                    res.redis.setItem('products', '/api/v1/product/get-special-products', result.products);
+                }
                 res.json(result);
             });
         }
@@ -171,26 +205,86 @@ router.get('/api/v1/product/get-special-products', (req, res) => {
 });
 
 router.get('/api/v1/product/get-products-by-category/:id', (req, res) => {
-    Product.getProductsByCategory(req.params.id, 15, (result) => {
-        res.json(result);
+    var id = req.params.id;
+    if (!id) {
+        res.json({
+            error: "Parameters missing!"
+        });
+        return;
+    }
+
+    res.redis.getItem('products', `/api/v1/product/get-products-by-category/${id}`, (data) => {
+        if (data) {
+            res.json({
+                products: data
+            });
+        } else {
+            Product.getProductsByCategory(req, 15, (result) => {
+                if (result.products && result.products.length > 0) {
+                    res.redis.setItem('products', `/api/v1/product/get-products-by-category/${id}`, result.products);
+                }
+                res.json(result);
+            });
+        }
     });
 });
 
 router.get('/api/v1/product/get-products-by-category', (req, res) => {
-    Product.getProductsByCategory(req.query.idCategory, req.query.idRootCategory, req.query.limit || 15, (cb) => {
-        res.json(cb);
-    })
+
+    var idCategory = req.query.idCategory,
+        idRootCategory = req.query.idRootCategory;
+
+    if (!idCategory || !idRootCategory) { res.json({ products: [] }); return; }
+
+    res.redis.getItem('products', `/api/v1/product/get-products-by-category?idCategory=${idCategory}&idRootCategory=${idRootCategory}`, (data) => {
+        if (data) {
+            res.json({
+                products: data
+            });
+        } else {
+            Product.getProductsByCategory(idCategory, idRootCategory, req.query.limit || 15, (result) => {
+                if (result.products && result.products.length > 0) {
+                    res.redis.setItem('products', `/api/v1/product/get-products-by-category?idCategory=${idCategory}&idRootCategory=${idRootCategory}`, result.products);
+                }                
+                res.json(result);
+            });
+        }
+    });
 });
 
 router.get('/api/v1/product/get-new-products', (req, res) => {
-    Product.getNewProducts(15, (result) => {
-        res.json(result);
+    res.redis.getItem('products', `get-new-products`, (data) => {
+        if (data) {
+            res.json({
+                products: data
+            });
+        } else {
+            Product.getNewProducts(15, (result) => {
+                if (result.products && result.products.length > 0) {
+                    res.redis.setItem('products', `get-new-products`, result.products);
+                }
+                
+                res.json(result);
+            });
+        }
     });
 });
 
 router.get('/api/v1/product/count-products', (req, res) => {
-    Product.getCountProducts((result) => {
-        res.json(result);
+    res.redis.getItem('products', `count-products`, (data) => {
+        if (data) {
+            res.json({
+                count: data
+            });
+        } else {
+            Product.getCountProducts((result) => {
+                if (result.count) {
+                    res.redis.setItem('products', `count-products`, result.count);
+                }
+                
+                res.json(result);
+            });
+        }
     });
 });
 
@@ -219,32 +313,106 @@ router.get('/api/v1/product/search-product/:text', (req, res) => {
 });
 
 router.get('/api/v1/product/get-preview', (req, res) => {
-    Product.getPreviewProduct(req.query.id, (r) => {
-        res.json(r);
+
+    var id = req.query.id;
+    if (!id) {
+        res.json({
+            error: "Id is required!"
+        });
+        return
+    }
+
+    res.redis.getItem('products', `get-preview?id=${id}`, (data) => {
+        if (data) {
+            res.json({
+                products: data
+            });
+        } else {
+            Product.getPreviewProduct(id, (result) => {
+                if (result.products && result.products.length > 0) {
+                    res.redis.setItem('products', `get-preview?id=${id}`, result.products);
+                }
+                
+                res.json(result);
+            });
+        }
     });
 });
 
 router.get('/api/v1/product/get-reviews', (req, res) => {
-    Product.getReviews(req.query.product, 1, (cb) => {
-        res.json(cb);
-    })
-})
+
+    var id = req.query.product;
+
+    if (!id) {
+        res.json({
+            error: "Product not found"
+        });
+        return
+    }
+
+    res.redis.getItem('products', `get-reviews?id=${id}`, (data) => {
+        if (data) {
+            res.json({
+                product: data
+            });
+        } else {
+            Product.getReviews(id, 1, (result) => {
+                if (result.product) {
+                    res.redis.setItem('products', `get-reviews?id=${id}`, result.product);
+                }
+                
+                res.json(result);
+            });
+        }
+    });
+});
 
 //** /APIS FOR PRODUCT */
 
 
 //** APIS FOR CATEGORY */
 router.get('/api/v1/category/get-categories', (req, res) => {
-    Category.getCategories((result) => {
-        res.json(result);
+    res.redis.getItem('category', `get-categories`, (data) => {
+        if (data) {
+            res.json({
+                categories: data
+            });
+        } else {
+            Category.getCategories((result) => {
+                if (result.categories) {
+                    res.redis.setItem('category', `get-categories`, result.categories);
+                }                
+                res.json(result);
+            });
+        }
     });
 });
 
 router.get('/api/v1/category/:id', (req, res) => {
-    Category.getCategory(req.params.id, (r) => {
-        res.json(r);
+
+    var id = req.params.id;
+    if (!id) {
+        res.json({
+            error: "Id is required!"
+        });
+        return
+    }
+
+    res.redis.getItem('category', `category?id=${id}`, (data) => {
+        if (data) {
+            res.json({
+                category: data
+            });
+        } else {
+            Category.getCategory(id, (result) => {
+                if (result.category) {
+                    res.redis.setItem('category', `category?id=${id}`, result.category);
+                }                
+                res.json(result);
+            });
+        }
     });
-})
+});
 
 router.post('/api/v1/category/add-category', [auth.requireAuth, auth.requireRole, upload.single('image')], (req, res) => {
     Category.addCategory(req.body, (result) => {
@@ -270,8 +438,19 @@ router.delete('/api/v1/category/delete-category', [auth.requireAuth, auth.requir
 
 //** APIS FOR TYPE */
 router.get('/api/v1/type/get-types', (req, res) => {
-    Type.getTypes((result) => {
-        res.json(result);
+    res.redis.getItem('type', `get-types`, (data) => {
+        if (data) {
+            res.json({
+                types: data
+            });
+        } else {
+            Type.getTypes((result) => {
+                if (result.types) {
+                    res.redis.setItem('type', `get-types`, result.types);
+                }                
+                res.json(result);
+            });
+        }
     });
 });
 //** /APIS FOR TYPE */

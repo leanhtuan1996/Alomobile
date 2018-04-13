@@ -21,21 +21,20 @@ client.on("error", function (err) {
 //     client.quit();
 // });
 
-function set(key, value) {
+function set(key, field, value) {
     if (!key || !value) { return callback({}) }   
     
     var string = JSON.stringify(value);      
 
-    client.set(key, string, redis.print)
+    client.hset(key, field, string, redis.print);
 
-    console.log('SET TO CACHE: '+ key);
+    console.log('SET TO CACHE: '+ `${key}:${field}`);
 }
 
-function get(key, callback) {
-    client.get(key, (error, reply) => {
-        console.log(`LOAD FROM CACHE: ${key}`);
+function get(key, field, callback) {
+    client.hget(key, field, (error, reply) => {
+        console.log(`LOAD FROM CACHE: ${key}:${field}`);
         var data = reply;
-
         try {
             data = JSON.parse(data);
             return callback(data);
@@ -43,7 +42,7 @@ function get(key, callback) {
             return callback({
                 error: error
             });
-        }       
+        }  
     });
 }
 

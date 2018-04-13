@@ -98,6 +98,7 @@ app.use((req, res, next) => {
   next(err);
 });
 
+/*
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -173,7 +174,7 @@ app.use(function (err, req, res, next) {
   }
 });
 
-
+*/
 
 
 //module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };

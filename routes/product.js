@@ -7,8 +7,19 @@ var User = require('../app/controllers/index').user;
 var Product = require('../app/controllers/index').product;
 
 router.get('/product/list', (req, res) => {
-    Product.getProducts((response) => {
-        res.json(response);
+    res.redis.getItem('products', `/product/list`, (data) => {
+        if (data) {
+            res.json({
+                products: data
+            });
+        } else {
+            Product.getProducts((result) => {
+                if (result.products && result.products.length > 0) {
+                    res.redis.setItem('products', `/product/list`, result.products);
+                }
+                res.json(result);
+            });
+        }
     });
 });
 
@@ -89,27 +100,40 @@ router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
             return
         }
 
-        Product.getProductById(id, (result) => {
+        res.redis.getItem('products', `getProduct?id=${id}`, (data) => {
+            if (data) {
+                res.render('detail-product', {
+                    data: {
+                        token: req.session.token,
+                        user: req.session.user,
+                        title: data.name,
+                        product: data
+                    }
+                });
+            } else {
+                Product.getProductById(id, (result) => {
+                    if (result.error) {
+                        res.redirect('/');
+                        return
+                    }
 
-            if (result.error) {
-                res.redirect('/');
-                return
+                    var product = result.product;
+                    if (!product) {
+                        res.redirect('/');
+                        return
+                    }
+                    res.redis.setItem('products', `getProduct?id=${id}`, product);
+
+                    res.render('detail-product', {
+                        data: {
+                            token: req.session.token,
+                            user: req.session.user,
+                            title: product.name,
+                            product: product
+                        }
+                    });
+                });
             }
-
-            var product = result.product;
-            if (!product) {
-                res.redirect('/');
-                return
-            }
-
-            res.render('detail-product', {
-                data: {
-                    token: req.session.token,
-                    user: req.session.user,
-                    title: product.name,
-                    product: product
-                }
-            });
         });
     } else {
         res.redirect('/');
@@ -135,29 +159,68 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
                     res.redirect('/');
                 } else {
                     if (matches.length == 1) {
-                        Product.getProductsByCategory(matches[0], matches[0], 12, (r) => {
-                            res.render('products-by-categories', {
-                                data: {
-                                    token: req.session.token,
-                                    user: req.session.user,
-                                    products: r.products || [],
-                                    idRootCategory: matches[0],
-                                    idCategory: matches[0]
-                                }
-                            });
+
+                        res.redis.getItem('products', `products-by-categories?idRootCategory=${matches[0]}&idCategory=${matches[0]}`, (data) => {
+                            if (data) {
+                                res.render('products-by-categories', {
+                                    data: {
+                                        token: req.session.token,
+                                        user: req.session.user,
+                                        products: data || [],
+                                        idRootCategory: matches[0],
+                                        idCategory: matches[0]
+                                    }
+                                });
+                            } else {
+                                Product.getProductsByCategory(matches[0], matches[0], 12, (r) => {
+                                    if (r.products && r.products.length > 0) {
+                                        res.redis.setItem('products', `products-by-categories?idRootCategory=${matches[0]}&idCategory=${matches[0]}`, r.products);
+                                    }
+
+                                    res.render('products-by-categories', {
+                                        data: {
+                                            token: req.session.token,
+                                            user: req.session.user,
+                                            products: r.products || [],
+                                            idRootCategory: matches[0],
+                                            idCategory: matches[0]
+                                        }
+                                    });
+                                });
+                            }
                         });
                     } else if (matches.length == 2) {
-                        Product.getProductsByCategory(matches[1], matches[0], 12, (r) => {
-                            res.render('products-by-categories', {
-                                data: {
-                                    token: req.session.token,
-                                    user: req.session.user,
-                                    products: r.products || [],
-                                    idRootCategory: matches[0],
-                                    idCategory: matches[1]
-                                }
-                            });
-                        });
+
+                        res.redis.getItem('products', `products-by-categories?idRootCategory=${matches[0]}&idCategory=${matches[1]}`, (data) => {
+                            if (data) {
+                                res.render('products-by-categories', {
+                                    data: {
+                                        token: req.session.token,
+                                        user: req.session.user,
+                                        products: r.products || [],
+                                        idRootCategory: matches[0],
+                                        idCategory: matches[1]
+                                    }
+                                });
+                            } else {
+                                Product.getProductsByCategory(matches[1], matches[0], 12, (r) => {
+
+                                    if (r.products && r.products.length > 0) {
+                                        res.redis.setItem('products', `products-by-categories?idRootCategory=${matches[0]}&idCategory=${matches[1]}`, r.products);
+                                    }
+
+                                    res.render('products-by-categories', {
+                                        data: {
+                                            token: req.session.token,
+                                            user: req.session.user,
+                                            products: r.products || [],
+                                            idRootCategory: matches[0],
+                                            idCategory: matches[1]
+                                        }
+                                    });
+                                });
+                            }
+                        });                        
                     } else {
                         res.redirect('/');
                     }
@@ -193,7 +256,7 @@ router.post('/product/review', (req, res) => {
                 error: "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại để tiếp tục thực hiện chức năng này."
             })
             return
-        } 
+        }
 
         if (!cb.user) {
             res.json({
