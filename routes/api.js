@@ -122,6 +122,7 @@ router.post('/api/v1/user/deactive-user', [auth.requireAuth, auth.requireRole], 
 
 router.get('/api/v1/product/get-products', (req, res) => {
     Product.getProducts(null, (result) => {
+
         res.json(result);
     });
 });
@@ -157,8 +158,15 @@ router.get('/api/v1/product/get-hot-products', (req, res) => {
 });
 
 router.get('/api/v1/product/get-special-products', (req, res) => {
-    Product.getSpecialProducts(15, (result) => {
-        res.json(result);
+    res.redis.getItem('/api/v1/product/get-special-products', (result) => {     
+        if (result) {
+            res.json(result)
+        } else {
+            Product.getSpecialProducts(15, (result) => {
+                res.redis.setItem('/api/v1/product/get-special-products', result.products);
+                res.json(result);
+            });
+        }
     });
 });
 
@@ -324,11 +332,11 @@ router.get('/api/v1/reviews', [auth.requireAuth, auth.requireRole], (req, res) =
 });
 
 router.get('/api/v1/newerReviews', [auth.requireAuth, auth.requireRole], (req, res) => {
-    
+
     Review.getNewReviews((result) => {
         res.json(result);
     })
-    
+
 })
 
 //**/APIS FOR REVIEW

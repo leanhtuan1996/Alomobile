@@ -21,6 +21,7 @@ var crawl = require('./routes/crawl');
 var order = require('./routes/order');
 
 var cron = require('./app/controllers/admin/index').cron;
+var redis = require('./app/controllers/index').redis;
 
 var app = express();
 
@@ -67,6 +68,7 @@ var io = app.io = require('./routes/io');
 //middleware socket.io
 app.use((req, res, next) => {
   res.io = io;
+  res.redis = redis
   next();
 });
 
