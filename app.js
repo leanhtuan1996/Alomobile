@@ -69,7 +69,7 @@ var io = app.io = require('./routes/io');
 app.use((req, res, next) => {
   res.io = io;
   res.redis = redis;
-  ensureSec(req, res, next);
+//ensureSec(req, res, next);
   next();
 });
 
