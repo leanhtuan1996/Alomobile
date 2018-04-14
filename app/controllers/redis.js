@@ -10,29 +10,50 @@ client.on("error", function (err) {
     console.log("Error " + err);
 });
 
-// client.set("string key", "string val", redis.print);
-// client.hset("hash key", "hashtest 1", "some value", redis.print);
-// client.hset(["hash key", "hashtest 2", "some other value"], redis.print);
-// client.hkeys("hash key", function (err, replies) {
-//     console.log(replies.length + " replies:");
-//     replies.forEach(function (reply, i) {
-//         console.log("    " + i + ": " + reply);
-//     });
-//     client.quit();
-// });
+/**
+ * CACHE PRODUCTS - products
+ * 1. /product/list
+ * 2. getProduct?id=${id}
+ * 3. products-by-categories?idRootCategory=${matches[0]}&idCategory=${matches[0]}
+ * 4. get-products-by-type?id=${id}
+ * 5. get-hot-products
+ * 6. get-special-products
+ * 7. get-products-by-category/${id}
+ * 8. get-products-by-category?idCategory=${idCategory}&idRootCategory=${idRootCategory}
+ * 9. get-new-products
+ * 10. count-products
+ * 11. get-preview?id=${id}
+ * 12. get-reviews?id=${id}
+ */
 
+/**
+ * CACHE CATEGORIES - category
+ * 1. get-categories
+ * 2. category?id=${id}
+ */
+
+/**
+ * CACHE TYPES - type
+ * 1. get-types
+ */
+
+/**
+ * CACHE REVIEWS - reviews
+ * 1. get-reviews
+ * 2. get-new-reviews
+ */
 
 
 function set(key, field, value) {
-    if (!key || !value) { return callback({}) }   
-    
-    var string = JSON.stringify(value);      
+    if (!key || !value) { return callback({}) }
+
+    var string = JSON.stringify(value);
 
     client.hset(key, field, string, redis.print);
 
     client.hset
 
-    console.log('SET TO CACHE: '+ `${key}:${field}`);
+    console.log('SET TO CACHE: ' + `${key}:${field}`);
 }
 
 function get(key, field, callback) {
@@ -46,7 +67,7 @@ function get(key, field, callback) {
             return callback({
                 error: error
             });
-        }  
+        }
     });
 }
 

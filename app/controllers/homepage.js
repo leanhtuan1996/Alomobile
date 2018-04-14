@@ -23,10 +23,22 @@ var index = (req, res, result) => {
     });
 
     workflow.on('index', () => {
-        category.getCategories((r1) => {
-            workflow.emit('response', {
-                categories: r1.categories || []
-            });
+
+        res.redis.getItem('category', `get-categories`, (data) => {
+            if (data) {
+                workflow.emit('response', {
+                    categories: data
+                });
+            } else {
+                category.getCategories((result) => {
+                    if (result.categories) {
+                        res.redis.setItem('category', `get-categories`, result.categories);
+                    }                
+                    workflow.emit('response', {
+                        categories: result.categories || []
+                    });
+                });
+            }
         });
     });
 

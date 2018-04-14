@@ -188,7 +188,7 @@ router.get('/api/v1/product/get-hot-products', (req, res) => {
 });
 
 router.get('/api/v1/product/get-special-products', (req, res) => {
-    res.redis.getItem('products', '/api/v1/product/get-special-products', (result) => {
+    res.redis.getItem('products', 'get-special-products', (result) => {
         if (result) {
             res.json({
                 products: result
@@ -196,7 +196,7 @@ router.get('/api/v1/product/get-special-products', (req, res) => {
         } else {
             Product.getSpecialProducts(15, (result) => {
                 if (result.products && result.products.length > 0) {
-                    res.redis.setItem('products', '/api/v1/product/get-special-products', result.products);
+                    res.redis.setItem('products', 'get-special-products', result.products);
                 }
                 res.json(result);
             });
@@ -213,7 +213,7 @@ router.get('/api/v1/product/get-products-by-category/:id', (req, res) => {
         return;
     }
 
-    res.redis.getItem('products', `/api/v1/product/get-products-by-category/${id}`, (data) => {
+    res.redis.getItem('products', `get-products-by-category/${id}`, (data) => {
         if (data) {
             res.json({
                 products: data
@@ -221,7 +221,7 @@ router.get('/api/v1/product/get-products-by-category/:id', (req, res) => {
         } else {
             Product.getProductsByCategory(req, 15, (result) => {
                 if (result.products && result.products.length > 0) {
-                    res.redis.setItem('products', `/api/v1/product/get-products-by-category/${id}`, result.products);
+                    res.redis.setItem('products', `get-products-by-category/${id}`, result.products);
                 }
                 res.json(result);
             });
@@ -236,7 +236,7 @@ router.get('/api/v1/product/get-products-by-category', (req, res) => {
 
     if (!idCategory || !idRootCategory) { res.json({ products: [] }); return; }
 
-    res.redis.getItem('products', `/api/v1/product/get-products-by-category?idCategory=${idCategory}&idRootCategory=${idRootCategory}`, (data) => {
+    res.redis.getItem('products', `get-products-by-category?idCategory=${idCategory}&idRootCategory=${idRootCategory}`, (data) => {
         if (data) {
             res.json({
                 products: data
@@ -244,7 +244,7 @@ router.get('/api/v1/product/get-products-by-category', (req, res) => {
         } else {
             Product.getProductsByCategory(idCategory, idRootCategory, req.query.limit || 15, (result) => {
                 if (result.products && result.products.length > 0) {
-                    res.redis.setItem('products', `/api/v1/product/get-products-by-category?idCategory=${idCategory}&idRootCategory=${idRootCategory}`, result.products);
+                    res.redis.setItem('products', `get-products-by-category?idCategory=${idCategory}&idRootCategory=${idRootCategory}`, result.products);
                 }                
                 res.json(result);
             });
@@ -505,18 +505,39 @@ router.get('/api/v1/order/getNewerOrders', [auth.requireAuth, auth.requireRole],
 
 //APIS FOR REVIEW
 router.get('/api/v1/reviews', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Review.getReviews((result) => {
-        res.json(result);
-    })
+    res.redis.getItem('reviews', `get-reviews`, (data) => {
+        if (data) {
+            res.json({
+                reviews: data
+            });
+        } else {
+            Review.getReviews((result) => {
+                if (result.reviews) {
+                    res.redis.setItem('reviews', `get-reviews`, result.reviews);
+                }                
+                res.json(result);
+            });
+        }
+    });
 });
 
 router.get('/api/v1/newerReviews', [auth.requireAuth, auth.requireRole], (req, res) => {
 
-    Review.getNewReviews((result) => {
-        res.json(result);
-    })
-
-})
+    res.redis.getItem('reviews', `get-new-reviews`, (data) => {
+        if (data) {
+            res.json({
+                reviews: data
+            });
+        } else {
+            Review.getNewReviews((result) => {
+                if (result.reviews) {
+                    res.redis.setItem('reviews', `get-new-reviews`, result.reviews);
+                }                
+                res.json(result);
+            });
+        }
+    });
+});
 
 //**/APIS FOR REVIEW
 
