@@ -66,20 +66,22 @@ var serverHttp = require('http').Server(app);
 var io = app.io = require('./routes/io');
 
 app.use((req, res, next) => {
-	ensureSec(req, res, next);
+  ensureSec(req, res, next);
 });
 
 //middleware socket.io
 app.use((req, res, next) => {
   res.io = io;
   res.redis = redis;
-//ensureSec(req, res, next);
   next();
 });
 
-//app.use(ensureSec(req, res, next));
-
 function ensureSec(req, res, next) {
+  if (req.headers.host == 'localhost:3000') {
+    next();
+    return
+  }
+
   if (req.headers["x-forwarded-proto"] === "https") {
     return next();
   }
@@ -187,8 +189,6 @@ app.use(function (err, req, res, next) {
       break;
   }
 });
-
-
 
 
 //module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };

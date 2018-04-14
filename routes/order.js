@@ -185,4 +185,28 @@ router.get('/dat-hang-thanh-cong', (req, res) => {
     });
 });
 
+router.get('/tra-cuu-don-hang', (req, res) => {
+    if (!req.query.id) {
+        res.render('check-order', {
+            data: {
+    
+            }
+        })
+    } else {
+        res.render('status-order', {
+            data: {
+
+            }
+        })
+    }  
+});
+
+router.post('/tra-cuu-don-hang', (req, res) => {
+    res.json({
+        order: {
+            
+        }
+    })
+});
+
 module.exports = router

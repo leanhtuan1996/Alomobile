@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <title>Kiểm tra trạng thái đơn hàng</title>
+
+    <meta name="description" content="Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng">
+    <meta name="description" content="Alomobile - Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng">
+
+    <%- include layouts/head %>
+</head>
+
+<body id="check-order" class="lang-en country-us currency-usd layout-full-width page-check-order tax-display-disabled page-customer-account">
+    <main>
+        <header id="header">
+            <div class="header-banner">
+            </div>
+            <%- include layouts/header-nav %>
+                <%- include layouts/header-top %>
+                    <%- include layouts/header-bottom %>
+        </header>
+        <section id="wrapper">
+            <div class="container">
+                <div class="row">
+                    <div id="content-wrapper" class="col-xs-12">
+                        <div id="main">
+                            <header class="page-header">
+                                <h1>
+                                    Kiểm tra tình trạng đơn hàng.
+                                </h1>
+                            </header>
+                            <section id="content" class="page-content card card-block">
+                                <form action="" class="forgotten-password" method="post">
+                                    <header>
+                                        <p class="send-renew-password-link">Điền vào các thông tin bên dưới để xem tình trạng vắn tắt của Đơn hàng.</p>
+                                    </header>
+                                    <section class="form-fields">
+                                        <div class="form-group center-email-fields">                                     
+                                            <label class="col-md-3 form-control-label required">Mã đơn hàng</label>
+                                            <div class="col-md-5 email">
+                                                <input type="text" id="order" value="" class="form-control" required>
+                                            </div>
+                                            <button class="form-control-submit btn btn-primary hidden-xs-down" name="submit" type="submit">
+                                            Kiểm tra
+                                            </button>
+                                            <button class="form-control-submit btn btn-primary hidden-sm-up" name="submit" type="submit">
+                                                    Kiểm tra
+                                            </button>
+                                        </div>
+                                    </section>
+                                </form>
+                            </section>
+                            <footer class="page-footer" style="margin-bottom: 1.563rem">
+                                <a href="/login" class="account-link">
+                                    <i class="material-icons">&#xE5CB;</i>
+                                    <span>Đăng nhập</span>
+                                </a>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <%- include layouts/footer %>
+    </main>
+    <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript" src="/static/js/custom.min.js"></script>
+    <div class="back-top">
+        <a href="#" class="back-top-button"></a>
+    </div>
+</body>
+<script type="text/javascript">
+
+    $(document).ready(($) => {
+        $('form').submit((e) => {
+            e.preventDefault();
+            var id = $('#order').val();
+
+            if (!id && id == undefined) {
+                swal({
+                    title: "Có lỗi xảy ra",
+                    text: "Vui lòng nhập Mã đơn hàng cần tra cứu!",
+                    icon: "error",
+                    button: "Đã rõ",
+                });
+                return
+            }
+
+            $.ajax({
+                url: '/tra-cuu-don-hang',
+                data: {
+                    id: id
+                },
+                method: 'POST',
+                success: (data) => {
+                    if (data.error) {
+                        swal({
+                            title: "Có lỗi xảy ra",
+                            text: data.error,
+                            icon: "error",
+                            button: "Đã rõ",
+                        });
+                    } else {
+                        
+                    }
+                },
+                error: (err) => {
+                    swal({
+                        title: "Có lỗi xảy ra",
+                        text: err.statusText,
+                        icon: "error",
+                        button: "Đã rõ",
+                    });
+                }
+            })
+        });
+    });
+</script>
+
+</html>

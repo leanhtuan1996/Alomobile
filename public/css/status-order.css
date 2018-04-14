@@ -1,0 +1,487 @@
+.tracking-order-process {
+    border: 1px solid #ddd;
+    padding: 15px 15px 0;
+    background: url('https://vcdn.tikicdn.com/assets/img/top-bg-5.png') repeat-x #f5f5f5;
+    border-radius: 3px;
+    text-align: center
+}
+
+.tracking-order-process .order-id {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px
+}
+
+.tracking-order-process .status {
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 700
+}
+
+.tracking-order-process .status span {
+    color: #7bc828
+}
+
+.tracking-order-process .link {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 0
+}
+
+.tracking-order-process .link a {
+    color: #007FF0
+}
+
+.tracking-order-process .message {
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 15px
+}
+
+.tracking-order-process .bs-wizard {
+    margin-top: 60px
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step {
+    padding: 0;
+    position: relative
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step .bs-wizard-stepnum {
+    font-size: 11px
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step .bs-wizard-stepnum p {
+    margin-bottom: 0;
+    font-weight: 700
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step .bs-wizard-stepnum span {
+    display: block;
+    height: 15px;
+    white-space: nowrap
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step .bs-wizard-info {
+    color: #999;
+    font-size: 14px
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step > .bs-wizard-dot {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    display: block;
+    top: 55px;
+    left: 50%;
+    margin-top: -15px;
+    margin-left: -15px;
+    border-radius: 50%;
+    color: #000;
+    border: 2px solid #35c4f6;
+    font-size: 14px;
+    text-align: center;
+    line-height: 23px;
+    background: url('https://vcdn.tikicdn.com/assets/img/check.png') 5px 7px no-repeat #00b6f0;
+    -webkit-box-shadow: none;
+    box-shadow: none
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step > .bs-wizard-dot:hover {
+    cursor: default;
+    text-decoration: none
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step > .progress {
+    height: 3px;
+    margin: 22px 0;
+    background: #b9b9b9;
+    position: relative;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    visibility: hidden
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step > .progress > .progress-bar {
+    width: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: #00b6f0;
+    -webkit-transition: none;
+    transition: none
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {
+    width: 100%
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step.active > .progress > .progress-bar {
+    width: 50%
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step:first-child.active > .progress > .progress-bar {
+    width: 0
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step:last-child.active > .progress > .progress-bar {
+    width: 100%
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step.disabled > .bs-wizard-stepnum {
+    color: #a3a3a3
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot {
+    background-color: #fff;
+    color: #000
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot:after {
+    opacity: 0
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot {
+    pointer-events: none
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step:first-child > .progress {
+    left: 50%;
+    width: 50%
+}
+
+.tracking-order-process .bs-wizard > .bs-wizard-step:last-child > .progress {
+    width: 50%
+}
+
+.tracking-order-detail {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    min-height: 300px;
+    margin-top: 15px
+}
+
+.tracking-order-detail .top {
+    margin: 0;
+    padding: 15px 0;
+    position: relative;
+    -webkit-box-shadow: 0 3px 3px 0 rgba(50, 50, 50, .1);
+    box-shadow: 0 3px 3px 0 rgba(50, 50, 50, .1)
+}
+
+.tracking-order-detail .top h4 {
+    font-size: 15px;
+    margin-top: 0;
+    font-weight: 700
+}
+
+.tracking-order-detail .top p {
+    margin-bottom: 0;
+    font-size: 13px
+}
+
+.tracking-order-detail .top .icon-24h {
+    width: auto;
+    height: 20px
+}
+
+.tracking-order-detail .top .item {
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top: 1px solid #ddd
+}
+
+.tracking-order-detail .top .item:first-child {
+    padding-top: 0;
+    margin-top: 0;
+    border-top: none
+}
+
+.tracking-order-detail .bottom {
+    padding-top: 45px;
+    padding-bottom: 30px
+}
+
+.tracking-order-detail .bottom h4 {
+    font-size: 15px;
+    margin-top: 0;
+    text-align: center;
+    margin-bottom: 30px
+}
+
+.tracking-order-detail .bottom table.table-responsive-2 {
+    display: block;
+    width: 100%
+}
+
+.tracking-order-detail .bottom table.table-responsive-2 thead {
+    display: none
+}
+
+.tracking-order-detail .bottom table.table-responsive-2 thead tr {
+    display: block
+}
+
+.tracking-order-detail .bottom table.table-responsive-2 thead tr th {
+    display: block;
+    border-top: 1px solid #eee;
+    position: relative;
+    padding: 5px;
+    background: 0 0
+}
+
+.tracking-order-detail .bottom table.table-responsive-2 thead tr th:first-child {
+    border-top: none
+}
+
+.tracking-order-detail .bottom table.table-responsive-2 tfoot tr:first-child {
+    border-top: 1px solid #ccc !important
+}
+
+.tracking-order-detail .bottom table.table-responsive-2 tbody,
+.tracking-order-detail .bottom table.table-responsive-2 tfoot {
+    display: block
+}
+
+.tracking-order-detail .bottom table.table-responsive-2 tbody tr,
+.tracking-order-detail .bottom table.table-responsive-2 tfoot tr {
+    display: block;
+    border-top: 1px solid #ccc
+}
+
+.tracking-order-detail .bottom table.table-responsive-2 tbody tr:first-child,
+.tracking-order-detail .bottom table.table-responsive-2 tfoot tr:first-child {
+    border-top: none
+}
+
+.tracking-order-detail .bottom table.table-responsive-2 tbody tr td,
+.tracking-order-detail .bottom table.table-responsive-2 tfoot tr td {
+    display: block;
+    border: none;
+    border-top: 1px solid #eee;
+    position: relative;
+    padding: 5px
+}
+
+.tracking-order-detail .bottom table.table-responsive-2 tbody tr td:first-child,
+.tracking-order-detail .bottom table.table-responsive-2 tfoot tr td:first-child {
+    border-top: none
+}
+
+.tracking-order-detail .bottom table {
+    width: auto;
+    margin: 0 auto;
+    font-size: 13px;
+    max-width: 90%;
+    border: 1px solid #ddd
+}
+
+.tracking-order-detail .bottom table th {
+    background: #f8f8f8;
+    border-width: 1px;
+    font-weight: 500
+}
+
+.tracking-order-detail .bottom table td,
+.tracking-order-detail .bottom table tr {
+    padding: 10px
+}
+
+.tracking-order-detail .bottom table a {
+    color: #444
+}
+
+.tracking-order-detail .bottom table a:hover {
+    color: #007FF0;
+    text-decoration: none
+}
+
+.btn-retrack {
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    display: block;
+    cursor: pointer;
+    white-space: nowrap
+}
+
+.btn-reorder {
+    background: #C10000;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E80000), to(#C10000));
+    background: linear-gradient(to bottom, #E80000 0, #C10000 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#E80000', endColorstr='#C10000', GradientType=0);
+    border: none;
+    -webkit-box-shadow: 0 -2px 0 #A60000 inset;
+    box-shadow: 0 -2px 0 #A60000 inset;
+    padding: 6px 9px;
+    border-radius: 5px;
+    margin: 0;
+    max-width: 105px
+}
+
+.btn-reorder:hover {
+    opacity: .8;
+    filter: alpha(opacity=80)
+}
+
+.wrap .btn-retrack {
+    background: #32befb;
+    background: -webkit-gradient(linear, left top, left bottom, from(#32befb), to(#19a5e1));
+    background: linear-gradient(to bottom, #32befb 0, #19a5e1 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#32befb', endColorstr='#19a5e1', GradientType=0);
+    border: none;
+    -webkit-box-shadow: 0 -2px 0 #0788bf inset;
+    box-shadow: 0 -2px 0 #0788bf inset;
+    padding: 6px 14px;
+    border-radius: 5px;
+    margin: 15px auto 0;
+    max-width: 156px
+}
+
+.detail-toggle-hide p, .detail-toggle-show p {
+    margin-bottom: 0
+}
+
+#tikiFriendBannerPopupCenter img, .fwd-product-item .tag-img img,
+.product-item .tag-img img {
+    max-width: 100%
+}
+
+.wrap .btn-retrack:hover {
+    opacity: .8;
+    filter: alpha(opacity=80)
+}
+
+.hide-detail, .show-detail {
+    display: block
+}
+
+.hide-detail, .order-history-link,
+.show-detail {
+    color: #007FF0
+}
+
+.hide-detail:focus, .hide-detail:hover,
+.order-history-link:focus, .order-history-link:hover,
+.show-detail:focus, .show-detail:hover {
+    text-decoration: none;
+    color: #569cb9
+}
+
+.detail-toggle-show {
+    margin-top: 15px;
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-top: 20px;
+    padding-bottom: 0
+}
+
+.detail-toggle-hide {
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 15px;
+    padding-bottom: 5px
+}
+
+@media (min-width:768px) {
+    .tracking-order-form .form-inline .form-group:first-child {
+        margin-left: 0;
+        margin-right: 0
+    }
+
+    #tikiFriendBannerPopupCenter .modal-dialog {
+        width: 640px
+    }
+}
+
+@media (min-width:992px) {
+    .tracking-order-process .bs-wizard > .bs-wizard-step > .progress {
+        visibility: visible
+    }
+
+    .tracking-order-detail .top .item {
+        padding-top: 0;
+        margin-top: 0;
+        border-top: none
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 {
+        display: table
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 thead {
+        display: table-header-group
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 thead tr {
+        display: table-row
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 thead tr th {
+        display: table-cell;
+        padding: 8px;
+        background: #f8f8f8;
+        border-top: none;
+        border-left: 1px solid #ddd
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 thead tr th:first-child {
+        border-left: none
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 tbody,
+    .tracking-order-detail .bottom table.table-responsive-2 tfoot {
+        display: table-row-group
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 tbody tr,
+    .tracking-order-detail .bottom table.table-responsive-2 tfoot tr {
+        display: table-row
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 tbody tr td,
+    .tracking-order-detail .bottom table.table-responsive-2 tfoot tr td {
+        display: table-cell;
+        padding: 10px;
+        border-top: 1px solid #ddd
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 tbody tr td:first-child,
+    .tracking-order-detail .bottom table.table-responsive-2 tfoot tr td:first-child {
+        border-top: 1px solid #ddd
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 tbody tr:first-child {
+        border-top: 1px solid #ccc !important
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 tbody tr td {
+        border-left: 1px solid #ddd
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 tbody tr td:first-child {
+        border-left: none
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 tfoot tr {
+        border-top: none
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 tfoot tr td {
+        text-align: left;
+        border-top: none
+    }
+
+    .tracking-order-detail .bottom table.table-responsive-2 tfoot tr td:first-child {
+        text-align: right;
+        border-top: none
+    }
+
+    .btn-reorder {
+        margin: 0 0 0 30px
+    }
+}
