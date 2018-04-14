@@ -289,19 +289,38 @@ router.get('/api/v1/product/count-products', (req, res) => {
 });
 
 router.post('/api/v1/product/new-product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
+   
+    
     Product.newProduct(req.body, (result) => {
+
+        if (!result.error) {
+            res.redis.delItem('products', ['get-new-products', '/product/list', 'products-by-categories', 'get-products-by-type']);
+        }
+
         res.json(result);
     });
 });
 
 router.put('/api/v1/product/edit-product', [auth.requireAuth, auth.requireRole, upload.array('images')], (req, res) => {
     Product.editProduct(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('products');
+        }
+
         res.json(result);
     });
 });
 
 router.delete('/api/v1/product/delete-product', [auth.requireAuth, auth.requireRole], (req, res) => {
     Product.deleteProduct(req.body.id, (result) => {
+        
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('products');
+        }
+
         res.json(result);
     });
 });
@@ -416,18 +435,36 @@ router.get('/api/v1/category/:id', (req, res) => {
 
 router.post('/api/v1/category/add-category', [auth.requireAuth, auth.requireRole, upload.single('image')], (req, res) => {
     Category.addCategory(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('category', ['get-categories']);
+        }
+
         res.json(result);
     });
 });
 
 router.put('/api/v1/category/edit-category', [auth.requireAuth, auth.requireRole, upload.single('image')], (req, res) => {
     Category.editCategory(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('category');
+        }
+
         res.json(result);
     });
 });
 
 router.delete('/api/v1/category/delete-category', [auth.requireAuth, auth.requireRole], (req, res) => {
     Category.deleteProduct(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('category');
+        }
+
         res.json(result);
     });
 });
@@ -464,18 +501,36 @@ router.get('/api/v1/brand/get-brands', (req, res) => {
 
 router.post('/api/v1/brand/new-brand', [auth.requireAuth, auth.requireRole, upload.single('image')], (req, res) => {
     Brand.newBrand(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('brand');
+        }
+
         res.json(result);
     })
 });
 
 router.put('/api/v1/brand/edit-brand', [auth.requireAuth, auth.requireRole, upload.single('image')], (req, res) => {
     Brand.editBrand(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('brand');
+        }
+
         res.json(result);
     });
 });
 
 router.delete('/api/v1/brand/delete-brand', [auth.requireAuth, auth.requireRole], (req, res) => {
     Brand.deleteBrand(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('brand');
+        }
+
         res.json(result);
     });
 });

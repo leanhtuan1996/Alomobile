@@ -12,7 +12,7 @@ client.on("error", function (err) {
 
 /**
  * CACHE PRODUCTS - products
- * 1. /product/list
+ * 1. /product/list 
  * 2. getProduct?id=${id}
  * 3. products-by-categories?idRootCategory=${matches[0]}&idCategory=${matches[0]}
  * 4. get-products-by-type?id=${id}
@@ -71,7 +71,40 @@ function get(key, field, callback) {
     });
 }
 
+client.hkeys('reviews', (error, reply) => {
+    if (reply) {
+        reply.forEach(e => {     
+            console.log(e);   
+        });
+    }        
+});
+
+function del(key, fields = null) {
+    if (!fields) {
+        client.hkeys(key, (error, reply) => {
+            if (reply) {
+                reply.forEach(e => {            
+                    client.hdel(key, e);    
+                });
+            }        
+        });
+    } else {
+        client.hkeys(key, (error, reply) => {
+            if (reply) {
+                reply.forEach(e => {            
+                    fields.forEach(f => {                    
+                        if (e.startsWith(f)) {
+                            client.hdel(key, e);
+                        } 
+                    });     
+                });
+            }        
+        });
+    }    
+}
+
 client.setItem = set
 client.getItem = get
+client.delItem = del
 
 module.exports = client

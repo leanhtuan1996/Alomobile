@@ -211,18 +211,35 @@ router.get('/admin/product/add', [auth.requireAuth, auth.requireRole], (req, res
 
 router.post('/admin/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
     Product.newProduct(req.body, (result) => {
+
+        if (!result.error) {
+            res.redis.delItem('products', ['get-new-products', '/product/list', 'products-by-categories', 'get-products-by-type']);
+        }
+
         res.json(result);
     });
 });
 
 router.put('/admin/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
     Product.editProduct(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('products');
+        }
+
         res.json(result);
     });
 });
 
 router.delete('/admin/product', [auth.requireAuth, auth.requireRole], (req, res) => {
     Product.deleteProduct(req.body.id, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('products');
+        }
+
         res.json(result);
     });
 });
@@ -309,6 +326,12 @@ router.get('/admin/categories', [auth.requireAuth, auth.requireRole], (req, res)
 
 router.post('/admin/category', [auth.requireAuth, auth.requireRole], upload.single('icon'), (req, res) => {
     Category.addCategory(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('category', ['get-categories'])
+        }
+
         res.json({
             error: result.error,
             success: true,
@@ -318,6 +341,12 @@ router.post('/admin/category', [auth.requireAuth, auth.requireRole], upload.sing
 
 router.delete('/admin/category', [auth.requireAuth, auth.requireRole], (req, res) => {
     Category.delCategory(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('category', ['get-categories', `category?id=${req.body.id}`])
+        }
+
         res.json({
             error: result.error
         });
@@ -326,6 +355,12 @@ router.delete('/admin/category', [auth.requireAuth, auth.requireRole], (req, res
 
 router.put('/admin/category', [auth.requireAuth, auth.requireRole], upload.single('new_icon'), (req, res) => {
     Category.editCategory(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('category', ['get-categories', `category?id=${req.body.current_root_category}`])
+        }
+
         res.json(result);
     })
 });
@@ -609,12 +644,26 @@ router.get('/admin/reviews/dismiss', [auth.requireAuth, auth.requireRole], (req,
 
 router.put('/admin/review', [auth.requireAuth, auth.requireRole], (req, res) => {
     Review.updateReview(req.body.id, req.body.parameters, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('review');
+            res.redis.delItem('products', [`get-reviews?id=${req.body.id}`])
+        }
+
         res.json(result)
     });
 });
 
 router.delete('/admin/review', [auth.requireAuth, auth.requireRole], (req, res) => {
     Review.deleteReview(req.body.id, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('review');
+            res.redis.delItem('products', [`get-reviews?id=${req.body.id}`])
+        }
+
         res.json(result);
     });
 });

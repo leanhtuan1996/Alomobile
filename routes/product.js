@@ -7,7 +7,7 @@ var User = require('../app/controllers/index').user;
 var Product = require('../app/controllers/index').product;
 
 router.get('/product/list', (req, res) => {
-    res.redis.getItem('products', `/product/list`, (data) => {
+    res.redis.getItem('products', `product/list`, (data) => {
         if (data) {
             res.json({
                 products: data
@@ -15,7 +15,7 @@ router.get('/product/list', (req, res) => {
         } else {
             Product.getProducts((result) => {
                 if (result.products && result.products.length > 0) {
-                    res.redis.setItem('products', `/product/list`, result.products);
+                    res.redis.setItem('products', `product/list`, result.products);
                 }
                 res.json(result);
             });
@@ -267,7 +267,11 @@ router.post('/product/review', (req, res) => {
 
         Product.reviewProduct(cb.user, req.body.review, (result) => {
             if (result.review) {
-                res.io.emit('new-comment')
+                //push notify to admin
+                res.io.emit('new-comment');
+                //update cache
+                res.redis.delItem('products', [`getProduct?id=${req.body.review.product}`, `get-reviews?id=${req.body.review.product}`]);
+                res.redis.delItem('reviews');
             }
             res.json(result);
         });

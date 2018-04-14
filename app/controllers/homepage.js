@@ -23,7 +23,6 @@ var index = (req, res, result) => {
     });
 
     workflow.on('index', () => {
-
         res.redis.getItem('category', `get-categories`, (data) => {
             if (data) {
                 workflow.emit('response', {
