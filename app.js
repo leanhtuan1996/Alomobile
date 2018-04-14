@@ -65,6 +65,10 @@ cron.removeUncompleteOrder();
 var serverHttp = require('http').Server(app);
 var io = app.io = require('./routes/io');
 
+app.use((req, res, next) => {
+	ensureSec(req, res, next);
+});
+
 //middleware socket.io
 app.use((req, res, next) => {
   res.io = io;
@@ -72,6 +76,8 @@ app.use((req, res, next) => {
 //ensureSec(req, res, next);
   next();
 });
+
+//app.use(ensureSec(req, res, next));
 
 function ensureSec(req, res, next) {
   if (req.headers["x-forwarded-proto"] === "https") {
