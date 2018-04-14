@@ -12,7 +12,7 @@ client.on("error", function (err) {
 
 /**
  * CACHE PRODUCTS - products
- * 1. /product/list 
+ * 1. product/list 
  * 2. getProduct?id=${id}
  * 3. products-by-categories?idRootCategory=${matches[0]}&idCategory=${matches[0]}
  * 4. get-products-by-type?id=${id}

@@ -68,9 +68,17 @@ var io = app.io = require('./routes/io');
 //middleware socket.io
 app.use((req, res, next) => {
   res.io = io;
-  res.redis = redis
+  res.redis = redis;
+  ensureSec(req, res, next);
   next();
 });
+
+function ensureSec(req, res, next) {
+  if (req.headers["x-forwarded-proto"] === "https") {
+    return next();
+  }
+  res.redirect("https://" + req.headers.host + req.url);
+}
 
 //use static
 app.use('/static', express.static(path.join(__dirname, 'public'), {
@@ -98,7 +106,7 @@ app.use((req, res, next) => {
   next(err);
 });
 
-/*
+
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -174,7 +182,7 @@ app.use(function (err, req, res, next) {
   }
 });
 
-*/
+
 
 
 //module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
