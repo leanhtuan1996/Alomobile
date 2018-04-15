@@ -90,7 +90,7 @@ function ensureSec(req, res, next) {
 
 //use static
 app.use('/static', express.static(path.join(__dirname, 'public'), {
-  maxage: '3h'
+  maxage: '30 * 24 * 60 * 60'
 }));
 
 app.use('/', index);
@@ -113,7 +113,7 @@ app.use((req, res, next) => {
   err.ref = req.headers.referer;
   next(err);
 });
-/*
+
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
@@ -187,7 +187,7 @@ app.use(function (err, req, res, next) {
       break;
   }
 });
-*/
+
 
 //module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
 

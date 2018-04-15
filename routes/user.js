@@ -139,17 +139,13 @@ router.get('/tai-khoan-cua-toi', (req, res) => {
         return
       }
 
+      req.session.token = req.session.token;
+      req.session.user = user;
+
       res.render('my-account', {
         data: {
           token: req.session.token,
-          user: {
-            id: user._id,
-            email: user.name,
-            fullName: user.fullName,
-            phone: user.phone,
-            sex: user.sex,
-            orders: user.orders
-          }
+          user: user
         }
       });
     });
