@@ -196,7 +196,7 @@ var prestashop = {
             "history": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/order-history",
             "identity": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/identity",
             "index": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/",
-            "my_account": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/my-account",
+            "my_account": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/tai-khoan-cua-toi",
             "order_confirmation": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/order-confirmation",
             "order_detail": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/index.php?controller=order-detail",
             "order_follow": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/order-follow",

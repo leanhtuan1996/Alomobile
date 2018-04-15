@@ -62,6 +62,12 @@ var signOutAllDevices = (id, cb) => {
     });
 }
 
+var editUser = (id, user, cb) => {
+    userApi.editUser(id, user, (result) => {
+        return cb(result);
+    });
+}
+
 module.exports = {
     signIn: signIn,
     signUp: signUp,
@@ -72,5 +78,6 @@ module.exports = {
     requireForgetPassword: requireForgetPassword,
     recoveryPassword: recoveryPassword,
     canRecoveryPassword: canRecoveryPassword,
-    signOutAllDevices: signOutAllDevices
+    signOutAllDevices: signOutAllDevices,
+    editUser: editUser
 }

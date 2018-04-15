@@ -1010,6 +1010,100 @@ var signOutAllDevices = (id, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var editUser = (id, parameter, result) => {
+    var workflow = new event.EventEmitter();
+    
+    var editedUser;
+    try {
+        editedUser = JSON.parse(parameter);
+    } catch (error) {
+        return result({
+            error: "Tham số không hợp lệ"
+        });
+    }
+    
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id is required!"
+            });
+            return
+        }
+
+        if (editedUser.newPassword) {
+            if (editedUser.retypeNewPassword) {
+                if (editedUser.newPassword != editedUser.retypeNewPassword) {
+                    workflow.emit('response', {
+                        error: "Retype password does not match"
+                    });
+                    return
+                }
+            } 
+        }
+
+        workflow.emit('edit-user');
+    });
+
+    workflow.on('response', (response) => {
+        //console.log(response);
+        return result(response);
+    });
+
+    workflow.on('edit-user', () => {
+        User.findById(id, (err, user) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err
+                });
+                return
+            }
+
+            if (!user) {
+                workflow.emit('response', {
+                    error: "User not found"
+                });
+                return
+            }
+
+            if (!helper.comparePw(editedUser.password, user.password)) {
+                workflow.emit('response', {
+                    error: "Mật khẩu nhập vào không trùng khớp!"
+                });
+                return
+            }
+
+            if (editedUser.fullName) {
+                user.fullName = editedUser.fullName
+            }
+
+            if (editedUser.email) {
+                user.email = editedUser.email
+            }
+
+            if (editedUser.isRegistered_NewLetters) {
+                user.isRegistered_NewLetters = editedUser.isRegistered_NewLetters
+            }
+
+            if (editedUser.birthDay) {
+                user.birthDay = editedUser.birthDay
+            }
+
+            if (editedUser.newPassword) {
+                user.password = editedUser.newPassword
+            }
+           
+            user.save((err) => {
+                workflow.emit('response', {
+                    error: err,
+                    user: user
+                });
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     signIn: signIn,
     signUp: signUp,
@@ -1026,5 +1120,6 @@ module.exports = {
     recoveryPassword: recoveryPassword,
     canRecoveryPassword: canRecoveryPassword,
     signOutAllDevices: signOutAllDevices,
-    pushInvalidTokens: pushInvalidTokens
+    pushInvalidTokens: pushInvalidTokens,
+    editUser: editUser
 }

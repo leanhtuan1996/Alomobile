@@ -2,9 +2,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Delivery</title>
-    <meta name="description" content="Shop powered by AloMobile">
-    <meta name="keywords" content="">
+    <title>Tài khoản của tôi | Alomobile</title>
+    <meta name="description" content="Alomobile - Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng">
+    <meta name="keywords" content="iphone, smartphone, tablet, may tinh bang, laptop, phu kien di dong, phu kien may tinh, samsung, apple, mua dien thoai, may tinh bang">
     
     <%- include layouts/head %>
 </head>
@@ -21,16 +21,22 @@
         <div class="headerSpace unvisible" style="height: 226px;"></div>
         <div class="breadcrumb_container">
             <div class="container">
-                <nav data-depth="1" class="breadcrumb hidden-sm-down">
+                <nav data-depth="2" class="breadcrumb hidden-sm-down">
                     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList">
                         <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                            <a itemprop="item" href="http://demo.posthemes.com/pos_fastbuy/layout2/en/">
-                  <span itemprop="name">Home</span>
-                </a>
+                            <a itemprop="item" href="/">
+                                <span itemprop="name">Trang chủ</span>
+                            </a>
                             <meta itemprop="position" content="1">
                         </li>
+                        <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                            <a itemprop="item" href="/tai-khoan-cua-toi">
+                                <span itemprop="name">Tài khoản của tôi</span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
                     </ol>
-                </nav>
+                </nav>                
             </div>
         </div>
         <section id="wrapper">
@@ -40,8 +46,8 @@
                         <div id="main">
                             <header class="page-header">
                                 <h1>
-        Your account
-      </h1>
+                                    Tài khoản của tôi
+                                </h1>
                             </header>
                             <section id="content" class="page-content">
                                 <aside id="notifications">
@@ -50,38 +56,32 @@
                                 </aside>
                                 <div class="row">
                                     <div class="links">
-                                        <a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="identity-link" href="my-informations.html">
-              <span class="link-item">
-                <i class="material-icons"></i>
-                Information
-              </span>
-            </a>
-                                        <a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="address-link" href="my-addresses.html">
-                <span class="link-item">
-                  <i class="material-icons"></i>
-                  My Addresses
-                </span>
-              </a>
-                                        <a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="history-link" href="my-order-history.html">
-                <span class="link-item">
-                  <i class="material-icons"></i>
-                  Order history and details
-                </span>
-              </a>
-                                        <a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="order-slips-link" href="my-credit.html">
-                <span class="link-item">
-                  <i class="material-icons"></i>
-                  Credit slips
-                </span>
-              </a>
+                                        <a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="identity-link" href="/tai-khoan-cua-toi/thong-tin">
+                                            <span class="link-item">
+                                            <i class="material-icons"></i>
+                                            Thông tin cá nhân
+                                            </span>
+                                        </a>
+                                        <a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="address-link" href="/tai-khoan-cua-toi/dia-chi">
+                                            <span class="link-item">
+                                            <i class="material-icons"></i>
+                                            Những địa chỉ của tôi
+                                            </span>
+                                        </a>
+                                        <a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="history-link" href="/tai-khoan-cua-toi/lich-su-mua-hang">
+                                            <span class="link-item">
+                                            <i class="material-icons"></i>
+                                            Lịch sử mua hàng
+                                            </span>
+                                        </a>
                                     </div>
                                 </div>
                             </section>
                             <footer class="page-footer">
                                 <div class="text-sm-center">
-                                    <a class="links_account" href="#">
-              Sign out
-            </a>
+                                    <a class="links_account" href="/sign-out">
+                                        Đăng xuất
+                                    </a>
                                 </div>
                             </footer>
                         </div>

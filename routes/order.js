@@ -204,12 +204,17 @@ router.get('/tra-cuu-don-hang', (req, res) => {
                     }
                 });
             } else {
-                res.render('check-order', {
-                    data: {
-                        token: req.session.token,
-                        user: req.session.user
+                Order.checkOrder(id, email, (result) => {
+                    if (result.order) {
+                        res.redis.setItem('order', `get-order?id=${id}&email=${email}`, result.order);
                     }
-                })
+                    res.render('check-order', {
+                        token: req.session.token,
+                        user: req.session.user,
+                        error: result.error,
+                        order: result.order
+                    });
+                });
             }
         });
     }

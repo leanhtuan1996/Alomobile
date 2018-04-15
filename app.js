@@ -113,7 +113,7 @@ app.use((req, res, next) => {
   err.ref = req.headers.referer;
   next(err);
 });
-
+/*
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
@@ -167,8 +167,8 @@ app.use(function (err, req, res, next) {
     case 504:
       res.render(`${err.href || '504'}`, {
         data: {
-          token: req.session.token,
-          user: req.session.user,
+          token: req.session.token || null,
+          user: req.session.user || null,
           error: err.message,
           ref: err.ref
         }
@@ -178,8 +178,8 @@ app.use(function (err, req, res, next) {
     default:
       res.render(`${err.href || '404'}`, {
         data: {
-          token: req.session.token,
-          user: req.session.user,
+          token: req.session.token || null,
+          user: req.session.user || null,
           error: err.message,
           ref: err.ref
         }
@@ -187,7 +187,7 @@ app.use(function (err, req, res, next) {
       break;
   }
 });
-
+*/
 
 //module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
 

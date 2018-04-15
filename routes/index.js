@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
   });
 });
 
-router.get('/delivery', (req, res) => {
+router.get('/chinh-sach-giao-hang', (req, res) => {
   res.render('menu/delivery', {
     data: {
       token: req.session.token,
@@ -28,7 +28,7 @@ router.get('/delivery', (req, res) => {
   });
 });
 
-router.get('/about-us', (req, res) => {
+router.get('/ve-chung-toi', (req, res) => {
   res.render('menu/about-us', {
     data: {
       token: req.session.token,
@@ -37,7 +37,7 @@ router.get('/about-us', (req, res) => {
   });
 });
 
-router.get('/legal-notice', (req, res) => {
+router.get('/chinh-sach-bao-hanh', (req, res) => {
   res.render('menu/legal-notice', {
     data: {
       token: req.session.token,
@@ -46,7 +46,7 @@ router.get('/legal-notice', (req, res) => {
   });
 });
 
-router.get('/terms-and-conditions-of-use', (req, res) => {
+router.get('/cac-dieu-khoan-va-su-dung', (req, res) => {
   res.render('menu/terms-and-conditions-of-use', {
     data: {
       token: req.session.token,

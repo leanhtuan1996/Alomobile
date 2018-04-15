@@ -3,7 +3,7 @@ var router = express.Router();
 
 var User = require('../app/controllers/index').user;
 var helper = require('../app/helpers/index').helper;
-var middleware = require('../app/middleware/index').middleware
+var auth = require('../app/middleware/index').authenticate
 var mailbox = require('../app/controllers/index').mailbox;
 
 /* GET users listing. */
@@ -108,7 +108,7 @@ router.post('/sign-up', (req, res) => {
 }); /***/
 
 router.get('/sign-out', (req, res) => {
-  User.signOut(req.session.token, (r) => {    
+  User.signOut(req.session.token, (r) => {
     if (!r.error) {
       req.session.destroy();
     }
@@ -125,7 +125,7 @@ router.put('/sign-out', (req, res) => {
   });
 })
 
-router.get('/my-account', (req, res) => {
+router.get('/tai-khoan-cua-toi', (req, res) => {
   if (req.session.token && req.session.user) {
     User.verify(req.session.token, (cb) => {
 
@@ -243,6 +243,52 @@ router.get('/gio-hang', (req, res) => {
   } else {
     res.render('cart', { data: {} });
   }
+});
+
+router.get('/tai-khoan-cua-toi/thong-tin', (req, res) => {
+  if (req.session.token) {
+    User.verify(req.session.token, (cb) => {
+      if (cb.error) {
+        req.session.destroy();
+        res.redirect('/sign-in');
+        return
+      }
+      var user = cb.user;
+      req.session.user = user;
+
+      if (!user) {
+        res.redirect('/sign-in');
+        return
+      }
+
+      res.render('my-informations', {
+        data: {
+          token: req.session.token,
+          user: req.session.user
+        }
+      });
+    });
+  } else {
+    res.redirect('/sign-in');
+  }
+});
+
+router.get('/tai-khoan-cua-toi/dia-chi', (req, res) => {
+  res.render('my-addresses', {
+    data: {
+
+    }
+  })
+});
+
+router.get('/tai-khoan-cua-toi/lich-su-mua-hang', (req, res) => {
+
+});
+
+router.put('/update-informations', [auth.requireAuth], (req, res) => {
+  User.editUser(req.user._id, req.body.user, (result) => {
+    res.json(result);
+  });
 });
 
 module.exports = router;
