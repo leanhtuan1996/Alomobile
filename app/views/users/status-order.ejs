@@ -37,23 +37,33 @@
                                     <section class="form-fields">
                                         <div class="col-lg-12">                                            
                                             <div class="tracking-order-process">
-                                                <p class="order-id">Mã đơn hàng: #331723773</p>
-                                                <p class="status">Tình trạng đơn hàng: <span>ALOMOBILE ĐÃ TIẾP NHẬN ĐƠN HÀNG </span></p>
+                                                <% var status = data.order.status %>
+                                                <% var fullName =  data.order.byUser.fullName.firstName + " " +  data.order.byUser.fullName.lastName %>
+                                                <% var date = new Date(data.order.created_at) %>
+                                                <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" +date.getFullYear() %>
+                                                <% var address = data.order.toAddress.address + " " + data.order.toAddress.state + " " + data.order.toAddress.city %>
+
+                                                <p class="order-id">Mã đơn hàng: #<%- data.order._id %></p>
+
+                                                <% if (status == 1) { %>
+                                                    <p class="status">Tình trạng đơn hàng: <span>ĐANG CHỜ XÁC NHẬN</span></p>
+                                                <% } else if (status == 2) { %>
+                                                    <p class="status">Tình trạng đơn hàng: <span>ALOMOBILE ĐÃ TIẾP NHẬN ĐƠN HÀNG </span></p>
+                                                <% } else if (status == 3) { %>
+                                                    <p class="status">Tình trạng đơn hàng: <span>ALOMOBILE ĐÃ TỪ CHỐI ĐƠN HÀNG </span></p>
+                                                <% } else if (status == 4) { %>
+                                                    <p class="status">Tình trạng đơn hàng: <span>NGƯỜI DÙNG ĐÃ HUỶ ĐƠN HÀNG </span></p>
+                                                <% } else if (status == 5) { %>
+                                                    <p class="status">Tình trạng đơn hàng: <span>ĐƠN HÀNG ĐANG ĐƯỢC VẬN CHUYỂN </span></p>
+                                                <% } else { %>
+                                                    <p class="status">Tình trạng đơn hàng: <span>GIAO HÀNG THÀNH CÔNG </span></p>
+                                                <% } %>
+                                                
                                                 <div class="row bs-wizard">
-                                                    <div class="col-lg-2 col-md-2 bs-wizard-step complete">
+                                                    <div class="col-lg-3 col-md-3 bs-wizard-step disabled">
                                                         <div class="text-center bs-wizard-stepnum">
                                                             <p>Đặt hàng thành công</p>
-                                                            <span>2018-04-14 15:15:35</span>
-                                                        </div>
-                                                        <div class="progress">
-                                                            <div class="progress-bar"></div>
-                                                        </div>
-                                                        <span class="bs-wizard-dot"></span>
-                                                    </div>
-                                                    <div class="col-lg-3 col-md-3 bs-wizard-step active">
-                                                        <div class="text-center bs-wizard-stepnum">
-                                                            <p>Tiki.vn đã tiếp nhận đơn hàng</p>
-                                                            <span>2018-04-14 15:15:41</span>
+                                                            <span><%- dateCreated %></span>
                                                         </div>
                                                         <div class="progress">
                                                             <div class="progress-bar"></div>
@@ -62,7 +72,7 @@
                                                     </div>
                                                     <div class="col-lg-3 col-md-3 bs-wizard-step disabled">
                                                         <div class="text-center bs-wizard-stepnum">
-                                                            <p>Đang đóng gói</p>
+                                                            <p>Alomobile đã tiếp nhận đơn hàng</p>
                                                             <span></span>
                                                         </div>
                                                         <div class="progress">
@@ -70,7 +80,7 @@
                                                         </div>
                                                         <span class="bs-wizard-dot"></span>
                                                     </div>
-                                                    <div class="col-lg-2 col-md-2 bs-wizard-step disabled">
+                                                    <div class="col-lg-3 col-md-3 bs-wizard-step disabled">
                                                         <div class="text-center bs-wizard-stepnum">
                                                             <p>Đang vận chuyển</p>
                                                             <span></span>
@@ -80,7 +90,7 @@
                                                         </div>
                                                         <span class="bs-wizard-dot"></span>
                                                     </div>
-                                                    <div class="col-lg-2 col-md-2 bs-wizard-step disabled">
+                                                    <div class="col-lg-3 col-md-3 bs-wizard-step disabled">
                                                         <div class="text-center bs-wizard-stepnum">
                                                             <p>Giao hàng thành công</p>
                                                             <span></span>
@@ -97,22 +107,31 @@
                                                 <div class="row top">
                                                     <div class="col-lg-3 col-md-3 item">
                                                         <h4>Địa chỉ người nhận</h4>
-                                                        <p>Nguyen Van A</p>
-                                                        <p>1232 Ngo quyen, Phường Cầu Kho, Quận 1, Hồ Chí Minh, Việt Nam</p>
+                                                        <p><%- fullName %></p>
+                                                        <p><%- address %></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-3 item">
                                                         <h4>Thời gian giao hàng &amp; Vận chuyển</h4>
-                                                        <p>Vận chuyển Tiết Kiệm (dự kiến giao hàng vào Thứ ba, 17/04/2018)</p>
+                                                        <p>Vận chuyển Tiết Kiệm</p>
                                                         <p>Miễn phí vận chuyển</p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-3 item">
                                                         <h4>Thông tin thanh toán</h4>
-                                                        <p>Nguyen Van A</p>
-                                                        <p>1232 Ngo quyen, Phường Cầu Kho, Quận 1, Hồ Chí Minh, Việt Nam</p>
+                                                        <p><%- fullName %></p>
+                                                        <p><%- address %></p>
                                                     </div>
                                                     <div class="col-lg-3 col-md-3 item">
                                                         <h4>Phương thức thanh toán</h4>
-                                                        <p>Thanh toán tiền mặt khi nhận hàng</p>
+                                                        <% if (data.order.checkoutMethod) { %>
+                                                            <% if (data.order.checkoutMethod == 'Cod') { %> 
+                                                                <p>Thanh toán tiền mặt khi nhận hàng</p>
+                                                            <% } else { %>
+                                                                <p>Đã thanh toán trực tuyến"</p>
+                                                            <% } %>
+                                                        <% } else { %>
+                                                            <p>Thanh toán tiền mặt khi nhận hàng</p>
+                                                        <% } %>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="bottom">
@@ -122,37 +141,46 @@
                                                             <tr>
                                                                 <th>Tên sản phẩm</th>
                                                                 <th>Số lượng</th>
+                                                                <th>Đơn giá</th>
+                                                                <th>Tổng</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <a href="https://tiki.vn/noi-com-dien-co-cuchen-cje-na1001vn-1-8l-xam-p939811.html" target="_blank">Nồi Cơm Điện Cơ Cuchen CJE-NA1001VN (1.8L) - Xám</a>
-                                                                    <!--
-                                                                                                                -->
-                                                                </td>
-                                                                <td>
-                                                                    <strong class="hidden-lg hidden-md">Số lượng: </strong>1 </td>
-                                                            </tr>
-                                                            <!-- CATALOG GIFT -->
-                                                            <!-- END CATALOG GIFT -->
-                                                            <tr>
-                                                                <td>
-                                                                    <a href="https://tiki.vn/product-p1744669.html" target="_blank">[Gift] Tặng bạn mã coupon THOITRANG50 giảm 50k cho đơn hàng từ 300k khi mua Thời trang Mẹ và Bé tại Tiki.vn.</a>
-                                                                    <!--
-                                                                                                                -->
-                                                                    <p><em>Quà tặng</em></p>
-                                                                </td>
-                                                                <td>
-                                                                    <strong class="hidden-lg hidden-md">Số lượng: </strong>1 </td>
-                                                            </tr>
-                                                            <!-- CATALOG GIFT -->
-                                                            <!-- END CATALOG GIFT -->
+                                                        <% if (data.order.products) { %>
+                                                                <% var total = 0 %>
+                                                                <% data.order.products.forEach(product => { %>
+                                                                    <% total += product.quantity + product.price  %>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="/<%- product.id.alias %>-<%- product.id._id %>" target="_blank"><%- product.id.name %></a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%- product.quantity %>
+                                                                        </td>                  
+                                                                        <td>
+                                                                            <span class="price">
+                                                                                <%- product.price %>
+                                                                            </span>                          
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="price">
+                                                                                <%- product.quantity * product.price %>
+                                                                            </span>
+                                                                        </td>
+                                                                    </tr>
+                                                                <% }) %>
+                                                        <% } %>                                                            
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
+                                                                <td></td>
+                                                                <td></td>
                                                                 <td><strong>Tổng</strong></td>
-                                                                <td><strong>1.449.000&nbsp;₫</strong></td>
+                                                                <td><strong>
+                                                                    <span class="price">
+                                                                        <%- total %>
+                                                                    </span>
+                                                                </strong></td>
                                                             </tr>
                                                         </tfoot>
                                                     </table>
@@ -174,9 +202,9 @@
 
                             </style>
                             <footer class="page-footer" style="margin-bottom: 1.563rem">
-                                <a href="/login" class="account-link">
+                                <a href="javascript: location.href = document.referrer" class="account-link">
                                     <i class="material-icons">&#xE5CB;</i>
-                                    <span>Đăng nhập</span>
+                                    <span>Trở về</span>
                                 </a>
                             </footer>
                         </div>
@@ -193,51 +221,42 @@
     </div>
 </body>
 <script type="text/javascript">
+    (function (status, $) {
+        var process = $('.bs-wizard div.bs-wizard-step');
 
-    $(document).ready(($) => {
-        $('form').submit((e) => {
-            e.preventDefault();
-            var id = $('#order').val();
-
-            if (!id && id == undefined) {
-                swal({
-                    title: "Có lỗi xảy ra",
-                    text: "Vui lòng nhập Mã đơn hàng cần tra cứu!",
-                    icon: "error",
-                    button: "Đã rõ",
-                });
-                return
-            }
-
-            $.ajax({
-                url: '/tra-cuu-don-hang',
-                data: {
-                    id: id
-                },
-                method: 'POST',
-                success: (data) => {
-                    if (data.error) {
-                        swal({
-                            title: "Có lỗi xảy ra",
-                            text: data.error,
-                            icon: "error",
-                            button: "Đã rõ",
-                        });
-                    } else {
-                        
-                    }
-                },
-                error: (err) => {
-                    swal({
-                        title: "Có lỗi xảy ra",
-                        text: err.statusText,
-                        icon: "error",
-                        button: "Đã rõ",
-                    });
+       if (status == 2 || status == 3 || status == 4) {
+            process.each((index, step) => {
+                if (index <= 1) {
+                    $(step).removeClass('disabled');
+                    $(step).addClass('complete')
                 }
-            })
+            });
+       } else if (status == 5) {
+            process.each((index, step) => {
+                if (index <= 2) {
+                    $(step).removeClass('disabled');
+                    $(step).addClass('complete')
+                }
+            });
+       } else if (status == 6) {
+            process.each((index, step) => {
+                if (index <= 3) {
+                    $(step).removeClass('disabled');
+                    $(step).addClass('complete')
+                }
+            });
+       }
+
+    })("<%- data.order.status %>", jQuery);
+
+    (function ($) {
+        var prices = $('.price');
+        prices.each((index, element) => {
+            var price = $(element).text();
+            $(element).text(numberWithCommas(price) + " VNĐ");
         });
-    });
+    })(jQuery)
+
 </script>
 
 </html>

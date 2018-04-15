@@ -85,7 +85,7 @@ router.post('/thanh-toan', (req, res) => {
                 order: req.session.order
             });
             return
-        } 
+        }
         delete req.session.order;
     }
 
@@ -100,13 +100,13 @@ router.post('/thanh-toan', (req, res) => {
     };
 
     if (req.session.token) {
-        User.verify(req.session.token, (cb) => {           
+        User.verify(req.session.token, (cb) => {
             if (cb.error || !cb.user) {
                 req.session.destroy();
             } else {
                 parameters.byUser = cb.user
             }
-            
+
             Order.initOrder(parameters, (response) => {
                 if (response.order) {
                     req.session.order = response.order;
@@ -138,7 +138,7 @@ router.put('/thanh-toan', (req, res) => {
 
             if (result.order.status == 1) {
                 res.io.emit('new-order', [result.order])
-                delete req.session.order;            
+                delete req.session.order;
             }
         }
         res.json(result)
@@ -186,25 +186,71 @@ router.get('/dat-hang-thanh-cong', (req, res) => {
 });
 
 router.get('/tra-cuu-don-hang', (req, res) => {
-    if (!req.query.id) {
+    if (!req.query.id || !req.query.email) {
         res.render('check-order', {
             data: {
-    
+                token: req.session.token,
+                user: req.session.user
             }
         })
     } else {
-        res.render('status-order', {
-            data: {
-
+        res.redis.getItem('order', `get-order?id=${req.query.id}&email=${req.query.email}`, (data) => {
+            if (data) {
+                res.render('status-order', {
+                    data: {
+                        token: req.session.token,
+                        user: req.session.user,
+                        order: data
+                    }
+                });
+            } else {
+                res.render('check-order', {
+                    data: {
+                        token: req.session.token,
+                        user: req.session.user
+                    }
+                })
             }
-        })
-    }  
+        });
+    }
 });
 
 router.post('/tra-cuu-don-hang', (req, res) => {
-    res.json({
-        order: {
-            
+    var id = req.body.id,
+        email = req.body.email;
+    if (!id) {
+        res.json({
+            error: "Mã đơn hàng bị thiếu"
+        });
+        return
+    }
+
+    if (!email) {
+        res.json({
+            error: "Email bị thiếu"
+        });
+        return
+    }
+
+    res.redis.getItem('order', `get-order?id=${id}&email=${email}`, (data) => {
+        if (data) {
+            res.json({
+                order: data,
+                token: req.session.token,
+                user: req.session.user,
+            });
+        } else {
+            Order.checkOrder(id, email, (result) => {
+                if (result.order) {
+                    res.redis.setItem('order', `get-order?id=${id}&email=${email}`, result.order);
+                }
+                res.json({
+                    token: req.session.token,
+                    user: req.session.user,
+                    error: result.error,
+                    order: result.order
+                });
+            });
         }
     })
 });

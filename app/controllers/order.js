@@ -21,7 +21,7 @@ var updateOrder = (order, parameters, cb) => {
         if (result.order && result.order.status == 1) {
             //send email
             mailBox.sendMailWithConfirmOrder(result.order);
-        } 
+        }
 
         return cb(result)
     })
@@ -70,6 +70,12 @@ var deleteOrder = (id, cb) => {
     })
 }
 
+var checkOrder = (id, email, cb) => {
+    orderApi.checkOrder(id, email, (result) => {
+        return cb(result);
+    });
+}
+
 
 module.exports = {
     initOrder: initOrder,
@@ -78,5 +84,6 @@ module.exports = {
     getOrder: getOrder,
     requestPayment: requestPayment,
     compareCurrentOrder: compareCurrentOrder,
-    deleteOrder: deleteOrder
+    deleteOrder: deleteOrder,
+    checkOrder: checkOrder
 }

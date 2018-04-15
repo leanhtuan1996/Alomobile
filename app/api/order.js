@@ -930,9 +930,44 @@ var getNewOrders = (cb) => {
     workflow.emit('validate-parameters')
 }
 
-var sendEmailConfirmOrder = (order, cb = null) => {
+var checkOrder = (id, email, cb) => {
+    var workflow = new event.EventEmitter();
 
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id is required!"
+            });
+            return
+        }
+
+        workflow.emit('check');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    });
+
+    workflow.on('check', () => {
+        User.findOne({
+            email: email,
+            orders: id
+        }).select('email').exec((err, user) => {
+            if (user) {
+                getDetailOrder(id, (result) => {
+                    workflow.emit('response', result)
+                });
+            } else {
+                workflow.emit('response', {
+                    error: "Mã đơn hàng không được tìm thấy"
+                });
+            }
+        });
+    });
+
+    workflow.emit('validate-parameters');
 }
+
 
 module.exports = {
     checkingAvailable: checkingAvailable,
@@ -947,5 +982,6 @@ module.exports = {
     getPendingOrders: getPendingOrders,
     getDetailOrder: getDetailOrder,
     getCountOrders: getCountOrders,
-    getNewOrders: getNewOrders
+    getNewOrders: getNewOrders,
+    checkOrder: checkOrder
 }

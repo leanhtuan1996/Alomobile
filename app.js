@@ -85,7 +85,7 @@ function ensureSec(req, res, next) {
   if (req.headers["x-forwarded-proto"] === "https") {
     return next();
   }
-  res.redirect("https://" + req.headers.host + req.url);
+  res.redirect("https://" + req.headers.host + ``	``.url);
 }
 
 //use static
@@ -113,8 +113,6 @@ app.use((req, res, next) => {
   err.ref = req.headers.referer;
   next(err);
 });
-
-
 
 // error handler
 app.use(function (err, req, res, next) {

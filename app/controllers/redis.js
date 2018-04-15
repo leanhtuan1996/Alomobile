@@ -43,6 +43,11 @@ client.on("error", function (err) {
  * 2. get-new-reviews
  */
 
+ /**
+  * CACHE ORDERS - order
+  * 1. get-order?id=${id}
+  */
+
 
 function set(key, field, value) {
     if (!key || !value) { return callback({}) }
