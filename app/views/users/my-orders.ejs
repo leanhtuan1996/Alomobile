@@ -86,7 +86,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% var total = 0; %>
+                                                
                                                 <% data.user.orders.forEach(order => { %>
                                                     <% var date = new Date(order.created_at) %>
                                                     <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" + date.getFullYear() %>
@@ -95,6 +95,7 @@
                                                         <td><a href="/tra-cuu-don-hang?email=<%- data.user.email %>&id=<%- order._id %>">#<%- order._id %></a></td>
                                                         <td><%- dateCreated %></td>
                                                         <td>
+                                                            <% var total = 0; %>
                                                             <% order.products.forEach(product => { %>
                                                                 <% total += product.price * product.quantity %>
                                                                 <ul style="list-style-type: none;
@@ -104,10 +105,10 @@
                                                                     <li style="float: left; margin: 5px">
                                                                         <a href="/<%-  product.id.alias %>-<%- product.id._id %>"><span><%-  product.id.name %> - </span></a>
                                                                     </li>
-                                                                    <li style="background-color: #3e3667; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin: 5px" title="Martinique">
+                                                                    <li style="background-color: <%- product.color.hex %>; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin: 5px" title="<%- product.color.name %>">
                                                                     </li>
-                                                                    <li style="float: left; margin: 5px">-<span class="price"> 21490000</span></li>
-                                                                    <li style="float: left; margin: 5px"><span>- số lượng: 1</span></li>
+                                                                    <li style="float: left; margin: 5px">-<span class="price"><%- product.price %></span></li>
+                                                                    <li style="float: left; margin: 5px"><span>- số lượng: <%- product.quantity %></span></li>
                                                                 </ul>
                                                             <% }) %>
                                                         </td>
