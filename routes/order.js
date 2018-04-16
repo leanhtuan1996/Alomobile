@@ -204,9 +204,9 @@ router.get('/tra-cuu-don-hang', (req, res) => {
                     }
                 });
             } else {
-                Order.checkOrder(id, email, (result) => {
+                Order.checkOrder(req.query.id, req.query.email, (result) => {
                     if (result.order) {
-                        res.redis.setItem('order', `get-order?id=${id}&email=${email}`, result.order);
+                        res.redis.setItem('order', `get-order?id=${req.query.id}&email=${req.query.email}`, result.order);
                     }
                     res.render('check-order', {
                         token: req.session.token,

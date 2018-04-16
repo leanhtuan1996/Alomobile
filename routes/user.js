@@ -313,11 +313,13 @@ router.get('/tai-khoan-cua-toi/lich-su-mua-hang', (req, res) => {
         return
       }
 
-      res.render('my-orders', {
-        data: {
-          token: req.session.token,
-          user: req.session.user
-        }
+      User.getMyOrders(user._id, (result) => {
+        res.render('my-orders', {
+          data: {
+            token: req.session.token,
+            user: result.user
+          }
+        });
       });
     });
   } else {

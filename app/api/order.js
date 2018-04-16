@@ -968,6 +968,67 @@ var checkOrder = (id, email, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var getMyOrders = (id, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id is required!"
+            });
+            return
+        }
+        
+        workflow.emit('get-my-orders');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('get-my-orders', () => {
+        User.findById(id).select('email fullName orders').exec((err, doc) => {
+            if (err) {
+                workflow.emit('response', {
+                    error: err
+                });
+                return
+            }
+
+            if (!doc) {
+                workflow.emit('response', {
+                    error: "User not found"
+                });
+                return
+            }
+
+            User.populate(doc, {
+                path: "orders",
+                model: "Order"
+            }, (err, doc2) => {
+                if (doc2) {
+                    User.populate(doc2, {
+                        path: "orders.products.id",
+                        model: "Product",
+                        select: "name alias"
+                    }, (err, user) => {
+                        workflow.emit('response', {
+                            error: err,
+                            user: user
+                        }); 
+                    })
+                } else {
+                    workflow.emit('response', {
+                        error: "Order not found"
+                    })
+                }              
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 
 module.exports = {
     checkingAvailable: checkingAvailable,
@@ -983,5 +1044,6 @@ module.exports = {
     getDetailOrder: getDetailOrder,
     getCountOrders: getCountOrders,
     getNewOrders: getNewOrders,
-    checkOrder: checkOrder
+    checkOrder: checkOrder,
+    getMyOrders: getMyOrders
 }

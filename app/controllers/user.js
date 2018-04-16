@@ -1,6 +1,7 @@
 'use strict';
 
 var userApi = require('../api/index').user;
+var orderApi = require('../api/index').order;
 
 var signIn = (user, result) => {
     userApi.signIn(user, (response) => {
@@ -68,6 +69,12 @@ var editUser = (id, user, cb) => {
     });
 }
 
+var getMyOrders = (id, cb) => {
+    orderApi.getMyOrders(id, (result) => {
+        return cb(result)
+    });
+}
+
 module.exports = {
     signIn: signIn,
     signUp: signUp,
@@ -79,5 +86,6 @@ module.exports = {
     recoveryPassword: recoveryPassword,
     canRecoveryPassword: canRecoveryPassword,
     signOutAllDevices: signOutAllDevices,
-    editUser: editUser
+    editUser: editUser,
+    getMyOrders: getMyOrders
 }
