@@ -208,11 +208,13 @@ router.get('/tra-cuu-don-hang', (req, res) => {
                     if (result.order) {
                         res.redis.setItem('order', `get-order?id=${req.query.id}&email=${req.query.email}`, result.order);
                     }
-                    res.render('check-order', {
-                        token: req.session.token,
-                        user: req.session.user,
-                        error: result.error,
-                        order: result.order
+                    res.render('status-order', {
+                        data: {
+                            token: req.session.token,
+                            user: req.session.user,
+                            error: result.error,
+                            order: result.order
+                        }
                     });
                 });
             }

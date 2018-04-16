@@ -427,10 +427,12 @@ var updateOrder = (order, parameters, cb) => {
                             });
                             return
                         }
-
-                        var orders = user.orders || [];
-                        orders.push(order);
-                        user.orders = orders;
+                        if (order.status == 1) {
+                            var orders = user.orders || [];
+                            orders.push(order);
+                            user.orders = orders;
+                        }
+                        
                         user.save((err) => {
                             //send Email
                             if (!err) {  

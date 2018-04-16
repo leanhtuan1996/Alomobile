@@ -716,6 +716,11 @@ router.get('/admin/invoice/:id', [auth.requireAuth, auth.requireRole], (req, res
 
 router.put('/admin/order', [auth.requireAuth, auth.requireRole], (req, res) => {
     Order.updateOrder(req.body.id, req.body.parameters, (result) => {
+
+        if (result.order) {
+            res.redis.delItem('order', `get-order?id=${req.body.id}&email=${req.user.email}`)
+        }
+
         res.json(result)
     })
 })

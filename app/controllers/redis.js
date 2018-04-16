@@ -45,7 +45,7 @@ client.on("error", function (err) {
 
  /**
   * CACHE ORDERS - order
-  * 1. get-order?id=${id}
+  * 1. get-order?id=${req.query.id}&email=${req.query.email}
   */
 
 

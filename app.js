@@ -114,6 +114,8 @@ app.use((req, res, next) => {
   next(err);
 });
 
+
+
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
@@ -187,6 +189,7 @@ app.use(function (err, req, res, next) {
       break;
   }
 });
+
 
 
 //module.exports = { app: app, serverHttps: serverHttps, serverHttp: serverHttp, io: io };
