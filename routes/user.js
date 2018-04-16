@@ -270,15 +270,59 @@ router.get('/tai-khoan-cua-toi/thong-tin', (req, res) => {
 });
 
 router.get('/tai-khoan-cua-toi/dia-chi', (req, res) => {
-  res.render('my-addresses', {
-    data: {
+  if (req.session.token) {
+    User.verify(req.session.token, (cb) => {
+      if (cb.error) {
+        req.session.destroy();
+        res.redirect('/sign-in');
+        return
+      }
+      var user = cb.user;
+      req.session.user = user;
 
-    }
-  })
+      if (!user) {
+        res.redirect('/sign-in');
+        return
+      }
+
+      res.render('my-addresses', {
+        data: {
+          token: req.session.token,
+          user: req.session.user
+        }
+      });
+    });
+  } else {
+    res.redirect('/sign-in');
+  }
 });
 
 router.get('/tai-khoan-cua-toi/lich-su-mua-hang', (req, res) => {
+  if (req.session.token) {
+    User.verify(req.session.token, (cb) => {
+      if (cb.error) {
+        req.session.destroy();
+        res.redirect('/sign-in');
+        return
+      }
+      var user = cb.user;
+      req.session.user = user;
 
+      if (!user) {
+        res.redirect('/sign-in');
+        return
+      }
+
+      res.render('my-orders', {
+        data: {
+          token: req.session.token,
+          user: req.session.user
+        }
+      });
+    });
+  } else {
+    res.redirect('/sign-in');
+  }
 });
 
 router.put('/update-informations', [auth.requireAuth], (req, res) => {

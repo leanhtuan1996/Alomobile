@@ -21,16 +21,15 @@ var userSchema = new Schema({
         ref: "Role"
     },
     addresses: [{
+        fullName: String,
+        phone: Number,
         address: String,
         city: String,
         state: String,
-        zipPostalCode: Number,
-        Country: String
+        zipPostalCode: Number
     }],
     status: { type: Schema.Types.Boolean, default: true },
-    orders: [
-        { type: Schema.Types.ObjectId, ref: "Order" }
-    ],
+    orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
     reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
     validTokens: [String],
     isRegisteredNewLetters: Boolean,

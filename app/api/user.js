@@ -1065,11 +1065,13 @@ var editUser = (id, parameter, result) => {
                 return
             }
 
-            if (!helper.comparePw(editedUser.password, user.password)) {
-                workflow.emit('response', {
-                    error: "Mật khẩu nhập vào không trùng khớp!"
-                });
-                return
+            if (editedUser.password) {
+                if (!helper.comparePw(editedUser.password, user.password)) {
+                    workflow.emit('response', {
+                        error: "Mật khẩu nhập vào không trùng khớp!"
+                    });
+                    return
+                }
             }
 
             if (editedUser.fullName) {
@@ -1090,6 +1092,15 @@ var editUser = (id, parameter, result) => {
 
             if (editedUser.newPassword) {
                 user.password = editedUser.newPassword
+            }
+
+            if (editedUser.address) {
+                if (user.addresses && user.addresses.length > 0) {
+                    user.addresses.push(editedUser.address)
+                } else {
+                    user.addresses = [];
+                    user.addresses.push(editedUser.address)
+                }
             }
            
             user.save((err) => {

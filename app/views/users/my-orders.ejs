@@ -2,14 +2,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Sổ địa chỉ của tôi | Alomobile</title>
+    <title>Lịch sử mua hàng | Alomobile</title>
     <meta name="description" content="Alomobile - Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng">
     <meta name="keywords" content="iphone, smartphone, tablet, may tinh bang, laptop, phu kien di dong, phu kien may tinh, samsung, apple, mua dien thoai, may tinh bang">
     
     <%- include layouts/head %>
 </head>
         
-<body id="addresses" class="lang-en country-us currency-usd layout-full-width page-addresses tax-display-disabled">
+<body id="my-account" class="lang-en country-us currency-usd layout-full-width page-my-account tax-display-disabled">
     <main>
         <header id="header">
             <div class="header-banner">
@@ -36,8 +36,8 @@
                             <meta itemprop="position" content="2">
                         </li>
                         <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                            <a itemprop="item" href="/tai-khoan-cua-toi/dia-chi">
-                                <span itemprop="name">Sổ địa chỉ</span>
+                            <a itemprop="item" href="/tai-khoan-cua-toi/lich-su-mua-hang">
+                                <span itemprop="name">Lịch sử mua hàng</span>
                             </a>
                             <meta itemprop="position" content="3">
                         </li>
@@ -52,53 +52,25 @@
                         <div id="main">
                             <header class="page-header">
                                 <h1>
-                                    Các địa chỉ của tôi
+                                    Các lịch sử mua hàng của tôi
                                 </h1>
                             </header>
                             <section id="content" class="page-content">
-                                <% if (!data.user.addresses || data.user.addresses.length == 0) { %>
-                                    <aside id="notifications">
-                                        <div class="container">
-                                            <article class="alert alert-warning" role="alert" data-alert="warning">
-                                                <ul>
-                                                    <li>Không có địa chỉ nào sẵn có. <a href="javascript: void(0)" class="add-new-address">Thêm địa chỉ mới ngay</a></li>
-                                                </ul>
-                                            </article>  
-                                        </div>
-                                    </aside>
-                                <% } else { %>
-                                    <% data.user.addresses.forEach((address, index) => { %>
-                                        <div class="col-lg-4 col-md-6 col-sm-6">
-                                            <article id="address-40" class="address" data-id-address="40">
-                                                <div class="address-body">
-                                                    <h4>Địa chỉ <%- index + 1 %></h4>
-                                                    <address><%- address.fullName %>
-                                                        <br><%- address.address %>
-                                                        <br><%- address.state %>
-                                                        <br><%- address.city %>, <%- address.zipPostalCode %>
-                                                        <br>Việt Nam
-                                                        <br><%- address.phone %></address>
-                                                </div>
-                                                <div class="address-footer">
-                                                    <a href="#">
-                                                        <i class="material-icons"></i>
-                                                    <span>Cập nhật</span>
-                                                </a>
-                                                    <a href="#" data-id-address="<%- address._id %>">
-                                                        <i class="material-icons"></i>
-                                                    <span>Xoá</span>
-                                                </a>
-                                                </div>
-                                            </article>
-                                        </div>
-                                    <% }) %>
-                                    <div class="clearfix"></div>
-                                <% } %> 
+                                <aside id="notifications">
+                                    <div class="container">
+                                        <article class="alert alert-warning" role="alert" data-alert="warning">
+                                            <ul>
+                                                <li>Không có đơn hàng nào sẵn có. <a href="/" class="add-new-address">Mua sắm ngay bây giờ</a></li>
+                                            </ul>
+                                        </article>
+                                    </div>
+                                </aside>
+                                <div class="clearfix"></div>
                                 <div class="addresses-footer">
-                                    <a href="javascript: void(0)" class="add-new-address">
-                                        <i class="material-icons"></i>
-                                        <span>Thêm địa chỉ mới</span>
-                                    </a>
+                                    <a href="/" class="add-new-address">
+                                <i class="material-icons"></i>
+                                <span>Thêm đơn hàng mới</span>
+                                </a>
                                 </div>
                             </section>
                         </div>
@@ -109,7 +81,6 @@
         <%- include layouts/footer %>
     </main>
     <script type="text/javascript" src="/static/js/custom.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <div class="back-top"><a href="#" class="back-top-button"></a></div>   
     <!-- Modal -->
     <div id="add-new-address" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -128,7 +99,7 @@
                                     <div class="panel-body pa-0">
                                         <div class="col-sm-12 col-xs-12">
                                             <div class="form-wrap">
-                                                <form id="form-new-address">
+                                                <form>
                                                     <div id="delivery-address">
                                                         <div class="js-address-form">
                                                             <section class="form-fields">
@@ -206,7 +177,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success waves-effect" id="save-new-address">Save</button>
+                    <button type="button" class="btn btn-success waves-effect" id="save-new-user">Save</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -217,89 +188,6 @@
     <!-- /modal -->
 </body>
     <script type="text/javascript">
-
-        $.get('https://raw.githubusercontent.com/linhmtran168/vietnam-gis-crawler/master/data.json', (data) => {
-            var optionSelectState = $('#add-new-address').find('select[name="id_state"]');
-            var optionSelectDistrict = $('#add-new-address').find('select[name="id_district"]');
-            var raw = JSON.parse(data);
-
-            var options = "";
-            for (const key in raw) {
-                options += `<option value="${key}">${raw[key].name}</option>`
-            }
-
-            var optionsDictricts = "";
-            for (const key in raw['1'].districts) {
-                optionsDictricts += `<option value="${key}">${raw['1'].districts[key]}</option>`
-            }
-
-            $(optionSelectState).append(options);
-            $(optionSelectDistrict).append(optionsDictricts);
-
-            $('#add-new-address').find('select[name="id_state"]').change((e) => {
-                var value = $(e.currentTarget).find('option:selected').val();
-                for (const key in raw) {
-                    if (key == value) {
-                        var optionsNewDictricts = '';
-                        for (const key_district in raw[`${key}`].districts) {
-                            optionsNewDictricts += `<option value="${key_district}">${raw[`${key}`].districts[key_district]}</option>`
-                        }
-                        $(optionSelectDistrict).find('option').remove();
-                        $(optionSelectDistrict).append(optionsNewDictricts);
-                        return
-                    }
-                }
-            });
-        });
-
-        jQuery(document).ready(($) => {
-            $('.add-new-address').click((e) => {
-                $('#add-new-address').modal('show')
-            });
-
-            $('#save-new-address').click((e) => {
-           
-                var fullName = $('#form-new-address').find('input[name="fullName"]').val(),
-                    phone = $('#form-new-address').find('input[name="phone"]').val(),
-                    address = $('#form-new-address').find('input[name="address"]').val(),
-                    city = $('#form-new-address').find('select[name="id_state"] option:selected').text(),
-                    zipPostalCode = $('#form-new-address').find('input[name="postcode"]').val(),
-                    state = $('#form-new-address').find('select[name="id_district"] option:selected').text();
-
-                var user = {
-                    address: {
-                    fullName: fullName,
-                    phone: phone,
-                    address: address,
-                    city: city,
-                    state: state,
-                    zipPostalCode: zipPostalCode
-                    }
-                }
-
-                $.ajax({
-                    url: '/update-informations',
-                    method: 'PUT',
-                    data: {
-                        user: JSON.stringify(user)
-                    },
-                    success: (data) => {
-                        if (!data.user) {
-                            if (data.error) {
-                                swal("Cập nhật thông tin thất bại", data.error, "error")
-                                return
-                            } 
-                            swal("Cập nhật thông tin thất bại", "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.", "error")
-                        } else {
-                            window.location.reload();
-                        }
-                    },
-                    error: (err) => {
-                        swal('Có lỗi xảy ra', err.status == 401 ? 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại để tiếp tục thực hiện chức năng này' : 'Lỗi không xác định, vui lòng tải lại trang và thử lại', 'error');
-                    }
-                });
-            });
-
-        })        
+    
     </script>
 </html>

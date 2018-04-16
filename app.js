@@ -90,7 +90,7 @@ function ensureSec(req, res, next) {
 
 //use static
 app.use('/static', express.static(path.join(__dirname, 'public'), {
-  maxage: '30 * 24 * 60 * 60'
+  maxage: '24h'
 }));
 
 app.use('/', index);
