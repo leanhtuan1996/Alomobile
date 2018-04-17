@@ -55,7 +55,8 @@ router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
                 title: "Alomobile Control Panel - Trang quản trị",
                 countProducts: result.countProducts,
                 countUsers: result.countUsers,
-                countOrders: result.countOrders
+                countOrders: result.countOrders,
+                countTraffic: result.countTraffic
             }
         });
     });
