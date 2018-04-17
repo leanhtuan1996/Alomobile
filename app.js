@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var helmet = require('helmet');
+//var helmet = require('helmet');
 var fs = require("fs");
 var config = require("config");
 var session = require("express-session");
@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //helmet secure express application
-app.use(helmet())
+//app.use(helmet())
 
 //session
 app.set('trust proxy', 1) //trust first proxy
