@@ -76,14 +76,6 @@ function get(key, field, callback) {
     });
 }
 
-client.hkeys('reviews', (error, reply) => {
-    if (reply) {
-        reply.forEach(e => {     
-            console.log(e);   
-        });
-    }        
-});
-
 function del(key, fields = null) {
     if (!fields) {
         client.hkeys(key, (error, reply) => {
