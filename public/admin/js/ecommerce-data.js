@@ -29,22 +29,6 @@ $(document).ready(function(){
 });
 /*****Ready function end*****/
 
-/*****Load function start*****/
-$(window).on("load",function(){
-	window.setTimeout(function(){
-		$.toast({
-			heading: 'Welcome to droopy',
-			text: 'Use the predefined ones, or specify a custom position object.',
-			position: 'top-left',
-			loaderBg:'#f8b32d',
-			icon: 'success',
-			hideAfter: 3500, 
-			stack: 6
-		});
-	}, 3000);
-});
-/*****Load function* end*****/
-
 /*****E-Charts function start*****/
 var echartsConfig = function() { 
 	if( $('#e_chart_1').length > 0 ){

@@ -62,6 +62,21 @@ router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
     });
 });
 
+
+router.get('/admin-test', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Dashboard.dashboard((result) => {
+        res.render('dashboard-test', {
+            data: {
+                title: "Alomobile Control Panel - Trang quản trị",
+                countProducts: result.countProducts,
+                countUsers: result.countUsers,
+                countOrders: result.countOrders,
+                countTraffic: result.countTraffic
+            }
+        });
+    });
+});
+
 router.get('/admin/sign-in', (req, res) => {
     res.render('admin/sign-in', {
         data: {
