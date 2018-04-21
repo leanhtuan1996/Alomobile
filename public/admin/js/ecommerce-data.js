@@ -3,20 +3,7 @@
 
 /*****Ready function start*****/
 $(document).ready(function(){
-	if( $('#pie_chart_4').length > 0 ){
-		$('#pie_chart_4').easyPieChart({
-			barColor : '#8BC34A',
-			lineWidth: 20,
-			animate: 3000,
-			size:	165,
-			lineCap: 'square',
-			trackColor: '#f4f4f4',
-			scaleColor: false,
-			onStep: function(from, to, percent) {
-				$(this.el).find('.percent').text(Math.round(percent));
-			}
-		});
-	}
+	
 	
 	if( $('#datable_1').length > 0 )
 		$('#datable_1').DataTable({

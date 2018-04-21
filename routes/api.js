@@ -12,6 +12,7 @@ var User = api.user;
 var Type = api.type;
 var Order = api.order;
 var Review = api.review;
+var Analytic = api.analytic;
 
 var multer = require('multer');
 var auth = require('../app/middleware/index').authenticate;
@@ -595,5 +596,18 @@ router.get('/api/v1/newerReviews', [auth.requireAuth, auth.requireRole], (req, r
 });
 
 //**/APIS FOR REVIEW
+
+//** APIS FOR ANALYTICS */
+router.get('/api/v1/get-satisfied-client', (req, res) => {
+    Analytic.satisfiedClient((result) => {
+        res.json(result);
+    });
+});
+
+router.get('/api/v1/get-revenue', (req, res) => {
+    Analytic.revenue(req.query.year, (result) => {
+        res.json(result);
+    });
+});
 
 module.exports = router;

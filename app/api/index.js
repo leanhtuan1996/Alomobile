@@ -7,6 +7,7 @@ var type = require('./type');
 var role = require('./role');
 var mail = require('./mail');
 var review = require('./review');
+var analytic = require('./analytic');
 
 module.exports = {
     brand: brand,
@@ -17,5 +18,6 @@ module.exports = {
     type: type,
     role: role,
     review: review,
-    mail: mail
+    mail: mail,
+    analytic: analytic
 }

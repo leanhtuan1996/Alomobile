@@ -48,6 +48,11 @@
 
 	<script type="text/javascript">
 		var socket = io.connect(window.location.host);
+
+		function numberWithCommas(x) {
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+
 		function logout() {
 			$.ajax({
 				url: "/admin/sign-out",

@@ -48,22 +48,22 @@ var upload = multer({
 /* USER SIGN_IN */
 
 //page admin
+// router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
+//     Dashboard.dashboard((result) => {
+//         res.render('dashboard', {
+//             data: {
+//                 title: "Alomobile Control Panel - Trang quản trị",
+//                 countProducts: result.countProducts,
+//                 countUsers: result.countUsers,
+//                 countOrders: result.countOrders,
+//                 countTraffic: result.countTraffic
+//             }
+//         });
+//     });
+// });
+
+
 router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Dashboard.dashboard((result) => {
-        res.render('dashboard', {
-            data: {
-                title: "Alomobile Control Panel - Trang quản trị",
-                countProducts: result.countProducts,
-                countUsers: result.countUsers,
-                countOrders: result.countOrders,
-                countTraffic: result.countTraffic
-            }
-        });
-    });
-});
-
-
-router.get('/admin-test', [auth.requireAuth, auth.requireRole], (req, res) => {
     Dashboard.dashboard((result) => {
         res.render('dashboard-test', {
             data: {

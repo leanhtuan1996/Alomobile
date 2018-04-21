@@ -35,7 +35,10 @@
 				<!-- Row -->
 				<div class="row">
 					<div class="col-lg-8 col-md-6 col-sm-12 col-xs-12">
-                        <div class="panel panel-default card-view">
+                        <div class="panel panel-default card-view panel-refresh">
+                            <div class="refresh-container">
+								<div class="la-anim-1"></div>
+							</div>
 							<div class="panel-heading">
 								<div class="pull-left">
 									<h6 class="panel-title txt-dark">Phân tích doanh thu</h6>
@@ -49,7 +52,10 @@
                                                     <option value='<%- d.getFullYear() - i %>'><%- d.getFullYear() - i %></option>
                                                 <% } %>
 										</select>
-									</div>	
+                                    </div>	
+                                    <a href="#" class="pull-left inline-block refresh mr-15">
+                                            <i class="zmdi zmdi-replay"></i>
+                                        </a>
 									<a href="#" class="pull-left inline-block full-screen">
 										<i class="zmdi zmdi-fullscreen"></i>
 									</a>
@@ -61,18 +67,12 @@
 									<ul class="flex-stat mb-10 ml-15">
 										<li class="text-left auto-width mr-60">
 											<span class="block">Đơn hàng</span>
-											<span class="block txt-dark weight-500 font-18"><span class="counter-anim">1,23,432</span></span>
-											<span class="block txt-success mt-5">
-												<i class="zmdi zmdi-caret-up pr-5 font-20"></i><span class="weight-500">+4%</span>
-											</span>
+											<span class="block txt-dark weight-500 font-18"><span class="counter-orders">0</span></span>
 											<div class="clearfix"></div>
 										</li>
 										<li class="text-left auto-width">
 											<span class="block">Doanh thu</span>
-											<span class="block txt-dark weight-500 font-18">$<span class="counter-anim">324,222</span></span>
-											<span class="block txt-danger mt-5">
-												<i class="zmdi zmdi-caret-down pr-5 font-20"></i><span class="weight-500">-5%</span>
-											</span>
+											<span class="block txt-dark weight-500 font-18"><span class="counter-revenue">0</span></span>
 											<div class="clearfix"></div>
 										</li>
 									</ul>
@@ -126,11 +126,8 @@
 							<div class="panel-wrapper collapse in">
 								<div class="panel-body">
 									<div class="col-sm-6 pa-0">
-										<span id="pie_chart_4" class="easypiechart" data-percent="33">
-											<span class="percent block txt-dark weight-500"></span>
-											<span class="block txt-success text-center">
-												<i class="zmdi zmdi-caret-up pr-5 font-20"></i><span class="weight-500">+33%</span>
-											</span>
+										<span id="satisfy_chart" class="easypiechart" data-percent="69">
+											<span class="percent block txt-dark weight-500" style="margin-top: 65px;"></span>
 										</span>
 									</div>	
 									<div class="col-sm-6 pr-0">
@@ -201,7 +198,10 @@
 								</div>	
 							</div>
 						</div>
-						<div class="panel panel-default card-view">
+						<div class="panel panel-default card-view panel-refresh">
+                            <div class="refresh-container" style="display: none;">
+								<div class="la-anim-1"></div>
+							</div>
 							<div class="panel-heading">
 								<div class="pull-left">
 									<h6 class="panel-title txt-dark">Các từ khoá tìm kiếm nhiều nhất</h6>
@@ -377,7 +377,10 @@
 								</div>
 							</div>
                         </div>
-                        <div class="panel panel-default card-view">
+                        <div class="panel panel-default card-view panel-refresh">
+                            <div class="refresh-container" style="display: none;">
+								<div class="la-anim-1"></div>
+							</div>
 							<div class="panel-heading">
 								<div class="pull-left">
 									<h6 class="panel-title txt-dark">Các sản phẩm tìm kiếm nhiều nhất</h6>
@@ -591,80 +594,66 @@
 
 <script type="text/javascript">
 
-    if($('#chart_analytic_sale').length > 0)
-		Morris.Line({
+    var chartAnalyticSale = Morris.Line({
         element: 'chart_analytic_sale',
-        data: [{
-            period: '1',
-            order: 50,
-            revenue: 80
-        }, {
-            period: '2',
-            order: 130,
-            revenue: 100
-        }, {
-            period: '3',
-            order: 80,
-            revenue: 60
-        }, {
-            period: '4',
-            order: 70,
-            revenue: 200
-        }, {
-            period: '5',
-            order: 180,
-            revenue: 150
-        }, {
-            period: '6',
-            order: 105,
-            revenue: 100
-        },
-         {
-            period: '7',
-            order: 250,
-            revenue: 150
-        },
-         {
-            period: '8',
-            order: 753,
-            revenue: 123
-        },
-         {
-            period: '9',
-            order: 111,
-            revenue: 234
-        },
-         {
-            period: '10',
-            order: 463,
-            revenue: 23
-        },
-         {
-            period: '11',
-            order: 412,
-            revenue: 23
-        },
-         {
-            period: '12',
-            order: 346,
-            revenue: 52
-        }],
-        xkey: 'period',
-        ykeys: ['order', 'revenue'],
-        labels: ['order', 'revenue'],
+        xkey: 'xkey',
+        ykeys: ['orders', 'revenue'],
+        labels: ['orders', 'revenue'],
         pointSize: 2,
         fillOpacity: 0,
-		lineWidth:2,
-		pointStrokeColors:['#8BC34A', '#f8b32d'],
-		behaveLikeLine: true,
-		grid: false,
-		hideHover: 'auto',
-		lineColors: ['#8BC34A', '#f8b32d'],
-		resize: true,
+        lineWidth:2,
+        pointStrokeColors:['#8BC34A', '#f8b32d'],
+        behaveLikeLine: true,
+        grid: false,
+        hideHover: 'auto',
+        lineColors: ['#8BC34A', '#f8b32d'],
+        resize: true,
         gridTextFamily:"Roboto",
         smooth: true,
-        parseTime: false
-        
+        parseTime: false            
+    });
+
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function getRevenue(year = Date.now().getFullYear(), cb) {
+        $.get(`/api/v1/get-revenue?year=${year}`, (result) => {
+            return cb(result);
+        });        
+    }
+
+    function initDataChartSale(year) {
+        getRevenue(year, (result) => {
+            var received = result.data;       
+            if (!received) { return }
+
+            var analytics = received.analytics;
+            if (!analytics) { return }
+
+            var data = [];
+
+            for (const key in analytics) {
+                data.push({
+                    xkey: key,
+                    orders: analytics[key].orders,
+                    revenue: analytics[key].revenue
+                });
+            }
+
+            $('#chart_analytic_sale').prev('ul').find('span.counter-orders').text(received.totalOrders);
+            $('#chart_analytic_sale').prev('ul').find('span.counter-revenue').text(numberWithCommas(received.totalRevenue) + " VNĐ");
+
+            chartAnalyticSale.setData(data);
+        });   
+    }
+
+    initDataChartSale(new Date(Date.now()).getFullYear());          
+    
+    $('.selectpicker').change((e) => {
+       if ($(e.currentTarget).find('option:selected').length > 0) {
+           initDataChartSale($(e.currentTarget).find('option:selected').val());
+       }
     });
 
 </script>
@@ -844,6 +833,29 @@
 
 <script type="text/javascript">
 
+    function getSatisfyClient(cb) {
+        $.get(`/api/v1/get-satisfied-client`, (result) => {
+            return cb(result);
+        });        
+    }
+
+    if( $('#satisfy_chart').length > 0 ){
+
+        getSatisfyClient()
+
+		$('#satisfy_chart').easyPieChart({
+			barColor : '#8BC34A',
+			lineWidth: 20,
+			animate: 3000,
+			size:	165,
+			lineCap: 'square',
+			trackColor: '#f4f4f4',
+			scaleColor: false,
+			onStep: function(from, to, percent) {
+				$(this.el).find('.percent').text(Math.round(percent));
+			}
+		});
+	}
 </script>
 
 </html>

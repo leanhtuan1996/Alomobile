@@ -45,20 +45,7 @@ $(document).ready(function() {
 			}
 		});
 	}	
-	if( $('#pie_chart_4').length > 0 ){
-		$('#pie_chart_4').easyPieChart({
-			barColor : 'rgba(139,195,74,1)',
-			lineWidth: 3,
-			animate: 3000,
-			size:	100,
-			lineCap: 'square',
-			trackColor: false,
-			scaleColor: false,
-			onStep: function(from, to, percent) {
-				$(this.el).find('.percent').text(Math.round(percent));
-			}
-		});
-	}
+	
 	if( $('#pie_chart_5').length > 0 ){
 		$('#pie_chart_5').easyPieChart({
 			barColor : 'rgba(139,195,74,1)',
