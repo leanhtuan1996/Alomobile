@@ -94,9 +94,11 @@ router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
     
     var keyword;
 
-    if (URL.query.startsWith('keyword')) {
-        keyword = URL.query.split('=')[1];
-    }
+    if (URL.query) {
+        if (URL.query.startsWith('keyword')) {
+            keyword = URL.query.split('=')[1];
+        }
+    }    
 
     if (des) {
         var t = des.split('-');
