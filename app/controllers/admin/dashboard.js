@@ -3,14 +3,12 @@
 var session = require('express-session');
 var event = require('events');
 
-var mongoose = require('../../../config/db').mongoose;
-var Schema = mongoose.Schema;
+var Session = require('../../models/index').session;
 
 var productApi = require('../../api/index').product;
 var userApi = require('../../api/index').user;
 var orderApi = require('../../api/index').order;
-
-const Session = mongoose.model('Session', new Schema({}, {strict: false}))
+var analyticApi = require('../../api/index').analytic;
 
 var dashboard = (result) => {
     var workflow = new event.EventEmitter();
@@ -30,13 +28,16 @@ var dashboard = (result) => {
             userApi.getCountUsers((r2) => {
                 orderApi.getCountOrders((r3) => {     
                     Session.count({}, (err, c) => {
-                        workflow.emit('response', {
-                            error: null,
-                            countUsers: r2.count,
-                            countProducts: r1.count,
-                            countOrders: r3.count,
-                            countTraffic: c
-                        });
+                        analyticApi.satisfiedClient((r4) => {
+                            workflow.emit('response', {
+                                error: null,
+                                countUsers: r2.count,
+                                countProducts: r1.count,
+                                countOrders: r3.count,
+                                countTraffic: c,
+                                satisfiedClient: r4
+                            });
+                        })                        
                     });                    
                 });
             });

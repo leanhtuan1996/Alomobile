@@ -13,6 +13,8 @@ var Type = api.type;
 var Order = api.order;
 var Review = api.review;
 var Analytic = api.analytic;
+var SearchKeyword = api.searchKeyword;
+var SearchProduct = api.searchProduct;
 
 var multer = require('multer');
 var auth = require('../app/middleware/index').authenticate;
@@ -328,6 +330,11 @@ router.delete('/api/v1/product/delete-product', [auth.requireAuth, auth.requireR
 
 router.get('/api/v1/product/search-product/:text', (req, res) => {
     Product.searchProducts(req.params.text, (result) => {
+
+        if (result.products && result.products.length != 0) { 
+            SearchKeyword.insert(req.params.text, (result) => {  });
+        }
+
         res.json(result);
     });
 });
@@ -609,5 +616,18 @@ router.get('/api/v1/get-revenue', (req, res) => {
         res.json(result);
     });
 });
+
+router.get('/api/v1/get-top-keyword', (req, res) => {
+    SearchKeyword.gets((result) => {
+        res.json(result)
+    });
+});
+
+router.get('/api/v1/get-top-search-product', (req, res) => {
+    SearchProduct.gets((result) => {
+        console.log(result);
+        res.json(result)
+    })
+})
 
 module.exports = router;

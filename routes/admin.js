@@ -71,7 +71,8 @@ router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
                 countProducts: result.countProducts,
                 countUsers: result.countUsers,
                 countOrders: result.countOrders,
-                countTraffic: result.countTraffic
+                countTraffic: result.countTraffic,
+                satisfiedClient: result.satisfiedClient
             }
         });
     });

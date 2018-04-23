@@ -10,6 +10,9 @@ var type = require('./type');
 var invalidToken = require('./invalidToken');
 var review = require('./review');
 var checkoutMethod = require('./checkoutMethod');
+var session = require('./session');
+var searchKeyword = require('./searchKeyword');
+var searchProduct = require('./searchProduct');
 
 module.exports = {
     user: user,
@@ -21,5 +24,8 @@ module.exports = {
     type: type,
     invalidToken: invalidToken,
     review: review,
-    checkoutMethod: checkoutMethod
+    checkoutMethod: checkoutMethod,
+    session: session,
+    searchKeyword: searchKeyword,
+    searchProduct: searchProduct
 }

@@ -8,6 +8,8 @@ var role = require('./role');
 var mail = require('./mail');
 var review = require('./review');
 var analytic = require('./analytic');
+var searchKeyword = require('./searchKeyword');
+var searchProduct = require('./searchProduct');
 
 module.exports = {
     brand: brand,
@@ -19,5 +21,7 @@ module.exports = {
     role: role,
     review: review,
     mail: mail,
-    analytic: analytic
+    analytic: analytic,
+    searchKeyword: searchKeyword,
+    searchProduct: searchProduct
 }

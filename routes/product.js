@@ -1,5 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var url = require('url');
+
+var api = require('../app/api/index');
+
+var SearchProduct = api.searchProduct;
 
 var auth = require('../app/middleware/index').authenticate;
 
@@ -84,7 +89,15 @@ router.get('/products/search/text=:text', (req, res) => {
 });
 
 router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
-    var des = req.url;
+    var URL = url.parse(req.url);
+    var des = URL.pathname;
+    
+    var keyword;
+
+    if (URL.query.startsWith('keyword')) {
+        keyword = URL.query.split('=')[1];
+    }
+
     if (des) {
         var t = des.split('-');
 
@@ -102,6 +115,11 @@ router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
 
         res.redis.getItem('products', `getProduct?id=${id}`, (data) => {
             if (data) {
+
+                if (keyword) {
+                    SearchProduct.insert(keyword, id, data.name, (result) => { })
+                }
+
                 res.render('detail-product', {
                     data: {
                         token: req.session.token,
@@ -123,6 +141,10 @@ router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
                         return
                     }
                     res.redis.setItem('products', `getProduct?id=${id}`, product);
+
+                    if (keyword) {
+                        SearchProduct.insert(keyword, id, product.name, (result) => { })
+                    }
 
                     res.render('detail-product', {
                         data: {

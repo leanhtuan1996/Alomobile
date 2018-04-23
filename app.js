@@ -52,9 +52,10 @@ app.use(session({
     host: config.get("mongoose.host"),
     port: config.get("mongoose.port"),
     db: config.get("mongoose.database"),
-    url: `mongodb://${config.get("mongoose.user")}:${config.get("mongoose.password")}@${config.get("mongoose.host")}:${config.get("mongoose.port")}/${config.get("mongoose.database")}`
+    url: `mongodb://${config.get("mongoose.user")}:${config.get("mongoose.password")}@${config.get("mongoose.host")}:${config.get("mongoose.port")}/${config.get("mongoose.database")}`,
+    collection: "sessions"
   }),
-  expires: 15 * 24 * 60 * 60 //15 days
+  expires: 365 * 24 * 60 * 60 //15 days
 }));
 
 
