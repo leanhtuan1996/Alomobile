@@ -2,7 +2,20 @@
 <html lang="vi">
 
 <head>
-	<% include layouts/header %>
+    <!-- Morris Charts CSS -->
+    <link href="/static/admin/libs/morris.js/morris.css" rel="stylesheet" type="text/css"/>
+		
+	<!-- bootstrap-select CSS -->
+	<link href="/static/admin/libs/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>	
+	
+	<!-- Bootstrap Switches CSS -->
+	<link href="/static/admin/libs/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
+		
+	<!-- switchery CSS -->
+	<link href="/static/admin/libs/switchery/dist/switchery.min.css" rel="stylesheet" type="text/css"/>
+
+    <% include layouts/header %>
+    
 </head>
 
 <body>
@@ -12,104 +25,246 @@
 	</div>
 	<!-- /Preloader -->
 	<div class="wrapper theme-5-active pimary-color-green">
-		
-		<% include layouts/menu %>
+        
+        <% include layouts/menu %>
 
-		<!-- Main Content -->
-		<div class="page-wrapper" style="min-height: 435px;">
-			<div class="container-fluid pt-25">
+        <!-- Main Content -->
+		<div class="page-wrapper">
+            <div class="container-fluid pt-25">
+				
 				<!-- Row -->
 				<div class="row">
-					<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-						<div class="panel panel-default card-view pa-0">
+					<div class="col-lg-8 col-md-6 col-sm-12 col-xs-12">
+                        <div class="panel panel-default card-view panel-refresh">
+                            <div class="refresh-container">
+								<div class="la-anim-1"></div>
+							</div>
+							<div class="panel-heading">
+								<div class="pull-left">
+									<h6 class="panel-title txt-dark">Phân tích doanh thu</h6>
+								</div>
+								<div class="pull-right">
+									<div class="pull-left form-group mb-0 sm-bootstrap-select mr-15">
+										<select class="selectpicker" data-style="form-control">
+                                                <% var d = new Date(Date.now()); %>
+                                                <option selected value='<%- d.getFullYear()  %>'><%- d.getFullYear() %></option>
+                                                <% for(let i = 1; i <= 5; i++) { %> 
+                                                    <option value='<%- d.getFullYear() - i %>'><%- d.getFullYear() - i %></option>
+                                                <% } %>
+										</select>
+                                    </div>	
+                                    <a href="#" class="pull-left inline-block refresh mr-15">
+                                            <i class="zmdi zmdi-replay"></i>
+                                        </a>
+									<a href="#" class="pull-left inline-block full-screen">
+										<i class="zmdi zmdi-fullscreen"></i>
+									</a>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="panel-wrapper collapse in">
+                                <div class="panel-body">
+									<ul class="flex-stat mb-10 ml-15">
+										<li class="text-left auto-width mr-60">
+											<span class="block">Đơn hàng</span>
+											<span class="block txt-dark weight-500 font-18"><span class="counter-orders">0</span></span>
+											<div class="clearfix"></div>
+										</li>
+										<li class="text-left auto-width">
+											<span class="block">Doanh thu</span>
+											<span class="block txt-dark weight-500 font-18"><span class="counter-revenue">0</span></span>
+											<div class="clearfix"></div>
+										</li>
+									</ul>
+                                    <div id="chart_analytic_sale" class="morris-chart"></div>
+								</div>
+							</div>
+                        </div>
+                    </div>
+					<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+						<!--  XXX -->
+						<div class="panel panel-default card-view panel-refresh">
+							<div class="refresh-container">
+								<div class="la-anim-1"></div>
+							</div>
+							<div class="panel-heading">
+								<div class="pull-left">
+									<h6 class="panel-title txt-dark">Sản phẩm được mua nhiều nhất</h6>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="panel-wrapper collapse in">
+								<div class="panel-body row">
+									<div class="col-sm-6 pa-0">
+										<div id="top_product_echart" class="" style="height:185px;"></div>
+									</div>
+									<div class="col-sm-6 pr-0 pt-30">
+										<div class="label-chatrs" id="label_top_product_chart">
+											<!-- LABEL -->									
+										</div>
+									</div>										
+								</div>	
+							</div>
+						</div>
+						<div class="panel panel-default card-view sm-data-box-3">
+							<div class="panel-heading">
+								<div class="pull-left">
+									<h6 class="panel-title txt-dark">Độ hài lòng của khách hàng</h6>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="panel-wrapper collapse in">
+								<div class="panel-body">
+									<div class="col-sm-6 pa-0">
+										<span id="satisfy_chart" class="easypiechart" data-percent="<%- data.satisfiedClient.satisfiedOfClient %>">
+											<span class="percent block txt-dark weight-500" style="margin-top: 65px;"></span>
+										</span>
+									</div>	
+									<div class="col-sm-6 pr-0">
+										<ul class="flex-stat mb-15">
+											<li class="text-left block no-float full-width mb-15">
+												<span class="block">Số nhận xét hài lòng</span>
+												<span class="block txt-dark weight-500  font-18"><span class="counter-anim"><%- data.satisfiedClient.satisfied %></span></span>
+												<div class="clearfix"></div>
+											</li>
+											<li class="text-left block no-float full-width">
+												<span class="block">Tổng số nhận xét</span>
+												<span class="block txt-dark weight-500  font-18"><span class="counter-anim"><%- data.satisfiedClient.totalReview %></span></span>
+												<div class="clearfix"></div>
+											</li>
+										</ul>
+									</div>	
+								</div>	
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Row -->
+				
+				<!-- Row -->
+				<div class="row">
+					<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">						
+						<div class="panel panel-default card-view panel-refresh">
+                            <div class="refresh-container" style="display: none;">
+								<div class="la-anim-1"></div>
+							</div>
+							<div class="panel-heading">
+								<div class="pull-left">
+									<h6 class="panel-title txt-dark">Các từ khoá tìm kiếm nhiều nhất</h6>
+								</div>
+								<div class="pull-right">
+                                    <a href="#" class="pull-left inline-block refresh mr-15">
+                                        <i class="zmdi zmdi-replay"></i>
+                                    </a>
+									<a href="#" class="pull-left inline-block close-panel" data-effect="fadeOut">
+										<i class="zmdi zmdi-close"></i>
+									</a>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="panel-wrapper collapse in">
+								<div class="panel-body row pa-0">
+										<div class="table-wrap sm-data-box-2">
+										<div class="table-responsive">
+										  <table class="table table-striped mb-0" id="table_top_keyword">
+											<thead>
+											  <tr>
+												<th>Keyword</th>
+												<th>Số lượt</th>
+											  </tr>
+											</thead>
+											<tbody>											  
+											</tbody>
+										  </table>
+										</div>
+									</div>
+								</div>	
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+						<div class="panel panel-default card-view pt-0">
 							<div class="panel-wrapper collapse in">
 								<div class="panel-body pa-0">
-									<div class="sm-data-box">
+									<div class="sm-data-box bg-white">
 										<div class="container-fluid">
 											<div class="row">
-												<div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
-													<span class="txt-dark block counter">
-														<span class="counter-anim">
-															<% if (data.countUsers) { %>
-																<%- data.countUsers %>
-															<% } else { %>
-																0
-															<% } %>														 
-														</span>
-													</span>
-													<span class="weight-500 uppercase-font block font-13">Người dùng</span>
-												</div>
-												<div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
-													<i class="icon-user-following data-right-rep-icon txt-light-grey"></i>
-												</div>
-											</div>
+                                                <div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
+                                                    <span class="txt-dark block counter">
+                                                        <span class="counter-anim">
+                                                            <% if (data.countUsers) { %>
+                                                                <%- data.countUsers %>
+                                                            <% } else { %>
+                                                                0
+                                                            <% } %>														 
+                                                        </span>
+                                                    </span>
+                                                    <span class="weight-500 uppercase-font block font-13">Người dùng</span>
+                                                </div>
+                                                <div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
+                                                    <i class="icon-user-following data-right-rep-icon txt-light-grey"></i>
+                                                </div>
+											</div>	
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-						<div class="panel panel-default card-view pa-0">
+						<div class="panel panel-default card-view pt-0">
 							<div class="panel-wrapper collapse in">
 								<div class="panel-body pa-0">
-									<div class="sm-data-box">
+									<div class="sm-data-box bg-white">
 										<div class="container-fluid">
-											<div class="row">
-												<div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
-													<span class="txt-dark block counter">
-														<span class="counter-anim">														<h1><%- data.count %></h1>
-															<% if (data.countOrders) { %>
-																<%- data.countOrders %>
-															<% } else { %>
-																NaN
-															<% } %>	
-														</span>
-													</span>
-													<span class="weight-500 uppercase-font block">Tổng số đơn hàng</span>
-												</div>
-												<div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
-													<i class="icon-basket-loaded data-right-rep-icon txt-light-grey"></i>
-												</div>
-											</div>
+                                            <div class="row">
+                                                <div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
+                                                    <span class="txt-dark block counter">
+                                                        <span class="counter-anim">														<h1><%- data.count %></h1>
+                                                            <% if (data.countOrders) { %>
+                                                                <%- data.countOrders %>
+                                                            <% } else { %>
+                                                                NaN
+                                                            <% } %>	
+                                                        </span>
+                                                    </span>
+                                                    <span class="weight-500 uppercase-font block">Tổng số đơn hàng</span>
+                                                </div>
+                                                <div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
+                                                    <i class="icon-basket-loaded data-right-rep-icon txt-light-grey"></i>
+                                                </div>
+                                            </div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-
-					<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-						<div class="panel panel-default card-view pa-0">
+						<div class="panel panel-default card-view pt-0">
 							<div class="panel-wrapper collapse in">
 								<div class="panel-body pa-0">
-									<div class="sm-data-box">
+									<div class="sm-data-box bg-white">
 										<div class="container-fluid">
-											<div class="row">
-												<div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
-													<span class="txt-dark block counter">
-														<span class="counter-anim">
-														<% if (data.countProducts) { %>
-																<%- data.countProducts %>
-															<% } else { %>
-																NaN
-															<% } %>	
-														</span>
-													</span>
-													<span class="weight-500 uppercase-font block">Tổng số sản phẩm</span>
-												</div>
-												<div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
-													<i class="icon-screen-smartphone data-right-rep-icon txt-light-grey"></i>
-												</div>
-											</div>
+                                            <div class="row">
+                                                <div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
+                                                    <span class="txt-dark block counter">
+                                                        <span class="counter-anim">
+                                                        <% if (data.countProducts) { %>
+                                                                <%- data.countProducts %>
+                                                            <% } else { %>
+                                                                NaN
+                                                            <% } %>	
+                                                        </span>
+                                                    </span>
+                                                    <span class="weight-500 uppercase-font block">Tổng số sản phẩm</span>
+                                                </div>
+                                                <div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
+                                                    <i class="icon-screen-smartphone data-right-rep-icon txt-light-grey"></i>
+                                                </div>
+                                            </div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-						<div class="panel panel-default card-view pa-0">
+                        </div>
+                        <div class="panel panel-default card-view pa-0">
 							<div class="panel-wrapper collapse in">
 								<div class="panel-body pa-0">
 									<div class="sm-data-box">
@@ -136,313 +291,234 @@
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /Row -->
-
-				<!-- Row -->
-				<div class="row">
-					<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-						<div class="panel panel-default card-view panel-refresh">
-							
-							<div class="panel-heading">
-								<div class="pull-left">
-									<h6 class="panel-title txt-dark">Các sản phẩm bán chạy nhất</h6>
-								</div>
-								<div class="pull-right">
-										<a href="javascript:void(0)" class="pull-left btn btn-success btn-xs mr-15">Xem tất cả</a>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-wrapper collapse in">
-								<div class="panel-body row pa-0">
-									<div class="table-wrap sm-data-box-2">
-										<div class="table-responsive">
-											<table class="table table-striped mb-0">
-												<thead>
-													<tr>
-														<th>Tên sản phẩm</th>
-														<th>Giá tiền</th>
-														<th>Tổng số đơn</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>adidas</td>
-														<td>$49,897</td>
-														<td>8.61%</td>
-													</tr>
-													<tr>
-														<td>men's park</td>
-														<td>$15,478</td>
-														<td>2.10%</td>
-													</tr>
-													<tr>
-														<td>nutiva coconut oil</td>
-														<td>$23,546</td>
-														<td>4.35%</td>
-													</tr>
-													<tr>
-														<td>cart software</td>
-														<td>$36,589</td>
-														<td>1.58%</td>
-													</tr>
-													<tr>
-														<td>where to buy</td>
-														<td>$55,467</td>
-														<td>56%</td>
-													</tr>
-													<tr>
-														<td>pink adhesive</td>
-														<td>$71,245</td>
-														<td>47.6%</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="panel panel-default card-view">
-							<div class="panel-heading">
-								<div class="pull-left">
-									<h6 class="panel-title txt-dark">Các từ khoá tìm kiếm nhiều nhất</h6>
-								</div>
-								<div class="pull-right">
-										<a href="javascript:void(0)" class="pull-left btn btn-success btn-xs mr-15">Xem tất cả</a>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-wrapper collapse in">
-								<div class="panel-body row pa-0">
-									<div class="table-wrap sm-data-box-2">
-										<div class="table-responsive">
-											<table class="table table-striped mb-0">
-												<thead>
-													<tr>
-														<th>Keyword</th>
-														<th>Revenue</th>
-														<th>Conversion Rate</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>adidas</td>
-														<td>$49,897</td>
-														<td>8.61%</td>
-													</tr>
-													<tr>
-														<td>men's park</td>
-														<td>$15,478</td>
-														<td>2.10%</td>
-													</tr>
-													<tr>
-														<td>nutiva coconut oil</td>
-														<td>$23,546</td>
-														<td>4.35%</td>
-													</tr>
-													<tr>
-														<td>cart software</td>
-														<td>$36,589</td>
-														<td>1.58%</td>
-													</tr>
-													<tr>
-														<td>where to buy</td>
-														<td>$55,467</td>
-														<td>56%</td>
-													</tr>
-													<tr>
-														<td>pink adhesive</td>
-														<td>$71,245</td>
-														<td>47.6%</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" id="review-block">
-						<div class="panel panel-default border-panel  review-box card-view">
-							<div class="panel-heading">
-								<div class="pull-left">
-									<h6 class="panel-title txt-dark">Nhận xét mới nhất</h6>
-								</div>
-								<div class="pull-right">
-										<a href="/admin/reviews" class="pull-left btn btn-success btn-xs mr-15">Xem tất cả</a>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-wrapper collapse in">
-								<div class="panel-body row pa-0">
-									<div class="streamline review-items">
-										<!-- REVIEW -->
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 col-xs-12">
-						<div class="panel panel-default border-panel card-view">
-							<div class="panel-heading">
-								<div class="pull-left">
-									<h6 class="panel-title txt-dark">Hoạt động gần đây</h6>
-								</div>
-								<a class="txt-danger pull-right right-float-sub-text inline-block" href="javascript:void(0)"> clear all </a>
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-wrapper task-panel collapse in">
-								<div class="panel-body row pa-0">
-									<div class="list-group mb-0">
-										<a href="#" class="list-group-item">
-											<span class="badge transparent-badge badge-info capitalize-font">just now</span>
-											<i class="zmdi zmdi-calendar-check pull-left"></i>
-											<p class="pull-left">Calendar updated</p>
-											<div class="clearfix"></div>
-										</a>
-										<a href="#" class="list-group-item">
-											<span class="badge transparent-badge badge-success capitalize-font">4 min</span>
-											<i class="zmdi zmdi-comment-alert pull-left"></i>
-											<p class=" pull-left">Commented on a post</p>
-											<div class="clearfix"></div>
-										</a>
-										<a href="#" class="list-group-item">
-											<span class="badge transparent-badge badge-warning capitalize-font">23 min </span>
-											<i class="zmdi zmdi-truck pull-left"></i>
-											<p class=" pull-left">Order 392 shipped</p>
-											<div class="clearfix"></div>
-										</a>
-										<a href="#" class="list-group-item">
-											<span class="badge transparent-badge badge-success capitalize-font">46 min</span>
-											<i class="zmdi zmdi-money pull-left"></i>
-											<p class=" pull-left">Invoice 653 has been paid</p>
-											<div class="clearfix"></div>
-										</a>
-										<a href="#" class="list-group-item">
-											<span class="badge transparent-badge badge-danger capitalize-font">1 hr</span>
-											<i class="zmdi zmdi-account pull-left"></i>
-											<p class="pull-left">A new user has been added</p>
-											<div class="clearfix"></div>
-										</a>
-										<a href="#" class="list-group-item">
-											<span class="badge transparent-badge badge-warning capitalize-font">just now</span>
-											<i class="zmdi zmdi-picture-in-picture pull-left"></i>
-											<p class=" pull-left">Finance report has been released</p>
-											<div class="clearfix"></div>
-										</a>
-										<a href="#" class="list-group-item">
-											<span class="badge transparent-badge badge-success capitalize-font">1 hr</span>
-											<i class="zmdi zmdi-device-hub pull-left"></i>
-											<p class="pull-left">Web server hardware updated</p>
-											<div class="clearfix"></div>
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /Row -->
-
-				<!-- Row -->
-				<div class="row">
-					<div class="col-lg-12 col-md-6 col-xs-12" id="order-block">
-						<div class="panel panel-default card-view panel-refresh">
-							<div class="refresh-container">
+                        </div>
+                        <div class="panel panel-default card-view panel-refresh">
+                            <div class="refresh-container" style="display: none;">
 								<div class="la-anim-1"></div>
 							</div>
 							<div class="panel-heading">
 								<div class="pull-left">
-									<h6 class="panel-title txt-dark">Danh sách đơn hàng gần đây</h6>
+									<h6 class="panel-title txt-dark">Các sản phẩm tìm kiếm nhiều nhất</h6>
 								</div>
 								<div class="pull-right">
-									<a href="/admin/orders" class="pull-left btn btn-success btn-xs mr-15">Xem tất cả</a>
+									<a href="#" class="pull-left inline-block refresh mr-15">
+										<i class="zmdi zmdi-replay"></i>
+									</a>
+									<a href="#" class="pull-left inline-block close-panel" data-effect="fadeOut">
+										<i class="zmdi zmdi-close"></i>
+									</a>
 								</div>
 								<div class="clearfix"></div>
 							</div>
 							<div class="panel-wrapper collapse in">
 								<div class="panel-body row pa-0">
-									<div class="table-wrap">
+										<div class="table-wrap sm-data-box-2">
 										<div class="table-responsive">
-											<div id="datable_1_wrapper" class="dataTables_wrapper no-footer">
-												<table id="table-order" class="table display table-hover border-none dataTable no-footer" role="grid">
-													<thead>
-														<tr role="row">
-															<th>#INVOICE</th>
-                                                            <th>Người mua</th>            
-                                                            <th>Sản phẩm</th>
-                                                            <th>Ngày mua</th>
-                                                            <th>Trạng thái</th>
-                                                            <th>Chức năng</th>
-														</tr>
-													</thead>
-													<tbody>
-														
-													</tbody>
-												</table>
-											</div>
+										  <table class="table table-striped mb-0" id="table_search_product">
+											<thead>
+											  <tr>
+												<th>Sản phẩm</th>
+												<th>Lượt tìm</th>
+											  </tr>
+											</thead>
+											<tbody>
+											  
+											</tbody>
+										  </table>
 										</div>
 									</div>
-								</div>
+								</div>	
 							</div>
 						</div>
 					</div>
+					<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" id="review-block">
+                            <div class="panel panel-default border-panel  review-box card-view">
+                                <div class="panel-heading">
+                                    <div class="pull-left">
+                                        <h6 class="panel-title txt-dark">Nhận xét mới nhất</h6>
+                                    </div>
+                                    <div class="pull-right">
+                                            <a href="/admin/reviews" class="pull-left btn btn-success btn-xs mr-15">Xem tất cả</a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body row pa-0">
+                                        <div class="streamline review-items">
+                                            <!-- REVIEW -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>                    
 				</div>
 				<!-- /Row -->
+				
+				<!-- Row -->
+				<div class="row">
+                        <div class="col-lg-12 col-md-6 col-xs-12" id="order-block">
+                            <div class="panel panel-default card-view panel-refresh">
+                                <div class="refresh-container">
+                                    <div class="la-anim-1"></div>
+                                </div>
+                                <div class="panel-heading">
+                                    <div class="pull-left">
+                                        <h6 class="panel-title txt-dark">Danh sách đơn hàng gần đây</h6>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="/admin/orders" class="pull-left btn btn-success btn-xs mr-15">Xem tất cả</a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body row pa-0">
+                                        <div class="table-wrap">
+                                            <div class="table-responsive">
+                                                <div id="datable_1_wrapper" class="dataTables_wrapper no-footer">
+                                                    <table id="table-order" class="table display table-hover border-none dataTable no-footer" role="grid">
+                                                        <thead>
+                                                            <tr role="row">
+                                                                <th>#INVOICE</th>
+                                                                <th>Người mua</th>            
+                                                                <th>Sản phẩm</th>
+                                                                <th>Ngày mua</th>
+                                                                <th>Trạng thái</th>
+                                                                <th>Chức năng</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				<!-- /Row -->
 			</div>
-
+			
 			<!-- Footer -->
 			<footer class="footer container-fluid pl-30 pr-30">
-				<div class="row">
-					<div class="col-sm-12">
-					<p>2018 &copy; Alomobile</p>
-					</div>
-				</div>
-			</footer>
-			<!-- /Footer -->
-
+                <div class="row">
+                    <div class="col-sm-12">
+                    <p>2018 &copy; Alomobile</p>
+                    </div>
+                </div>
+            </footer>
+            <!-- /Footer -->
+			
 		</div>
-		<!-- /Main Content -->
+        <!-- /Main Content -->
 
-	</div>
+    </div>
 	<!-- /#wrapper -->
-
 	<% include layouts/footer %>
-
+	
+	<!-- ChartJS JavaScript -->
+	<script src="/static/admin/libs/chart.js/Chart.min.js"></script>
+	 
+	<!-- EasyPieChart JavaScript -->
+	<script src="/static/admin/libs/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
+	    
+    <!-- Morris Charts JavaScript -->
+    <script src="/static/admin/libs/raphael/raphael.min.js"></script>
+    <script src="/static/admin/libs/morris.js/morris.min.js"></script>
+	
+	<!-- Bootstrap Select JavaScript -->
+	<script src="/static/admin/libs/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 </body>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
 
 <script type="text/javascript">
 
-  	socket.on('newOrder', function (data) {
-    	
-	});
+    var chartAnalyticSale = Morris.Line({
+        element: 'chart_analytic_sale',
+        xkey: 'xkey',
+        ykeys: ['orders', 'revenue'],
+        labels: ['orders', 'revenue'],
+        pointSize: 2,
+        fillOpacity: 0,
+        lineWidth:2,
+        pointStrokeColors:['#8BC34A', '#f8b32d'],
+        behaveLikeLine: true,
+        grid: false,
+        hideHover: 'auto',
+        lineColors: ['#8BC34A', '#f8b32d'],
+        resize: true,
+        gridTextFamily:"Roboto",
+        smooth: true,
+        parseTime: false            
+    });
 
-	socket.on('newReview', (data) => {
-		console.log(data);
-	});
+    function getRevenue(year = Date.now().getFullYear(), cb) {
+        $.get(`/api/v1/get-revenue?year=${year}`, (result) => {
+            return cb(result);
+        });        
+    }
 
-	socket.on('newUser', (data) => {
+    function initDataChartSale(year) {
+        getRevenue(year, (result) => {
+            var received = result.data;       
+            if (!received) { return }
 
-	});
+            var analytics = received.analytics;
+            if (!analytics) { return }
 
-	socket.on('update-current-user', (users) => {
-		console.log();
-		console.log(users);
+            var data = [];
+
+            for (const key in analytics) {
+                data.push({
+                    xkey: key,
+                    orders: analytics[key].orders,
+                    revenue: analytics[key].revenue
+                });
+            }
+
+            $('#chart_analytic_sale').prev('ul').find('span.counter-orders').text(received.totalOrders);
+            $('#chart_analytic_sale').prev('ul').find('span.counter-revenue').text(numberWithCommas(received.totalRevenue) + " VNĐ");
+
+            chartAnalyticSale.setData(data);
+        });   
+    }
+
+    initDataChartSale(new Date(Date.now()).getFullYear());          
+    
+    $('.selectpicker').change((e) => {
+       if ($(e.currentTarget).find('option:selected').length > 0) {
+           initDataChartSale($(e.currentTarget).find('option:selected').val());
+       }
 	});
+	
+	if ($('#satisfy_chart').length > 0 ){
+        $('#satisfy_chart').easyPieChart({
+            barColor : '#8BC34A',
+            lineWidth: 20,
+            animate: 3000,
+            size:	165,
+            lineCap: 'square',
+            trackColor: '#f4f4f4',
+            scaleColor: false,
+            onStep: function(from, to, percent) {
+                $(this.el).find('.percent').text(Math.round(percent));
+            }
+        });   
+	}    
+
+</script>
+
+<script type="text/javascript">
 
 	jQuery(document).ready(($) => {
 
 		//get reviews
 		$.get('/api/v1/newerReviews', (data) => {
+
 			if (data.reviews) {
 
-				var reviewBlock = $('#review-block div.panel-wrapper div.review-items');
+				var reviewBlock = $('#review-block div.review-items');
 
 				var items = '';
 
@@ -580,8 +656,114 @@
 			});
 		})
 
-		//get orders
+		//top keyword
+		$.get('/api/v1/get-top-keyword', (data) => {
+			if (data.keywords) {
+
+				var items = "";
+				data.keywords.forEach(keyword => {
+					items += `
+					<tr>
+						<td>${keyword._id}</td>
+						<td>${keyword.count}</td>
+				  	</tr>
+					`
+				})
+
+				$('#table_top_keyword tbody').append(items);
+			}
+		})
+
+		//top search product
+		$.get('/api/v1/get-top-search-product', (data) => {
+			if (data.products && data.products.length > 0) {
+				var items = "";
+				data.products.forEach(product => {
+					items += `
+					<tr>
+						<td><a href="/admin/product/${product._id.id}">${product._id.name}</a></td>
+						<td>${product.count}</td>
+				  	</tr>
+					`
+				});
+
+				$('#table_search_product tbody').append(items);
+			}
+		})
+
+		//top product
+		$.get('/api/v1/get-best-sold-products', (result) => {
+
+			if (result.products.length > 0) {
+				var eChart_3 = echarts.init(document.getElementById('top_product_echart'));
+
+				var data = [];
+				var colors = ['#8BC34A', '#AED581', '#DCEDC8','#558B2F', '#3a5927']
+
+				result.products.forEach((product, index) => {
+					data.push({
+						value: product.count,
+						name: ''
+					})
+
+
+					var label = ``;
+
+					if (index != result.products.length - 1) {
+						label = `
+							<div class="mb-5">
+								<span class="clabels circular-clabels inline-block mr-5" style="background-color: ${colors[index]} "></span>
+								<span class="clabels-text font-12 inline-block txt-dark capitalize-font"><a href="/admin/product/${product._id._id}">${product._id.name}</a></span>
+							</div>
+						`
+					} else {
+						label = `
+						<div class="">
+						<span class="clabels circular-clabels inline-block" style="background-color: ${colors[index]} "></span>
+							<span class="clabels-text font-12 inline-block txt-dark capitalize-font"><a href="/admin/product/${product._id._id}">${product._id.name}</a></span>
+						</div>
+					`
+					}
+
+					//label
+					$('#label_top_product_chart').append(label)
+				});
+
+				var option3 = {
+					tooltip: {
+						show: true,
+						trigger: 'item',
+						backgroundColor: 'rgba(33,33,33,1)',
+						borderRadius:0,
+						padding:10,
+						formatter: "Số lượng: {c} ({d}%)",
+						textStyle: {
+							color: '#fff',
+							fontStyle: 'normal',
+							fontWeight: 'normal',
+							fontFamily: "'Roboto', sans-serif",
+							fontSize: 12
+						}	
+					},
+					series: [{
+						type: 'pie',
+						selectedMode: 'single',
+						radius: ['80%', '30%'],
+						color: colors,
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: data
+					}]
+				};
+				eChart_3.setOption(option3);
+				eChart_3.resize();
+
+				
+			}
+		});
 	});
 </script>
-
 </html>
