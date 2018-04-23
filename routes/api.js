@@ -625,9 +625,14 @@ router.get('/api/v1/get-top-keyword', (req, res) => {
 
 router.get('/api/v1/get-top-search-product', (req, res) => {
     SearchProduct.gets((result) => {
-        console.log(result);
         res.json(result)
     })
-})
+});
+
+router.get('/api/v1/get-best-sold-products', (req, res) => {
+    Analytic.sellestProducts((result) => {
+        res.json(result);
+    });
+});
 
 module.exports = router;

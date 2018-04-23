@@ -826,53 +826,7 @@ var echartsConfig = function() {
 		eChart_2.setOption(option1);
 		eChart_2.resize();
 	}
-	if( $('#e_chart_3').length > 0 ){
-		var eChart_3 = echarts.init(document.getElementById('e_chart_3'));
-		var data = [{
-			value: 3661,
-			name: ''
-		}, {
-			value: 5713,
-			name: ''
-		}, {
-			value: 9938,
-			name: ''
-		}, {
-			value: 17623,
-			name: ''
-		}];
-		var option3 = {
-			tooltip: {
-				show: true,
-				trigger: 'item',
-				backgroundColor: 'rgba(33,33,33,1)',
-				borderRadius:0,
-				padding:10,
-				formatter: "{b}: {c} ({d}%)",
-				textStyle: {
-					color: '#fff',
-					fontStyle: 'normal',
-					fontWeight: 'normal',
-					fontFamily: "'Roboto', sans-serif",
-					fontSize: 12
-				}	
-			},
-			series: [{
-				type: 'pie',
-				selectedMode: 'single',
-				radius: ['80%', '30%'],
-				color: ['#8BC34A', '#AED581', '#DCEDC8','#558B2F'],
-				labelLine: {
-					normal: {
-						show: false
-					}
-				},
-				data: data
-			}]
-		};
-		eChart_3.setOption(option3);
-		eChart_3.resize();
-	}
+	
 }
 /*****E-Charts function end*****/
 

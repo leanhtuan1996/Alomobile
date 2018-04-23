@@ -189,44 +189,7 @@ var echartsConfig = function() {
 		eChart_2.setOption(option1);
 		eChart_2.resize();
 	}
-	if( $('#e_chart_3').length > 0 ){
-		var eChart_3 = echarts.init(document.getElementById('e_chart_3'));
-		var option3 = {
-			  series: [{
-				type: 'liquidFill',
-				data: [0.6, 0.5, 0.4],
-				radius: '100%',
-				shape: 'pin',
-				color: ['#DCEDC8','#AED581','#8BC34A'],
-				backgroundStyle: {
-					borderWidth: 0,
-					color: 'rgba(255,255,255,0)',
-					shadowBlur: 0
-				},
-				itemStyle: {
-					normal: {
-						shadowBlur: 5,
-						shadowColor: 'rgba(0, 0, 0, .5)'
-					}
-				},
-				outline: {
-					borderDistance: 1,
-					itemStyle: {
-						borderWidth: 1,
-						borderColor: '#8BC34A',
-						shadowBlur: 0,
-					}
-				},
-				label: {
-					normal: {
-						fontSize: 20
-					}
-				}
-			}]
-		};
-		eChart_3.setOption(option3);
-		eChart_3.resize();
-	}
+	
 }
 /*****E-Charts function end*****/
 

@@ -82,35 +82,25 @@
                         </div>
                     </div>
 					<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+						<!--  XXX -->
 						<div class="panel panel-default card-view panel-refresh">
 							<div class="refresh-container">
 								<div class="la-anim-1"></div>
 							</div>
 							<div class="panel-heading">
 								<div class="pull-left">
-									<h6 class="panel-title txt-dark">5 sản phẩm bán chạy nhất</h6>
+									<h6 class="panel-title txt-dark">Sản phẩm được mua nhiều nhất</h6>
 								</div>
 								<div class="clearfix"></div>
 							</div>
 							<div class="panel-wrapper collapse in">
 								<div class="panel-body row">
 									<div class="col-sm-6 pa-0">
-										<div id="e_chart_2" class="" style="height:185px;"></div>
+										<div id="top_product_echart" class="" style="height:185px;"></div>
 									</div>
-									<div class="col-sm-6 pr-0 pt-25">
-										<div class="label-chatrs">
-											<div class="mb-5">
-												<span class="clabels inline-block bg-green mr-5"></span>
-												<span class="clabels-text font-12 inline-block txt-dark capitalize-font">Paleo Bars</span>
-											</div>
-											<div class="mb-5">
-												<span class="clabels inline-block bg-light-green mr-5"></span>
-												<span class="clabels-text font-12 inline-block txt-dark capitalize-font">Bow Ties</span>
-											</div>
-											<div class="mb-5">
-												<span class="clabels inline-block bg-xtra-light-green mr-5"></span>
-												<span class="clabels-text font-12 inline-block txt-dark capitalize-font">Pocket Squares</span>
-											</div>
+									<div class="col-sm-6 pr-0 pt-30">
+										<div class="label-chatrs" id="label_top_product_chart">
+											<!-- LABEL -->									
 										</div>
 									</div>										
 								</div>	
@@ -153,45 +143,7 @@
 				
 				<!-- Row -->
 				<div class="row">
-					<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-						<div class="panel panel-default card-view panel-refresh">
-							<div class="refresh-container">
-								<div class="la-anim-1"></div>
-							</div>
-							<div class="panel-heading">
-								<div class="pull-left">
-									<h6 class="panel-title txt-dark">5 loại sản phẩm được mua nhiều nhất</h6>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-wrapper collapse in">
-								<div class="panel-body row">
-									<div class="col-sm-6 pa-0">
-										<div id="e_chart_3" class="" style="height:185px;"></div>
-									</div>
-									<div class="col-sm-6 pr-0 pt-30">
-										<div class="label-chatrs">
-											<div class="mb-5">
-												<span class="clabels circular-clabels inline-block bg-green mr-5"></span>
-												<span class="clabels-text font-12 inline-block txt-dark capitalize-font">Điện thoại</span>
-											</div>
-											<div class="mb-5">
-												<span class="clabels circular-clabels inline-block bg-light-green mr-5"></span>
-												<span class="clabels-text font-12 inline-block txt-dark capitalize-font">Phụ kiện</span>
-											</div>
-											<div class="mb-5">
-												<span class="clabels circular-clabels inline-block bg-xtra-light-green mr-5"></span>
-												<span class="clabels-text font-12 inline-block txt-dark capitalize-font">Máy tính xách tay</span>
-											</div>
-											<div class="">
-												<span class="clabels circular-clabels inline-block bg-dark-green mr-5"></span>
-												<span class="clabels-text font-12 inline-block txt-dark capitalize-font">Wood Sunglasses</span>
-											</div>											
-										</div>
-									</div>										
-								</div>	
-							</div>
-						</div>
+					<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">						
 						<div class="panel panel-default card-view panel-refresh">
                             <div class="refresh-container" style="display: none;">
 								<div class="la-anim-1"></div>
@@ -791,11 +743,85 @@
 				$('#table_search_product tbody').append(items);
 			}
 		})
+
+		//top product
+		$.get('/api/v1/get-best-sold-products', (result) => {
+
+			if (result.products.length > 0) {
+				var eChart_3 = echarts.init(document.getElementById('top_product_echart'));
+
+				var data = [];
+				var colors = ['#8BC34A', '#AED581', '#DCEDC8','#558B2F', '#3a5927']
+
+				result.products.forEach((product, index) => {
+					data.push({
+						value: product.count,
+						name: ''
+					})
+
+
+					var label = ``;
+
+					if (index != result.products.length - 1) {
+						label = `
+							<div class="mb-5">
+								<span class="clabels circular-clabels inline-block mr-5" style="background-color: ${colors[index]} "></span>
+								<span class="clabels-text font-12 inline-block txt-dark capitalize-font"><a href="/admin/product/${product._id._id}">${product._id.name}</a></span>
+							</div>
+						`
+					} else {
+						label = `
+						<div class="">
+						<span class="clabels circular-clabels inline-block" style="background-color: ${colors[index]} "></span>
+							<span class="clabels-text font-12 inline-block txt-dark capitalize-font"><a href="/admin/product/${product._id._id}">${product._id.name}</a></span>
+						</div>
+					`
+					}
+
+					//label
+					$('#label_top_product_chart').append(label)
+				});
+
+				var option3 = {
+					tooltip: {
+						show: true,
+						trigger: 'item',
+						backgroundColor: 'rgba(33,33,33,1)',
+						borderRadius:0,
+						padding:10,
+						formatter: "Số lượng: {c} ({d}%)",
+						textStyle: {
+							color: '#fff',
+							fontStyle: 'normal',
+							fontWeight: 'normal',
+							fontFamily: "'Roboto', sans-serif",
+							fontSize: 12
+						}	
+					},
+					series: [{
+						type: 'pie',
+						selectedMode: 'single',
+						radius: ['80%', '30%'],
+						color: colors,
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: data
+					}]
+				};
+				eChart_3.setOption(option3);
+				eChart_3.resize();
+
+				
+			}
+		});
 	});
 </script>
 
 <script type="text/javascript">
-    if( $('#satisfy_chart').length > 0 ){
+    if ($('#satisfy_chart').length > 0 ){
         $('#satisfy_chart').easyPieChart({
             barColor : '#8BC34A',
             lineWidth: 20,
@@ -808,7 +834,7 @@
                 $(this.el).find('.percent').text(Math.round(percent));
             }
         });   
-    }    
+	}    	
 </script>
 
 

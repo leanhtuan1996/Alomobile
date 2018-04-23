@@ -35,8 +35,8 @@ var satisfiedClient = (cb) => {
                 return
             }
 
-            var satisfied = 0; 
-            var unsatisfied = 0; 
+            var satisfied = 0;
+            var unsatisfied = 0;
             var totalReview = 0;
 
             reviews.forEach(review => {
@@ -46,8 +46,8 @@ var satisfiedClient = (cb) => {
                     } else if (review.star >= 4) {
                         satisfied += 1;
                     }
-                    totalReview += 1;  
-                }                              
+                    totalReview += 1;
+                }
             });
 
             var satisfiedOfClient = (satisfied / (satisfied + unsatisfied)) * 100;
@@ -71,7 +71,7 @@ var revenue = (year = Date.now(), cb) => {
     workflow.on('validate-parameters', () => {
 
         try {
-            newYear = new Date(year).getFullYear();            
+            newYear = new Date(year).getFullYear();
         } catch (error) {
             workflow.emit('response', {
                 error: error
@@ -79,7 +79,7 @@ var revenue = (year = Date.now(), cb) => {
             return
         }
 
-        workflow.emit('revenue', newYear);           
+        workflow.emit('revenue', newYear);
     });
 
     workflow.on('revenue', (newYear) => {
@@ -93,73 +93,149 @@ var revenue = (year = Date.now(), cb) => {
                 $lte: maxMonth
             }
         })
-        .select('products created_at')
-        .exec((err, orders) => {
+            .select('products created_at')
+            .exec((err, orders) => {
 
-            if (err) {
-                workflow.emit('response', {
-                    error: err
-                });
-                return
-            }
-
-            
-
-            var data = {
-                "1": {
-                    orders: 0,
-                    revenue: 0
-                },
-                "2": {
-                    orders: 0,
-                    revenue: 0
-                },
-                "3": {
-                    orders: 0,
-                    revenue: 0
-                },
-                "4": {
-                    orders: 0,
-                    revenue: 0
-                },
-                "5": {
-                    orders: 0,
-                    revenue: 0
-                },
-                "6": {
-                    orders: 0,
-                    revenue: 0
-                },
-                "7": {
-                    orders: 0,
-                    revenue: 0
-                },
-                "8": {
-                    orders: 0,
-                    revenue: 0
-                },
-                "9": {
-                    orders: 0,
-                    revenue: 0
-                },
-                "10": {
-                    orders: 0,
-                    revenue: 0
-                },
-                "11": {
-                    orders: 0,
-                    revenue: 0
-                },
-                "12": {
-                    orders: 0,
-                    revenue: 0
+                if (err) {
+                    workflow.emit('response', {
+                        error: err
+                    });
+                    return
                 }
-            };
 
-            var totalRevenue = 0;
-            var totalOrders = 0;
 
-            if (!orders || orders.length == 0) {
+
+                var data = {
+                    "1": {
+                        orders: 0,
+                        revenue: 0
+                    },
+                    "2": {
+                        orders: 0,
+                        revenue: 0
+                    },
+                    "3": {
+                        orders: 0,
+                        revenue: 0
+                    },
+                    "4": {
+                        orders: 0,
+                        revenue: 0
+                    },
+                    "5": {
+                        orders: 0,
+                        revenue: 0
+                    },
+                    "6": {
+                        orders: 0,
+                        revenue: 0
+                    },
+                    "7": {
+                        orders: 0,
+                        revenue: 0
+                    },
+                    "8": {
+                        orders: 0,
+                        revenue: 0
+                    },
+                    "9": {
+                        orders: 0,
+                        revenue: 0
+                    },
+                    "10": {
+                        orders: 0,
+                        revenue: 0
+                    },
+                    "11": {
+                        orders: 0,
+                        revenue: 0
+                    },
+                    "12": {
+                        orders: 0,
+                        revenue: 0
+                    }
+                };
+
+                var totalRevenue = 0;
+                var totalOrders = 0;
+
+                if (!orders || orders.length == 0) {
+                    workflow.emit('response', {
+                        error: err,
+                        data: {
+                            year: newYear,
+                            totalOrders: totalOrders,
+                            totalRevenue: totalRevenue,
+                            analytics: data
+                        }
+                    });
+                    return
+                }
+
+                orders.forEach(order => {
+                    var orderDate = new Date(order.created_at).getMonth() + 1;
+
+                    totalOrders += 1;
+
+                    var revenue = 0;
+                    order.products.forEach(product => {
+                        revenue += product.price * product.quantity;
+                    });
+
+                    totalRevenue += revenue;
+
+                    switch (orderDate) {
+                        case 1:
+                            data["1"].orders++;
+                            data["1"].revenue += revenue;
+                            break;
+                        case 2:
+                            data["2"].orders++;
+                            data["2"].revenue += revenue;
+                            break;
+                        case 3:
+                            data["3"].orders++;
+                            data["3"].revenue += revenue;
+                            break;
+                        case 4:
+                            data["4"].orders++;
+                            data["4"].revenue += revenue;
+                            break;
+                        case 5:
+                            data["5"].orders++;
+                            data["5"].revenue += revenue;
+                            break;
+                        case 6:
+                            data["6"].orders++;
+                            data["6"].revenue += revenue;
+                            break;
+                        case 7:
+                            data["7"].orders++;
+                            data["7"].revenue += revenue;
+                            break;
+                        case 8:
+                            data["8"].orders++;
+                            data["8"].revenue += revenue;
+                            break;
+                        case 9:
+                            data["9"].orders++;
+                            data["9"].revenue += revenue;
+                            break;
+                        case 10:
+                            data["10"].orders++;
+                            data["10"].revenue += revenue;
+                            break;
+                        case 11:
+                            data["11"].orders++;
+                            data["11"].revenue += revenue;
+                            break;
+                        case 12:
+                            data["12"].orders++;
+                            data["12"].revenue += revenue;
+                            break;
+                    }
+                });
+
                 workflow.emit('response', {
                     error: err,
                     data: {
@@ -169,83 +245,7 @@ var revenue = (year = Date.now(), cb) => {
                         analytics: data
                     }
                 });
-                return
-            }
-            
-            orders.forEach(order => {
-                var orderDate = new Date(order.created_at).getMonth() + 1;
-          
-                totalOrders += 1;
-                
-                var revenue = 0;
-                order.products.forEach(product => {
-                    revenue += product.price * product.quantity;
-                });
-
-                totalRevenue += revenue;
-
-                switch (orderDate) {
-                    case 1:                       
-                        data["1"].orders++;
-                        data["1"].revenue+= revenue;
-                        break;
-                    case 2:
-                        data["2"].orders++;
-                        data["2"].revenue+= revenue;
-                        break;
-                    case 3:
-                        data["3"].orders++;
-                        data["3"].revenue+= revenue;
-                        break;
-                    case 4:
-                        data["4"].orders++;
-                        data["4"].revenue+= revenue;
-                        break;
-                    case 5:
-                        data["5"].orders++;
-                        data["5"].revenue+= revenue;
-                        break;
-                    case 6:
-                        data["6"].orders++;
-                        data["6"].revenue+= revenue;
-                        break;
-                    case 7:
-                        data["7"].orders++;
-                        data["7"].revenue+= revenue;
-                        break;
-                    case 8:
-                        data["8"].orders++;
-                        data["8"].revenue+= revenue;
-                        break;
-                    case 9:
-                        data["9"].orders++;
-                        data["9"].revenue+= revenue;
-                        break;
-                    case 10:
-                        data["10"].orders++;
-                        data["10"].revenue+= revenue;
-                        break;
-                    case 11:
-                        data["11"].orders++;
-                        data["11"].revenue+= revenue;
-                        break;
-                    case 12:
-                        data["12"].orders++;
-                        data["12"].revenue+= revenue;
-                        break;                
-                }
             });
-
-            workflow.emit('response', {
-                error: err,
-                data: {
-                    year: newYear,
-                    totalOrders: totalOrders,
-                    totalRevenue: totalRevenue,
-                    analytics: data
-                }
-            });
-        });
     });
 
     workflow.on('response', (response) => {
@@ -255,7 +255,68 @@ var revenue = (year = Date.now(), cb) => {
     workflow.emit('validate-parameters');
 }
 
+var sellestProducts = (cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        workflow.emit('sellest-products');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    });
+
+    workflow.on('sellest-products', () => {
+
+        Order.aggregate([
+            {
+                $unwind: "$products"
+            },
+            {
+                $group: {
+                    "_id": {
+                        "product": "$products"
+                    },
+                    "countProduct": { "$sum": 1 }
+                }
+            },
+            {
+                $group: {
+                    "_id": "$_id.product.id",
+                    "count": {
+                        "$sum": "$countProduct"
+                    }
+                }
+            },
+            {
+                $sort: {
+                    "count": -1
+                }
+            },
+            {
+                $limit: 5
+            }
+        ], (err, products) => {
+            if (products.length > 0) {
+                Order.populate(products, {
+                    path: "_id",
+                    model: "Product",
+                    select: "name alias"
+                }, (err, result) => {
+                    workflow.emit('response', {
+                        error: err,
+                        products: result
+                    });
+                });
+            }
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     satisfiedClient: satisfiedClient,
-    revenue: revenue
+    revenue: revenue,
+    sellestProducts: sellestProducts
 }
