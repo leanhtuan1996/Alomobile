@@ -234,8 +234,8 @@ router.get('/api/v1/product/get-products-by-category/:id', (req, res) => {
 
 router.get('/api/v1/product/get-products-by-category', (req, res) => {
 
-    if (req.query.category && req.query.from) {
-        Product.getProductsByCategoryWithPagination(req.query.category, req.query.from, 12, (result) => {
+    if (req.query.category && req.query.from && req.query.action) {
+        Product.getProductsByCategoryWithPagination(req.query.category, req.query.from, 12, req.query.action, (result) => {   
             res.json(result);
         });
         return

@@ -262,7 +262,7 @@ var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
     workflow.emit('validate-parameters');
 }
 
-var getProductsByCategoryWithPagination = (idCategory, from, limit = 15, result) => {
+var getProductsByCategoryWithPagination = (idCategory, from, limit = 15, action = "next", result) => {
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
@@ -289,26 +289,51 @@ var getProductsByCategoryWithPagination = (idCategory, from, limit = 15, result)
 
     workflow.on('get-products', () => {
 
-        Product
-            .find({
-                "category.idRootCategory": idCategory,
-                "created_at": {
-                    $lte: from
-                }
-            })
-            .limit(Number.parseInt(limit))
-            .select('alias name brand images details status reviews created_at')
-            .populate({
-                path: "reviews",
-                model: "Review",
-                match: { status: true }
-            })
-            .exec((err, products) => {
-                workflow.emit('response', {
-                    error: err,
-                    products: products
+        if (action == "next") {
+            Product
+                .find({
+                    "category.idRootCategory": idCategory,
+                    "created_at": {
+                        $lte: from
+                    }
+                })
+                .sort('-created_at')
+                .limit(Number.parseInt(limit))
+                .select('alias name brand images details status reviews created_at')
+                .populate({
+                    path: "reviews",
+                    model: "Review",
+                    match: { status: true }
+                })
+                .exec((err, products) => {
+                    workflow.emit('response', {
+                        error: err,
+                        products: products
+                    });
                 });
-            });
+        } else {
+            Product
+                .find({
+                    "category.idRootCategory": idCategory,
+                    "created_at": {
+                        $gte: from
+                    }
+                })
+                .sort('-created_at')
+                .limit(Number.parseInt(limit))
+                .select('alias name brand images details status reviews created_at')
+                .populate({
+                    path: "reviews",
+                    model: "Review",
+                    match: { status: true }
+                })
+                .exec((err, products) => {
+                    workflow.emit('response', {
+                        error: err,
+                        products: products
+                    });
+                });
+        }
     });
 
     workflow.emit('validate-parameters');

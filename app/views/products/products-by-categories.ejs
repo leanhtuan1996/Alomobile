@@ -634,17 +634,25 @@
             var filterBy = $(e.currentTarget).attr('data-filter-by');
             var filterName = $(e.currentTarget).text().trim();
 
-            $('#filter_product_options').prev('button').html(`${filterName} <i class="material-icons float-xs-right">&#xE5C5;</i>`);
+            $('#filter_product_options').prev('button').html(`${filterName} <i class="material-icons float-xs-right">&#xE5C5;</i>`);           
+                       
+        });
 
+        $('#js-product-list nav.pagination a').click((e) => {
             //find last product id
             var lastId = $('#js-product-list').find('div.item-product').last().attr('data-created-at');
-            
+            var action = 'next';
+            if ($(e.currentTarget).hasClass('previous')) {
+                action = 'previous';
+            }
+
             $.get('/api/v1/product/get-products-by-category', {
                 category: category,
-                from: lastId
+                from: lastId,
+                action: action
             }, (data) => {
                 console.log(data.products);
-            });
+            })
         });
     });
    
