@@ -136,7 +136,7 @@ var detailCart = (products, cb) => {
     workflow.on('detail', () => {
         products.forEach((product, index) => {
             Product.findById(product.id).select('name alias details images').lean().exec((err, element) => {
-                if (product) {
+                if (element) {
                     var detail = element.details.find((e) => {
                         return String(e.color.hex).trim() == String(product.color).trim();
                     });

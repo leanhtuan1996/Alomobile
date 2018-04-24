@@ -225,7 +225,7 @@ var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
                     "category.idRootCategory": idRootCategory
                 })
                 .limit(parseInt(limit))
-                .select('alias name brand images details status reviews')
+                .select('alias name brand images details status reviews created_at')
                 .populate({
                     path: "reviews",
                     model: "Review",
@@ -257,6 +257,58 @@ var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
                     });
                 });
         }
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var getProductsByCategoryWithPagination = (idCategory, from, limit = 15, result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!idCategory) {
+            workflow.emit('response', {
+                error: "Category is required!"
+            });
+            return
+        }
+
+        if (!from) {
+            workflow.emit('response', {
+                products: []
+            });
+            return
+        }
+
+        workflow.emit('get-products');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('get-products', () => {
+
+        Product
+            .find({
+                "category.idRootCategory": idCategory,
+                "created_at": {
+                    $lte: from
+                }
+            })
+            .limit(Number.parseInt(limit))
+            .select('alias name brand images details status reviews created_at')
+            .populate({
+                path: "reviews",
+                model: "Review",
+                match: { status: true }
+            })
+            .exec((err, products) => {
+                workflow.emit('response', {
+                    error: err,
+                    products: products
+                });
+            });
     });
 
     workflow.emit('validate-parameters');
@@ -934,5 +986,6 @@ module.exports = {
     searchProducts: searchProducts,
     getPreviewProduct: getPreviewProduct,
     reviewProduct: reviewProduct,
-    getReviews: getReviewsWithProduct
+    getReviews: getReviewsWithProduct,
+    getProductsByCategoryWithPagination: getProductsByCategoryWithPagination
 }
