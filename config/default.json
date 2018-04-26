@@ -4,7 +4,7 @@
 		"port" : 80
 	},
 	"mongoose": {
-		"host" : "35.201.241.250",
+		"host" : "35.201.243.41",
 		"port" : 27017,
 		"database" : "alomobile",
 		"user" : "alomobile",
