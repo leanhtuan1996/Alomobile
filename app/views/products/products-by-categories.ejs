@@ -651,7 +651,100 @@
                 from: lastId,
                 action: action
             }, (data) => {
-                console.log(data.products);
+                if (data.products && data.products.length > 1) {
+                    $('#js-product-list div.products').find('.item-product').remove();
+
+                    var items = '';
+
+                    data.products.forEach(product => {
+                        items += `
+                            <div class="item-product col-xs-12 col-sm-6 col-md-6 col-lg-4" data-id-product="${product._id}" data-created-at="${product.created_at}">
+                                <article class="js-product-miniature" itemscope itemtype="http://schema.org/Product">
+                                    <div class="img_block">
+                                        <a href="/${product.alias}-${product._id}" class="thumbnail product-thumbnail">
+                                            <img
+                                                src = "${product.images[0].url}"
+                                                alt = "${product.images[0].alt}"
+                                                data-full-size-image-url = "${product.images[0].url}"
+                                            >
+                                            <img class="img-responsive second-image animation1" src="${product.images[1].url}" alt = "${product.images[1].alt}" itemprop="image">
+                                            </a>
+                                        <!-- <ul class="product-flag">
+                                            <li class="discount-percentage">-8%</li>
+                                            <li class="discount">Reduced price</li>
+                                            <li class="new">New</li>
+                                        </ul> -->
+                                    </div>
+                                    <div class="product_desc">
+                                        <div class="desc_info">
+                                            <h4><a href="/${product.alias}-${product._id}" title="Faded Short Sleeves T-shirt" itemprop="name" class="product_name">${product.name}</a></h4>
+                                            <div class="hook-reviews">
+                                                <div itemtype="http://schema.org/AggregateRating" itemscope="" itemprop="aggregateRating" class="comments_note">
+                                                    <div class="star_content clearfix">
+                                                        <div class="star star_on"></div>
+                                                        <div class="star star_on"></div>
+                                                        <div class="star star_on"></div>
+                                                        <div class="star star_on"></div>
+                                                        <div class="star star_on"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-price-and-shipping">`
+
+                                                if (product.details) { 
+                                                   items+=` <span itemprop="price" class="price price_sale ">${numberWithCommas(product.details[0].price)} VNĐ</span>`
+                                                } else { 
+                                                   items+=` <span itemprop="price" class="price price_sale ">${numberWithCommas(product.details[0].price)} VNĐ</span>`
+                                                }
+                                                
+                                                items += `<span class="sr-only">Regular price</span>
+                                                
+                                                <!-- <span class="regular-price">${product.details[0].price}</span>
+                                                    <span class="discount-percentage">-8%</span> 
+                                                <span class="sr-only">Price</span> -->
+                                            </div>
+                                            <div class="product-desc" itemprop="description">
+                                                <br>
+                                            </div>
+                                        </div>
+                                        <ul class="add-to-links">
+                                            <li class="cart">
+                                                <div class="product-add-to-cart">
+                                                    <form class="add-to-cart-or-refresh">
+                                                        <input type="hidden" name="id_product" value="${product._id}" class="product_id">
+                                                        <input type="hidden" name="name" class="product_name" value="${ product.name}">
+                                                        <input type="hidden" name="img" class="product_img" value="${ product.images[0].url}"> `
+
+                                                        if (product.details) {
+                                                            items += `<input type="hidden" name="color" class="product_color" value="${product.details[0].color.hex}">
+                                                            <input type="hidden" name="price" class="product_price" value="${ product.details[0].price}">
+                                                            <button class="button ajax_add_to_cart_button add-to-cart btn-default" data-button-action="add-to-cart" type="submit">
+                                                                    Thêm vào giỏ hàng
+                                                                </button>`
+                                                        } else {
+                                                            items +=`<button class="button ajax_add_to_cart_button add-to-cart btn-default disabled" data-button-action="add-to-cart" type="submit">
+                                                                    Thêm vào giỏ hàng
+                                                                </button>`
+                                                        }
+                                                        
+                                                    items+= `</form>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <a href="javascript: void(0);" class="quick-view quick-view-product"  title="Quick view">Quick view</a>
+                                            </li>
+                                            <li>
+                                                <a href="/${product.alias}-${product._id}" class="links-details" title="Details">Details</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </div>
+                        `
+                    });
+
+                    $('#js-product-list div.products').append(items);
+                }
             })
         });
     });
