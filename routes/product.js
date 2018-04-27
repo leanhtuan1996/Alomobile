@@ -221,7 +221,7 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
                                     data: {
                                         token: req.session.token,
                                         user: req.session.user,
-                                        products: r.products || [],
+                                        products: data || [],
                                         idRootCategory: matches[0],
                                         idCategory: matches[1]
                                     }

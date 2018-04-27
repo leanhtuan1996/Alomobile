@@ -15,7 +15,7 @@
                                         <% data.categories.forEach((category) => { %>
                                             <% var subCategories = category.subCategories; %>  
                                             <% if (subCategories && subCategories.length != 0) { %>
-                                                <li><a href="/danh-muc/<%- category.alias %>" style="text-align: center"><%- category.name %></a>
+                                                <li><a href="/danh-muc/<%- category.alias %>-<%- category._id %>" style="text-align: center"><%- category.name %></a>
                                                     <ul class="dhtml"> 
                                                         <% subCategories.forEach((sub) => { %>  
                                                             <% if (sub) { %>
