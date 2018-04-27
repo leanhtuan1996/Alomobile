@@ -212,19 +212,17 @@ $(document).ready(($) => {
                 });
 
                 $('#pt_custommenu_itemmobile').append(items);
+
+                $("div.pt_custommenu_mobile ul.dhtml").hide(), 
+                $("ul.mobilemenu li").each(function() {
+                    $(this).children("ul").length > 0 && $(this).append('<span class="grower"><a href="javascript:void(0)"></a></span>')
+                }), 
+                $("ul.mobilemenu").mobilemenu(), 
+                $("#pt_custommenu_itemmobile").slideUp(), 
+                $("ul.mobilemenu li.active").each(function() {
+                    $(this).children().next("ul").css("display", "block")
+                })
             }
         });
     })(jQuery)
-
-    $(document).ready(function() {
-        $("div.pt_custommenu_mobile ul.dhtml").hide(), 
-        $("ul.mobilemenu li").each(function() {
-            $(this).children("ul").length > 0 && $(this).append('<span class="grower"><a href="javascript:void(0)"></a></span>')
-        }), 
-        $("ul.mobilemenu").mobilemenu(), 
-        $("#pt_custommenu_itemmobile").slideUp(), 
-        $("ul.mobilemenu li.active").each(function() {
-            $(this).children().next("ul").css("display", "block")
-        })
-    })
 </script>
