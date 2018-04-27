@@ -306,80 +306,90 @@ $(document).ready(function() {
 
                     $(modal).find('div.modal-dialog').remove();
 
+                    //get all products in cart
+                    var totalPrice = $('.cart-preview span.item_total').attr("data-raw-price");
+                    var totalItems = $('.cart-preview span.item_txt span.item_count').attr('data-total-items');
+
                     var content = `
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
+                                        <span aria-hidden="true">×</span>
                                     </button>
-                                    <h4 class="modal-title h6 text-sm-center" id="myModalLabel"><i class="material-icons"></i>Thêm sản phẩm vào giỏ hàng thành công</h4>
+                                    <h4 class="modal-title h6 text-sm-center" id="myModalLabel">
+                                        <i class="material-icons"></i>Thêm sản phẩm vào giỏ hàng thành công</h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <img class="product-image" src="${image}" alt="" title="" itemprop="image">
+                                        <div class="col-md-5 divide-right">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <img class="product-image" src="${image}" alt="" title="" itemprop="image">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h6 class="h6 product-name" style="overflow: hidden;">${name}</h6>
+                                                    <p>${numberWithCommas(price) + " VNĐ"}</p>   
+                                                    <ul style="list-style-type: none;
+                                                        margin: 0;
+                                                        padding: 0;
+                                                        overflow: hidden;">
+                                                        <li style="float: left;">
+                                                            <strong class="product-color">Màu sắc</strong>
+                                                        </li>
+                                                        <li style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin-left: 5px"
+                                                            title="Cosmos">
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-8">
-                                            <h6 class="h6 product-name">${name}</h6>
-                                            <p>${numberWithCommas(price) + " VNĐ"}</p>
-                                            <ul style="list-style-type: none;
-                                                    margin: 0;
-                                                    padding: 0;
-                                                    overflow: hidden;">
-                                                    <li style="float: left;"><strong class="product-color">Màu sắc</strong></li>
-                                                    <li style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin-left: 5px" title="Cosmos">
-                                                    </li>
-                                                </ul>
-                                                
-                                            </span><br>
-                                            <p style=""><strong class="product-quantity">Số lượng:</strong>&nbsp; 1</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-7">
+                                            <div class="cart-content">
+                                                <p class="cart-products-count">Có ${Number.parseInt(totalItems) + 1} trong giỏ hàng.</p>
+                                                <p><strong>Tổng giá sản phẩm:</strong> ${numberWithCommas(Number.parseInt(totalPrice) + Number.parseInt(price))} VNĐ</p>
+                                                <p><strong>Phí giao hàng:</strong>Miễn phí</p>
+                                                <p><strong>Tổng cộng:</strong> ${numberWithCommas(Number.parseInt(totalPrice) + Number.parseInt(price))} VNĐ</p>
+                                            </div>
                                             <div class="cart-content-btn">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tiếp tục mua sắm</button>
-                                                <a href="/gio-hang" class="btn btn-primary"><i class="material-icons"></i>Xem giỏ hàng</a>
-                                            </div>    
+                                                <a href="/gio-hang" class="btn btn-primary">
+                                                    <i class="material-icons"></i>Xem giỏ hàng
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <style>
-                                #blockcart-modal .modal-dialog {
-                                    max-width: 600px;
-                                    width: 40%;
-                                }
-
-                                .material-icons {
-                                    font-family: Material Icons;
-                                    font-weight: 400;
-                                    font-style: normal;
-                                    font-size: 20px;
-                                    display: inline-block;
-                                    vertical-align: middle;
-                                    width: 1em;
-                                    height: 1em;
-                                    line-height: 1;
-                                    text-transform: none;
-                                    letter-spacing: normal;
-                                    word-wrap: normal;
-                                    white-space: nowrap;
-                                    direction: ltr;
-                                    -webkit-font-smoothing: antialiased;
-                                    text-rendering: optimizeLegibility;
-                                }
-
-                                #blockcart-modal strong, p {
-                                    color: #333;
-                                    font-size: 14px;
-                                    font-weight: 600;
-                                }
-                            </style>
                         </div>
+
+                        <style>     
+                            .material-icons {
+                                font-family: Material Icons;
+                                font-weight: 400;
+                                font-style: normal;
+                                font-size: 20px;
+                                display: inline-block;
+                                vertical-align: middle;
+                                width: 1em;
+                                height: 1em;
+                                line-height: 1;
+                                text-transform: none;
+                                letter-spacing: normal;
+                                word-wrap: normal;
+                                white-space: nowrap;
+                                direction: ltr;
+                                -webkit-font-smoothing: antialiased;
+                                text-rendering: optimizeLegibility;
+                            }
+
+                            #blockcart-modal strong,
+                            p {
+                                color: #333;
+                                font-size: 14px;
+                                font-weight: 600;
+                            }
+                        </style>
                     `
 
                     $(modal).append(content);                
@@ -411,87 +421,97 @@ $(document).ready(function() {
             quantity: quantity
         }
 
-        checkAvailable(id, quantity, color, (result) => {
-            if (result) {
+        checkAvailable(id, quantity, color, (isAvailable) => {
+            if (isAvailable) {
                 if (addToCart(item)) {
                     var modal = $('#blockcart-modal');
 
                     $(modal).find('div.modal-dialog').remove();
+
+                    //get all products in cart
+                    var totalPrice = $('.cart-preview span.item_total').attr("data-raw-price");
+                    var totalItems = $('.cart-preview span.item_txt span.item_count').attr('data-total-items');
 
                     var content = `
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
+                                        <span aria-hidden="true">×</span>
                                     </button>
-                                    <h4 class="modal-title h6 text-sm-center" id="myModalLabel"><i class="material-icons"></i>Thêm sản phẩm vào giỏ hàng thành công</h4>
+                                    <h4 class="modal-title h6 text-sm-center" id="myModalLabel">
+                                        <i class="material-icons"></i>Thêm sản phẩm vào giỏ hàng thành công</h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <img class="product-image" src="${image}" alt="" title="" itemprop="image">
+                                        <div class="col-md-5 divide-right">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <img class="product-image" src="${image}" alt="" title="" itemprop="image">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h6 class="h6 product-name" style="overflow: hidden;">${name}</h6>
+                                                    <p>${numberWithCommas(price) + " VNĐ"}</p>   
+                                                    <ul style="list-style-type: none;
+                                                        margin: 0;
+                                                        padding: 0;
+                                                        overflow: hidden;">
+                                                        <li style="float: left;">
+                                                            <strong class="product-color">Màu sắc</strong>
+                                                        </li>
+                                                        <li style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin-left: 5px"
+                                                            title="Cosmos">
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-8">
-                                            <h6 class="h6 product-name">${name}</h6>
-                                            <p>${numberWithCommas(price) + " VNĐ"}</p>
-                                            <ul style="list-style-type: none;
-                                                    margin: 0;
-                                                    padding: 0;
-                                                    overflow: hidden;">
-                                                    <li style="float: left;"><strong class="product-color">Màu sắc</strong></li>
-                                                    <li style="background-color: ${color}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin-left: 5px" title="Cosmos">
-                                                    </li>
-                                                </ul>
-                                                
-                                            </span><br>
-                                            <p style=""><strong class="product-quantity">Số lượng:</strong>&nbsp; ${quantity}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-7">
+                                            <div class="cart-content">
+                                                <p class="cart-products-count">Có ${Number.parseInt(totalItems) + 1} trong giỏ hàng.</p>
+                                                <p><strong>Tổng giá sản phẩm:</strong> ${numberWithCommas(Number.parseInt(totalPrice) + Number.parseInt(price))} VNĐ</p>
+                                                <p><strong>Phí giao hàng:</strong>Miễn phí</p>
+                                                <p><strong>Tổng cộng:</strong> ${numberWithCommas(Number.parseInt(totalPrice) + Number.parseInt(price))} VNĐ</p>
+                                            </div>
                                             <div class="cart-content-btn">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tiếp tục mua sắm</button>
-                                                <a href="/gio-hang" class="btn btn-primary"><i class="material-icons"></i>Xem giỏ hàng</a>
-                                            </div>    
+                                                <a href="/gio-hang" class="btn btn-primary">
+                                                    <i class="material-icons"></i>Xem giỏ hàng
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <style>
-                                #blockcart-modal .modal-dialog {
-                                    max-width: 600px;
-                                    width: 40%;
-                                }
-
-                                .material-icons {
-                                    font-family: Material Icons;
-                                    font-weight: 400;
-                                    font-style: normal;
-                                    font-size: 20px;
-                                    display: inline-block;
-                                    vertical-align: middle;
-                                    width: 1em;
-                                    height: 1em;
-                                    line-height: 1;
-                                    text-transform: none;
-                                    letter-spacing: normal;
-                                    word-wrap: normal;
-                                    white-space: nowrap;
-                                    direction: ltr;
-                                    -webkit-font-smoothing: antialiased;
-                                    text-rendering: optimizeLegibility;
-                                }
-
-                                #blockcart-modal strong, p {
-                                    color: #333;
-                                    font-size: 14px;
-                                    font-weight: 600;
-                                }
-                            </style>
                         </div>
+
+                        <style>     
+                            .material-icons {
+                                font-family: Material Icons;
+                                font-weight: 400;
+                                font-style: normal;
+                                font-size: 20px;
+                                display: inline-block;
+                                vertical-align: middle;
+                                width: 1em;
+                                height: 1em;
+                                line-height: 1;
+                                text-transform: none;
+                                letter-spacing: normal;
+                                word-wrap: normal;
+                                white-space: nowrap;
+                                direction: ltr;
+                                -webkit-font-smoothing: antialiased;
+                                text-rendering: optimizeLegibility;
+                            }
+
+                            #blockcart-modal strong,
+                            p {
+                                color: #333;
+                                font-size: 14px;
+                                font-weight: 600;
+                            }
+                        </style>
                     `
 
                     $(modal).append(content);                
@@ -502,7 +522,7 @@ $(document).ready(function() {
             } else {
                 showNotification('Thêm sản phẩm vào giỏ hàng thất bại, có thể hết số lượng hoặc sản phẩm không sẵn có!')
             }
-        });       
+        });      
     });
 
     getAccessories((cb) => {
