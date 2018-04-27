@@ -20,6 +20,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/chinh-sach-giao-hang', (req, res) => {
+  
   res.render('menu/delivery', {
     data: {
       token: req.session.token,

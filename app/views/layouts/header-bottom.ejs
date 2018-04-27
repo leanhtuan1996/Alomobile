@@ -10,7 +10,7 @@
                             <a class="btn-navbar" style="text-align: center">Danh mục</a>
                             <ul id="pt_custommenu_itemmobile" class="tree dhtml  mobilemenu nav-collapse collapse" style="text-align: center; ">   
 
-                                <% if (data) { %>
+                                <!-- <% if (data) { %>
                                     <% if (data.categories) { %>
                                         <% data.categories.forEach((category) => { %>
                                             <% var subCategories = category.subCategories; %>  
@@ -19,17 +19,17 @@
                                                     <ul class="dhtml"> 
                                                         <% subCategories.forEach((sub) => { %>  
                                                             <% if (sub) { %>
-                                                                <li><a href="/danh-muc/<%- category.alias %>/<%- sub.alias %>"><%- sub.name %></a></li>
+                                                                <li><a href="/danh-muc/<%- category.alias %>-<%- category._id %>-<%- sub._id %>" ><%- sub.name %></a></li>
                                                             <% } %>                                                 
                                                         <% }); %>
                                                     </ul>               
                                                 </li>
                                             <% } else { %>
-                                                <li><a href="/danh-muc/<%- category.alias %>" style="text-align: center"><%- category.name %></a></li>
+                                                <li><a href="/danh-muc/<%- category.alias %>-<%- category._id %>" style="text-align: center"><%- category.name %></a></li>
                                             <% } %>                                            
                                         <% }); %>
                                     <% } %>   
-                                <% } %>
+                                <% } %> -->
                                 
 
                             </ul>                        
@@ -66,6 +66,7 @@
             var CUSTOMMENU_POPUP_TOP_OFFSET = 60;
             //]]>
             </script>
+            
 
         </div>
     </div>
