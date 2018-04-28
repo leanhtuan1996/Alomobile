@@ -85,7 +85,7 @@
             var email = $('#email').val();
             var id = $('#id_order').val();
 
-            if (!email && email == undefined) {
+            if (!email || email == undefined) {
                 swal({
                     title: "Có lỗi xảy ra",
                     text: "Vui lòng nhập Email cần tra cứu!",
@@ -95,7 +95,7 @@
                 return
             }
 
-            if (!id && id == undefined) {
+            if (!id || id == undefined) {
                 swal({
                     title: "Có lỗi xảy ra",
                     text: "Vui lòng nhập Mã đơn hàng cần tra cứu!",
@@ -136,9 +136,20 @@
         });
 
         $("#check-1").click((e) => {
-            var id = $('#order').val();
+            var email = $('#email').val();
+            var id = $('#id_order').val();
 
-            if (!id && id == undefined) {
+            if (!email || email == 'undefined') {
+                swal({
+                    title: "Có lỗi xảy ra",
+                    text: "Vui lòng nhập Email cần tra cứu!",
+                    icon: "error",
+                    button: "Đã rõ",
+                });
+                return
+            }
+
+            if (!id || id == 'undefined') {
                 swal({
                     title: "Có lỗi xảy ra",
                     text: "Vui lòng nhập Mã đơn hàng cần tra cứu!",
@@ -151,7 +162,8 @@
             $.ajax({
                 url: '/tra-cuu-don-hang',
                 data: {
-                    id: id
+                    id: id,
+                    email: email
                 },
                 method: 'POST',
                 success: (data) => {
@@ -163,7 +175,7 @@
                             button: "Đã rõ",
                         });
                     } else {
-                        location.href = `/tra-cuu-don-hang?id=${id}`
+                        location.href = `/tra-cuu-don-hang?id=${id}&email=${email}`
                     }
                 },
                 error: (err) => {
