@@ -232,6 +232,7 @@
     </div>
 </body>
 <script type="text/javascript">
+    
     (function (status, $) {
         var process = $('.bs-wizard div.bs-wizard-step');
 
@@ -267,6 +268,83 @@
             $(element).text(numberWithCommas(price) + " VNĐ");
         });
     })(jQuery)
+
+</script>
+<script>   
+    var id = "<%- data.order._id %>"
+    function confirmDelete(cb) {
+		swal({
+			   title: "Bạn có muốn huỷ đơn hàng này không?",
+			   text: "Nhấn vào 'Đồng ý' để huỷ, lưu ý: Mã giảm giá vẫn có thể áp dụng cho đơn hàng khác sau khi huỷ đơn hàng này (với các điều kiện áp dụng tương tự, kể cả thời hạn sử dụng mã).!",
+			   icon: "info",
+			   buttons: {
+				   cancel: true,
+				   yes: {
+                        text: "Đồng ý",
+                        value: 'yes',
+                        className: 'btn-danger'
+                    }
+			   },
+		   })
+		   .then((value) => {
+			   switch (value) {     
+				   case "yes":
+					   return cb(true);
+					   break;                               
+				   default:
+					   return cb(false);
+					   break;
+			   }
+		}); 
+    }
+    
+    function cancelSuccess() {
+		swal({
+			   title: "Huỷ đơn hàng thành công!",
+			   text: "Đơn hàng của bạn đã được huỷ bỏ, lưu ý: Mã giảm giá vẫn có thể áp dụng cho đơn hàng khác sau khi huỷ đơn hàng này (với các điều kiện áp dụng tương tự, kể cả thời hạn sử dụng mã).!",
+			   icon: "info",
+			   buttons: {
+				    yes: {
+                        text: "Đồng ý",
+                        value: 'yes'
+                    }
+			   }
+		   })
+		   .then((value) => {
+			   location.reload();
+		}); 
+	}
+
+    jQuery(document).ready(($) => {
+        $('#valid-canceled-order').click((e) => {
+            confirmDelete((isComfirm) => {
+                if (isComfirm) {
+                    if (!id || id == 'undefined') {
+                        swal('Không thể tìm thấy đơn hàng cần xoá!');
+                        return
+                    }
+
+                    $.ajax({
+                        url: '/huy-don-hang',
+                        method: 'PUT',
+                        data: {
+                            idOrder: id
+                        },
+                        success: (data) => {
+                            if (!data.order) {
+                                cancelSuccess();
+                            } else {
+                                swal('Huỷ đơn hàng thất bại, vui lòng liên hệ với chúng tôi qua số hot line để được hỗ trợ ngay lập tức!')
+                            }
+                        },
+                        error: (err) => {
+                            swal('Huỷ đơn hàng thất bại, vui lòng liên hệ với chúng tôi qua số hot line để được hỗ trợ ngay lập tức!')
+                        }
+                    });
+                }
+            })
+        })
+    })
 
 </script>
 

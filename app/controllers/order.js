@@ -82,6 +82,12 @@ var getLastestOrder = (idUser, cb) => {
     })
 }
 
+var cancelOrder = (idOrder, idUser, cb) => {
+    orderApi.cancelOrder(idOrder, idUser, (result) => {
+        return cb(result)
+    });
+}
+
 
 module.exports = {
     initOrder: initOrder,
@@ -92,5 +98,6 @@ module.exports = {
     compareCurrentOrder: compareCurrentOrder,
     deleteOrder: deleteOrder,
     checkOrder: checkOrder,
-    getLastestOrder: getLastestOrder
+    getLastestOrder: getLastestOrder,
+    cancelOrder: cancelOrder
 }

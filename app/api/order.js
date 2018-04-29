@@ -1071,6 +1071,57 @@ var getLastestOrder = (idUser, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var cancelOrder = (idOrder, idUser, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!idOrder) {
+            workflow.emit('response', {
+                error: "Id is required!"
+            });
+            return
+        }
+
+        if (!idUser) {
+            workflow.emit('response', {
+                error: "Id user is required!"
+            });
+            return
+        }
+
+        workflow.emit('cancel');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('cancel', () => {
+
+        Order.findOne({
+            '_id': idOrder,
+            'byUser': idUser
+        }, (err, order) => {
+            if (err || !order) {
+                workflow.emit('response', {
+                    error: "Order not found"
+                });
+                return
+            }
+
+            order.status = 4;
+
+            order.save((err) => {
+                workflow.emit('response', {
+                    error: err
+                });
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 
 module.exports = {
     checkingAvailable: checkingAvailable,
@@ -1088,5 +1139,6 @@ module.exports = {
     getNewOrders: getNewOrders,
     checkOrder: checkOrder,
     getMyOrders: getMyOrders,
-    getLastestOrder: getLastestOrder
+    getLastestOrder: getLastestOrder,
+    cancelOrder: cancelOrder
 }

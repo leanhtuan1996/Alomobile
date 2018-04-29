@@ -8,6 +8,8 @@ var helper = require('../app/helpers/index').helper;
 var middleware = require('../app/middleware/index').middleware
 var mailbox = require('../app/controllers/index').mailbox;
 
+var auth = require('../app/middleware/index').authenticate;
+
 router.get('/thanh-toan', (req, res) => {
     if (!req.session.order) {
         res.redirect('/gio-hang');
@@ -292,6 +294,12 @@ router.post('/tra-cuu-don-hang', (req, res) => {
             });
         }
     })
+});
+
+router.put('/huy-don-hang', [auth.requireAuth], (req, res) => {
+    Order.cancelOrder(req.body.idOrder, req.user._id, (result) => {
+        res.json(result)
+    });
 });
 
 module.exports = router
