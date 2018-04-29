@@ -249,23 +249,13 @@
             <span style="text-align: center;">Chức năng khác</span>
             <i class="zmdi zmdi-more"></i>
         </li>
-        <li>
-            <a href='/admin/roles'>
-                <div class="pull-left">
-                    <i class="zmdi zmdi-star-circle mr-20"></i>
-                    <span class="right-nav-text">Phân quyền</span>
-                </div>
-                <div class="clearfix"></div>
-            </a>
-        </li>
-        <li>
-            <a href='/admin/settings'>
-                <div class="pull-left">
-                    <i class="zmdi zmdi zmdi-settings mr-20"></i>
-                    <span class="right-nav-text">Thiết lập</span>
-                </div>
-                <div class="clearfix"></div>
-            </a>
+         <li>
+            <a href="javascript:void(0);" data-toggle="collapse" data-target="#menu_role"><div class="pull-left"><i class="zmdi zmdi-settings mr-20"></i><span class="right-nav-text">Thiết lập</span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
+            <ul id="menu_role" class="collapse collapse-level-1">
+                <li>
+                    <a href="/admin/roles">Phân quyền</a>
+                </li>
+            </ul>
         </li>
         <li>
             <a href='/'>

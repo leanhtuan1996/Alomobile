@@ -186,39 +186,70 @@ router.get('/dat-hang-thanh-cong', (req, res) => {
 });
 
 router.get('/tra-cuu-don-hang', (req, res) => {
-    if (!req.query.id || !req.query.email) {
-        res.render('check-order', {
-            data: {
-                token: req.session.token,
-                user: req.session.user
-            }
-        })
-    } else {
-        res.redis.getItem('order', `get-order?id=${req.query.id}&email=${req.query.email}`, (data) => {
-            if (data) {
-                res.render('status-order', {
+    if (req.session.token) {
+        User.verify(req.session.token, (cb) => {
+            if (cb.error || !cb.user) {
+                req.session.destroy();
+                res.render('check-order', {
                     data: {
-                        token: req.session.token,
-                        user: req.session.user,
-                        order: data
                     }
                 });
             } else {
-                Order.checkOrder(req.query.id, req.query.email, (result) => {
+                //find newest status order
+                Order.getLastestOrder(cb.user._id, (result) => {
+                    console.log(result);
                     if (result.order) {
-                        res.redis.setItem('order', `get-order?id=${req.query.id}&email=${req.query.email}`, result.order);
+                        res.render('status-order', {
+                            data: {
+                                token: req.session.token,
+                                user: req.session.user,
+                                order: result.order
+                            }
+                        });
+                    } else {
+                        res.render('check-order', {
+                            data: {
+                            }
+                        });
                     }
+                })
+            }
+        });
+    } else {
+        if (!req.query.id || !req.query.email) {
+            res.render('check-order', {
+                data: {
+                    token: req.session.token,
+                    user: req.session.user
+                }
+            })
+        } else {
+            res.redis.getItem('order', `get-order?id=${req.query.id}&email=${req.query.email}`, (data) => {
+                if (data) {
                     res.render('status-order', {
                         data: {
                             token: req.session.token,
                             user: req.session.user,
-                            error: result.error,
-                            order: result.order
+                            order: data
                         }
                     });
-                });
-            }
-        });
+                } else {
+                    Order.checkOrder(req.query.id, req.query.email, (result) => {
+                        if (result.order) {
+                            res.redis.setItem('order', `get-order?id=${req.query.id}&email=${req.query.email}`, result.order);
+                        }
+                        res.render('status-order', {
+                            data: {
+                                token: req.session.token,
+                                user: req.session.user,
+                                error: result.error,
+                                order: result.order
+                            }
+                        });
+                    });
+                }
+            });
+        }
     }
 });
 

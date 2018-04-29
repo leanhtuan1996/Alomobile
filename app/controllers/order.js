@@ -76,6 +76,12 @@ var checkOrder = (id, email, cb) => {
     });
 }
 
+var getLastestOrder = (idUser, cb) => {
+    orderApi.getLastestOrder(idUser, (result) => {
+        return cb(result)
+    })
+}
+
 
 module.exports = {
     initOrder: initOrder,
@@ -85,5 +91,6 @@ module.exports = {
     requestPayment: requestPayment,
     compareCurrentOrder: compareCurrentOrder,
     deleteOrder: deleteOrder,
-    checkOrder: checkOrder
+    checkOrder: checkOrder,
+    getLastestOrder: getLastestOrder
 }
