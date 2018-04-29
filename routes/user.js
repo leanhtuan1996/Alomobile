@@ -9,7 +9,7 @@ var mailbox = require('../app/controllers/index').mailbox;
 /* GET users listing. */
 /* USER SIGN_IN */
 router.get('/sign-in', (req, res) => {
-  if (req.session.token && req.session.user) {
+  if (req.session.token) {
     res.redirect('/')
     return
   }
@@ -61,7 +61,7 @@ router.post('/sign-in', (req, res) => {
 
 /* USER SIGN_UP */
 router.get('/sign-up', (req, res) => {
-  if (req.session.token && req.session.user) {
+  if (req.session.token) {
     res.redirect('/');
     return
   }
@@ -126,7 +126,7 @@ router.put('/sign-out', (req, res) => {
 })
 
 router.get('/tai-khoan-cua-toi', (req, res) => {
-  if (req.session.token && req.session.user) {
+  if (req.session.token) {
     User.verify(req.session.token, (cb) => {
 
       var user = cb.user;
@@ -155,7 +155,7 @@ router.get('/tai-khoan-cua-toi', (req, res) => {
 });
 
 router.get('/password-recovery', (req, res) => {
-  if (req.session.token && req.session.user) {
+  if (req.session.token) {
     res.redirect('/');
     return
   }
