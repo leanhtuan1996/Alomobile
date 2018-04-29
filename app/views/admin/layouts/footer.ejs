@@ -47,7 +47,11 @@
 	<script type="text/javascript" src="/static/js/myFunc.js"></script>
 
 	<script type="text/javascript">
-		var socket = io.connect(window.location.host);
+		var socket = io.connect(window.location.host, { 
+			path: '/socket.io',
+			transports: ['websocket'],
+			secure: true 
+		});
 
 		function numberWithCommas(x) {
 			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
