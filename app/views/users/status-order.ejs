@@ -133,7 +133,7 @@
                                                         
                                                     </div>
                                                 </div>
-                                                <div class="bottom">
+                                                <div class="row bottom">
                                                     <h4>Đơn hàng bao gồm</h4>
                                                     <table class="table-responsive-2">
                                                         <thead>
@@ -185,6 +185,18 @@
                                                     </table>
                                                 </div>
                                             </div>
+                                            <% if (data.order.status != 3 && data.order.status != 4 && data.order.status != 6) { %>
+                                                <div class="row" style="margin: 20px;">
+                                                <div class="col-md-9">
+                                                    <span></span>
+                                                </div>
+                                                <div class="col-md-3 pull-right">
+                                                    <a id="valid-canceled-order" title="Hủy đơn hàng" class="btn btn-warning" style="float: right;">
+                                                        <span style="color: white;">Hủy đơn hàng</span>
+                                                    </a>
+                                                </div> 
+                                            </div>
+                                            <% } %>                                            
                                         </div>
                                     </section>
                                 </form>
