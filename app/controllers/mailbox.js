@@ -110,6 +110,7 @@ var sendMailWithConfirmOrder = (parameters) => {
         $('.fullAddress_order').text(address);
         $('.phone_order').text(phone);
         $('.shipping_method_order').text(checkoutMethod);
+        $('#view-detail-order').attr('href', `https://alomobile.tech/tra-cuu-don-hang?email=${email}&id=${id}`);
         
         var subtotal = 0;
 
@@ -201,6 +202,7 @@ var sendMailWithSuccessOrder = (parameters) => {
         $('.fullAddress_order').text(address);
         $('.phone_order').text(phone);
         $('.shipping_method_order').text(checkoutMethod);
+        $('#view-detail-order').attr('href', `https://alomobile.tech/tra-cuu-don-hang?email=${email}&id=${id}`);
         
         var subtotal = 0;
 
