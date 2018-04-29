@@ -9,7 +9,7 @@ var mailbox = require('../app/controllers/index').mailbox;
 /* GET users listing. */
 /* USER SIGN_IN */
 router.get('/sign-in', (req, res) => {
-  if (req.session.token) {
+  if (req.session.token && req.session.user) {
     res.redirect('/')
     return
   }
@@ -61,7 +61,7 @@ router.post('/sign-in', (req, res) => {
 
 /* USER SIGN_UP */
 router.get('/sign-up', (req, res) => {
-  if (req.session.token) {
+  if (req.session.token && req.session.user) {
     res.redirect('/');
     return
   }
@@ -126,7 +126,7 @@ router.put('/sign-out', (req, res) => {
 })
 
 router.get('/tai-khoan-cua-toi', (req, res) => {
-  if (req.session.token) {
+  if (req.session.token && req.session.user) {
     User.verify(req.session.token, (cb) => {
 
       var user = cb.user;
@@ -155,7 +155,7 @@ router.get('/tai-khoan-cua-toi', (req, res) => {
 });
 
 router.get('/password-recovery', (req, res) => {
-  if (req.session.token) {
+  if (req.session.token && req.session.user) {
     res.redirect('/');
     return
   }
@@ -209,7 +209,7 @@ router.get('/password-recovery/:email/:token', (req, res) => {
 });
 
 router.get('/gio-hang', (req, res) => {
-  if (req.session.token) {
+  if (req.session.token && req.session.user) {
     User.verify(req.session.token, (cb) => {
       if (cb.error) {
         req.session.destroy();
@@ -242,7 +242,7 @@ router.get('/gio-hang', (req, res) => {
 });
 
 router.get('/tai-khoan-cua-toi/thong-tin', (req, res) => {
-  if (req.session.token) {
+  if (req.session.token && req.session.user) {
     User.verify(req.session.token, (cb) => {
       if (cb.error) {
         req.session.destroy();
@@ -270,7 +270,7 @@ router.get('/tai-khoan-cua-toi/thong-tin', (req, res) => {
 });
 
 router.get('/tai-khoan-cua-toi/dia-chi', (req, res) => {
-  if (req.session.token) {
+  if (req.session.token && req.session.user) {
     User.verify(req.session.token, (cb) => {
       if (cb.error) {
         req.session.destroy();
@@ -298,7 +298,7 @@ router.get('/tai-khoan-cua-toi/dia-chi', (req, res) => {
 });
 
 router.get('/tai-khoan-cua-toi/lich-su-mua-hang', (req, res) => {
-  if (req.session.token) {
+  if (req.session.token && req.session.user) {
     User.verify(req.session.token, (cb) => {
       if (cb.error) {
         req.session.destroy();

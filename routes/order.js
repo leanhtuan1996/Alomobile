@@ -99,7 +99,7 @@ router.post('/thanh-toan', (req, res) => {
         products: req.body.parameters.products
     };
 
-    if (req.session.token) {
+    if (req.session.token && req.session.user) {
         User.verify(req.session.token, (cb) => {
             if (cb.error || !cb.user) {
                 req.session.destroy();
@@ -186,7 +186,7 @@ router.get('/dat-hang-thanh-cong', (req, res) => {
 });
 
 router.get('/tra-cuu-don-hang', (req, res) => {
-    if (req.session.token) {
+    if (req.session.token && req.session.user) {
         User.verify(req.session.token, (cb) => {
             if (cb.error || !cb.user) {
                 req.session.destroy();
