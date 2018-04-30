@@ -10,6 +10,7 @@ var review = require('./review');
 var analytic = require('./analytic');
 var searchKeyword = require('./searchKeyword');
 var searchProduct = require('./searchProduct');
+var promotion = require('./promotion');
 
 module.exports = {
     brand: brand,
@@ -23,5 +24,6 @@ module.exports = {
     mail: mail,
     analytic: analytic,
     searchKeyword: searchKeyword,
-    searchProduct: searchProduct
+    searchProduct: searchProduct,
+    promotion: promotion
 }

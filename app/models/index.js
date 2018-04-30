@@ -13,6 +13,7 @@ var checkoutMethod = require('./checkoutMethod');
 var session = require('./session');
 var searchKeyword = require('./searchKeyword');
 var searchProduct = require('./searchProduct');
+var promotion = require('./promotion');
 
 module.exports = {
     user: user,
@@ -27,5 +28,6 @@ module.exports = {
     checkoutMethod: checkoutMethod,
     session: session,
     searchKeyword: searchKeyword,
-    searchProduct: searchProduct
+    searchProduct: searchProduct,
+    promotion: promotion
 }

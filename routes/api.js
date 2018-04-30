@@ -15,6 +15,7 @@ var Review = api.review;
 var Analytic = api.analytic;
 var SearchKeyword = api.searchKeyword;
 var SearchProduct = api.searchProduct;
+var Promotion = api.promotion;
 
 var multer = require('multer');
 var auth = require('../app/middleware/index').authenticate;
@@ -640,6 +641,38 @@ router.get('/api/v1/get-best-sold-products', (req, res) => {
     Analytic.sellestProducts((result) => {
         res.json(result);
     });
+});
+
+/** ROUTER FOR PROMOTION */
+
+router.get('/api/v1/get-promotions', [auth.requireAuth, auth.requireRole], (req,res) => {
+    Promotion.gets((result) => {
+        res.json(result)
+    });
+});
+
+router.get('/api/v1/get-promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Promotion.get(req.query.id, (result) => {
+        res.json(result)
+    })
+})
+
+router.post('/api/v1/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Promotion.new(req.body, (result) => {
+        res.json(result)
+    })
+})
+
+router.put('/api/v1/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Promotion.edit(req.body, (result) => {
+        res.json(result)
+    })
+})
+
+router.get('/api/v1/check-promo-code', (req, res) => {
+    Promotion.check(req.query.promo_code, (result) => {
+        res.json(result)
+    })
 });
 
 module.exports = router;

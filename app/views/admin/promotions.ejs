@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include layouts/header %>           
+    <!-- Bootstrap Daterangepicker CSS -->
+	<link href="/static/admin/libs/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+    <!--Preloader-->
+    <div class="preloader-it">
+        <div class="la-anim-1"></div>
+    </div>
+    <!--/Preloader-->
+    <div class="wrapper theme-5-active pimary-color-green">
+        <% include layouts/menu %>
+            <!-- Main Content -->
+            <div class="page-wrapper">
+                <div class="container-fluid">
+                    <!-- Title -->
+                    <div class="row heading-bg">
+                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12" style="width: 100%">
+                            <h5 class="txt-dark" style="float: left;">Trang quản lý khuyến mãi</h5>
+                            <button type="button" class="btn btn-primary" style="float: right" id="promotion-add">Thêm mới</button>
+                        </div>
+                    </div>
+                    <!-- /Title -->
+                     <!-- Modal -->
+                     <div id="add-promotion-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h5 class="modal-title" id="myModalLabel">Thêm khuyến mãi</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Row -->
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="">
+                                                    <div class="panel-wrapper collapse in">
+                                                        <div class="panel-body pa-0">
+                                                            <div class="col-sm-12 col-xs-12">
+                                                                <div class="form-wrap">
+                                                                    <form action="#">
+                                                                        <div class="form-body overflow-hide">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="promo_code">Mã khuyến mãi</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-user"></i></div>
+                                                                                    <input type="text" class="form-control" id="promo_code" placeholder="ALOMOBILE" required>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                    <label class="control-label mb-10" for="description_promo">Mô tả</label>
+                                                                                    <div class="input-group">
+                                                                                        <div class="input-group-addon"><i class="icon-user"></i></div>
+                                                                                        <input type="text" class="form-control" id="description_promo" placeholder="" required>
+                                                                                    </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                    <label class="control-label mb-10">Thời gian khuyến mãi</label>
+                                                                                    <input type="text" class="form-control input-daterange-timepicker" name="daterange" value="01/01/2018 1:30 PM - 01/10/2018 2:00 PM"/>
+                                                                                </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="type_promo">Loại khuyến mãi</label>
+                                                                                <div>
+                                                                                        <div class="radio">
+                                                                                            <input type="radio" name="radio1" id="radio_1" value="option1" class="checked" checked>
+                                                                                            <label for="radio_1">
+                                                                                            Theo phần trăm
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <div class="radio">
+                                                                                            <input type="radio" name="radio1" id="radio_2" value="option2">
+                                                                                            <label for="radio_2">
+                                                                                            Theo giá tiền
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="discount_promo">Phần trăm/giá khuyến mãi</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-phone"></i></div>
+                                                                                    <input type="text" class="form-control" id="discount_promo" placeholder="200000" required>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="limit_promo">Số lượng sử dụng tối đa</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-lock"></i></div>
+                                                                                    <input type="text" class="form-control" id="limit_promo" placeholder="2000" value="">
+                                                                                </div>
+                                                                            </div>      
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="total_order_minimize">Tổng giá trị đơn hàng tối thiểu</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-lock"></i></div>
+                                                                                    <input type="text" class="form-control" id="total_order_minimize" placeholder="2000" value="">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label class="control-label mb-10" for="max_discount">Giảm tối đa</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-addon"><i class="icon-lock"></i></div>
+                                                                                    <input type="text" class="form-control" id="max_discount" placeholder="2000" value="">
+                                                                                </div>
+                                                                            </div>                                                                      
+                                                                        </div>			
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-success waves-effect" id="save-new-promotion">Save</button>
+                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    <!-- /modal -->
+                    <!-- Row -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default card-view">
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body row">
+                                        <div class="table-wrap">
+                                            <div class="table-responsive">
+                                                <table class="table display mb-30" cellspacing="0" width="100%" id="table-promotions">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Mã khuyến mãi</th>
+                                                            <th>Mô tả</th>
+                                                            <th>Loại</th>
+                                                            <th>Giảm giá</th>
+                                                            <th>Giới hạn</th>
+                                                            <th>Đã sử dụng</th>
+                                                            <th>Ngày bắt đầu</th>
+                                                            <th>Ngày kết thúc</th>
+                                                            <th>Đơn hàng tối thiểu</th>
+                                                            <th>Giảm tối đa</th>
+                                                            <th>Chức năng</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>Mã khuyến mãi</th>
+                                                            <th>Mô tả</th>
+                                                            <th>Loại</th>
+                                                            <th>Giảm giá</th>
+                                                            <th>Giới hạn</th>
+                                                            <th>Đã sử dụng</th>
+                                                            <th>Ngày bắt đầu</th>
+                                                            <th>Ngày kết thúc</th>
+                                                            <th>Đơn hàng tối thiểu</th>
+                                                            <th>Giảm tối đa</th>
+                                                            <th>Chức năng</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Row -->
+                        <!-- Footer -->
+                        <footer class="footer container-fluid pl-30 pr-30">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p>2018 &copy; Alomobile</p>
+                                </div>
+                            </div>
+                        </footer>
+                        <!-- /Footer -->    
+                    </div>
+                    <!-- /Main Content -->
+                </div>
+                <!-- /#wrapper -->
+                <% include layouts/footer %>
+                               
+                <!-- Moment JavaScript -->
+                <script type="text/javascript" src="/static/admin/libs/moment/min/moment-with-locales.min.js"></script>
+
+                 <!-- Bootstrap Daterangepicker JavaScript -->
+                 <script type="text/javascript" src="/static/admin/libs/bootstrap-daterangepicker/daterangepicker.js"></script>
+				
+		        <!-- Bootstrap Datetimepicker JavaScript -->
+                <script type="text/javascript" src="/static/admin/libs/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+                
+                <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                    <script>
+
+                        jQuery(document).ready(() => {    
+                            $('#add-promotion-modal').on('shown.bs.modal', function() {
+                                $('.input-daterange-timepicker').daterangepicker({
+                                    timePicker: true,
+                                    format: 'MM/DD/YYYY HH:MM',
+                                    startDate: moment().startOf('hour'),
+                                    timePicker12Hour: false,
+                                    timePickerSeconds: false,
+                                    buttonClasses: ['btn', 'btn-sm'],
+                                    applyClass: 'btn-info',
+                                    cancelClass: 'btn-default',
+                                    container: '#add-promotion-modal modal-body'
+                                });                                
+                            });
+                        });
+
+                        var tableUsers = $("#table-promotions");
+
+                        (function (table, $) {
+                            $.get('/api/v1/get-promotions', (data) => {
+                                if (data.promotions && data.promotions.length > 0) {
+                                    var items = ``;
+
+                                    data.promotions.forEach(promotion => {
+                                        var start_at, finish_at, start_at_string, finish_at_string;
+                                       
+                                        try {
+                                            start_at = new Date(promotion.start_at);
+                                            finish_at = new Date(promotion.finish_at);
+                                        } catch (error) {
+                                            
+                                        }
+
+                                        if (start_at) {
+                                            start_at_string = `${start_at.getHours()}:${start_at.getMinutes()} ${start_at.getDate()}/${start_at.getMonth()}/${start_at.getFullYear()}`
+                                        }
+                                        
+                                        if (finish_at) {
+                                            finish_at_string = `${finish_at.getHours()}:${finish_at.getMinutes()} ${finish_at.getDate()}/${finish_at.getMonth()}/${finish_at.getFullYear()}`
+                                        }                                       
+                                        
+
+                                        items += `
+                                             <tr role="row" id="${promotion._id}"> 
+                                               
+                                                <td class="txt-dark">
+                                                    ${promotion.code}     
+                                                </td>
+                                                <td class="txt-dark">
+                                                    ${promotion.description || ""}
+                                                </td>
+                                                <td class="txt-dark">
+                                                    ${promotion.type}
+                                                </td>
+                                                <td class="txt-dark">
+                                                    ${promotion.discount}
+                                                </td>
+                                                <td class="txt-dark">                                                    ${promotion.limit}
+                                                </td>
+                                                <td class="txt-dark">
+                                                    ${promotion.used || 0}
+                                                </td>
+                                                <td class="txt-dark">
+                                                    ${start_at_string || ""}
+                                                </td>
+                                                <td class="txt-dark">
+                                                    ${finish_at_string || ""}
+                                                </td>
+                                                <td class="txt-dark">
+                                                    ${promotion.totalMinOrder || 0}
+                                                </td>
+                                                <td class="txt-dark">
+                                                    ${promotion.maxDiscount || 0}
+                                                </td>
+                                                <td class="action-promotion">
+                                                    <a href="javascript:void(0)" class="text-inverse pr-10 edit-promotion" title="Chỉnh sửa người dùng">
+                                                        <i class="zmdi zmdi-edit txt-warning"></i>
+                                                    </a>
+                                                    <a href="javascript:void(0)" class="text-inverse pr-10 reset-password-user" title="Reset mật khẩu người dùng">
+                                                            <i class="zmdi zmdi-refresh-sync text-success"></i>
+                                                    </a>
+                                                    <a href="javascript:void(0)" class="text-inverse delete-promotion" title="Xoá người dùng">
+                                                        <i class="zmdi zmdi-delete txt-danger"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        `
+                                    });
+
+                                    table.find('tbody').append(items);
+                                }
+
+                                table.DataTable({
+                                    "language": {
+                                        "lengthMenu": "Hiển thị _MENU_ dòng trên một trang",
+                                        "zeroRecords": "Không có dữ liệu",
+                                        "info": "Đang ở trang thứ _PAGE_ của _PAGES_ trang",
+                                        "infoEmpty": "Dữ liệu hiện không sẵn có",
+                                        "infoFiltered": "(đã lọc từ _MAX_ người dùng hiện có)"
+                                    }
+                                });
+                            });                           
+                                                      
+                        })(tableUsers, jQuery);
+                    </script>
+                    <script type="text/javascript">
+                        function showNotifier(status, content) {
+                            swal('Thông báo', content, status)
+                        }
+
+                        function confirmDelete(cb) {
+                            swal({
+                                    title: "Bạn có muốn xoá không?",
+                                    text: "Nhấn vào 'Xoá ngay' nếu bạn muốn xoá hoặc nhấn vào 'Khoá tài khoản' để cấm người dùng truy cập vào hệ thống",
+                                    icon: "info",
+                                    buttons: {
+                                        cancel: true,
+                                        ban: "Khoá tài khoản",
+                                        delete: {
+                                            text: "Xoá ngay",
+                                            value: 'delete',
+                                            className: 'btn-danger'
+                                        }
+                                    },
+                                })
+                                .then((value) => {
+                                    switch (value) {     
+                                        case "delete":
+                                            return cb('delete');
+                                            break;             
+                                        case "ban":
+                                            return cb('ban');
+                                            break;                  
+                                        default:
+                                            return cb('cancel');
+                                            break;
+                                    }
+                                }); 
+                        }
+
+                    </script>
+                    <script>                        
+
+                        jQuery(document).ready(($) => {
+
+                            $('#promotion-add').click((e) => {
+                                $("#add-promotion-modal").modal('show');
+                            });
+
+                            $("#table-promotions tbody").delegate('.edit-promotion', 'click', (e) => {
+                                var modalEdit = $("#edit-promotion-modal");                               
+                                var id = $(e.currentTarget.parentElement.parentElement).find('td.td-id').html();
+                                $.get(`/admin/user/${id.trim()}`, (data) => {
+                                    if (data.error) {
+                                        swal('Oops', data.error, 'error');
+                                    } else {
+                                        var user = data.user;
+                                        if (!user) {
+                                            swal('Oops', 'Data was missed!', 'error')
+                                        } else {
+                                            var id = user._id,
+                                                firstName = user.fullName.firstName,
+                                                lastName = user.fullName.lastName,
+                                                phone = user.phone,
+                                                email = user.email,
+                                                role = user.role,
+                                                sex = user.sex,
+                                                status = user.status;
+
+                                            if (!id) {
+                                                showNotifier('error', 'Dữ liệu người dùng được trả về không đúng định dạng hoặc thiếu các thuộc tính cần thiết, vui lòng thử lại!');
+                                                return
+                                            }
+                                            $(modalEdit).find("#id_user_edit").val(id);
+                                            $(modalEdit).find('#firstName_edit').val(firstName || "");
+                                            $(modalEdit).find("#lastName_edit").val(lastName || "");
+                                            $(modalEdit).find("#email_edit").val(email || "");
+                                            $(modalEdit).find("#phone_edit").val(phone || "");
+                                            $(modalEdit).find('#status_edit').prop('checked', status || false);
+
+                                            $.get('/admin/get-roles', (data) => {
+                                                if (data.error) {
+                                                    swal('Oops', data.error, 'error')
+                                                } else {
+                                                    var roles = data.roles;
+                                                    if (roles) {
+                                                        var selectRole = $(modalEdit).find('select');
+                                                        roles.forEach(role => {
+                                                            var idRole = role._id,
+                                                                name = role.name;
+                                                            if (idRole && name) {
+                                                                $(selectRole).append(`<option value="${idRole}">${name}</option>`)
+                                                            }                                                            
+                                                        });
+
+                                                        //assign name role
+                                                        $(selectRole).find(`option[value="${role._id.trim()}"]`).prop('selected', true);
+
+                                                        //assign sex
+                                                        var radioSex = $(modalEdit).find('div.radio');
+                                                        radioSex.each((index, element) => {
+                                                            var label = $(element).find('label');
+                                                            if ($(label).text().trim() == sex.trim()) {
+                                                                $(label).prev('input').prop('checked', true);
+                                                            }
+                                                        });
+                                                    } else {
+                                                        showNotifier('error', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.');
+                                                    }
+                                                }
+                                            }).error((err) => {
+                                                showNotifier('error', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.');
+                                            });
+
+
+                                            $(modalEdit).modal('show');
+                                        }
+                                    }
+                                }).error((err) => {
+                                    showNotifier('error', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.');
+                                });
+                            });
+
+                            $("#table-promotions tbody").delegate('.delete-promotion', 'click', (e) => {
+
+                                e.preventDefault();
+
+                                var row = $(e.currentTarget.parentElement.parentElement);
+
+                                //checking status of user
+                                var status = $(row).find('td.td-status').find('span').html();
+                                if (!status) {
+                                    confirmDeleteWithBan((result) => {
+                                        switch (result) {
+                                            case 'delete':
+                                            $.ajax({
+                                                url: '/admin/user',
+                                                data: {
+                                                    id: $(row).attr('id')
+                                                },
+                                                method: "DELETE",
+                                                success: (data) => {
+                                                    if (data.error) {
+                                                        showNotifier('error', data.error);
+                                                        return
+                                                    }
+                                                    tableUsers.row(row).remove().draw('page');
+                                                },
+                                                error: (err) => {                                                    
+                                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error') 
+                                                }
+                                            })
+                                            break;                                        
+                                            default:
+                                                break;
+                                        }
+                                    });
+                                } else {
+                                    if (status == 'DEACTIVE') {
+                                        confirmDeleteWithBan((result) => {
+                                        switch (result) {
+                                            case 'delete':
+                                            $.ajax({
+                                                url: '/admin/user',
+                                                data: {
+                                                    id: $(row).attr('id')
+                                                },
+                                                method: "DELETE",
+                                                success: (data) => {
+                                                    if (data.error) {
+                                                        showNotifier('error', data.error);
+                                                        return
+                                                    }
+                                                    tableUsers.row(row).remove().draw('page');
+                                                },
+                                                error: (err) => {                                                    
+                                                    swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error') 
+                                                }
+                                            })
+                                            break;                                        
+                                            default:
+                                                break;
+                                        }
+                                    });
+                                    } else {
+                                        confirmDelete((action) => {
+                                            switch (action) {
+                                                case "delete":
+                                                    $.ajax({
+                                                        url: '/admin/user',
+                                                        data: {
+                                                            id: $(row).attr('id')
+                                                        },
+                                                        method: "DELETE",
+                                                        success: (data) => {
+                                                            if (data.error) {
+                                                                showNotifier('error', data.error);
+                                                                return
+                                                            }
+                                                            tableUsers.row(row).remove().draw('page');
+                                                        },
+                                                        error: (err) => {                                                    
+                                                            swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error') 
+                                                        }
+                                                    })
+                                                    break;
+                                                case "ban":
+                                                    var properties = {
+                                                        status: false
+                                                    };
+
+                                                    $.ajax({
+                                                        url: '/admin/user',
+                                                        method: 'PUT',
+                                                        data: {
+                                                            id: $(row).attr('id'),
+                                                            properties: JSON.stringify(properties)
+                                                        },
+                                                        success: (data) => {
+                                                            if (data.error) {
+                                                                showNotifier('error', data.error);
+                                                                return
+                                                            } 
+                                                            $(row).find('td.td-status').find('span').html('DEACTIVE').removeClass('label-success').addClass('label-default');                                                    
+                                                            showNotifier('success', 'Cập nhật thông tin thành công!');
+                                                        },
+                                                        error: (err) => {
+                                                            swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
+                                                        }
+                                                    });
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+                            $('#save-new-promotion').click((e) => {                          
+                                var modal = $('#add-promotion-modal');
+                                
+                                var code = $('#promo_code').val();
+                                var description = $('#description_promo').val();
+                                var start_at = $('.input-daterange-timepicker').data('daterangepicker').startDate._d;                                
+                                var start_time = new Date(start_at).getTime();
+                                var finish_at = $('.input-daterange-timepicker').data('daterangepicker').endDate._d;                                
+                                var finish_time = new Date(finish_at).getTime();
+                                var type = $(modal).find('input[type="radio"]:checked').next('label').text().trim();
+                                var discount = $('#discount_promo').val();
+                                var limit = $("#limit_promo").val();
+                                var totalMinOrder = $("#total_order_minimize").val();
+                                var maxDiscount = $("#max_discount").val();                                
+
+                                var newPromotion = {
+                                    code: code,
+                                    description: description,
+                                    discount: discount,
+                                    type: type,
+                                    limit: limit,
+                                    totalMinOrder: totalMinOrder,
+                                    start_at: start_time,
+                                    finish_at: finish_time,
+                                    maxDiscount: maxDiscount
+                                }
+
+                                $.ajax({
+                                    url: "/admin/promotion",
+                                    data: newPromotion,
+                                    method: "POST",
+                                    success: (data) => {
+                                        if (data.error) {
+                                            showNotifier('error', data.error);
+                                        } else {
+                                            window.location.reload();                                            
+                                        }
+                                    },
+                                    error: (err) => {
+                                        showNotifier('error', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.');
+                                    }
+                                })
+                                
+                            });
+
+                            $('#save-edit-promotion').click((e) => {
+                                var modal = $('#edit-promotion-modal');
+                                
+                                var firstName = $(modal).find('#firstName_edit').val(),
+                                    lastName = $(modal).find('#lastName_edit').val(),
+                                    email = $(modal).find('#email_edit').val(),
+                                    phone = $(modal).find('#phone_edit').val(),
+                                    role = $(modal).find('.select-role-edit').find('option:selected').val(),
+                                    sex = $(modal).find('input[type="radio"]:checked').next('label').html().trim(),
+                                    id = $(modal).find('#id_user_edit').val(),
+                                    status = $(modal).find('#status_edit').prop('checked');
+                                
+                                var properties = {
+                                }
+
+                                properties.fullName = {};
+
+
+                                if (!firstName) { showNotifier('error', 'Họ người dùng không được bỏ trống!'); return; } else { properties.fullName.firstName = firstName }
+                                if (!lastName) { showNotifier('error', 'Tên người dùng không được bỏ trống!'); return; } else { properties.fullName.lastName = lastName }                                                     
+
+                                if (!email) { showNotifier('error', 'Email người dùng không được bỏ trống!'); return } else { properties.email = email; }
+                                if (phone) { properties.phone = phone }
+                                if (sex) { properties.sex = sex }
+                                if (role) { properties.role = role }
+                                
+                                properties.status = status
+
+                                if (!id) { showNotifier('error', 'Không thể lấy được mã người dùng cần sửa, thử lại sau!'); $(modal).modal('hide'); return; }
+                                
+                                $.ajax({
+                                    url: "/admin/user",
+                                    data: {
+                                        id: id,
+                                        properties: JSON.stringify(properties)
+                                    },
+                                    method: "PUT",
+                                    success: (data) => {
+                                        if (data.error) {
+                                            showNotifier('error', data.error);
+                                        } else {
+                                            window.location.reload();                                          
+                                        }
+                                    },
+                                    error: (err) => {
+                                        showNotifier('error', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.');
+                                        $(modal).modal('hide');
+                                    }
+                                })
+                            });
+                        });
+
+                    </script>
+</body>
+<style>
+        .daterangepicker {
+          z-index: 1600 !important; /* has to be larger than 1050 */
+        }
+    </style>
+</html>

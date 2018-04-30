@@ -9,6 +9,7 @@ var role = require('./role');
 var review = require('./review');
 var order = require('./order');
 var cron = require('./cron');
+var promotion = require('./promotion');
 
 module.exports = {
     dashboard: dashboard,
@@ -20,5 +21,6 @@ module.exports = {
     role: role,
     review: review,
     order: order,
-    cron: cron
+    cron: cron,
+    promotion: promotion
 }

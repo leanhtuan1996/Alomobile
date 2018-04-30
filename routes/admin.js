@@ -12,8 +12,10 @@ var Type = require('../app/controllers/admin/index').type;
 var Role = require('../app/controllers/admin/index').role;
 var Review = require('../app/controllers/admin/index').review;
 var Order = require('../app/controllers/admin/index').order;
+var Promotion = require('../app/controllers/admin/index').promotion;
 
 var mail = require('../app/api/index').mail;
+
 
 var multer = require('multer');
 var auth = require('../app/middleware/index').authenticate;
@@ -83,7 +85,7 @@ router.post('/admin/sign-in', (req, res) => {
                 //set token in session
                 req.session.token = token;
 
-                
+
 
                 //push new token to user
                 User.pushValidToken(token, id, (cb) => {
@@ -104,7 +106,7 @@ router.put('/admin/sign-out', (req, res) => {
         });
     } else {
         res.redirect('/admin/sign-in');
-    }    
+    }
 });
 
 router.get('/admin/forgot-password', (req, res) => {
@@ -702,7 +704,7 @@ router.get('/admin/invoice/:id', [auth.requireAuth, auth.requireRole], (req, res
     Order.getOrder(req.params.id, (result) => {
         if (!result.order) {
             res.render('admin/404', {
-                data: { }
+                data: {}
             });
             return
         }
@@ -728,5 +730,53 @@ router.put('/admin/order', [auth.requireAuth, auth.requireRole], (req, res) => {
 })
 
 //#endregion ORDER ROUTERS
+
+//#region PROMOTION ROUTERS
+
+router.get('/admin/promotions', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Promotion.gets((result) => {
+        res.render('admin/promotions', {
+            data: {
+                error: result.error,
+                promotions: result.promotions
+            }
+        });
+    });
+});
+
+router.post('/admin/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Promotion.new(req.body, (result) => {
+        res.json(result)
+    });
+});
+
+router.put('/admin/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Promotion.edit(req.body, (result) => {
+        res.json(result)
+    });
+});
+
+router.delete('/admin/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Promotion.delete(req.body.id, (result) => {
+        res.json(result)
+    });
+});
+
+router.get('/admin/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Promotion.get(req.query.id, (result) => {
+        res.json(result)
+    });
+});
+
+router.get('/admin/get-promotions', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Promotion.gets((result) => {
+        res.json(result)
+    })
+});
+
+
+
+
+//#endregion PROMOTION ROUTERS
 
 module.exports = router;
