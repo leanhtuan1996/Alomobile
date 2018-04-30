@@ -67,14 +67,14 @@
                                                                                 <label class="control-label mb-10" for="type_promo">Loại khuyến mãi</label>
                                                                                 <div>
                                                                                         <div class="radio">
-                                                                                            <input type="radio" name="radio1" id="radio_1" value="option1" class="checked" checked>
-                                                                                            <label for="radio_1">
+                                                                                            <input type="radio" name="radio1" id="percent" value="option1" class="checked" checked>
+                                                                                            <label for="percent">
                                                                                             Theo phần trăm
                                                                                             </label>
                                                                                         </div>
                                                                                         <div class="radio">
-                                                                                            <input type="radio" name="radio1" id="radio_2" value="option2">
-                                                                                            <label for="radio_2">
+                                                                                            <input type="radio" name="radio1" id="price" value="option2">
+                                                                                            <label for="price">
                                                                                             Theo giá tiền
                                                                                             </label>
                                                                                         </div>
@@ -108,7 +108,11 @@
                                                                                     <input type="text" class="form-control" id="max_discount" placeholder="2000" value="">
                                                                                 </div>
                                                                             </div>                                                                      
-                                                                        </div>			
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                                <button type="submit" class="btn btn-success waves-effect" id="save-new-promotion">Save</button>
+                                                                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                                                            </div>			
                                                                     </form>
                                                                 </div>
                                                             </div>
@@ -118,10 +122,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-success waves-effect" id="save-new-promotion">Save</button>
-                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
-                                    </div>
+
                                 </div>
                                 <!-- /.modal-content -->
                             </div>
@@ -204,6 +205,10 @@
                 <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
                     <script>
 
+                        function numberWithCommas(x) {
+                            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        }
+
                         jQuery(document).ready(() => {    
                             $('#add-promotion-modal').on('shown.bs.modal', function() {
                                 $('.input-daterange-timepicker').daterangepicker({
@@ -238,11 +243,11 @@
                                         }
 
                                         if (start_at) {
-                                            start_at_string = `${start_at.getHours()}:${start_at.getMinutes()} ${start_at.getDate()}/${start_at.getMonth()}/${start_at.getFullYear()}`
+                                            start_at_string = `${start_at.getHours()}:${start_at.getMinutes()} ${start_at.getDate()}/${start_at.getMonth() + 1}/${start_at.getFullYear()}`
                                         }
                                         
                                         if (finish_at) {
-                                            finish_at_string = `${finish_at.getHours()}:${finish_at.getMinutes()} ${finish_at.getDate()}/${finish_at.getMonth()}/${finish_at.getFullYear()}`
+                                            finish_at_string = `${finish_at.getHours()}:${finish_at.getMinutes()} ${finish_at.getDate()}/${finish_at.getMonth() + 1}/${finish_at.getFullYear()}`
                                         }                                       
                                         
 
@@ -259,9 +264,10 @@
                                                     ${promotion.type}
                                                 </td>
                                                 <td class="txt-dark">
-                                                    ${promotion.discount}
+                                                    ${numberWithCommas(promotion.discount)} VNĐ
                                                 </td>
-                                                <td class="txt-dark">                                                    ${promotion.limit}
+                                                <td class="txt-dark">
+                                                    ${promotion.limit}
                                                 </td>
                                                 <td class="txt-dark">
                                                     ${promotion.used || 0}
@@ -273,19 +279,16 @@
                                                     ${finish_at_string || ""}
                                                 </td>
                                                 <td class="txt-dark">
-                                                    ${promotion.totalMinOrder || 0}
+                                                    ${numberWithCommas(promotion.totalMinOrder) || 0} VNĐ
                                                 </td>
                                                 <td class="txt-dark">
-                                                    ${promotion.maxDiscount || 0}
+                                                    ${numberWithCommas(promotion.maxDiscount) || 0} VNĐ
                                                 </td>
                                                 <td class="action-promotion">
-                                                    <a href="javascript:void(0)" class="text-inverse pr-10 edit-promotion" title="Chỉnh sửa người dùng">
+                                                    <a href="javascript:void(0)" class="text-inverse pr-10 edit-promotion" title="Chỉnh sửa khuyến mãi">
                                                         <i class="zmdi zmdi-edit txt-warning"></i>
                                                     </a>
-                                                    <a href="javascript:void(0)" class="text-inverse pr-10 reset-password-user" title="Reset mật khẩu người dùng">
-                                                            <i class="zmdi zmdi-refresh-sync text-success"></i>
-                                                    </a>
-                                                    <a href="javascript:void(0)" class="text-inverse delete-promotion" title="Xoá người dùng">
+                                                    <a href="javascript:void(0)" class="text-inverse delete-promotion" title="Xoá khuyến mãi">
                                                         <i class="zmdi zmdi-delete txt-danger"></i>
                                                     </a>
                                                 </td>
@@ -543,7 +546,10 @@
                                 }
                             });
 
-                            $('#save-new-promotion').click((e) => {                          
+                            $('form').submit((e) => {
+
+                                e.preventDefault();
+
                                 var modal = $('#add-promotion-modal');
                                 
                                 var code = $('#promo_code').val();
@@ -585,8 +591,7 @@
                                         showNotifier('error', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.');
                                     }
                                 })
-                                
-                            });
+                            })
 
                             $('#save-edit-promotion').click((e) => {
                                 var modal = $('#edit-promotion-modal');
@@ -638,6 +643,27 @@
                                     }
                                 })
                             });
+
+                            $('#discount_promo').on('keyup', (e) => {
+                                
+                            });
+
+                            $('#discount_promo').on('keyup keydown', (e) => {                           
+                                var keyCode = (e.keyCode ? e.keyCode : e.which); 
+                                if (keyCode > 47 && keyCode < 58) {
+                                    
+                                } else {
+                                    if (keyCode != 8) {
+                                        e.preventDefault();
+                                    }                                    
+                                }   
+                                
+                                if ($('#add-promotion-modal').find('input[type="radio"]:checked').attr('id') == 'price') { 
+                                    $('#max_discount').val($(e.currentTarget).val());
+                                }
+                            })
+
+                            
                         });
 
                     </script>

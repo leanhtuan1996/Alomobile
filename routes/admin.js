@@ -737,6 +737,7 @@ router.get('/admin/promotions', [auth.requireAuth, auth.requireRole], (req, res)
     Promotion.gets((result) => {
         res.render('admin/promotions', {
             data: {
+                title: "Alomobile Control Panel > Trang quản lý khuyến mãi",
                 error: result.error,
                 promotions: result.promotions
             }

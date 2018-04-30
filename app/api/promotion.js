@@ -8,6 +8,7 @@ var helper = require('../helpers/index').helper;
 var Promotion = require('../models/index').promotion;
 
 var add = (promotion, cb) => {
+    console.log(promotion);
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
@@ -57,23 +58,57 @@ var add = (promotion, cb) => {
                 });
                 return
             }
+        } 
+
+        if (promotion.totalMinOrder) {
+            try {
+                promotion.totalMinOrder = Number.parseInt(promotion.totalMinOrder);
+            } catch (error) {
+                workflow.emit('response', {
+                    error: "Please enter a number of minimize price of bill"
+                });
+                return
+            }
+        } else {
+            workflow.emit('response', {
+                error: "Minimize price of order is required!"
+            });
+            return
+        }
+
+        if (promotion.maxDiscount) {
+            try {
+                promotion.maxDiscount = Number.parseInt(promotion.maxDiscount);
+            } catch (error) {
+                workflow.emit('response', {
+                    error: "Please enter a number of maximun discount"
+                });
+                return
+            }
+        } else {
+            workflow.emit('response', {
+                error: "Maximun discount is required!"
+            });
+            return
         }
 
         if (promotion.start_at) {
-            if (!Number.isInteger(promotion.start_at)) {
+            try {
+                promotion.start_at = Number.parseInt(promotion.start_at)
+            } catch (error) {
                 workflow.emit('response', {
-                    error: "Start time of promotion is not match formation!"
-                });
-                return
+                    error: "Please enter a number of starting time promotion"
+                })
             }
         }
 
         if (promotion.finish_at) {
-            if (!Number.isInteger(promotion.finish_at)) {
+            try {
+                promotion.finish_at = Number.parseInt(promotion.finish_at)
+            } catch (error) {
                 workflow.emit('response', {
-                    error: "Finish time of promotion is not match formation!"
-                });
-                return
+                    error: "Please enter a number of ending time promotion"
+                })
             }
         }
 
@@ -96,7 +131,9 @@ var add = (promotion, cb) => {
             description: promotion.description,
             code: promotion.code,
             discount: promotion.discount,
-            type: promotion.type
+            type: promotion.type,
+            totalMinOrder: promotion.totalMinOrder,
+            maxDiscount: promotion.maxDiscount
         });
 
         if (promotion.limit) {
