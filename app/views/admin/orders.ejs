@@ -57,7 +57,7 @@
                                                             <% data.orders.forEach((order) => { %>
                                                                 <% var fullName = order.byUser.fullName.firstName + " " + order.byUser.fullName.lastName %>
                                                                 <% var date = new Date(order.created_at) %>
-                                                                <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" +date.getFullYear() %>
+                                                                <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  (date.getMonth() + 1) +"/" +date.getFullYear() %>
                                                                 <tr role="row" id="<%- order._id %>"> 
                                                                     <td class="txt-dark td-id">
                                                                         <%- order._id %>

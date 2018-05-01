@@ -303,6 +303,12 @@ router.post('/tra-cuu-don-hang', (req, res) => {
 
 router.put('/huy-don-hang', [auth.requireAuth], (req, res) => {
     Order.cancelOrder(req.body.idOrder, req.user._id, (result) => {
+
+        //success
+        if (!result.error) {
+            res.redis.delItem('order', [`get-order?id=${req.body.idOrder}&email=${req.user.email}`])
+        }
+
         res.json(result)
     });
 });

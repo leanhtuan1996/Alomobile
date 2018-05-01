@@ -637,7 +637,10 @@ var getDetailOrder = (id, cb) => {
     })
 
     workflow.on('get', () => {
-        Order.findById(id).populate('byUser').exec((err, doc) => {
+        Order.findById(id).populate('byUser').populate({
+            path: "promoCode.id",
+            model: "Promotion"
+        }).exec((err, doc) => {
             if (err) {
                 workflow.emit('response', {
                     error: err
@@ -656,6 +659,7 @@ var getDetailOrder = (id, cb) => {
                 path: 'products.id',
                 model: 'Product'
             }, (err, order) => {
+                console.log(order);
                 workflow.emit('response', {
                     error: err,
                     order: order

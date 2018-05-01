@@ -63,14 +63,23 @@
                                             <div class="col-xs-6">
                                                 <address>
                                                     <span class="txt-dark head-font capitalize-font mb-5">Phương thức thanh toán:</span>
-                                                    <br> <%- data.order.checkoutMethod || "Không rõ"%>
+                                                    <% if (data.order.checkoutMethod) { %>
+                                                        <% if (data.order.checkoutMethod == 'Cod') { %>
+                                                            <br>Thanh toán tiền mặt khi nhận hàng
+                                                        <% } else { %>
+                                                            <br>Thanh toán trực tuyến
+                                                        <% } %>
+                                                    <% } else { %>
+                                                        <br>Không rõ
+                                                    <% } %>
+                                                    
                                                 </address>
                                             </div>
                                             <div class="col-xs-6 text-right">
                                                 <address>
                                                     <span class="txt-dark head-font capitalize-font mb-5">Ngày mua hàng:</span>
                                                     <% var date = new Date(data.order.created_at) %>
-                                                    <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" +date.getFullYear() %>
+                                                    <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  (date.getMonth() + 1) +"/" +date.getFullYear() %>
                                                     <br> <%- dateCreated %>
                                                     <br>
                                                     <br>
@@ -88,7 +97,22 @@
                                                 <div class="col-xs-6 text-right">
                                                     <address>
                                                         <span class="txt-dark head-font capitalize-font mb-5">Mã giảm giá:</span>
-                                                        <br> Không có
+                                                        <% var discount = 0; %>
+                                                        <% if (data.order.promoCode) { %>
+                                                            <% var promoCode = data.order.promoCode; %>
+                                                            <% if (promoCode.id) { %>
+                                                                <br> <%- promoCode.id.code; %>
+                                                                <% if (promoCode.id.description) { %>
+                                                                    <br><%- promoCode.id.description %>
+                                                                <% } %>
+                                                                <% discount = promoCode.discount; %>
+                                                                <br>Giảm: <span class="price"><%- promoCode.discount %></span>
+                                                            <% } else { %>
+                                                                <br> Không có
+                                                            <% } %>                                                            
+                                                        <% } else { %>
+                                                            <br> Không có
+                                                        <% } %>                                                        
                                                     </address>
                                                 </div>
                                             </div>
@@ -125,12 +149,12 @@
                                                                             <li style="background-color: <%- product.color.hex %>; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin: 5px" title="<%-  product.color.name %>">
                                                                     </td>
                                                                     <td>
-                                                                            <span><%- product.price %></span>
+                                                                            <span class="price"><%- product.price %></span>
                                                                     </td>
                                                                     <td>
                                                                             <span><%- product.quantity %></span>
                                                                     </td>
-                                                                    <td><%- product.quantity * product.price %></td>
+                                                                    <td><span class="price"><%- product.quantity * product.price %></span></td>
                                                                 </tr>
                                                             <% }) %>
                                                         <% } %>
@@ -141,7 +165,7 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td>Tổng phụ</td>
-                                                            <td><%- subTotal %></td>
+                                                            <td><span class="price"><%- subTotal %></span></td>
                                                         </tr>
                                                         <tr class="txt-dark">
                                                             <td></td>
@@ -149,7 +173,7 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td>Phí vận chuyển</td>
-                                                            <td>0</td>
+                                                            <td><span class="price">0 VNĐ</span></td>
                                                         </tr>
                                                         <tr class="txt-dark">
                                                             <td></td>
@@ -157,7 +181,7 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td>Giảm giá</td>
-                                                            <td>0</td>
+                                                            <td><span class="price"><%- discount %></span></td>
                                                         </tr>
                                                         <tr class="txt-dark">
                                                             <td></td>
@@ -165,7 +189,7 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td>Tổng cộng</td>
-                                                            <td><%- subTotal %></td>
+                                                            <td><span class="price"><%- subTotal - discount %></span></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -269,6 +293,12 @@
                                     } 
                                 })
                             })
+                        });
+
+                        $('.price').each((index, price) => {
+                            if ($(price).html().match(/^[0-9]{1,}$/g)) {
+                                $(price).html(numberWithCommas($(price).html() + " VNĐ"));
+                            }
                         });
                     </script>
 </body>
