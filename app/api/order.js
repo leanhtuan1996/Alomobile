@@ -288,8 +288,12 @@ var initOrder = (parameters, cb) => {
             newOrder.byUser = user._id;
         }
 
-        if (parameters.promoCode) {
-            newOrder.promoCode = parameters.promoCode
+        if (parameters.promoCode && parameters.discount) {
+            var promoCode = {
+                id: parameters.promoCode,
+                discount: parameters.discount
+            }
+            newOrder.promoCode = promoCode
         }
 
         newOrder.status = 0;

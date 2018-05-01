@@ -42,8 +42,9 @@ $('.checkout button').click((e) => {
         }
 
         if (promoCode && promoCode != 'undefined') {
-            parameters.promoCode = promoCode
-        }
+            parameters.promoCode = promoCode,
+            parameters.discount = $('#cart-subtotal-discount span.value').attr('data-raw-price') || 0;
+        }        
 
         $.post('/thanh-toan', {
             parameters: parameters

@@ -102,7 +102,8 @@ router.post('/thanh-toan', (req, res) => {
     };
 
     if (req.body.parameters.promoCode) {
-        parameters.promoCode = req.body.parameters.promoCode
+        parameters.promoCode = req.body.parameters.promoCode;
+        parameters.discount = req.body.parameters.discount;
     }
 
     if (req.session.token && req.session.user) {

@@ -786,22 +786,22 @@
                                 </div>
                                 <div class="cart-summary-line cart-summary-subtotals" id="cart-subtotal-products">
                                     <span class="label">Tổng tiền</span>
-                                    <span class="value">0 VNĐ</span>
+                                    <span class="value price">0 VNĐ</span>
                                 </div>
                                 <div class="cart-summary-line cart-summary-subtotals" id="cart-subtotal-shipping">
                                     <span class="label">Phí vận chuyển</span>
-                                    <span class="value">0 VNĐ</span>
+                                    <span class="value price">0 VNĐ</span>
                                 </div>
-                                <div class="cart-summary-line cart-summary-subtotals" id="cart-subtotal-shipping">
+                                <div class="cart-summary-line cart-summary-subtotals" id="cart-subtotal-discount">
                                     <span class="label">Giảm giá</span>
-                                    <span class="value">0 VNĐ</span>
+                                    <span class="value price" data-raw-price="<%- data.order.promoCode.discount %>"><%- data.order.promoCode.discount %></span>
                                 </div>
                             </div>
                             <hr class="separator">
                             <div class="card-block cart-summary-totals">
                                 <div class="cart-summary-line">
                                     <span class="label sub">Tổng hoá đơn</span>
-                                    <span class="value sub">0 VNĐ</span>
+                                    <span class="value sub price">0 VNĐ</span>
                                 </div>
                             </div>
                         </section>

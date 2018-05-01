@@ -54,8 +54,14 @@ function showNotification(text) {
             $(itemsCartBlock).append(items);
 
             $(summaryBlock).find('#cart-subtotal-products span.value').text(numberWithCommas(totalSubPrice) + " VNĐ");
-            $(summaryBlock).find('div.cart-summary-products p.total-items-cart').text(data.products.length + " sản phẩm")
-            $(summaryBlock).find('div.cart-summary-totals').find('span.value').text(numberWithCommas(totalSubPrice) + " VNĐ")
+            $(summaryBlock).find('div.cart-summary-products p.total-items-cart').text(data.products.length + " sản phẩm")            
+
+            var discount = $(summaryBlock).find('#cart-subtotal-discount span.value').attr('data-raw-price');
+            if (discount) {
+                $(summaryBlock).find('#cart-subtotal-discount span.value').text(numberWithCommas(discount) + " VNĐ");
+                $(summaryBlock).find('div.cart-summary-totals').find('span.value').text(numberWithCommas(totalSubPrice - discount) + " VNĐ")
+                $(summaryBlock).find('div.cart-summary-totals').find('span.value').attr('data-raw-price', totalSubPrice - discount);
+            }
         } else {
             location.href = "/gio-hang"
         }
