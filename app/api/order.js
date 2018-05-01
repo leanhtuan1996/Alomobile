@@ -187,6 +187,7 @@ var verify = (id, cb) => {
 
 var initOrder = (parameters, cb) => {
     var products = parameters.products,
+        promoCode = parameters.promoCode,
         user = parameters.byUser;
 
     var workflow = new event.EventEmitter();
@@ -285,6 +286,10 @@ var initOrder = (parameters, cb) => {
 
         if (user) {
             newOrder.byUser = user._id;
+        }
+
+        if (parameters.promoCode) {
+            newOrder.promoCode = parameters.promoCode
         }
 
         newOrder.status = 0;

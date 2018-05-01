@@ -35,7 +35,7 @@ module.exports = mongoose.model('Order', new Schema({
     },
     note: String,
     checkoutMethod: String,
-    promoCode: [{ type: Schema.Types.ObjectId, ref: "Promotion" }],
+    promoCode: { type: Schema.Types.ObjectId, ref: "Promotion" },
     created_at: Number,
     updated_at: Number
 }).pre('save', function (next) {

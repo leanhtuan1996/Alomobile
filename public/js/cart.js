@@ -19,7 +19,7 @@ $('.checkout button').click((e) => {
         if (!cart || !cart.products) {  return }
         if (cart.products.length == 0) { return }
 
-        var promoCode = $('#voucher-input').val();
+        var promoCode = checkAvailablePromoCode();
 
         var products = [];
 
@@ -45,10 +45,9 @@ $('.checkout button').click((e) => {
             parameters.promoCode = promoCode
         }
 
-       $.post('/thanh-toan', {
+        $.post('/thanh-toan', {
             parameters: parameters
-       }, (data) => {
-           console.log(data);
+        }, (data) => {
            if (data.error) {
                showNotification(data.error);
                return
@@ -63,7 +62,6 @@ $('.checkout button').click((e) => {
            location.href = '/thanh-toan'
 
        }).error((err) => {
-           console.log(err);
        })
 
     } catch (error) {
@@ -99,4 +97,112 @@ $('.cart-overview').delegate('a.remove-from-cart', 'click', (e) => {
 
         $('.cart-overview').find(`li[data-id-product=${id}]`).remove();
     } 
+});
+
+function checkAvailablePromoCode() {
+    return $('#voucher-block').find('div.voucher-use span.gift-card-item').attr('data-id-gift');
+}
+
+function showNotifier(status, content) {
+    swal('Thông báo', content, status)
+}
+
+jQuery(document).ready(($) => {
+    $('#check_promo_code').click((e) => {
+
+        var promo_code = $('#voucher-input').val();
+        if (!promo_code) { return }
+
+        if (!checkAvailablePromoCode()) {
+            
+            $.post('/api/v1/check-promo-code', {
+                promo_code: promo_code
+            }, (data) => {
+                if (data.promotion) {
+                                            
+                    var id = data.promotion._id,
+                        discount = data.promotion.discount,
+                        type = data.promotion.type,
+                        totalMinOrder = data.promotion.totalMinOrder,
+                        maxDiscount = data.promotion.maxDiscount,
+                        subTotalBill = $('#cart-subtotal-products span.value').attr('data-raw-price');
+                        totalBill =  $('#cart-total span.value').attr('data-total-raw-price');
+
+                    if (!subTotalBill) {
+                        showNotifier('error', `Mã ${promo_code} không thể được sử dụng.`)
+                        return
+                    }
+
+                    if (totalMinOrder) {
+                        if (!subTotalBill) {
+                            showNotifier('error', `Mã ${promo_code} chỉ áp dụng cho đơn hàng có giá trị ${totalMinOrder} trở lên.`)
+                            return
+                        } else {
+                            if (subTotalBill < totalMinOrder) {
+                                showNotifier('error', `Mã ${promo_code} chỉ áp dụng cho đơn hàng có giá trị ${totalMinOrder} trở lên.`)
+                                return
+                            }
+                        }
+                    }      
+                             
+                    switch (type) {
+                        case 'percent':
+                            var price_discount = (subTotalBill * discount) / 100;
+
+                            if (maxDiscount) {
+                                if (price_discount > maxDiscount) {
+                                    usePromoCode(id, promo_code, maxDiscount, subTotalBill - maxDiscount);
+                                } else {
+                                    usePromoCode(id, promo_code, price_discount, subTotalBill - price_discount)
+                                }
+                            } else {
+                                usePromoCode(id, promo_code, price_discount, subTotalBill - price_discount)
+                            }
+
+                            break;
+                    
+                        default:
+                            if (maxDiscount) {
+                                if (discount > subTotalBill) {
+                                    usePromoCode(id, promo_code, maxDiscount, subTotalBill - maxDiscount)
+                                } else {
+                                    usePromoCode(id, promo_code, discount, subTotalBill - discount)
+                                }
+                            } else {
+                                usePromoCode(id, promo_code, discount, subTotalBill - discount);
+                            }
+                            break;
+                    }                          
+
+                } else {
+                    showNotifier('error', `Mã ${promo_code} không hợp lệ hoặc hết hạn sử dụng!`);
+                }
+            }).error((err) => {
+                showNotifier('error', `Lỗi không xác định, vui lòng tải lại trang và thử lại.`)
+            })
+        } else {
+            showNotifier('error', 'Chỉ có thể áp dụng 1 mã giảm giá cho mỗi đơn hàng.');
+        }
+    });
+
+    $('#voucher-block div.voucher-use').delegate('button', 'click', (e) => {
+        location.reload();
+    })
+
+    function usePromoCode(idGift, promo_code, price, totalOrder) {
+        var content = `
+            <span class="label label-success gift-card-item" data-id-gift=${idGift}>
+                <span class="coupon-disc">${promo_code}</span>
+                <button type="button" class="btn btn-default btn-remove-coupon"><i class="fa fa-times"></i></button>
+            </span>                            
+        `
+
+        if (checkAvailablePromoCode()) { return }
+        $('#voucher-block').find('div.voucher-use p.note-coupon').before(content);
+        $('#voucher-input').val('');
+        $('#cart-subtotal-discount span.value').attr('data-raw-price', price)
+        $('#cart-subtotal-discount span.value').text("- " + numberWithCommas(price) + ' VNĐ')
+        $('#cart-total span.value').attr('data-total-raw-price', totalOrder);
+        $('#cart-total span.value').text(numberWithCommas(totalOrder) + " VNĐ");
+    }
 });

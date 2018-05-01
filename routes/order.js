@@ -98,8 +98,12 @@ router.post('/thanh-toan', (req, res) => {
         return
     }
     var parameters = {
-        products: req.body.parameters.products
+        products: req.body.parameters.products        
     };
+
+    if (req.body.parameters.promoCode) {
+        parameters.promoCode = req.body.parameters.promoCode
+    }
 
     if (req.session.token && req.session.user) {
         User.verify(req.session.token, (cb) => {
