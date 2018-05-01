@@ -67,13 +67,13 @@
                                                                                 <label class="control-label mb-10" for="type_promo">Loại khuyến mãi</label>
                                                                                 <div>
                                                                                         <div class="radio">
-                                                                                            <input type="radio" name="radio1" id="percent" value="option1" class="checked" checked>
+                                                                                            <input type="radio" name="radio1" id="percent" value="percent" class="checked" checked>
                                                                                             <label for="percent">
                                                                                             Theo phần trăm
                                                                                             </label>
                                                                                         </div>
                                                                                         <div class="radio">
-                                                                                            <input type="radio" name="radio1" id="price" value="option2">
+                                                                                            <input type="radio" name="radio1" id="price" value="price">
                                                                                             <label for="price">
                                                                                             Theo giá tiền
                                                                                             </label>
@@ -260,30 +260,52 @@
                                                 <td class="txt-dark">
                                                     ${promotion.description || ""}
                                                 </td>
+                                                <td class="txt-dark">`
+
+                                                if (promotion.type == 'percent') {
+                                                    items+= `Theo phần trăm`
+                                                } else {
+                                                    items+= `Theo giá tiền`
+                                                }
+                                                    
+                                                items+=`</td>
+                                                <td class="txt-dark">`
+
+                                                if (promotion.type == 'percent') {
+                                                    items+= `${promotion.discount} %`
+                                                } else {
+                                                    items+= `${numberWithCommas(promotion.discount)} VNĐ`
+                                                }
+
+                                                    
+                                                items += `</td>
                                                 <td class="txt-dark">
-                                                    ${promotion.type}
-                                                </td>
-                                                <td class="txt-dark">
-                                                    ${numberWithCommas(promotion.discount)} VNĐ
-                                                </td>
-                                                <td class="txt-dark">
-                                                    ${promotion.limit}
+                                                    ${promotion.limit || "Không giới hạn"}
                                                 </td>
                                                 <td class="txt-dark">
                                                     ${promotion.used || 0}
                                                 </td>
                                                 <td class="txt-dark">
-                                                    ${start_at_string || ""}
+                                                    ${start_at_string || "Không giới hạn"}
                                                 </td>
                                                 <td class="txt-dark">
-                                                    ${finish_at_string || ""}
+                                                    ${finish_at_string || "Không giới hạn"}
                                                 </td>
-                                                <td class="txt-dark">
-                                                    ${numberWithCommas(promotion.totalMinOrder) || 0} VNĐ
-                                                </td>
-                                                <td class="txt-dark">
-                                                    ${numberWithCommas(promotion.maxDiscount) || 0} VNĐ
-                                                </td>
+                                                <td class="txt-dark">`  
+                                                    if (promotion.totalMinOrder && promotion.totalMinOrder != 0) {
+                                                        items += `${numberWithCommas(promotion.totalMinOrder) || 0} VNĐ`
+                                                    } else {
+                                                        items += `Không giới hạn`;
+                                                    }
+
+                                                items += `</td>
+                                                <td class="txt-dark">`
+                                                    if (promotion.maxDiscount && promotion.maxDiscount != 0) {
+                                                        items += `${numberWithCommas(promotion.maxDiscount) || 0} VNĐ`
+                                                    } else {
+                                                        items += `Không giới hạn`;
+                                                    }
+                                                items += `</td>
                                                 <td class="action-promotion">
                                                     <a href="javascript:void(0)" class="text-inverse pr-10 edit-promotion" title="Chỉnh sửa khuyến mãi">
                                                         <i class="zmdi zmdi-edit txt-warning"></i>
@@ -558,7 +580,7 @@
                                 var start_time = new Date(start_at).getTime();
                                 var finish_at = $('.input-daterange-timepicker').data('daterangepicker').endDate._d;                                
                                 var finish_time = new Date(finish_at).getTime();
-                                var type = $(modal).find('input[type="radio"]:checked').next('label').text().trim();
+                                var type = $(modal).find('input[type="radio"]:checked').val();
                                 var discount = $('#discount_promo').val();
                                 var limit = $("#limit_promo").val();
                                 var totalMinOrder = $("#total_order_minimize").val();
@@ -661,9 +683,7 @@
                                 if ($('#add-promotion-modal').find('input[type="radio"]:checked').attr('id') == 'price') { 
                                     $('#max_discount').val($(e.currentTarget).val());
                                 }
-                            })
-
-                            
+                            });                            
                         });
 
                     </script>

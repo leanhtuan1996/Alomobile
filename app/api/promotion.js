@@ -8,7 +8,6 @@ var helper = require('../helpers/index').helper;
 var Promotion = require('../models/index').promotion;
 
 var add = (promotion, cb) => {
-    console.log(promotion);
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {

@@ -669,8 +669,8 @@ router.put('/api/v1/promotion', [auth.requireAuth, auth.requireRole], (req, res)
     })
 })
 
-router.get('/api/v1/check-promo-code', (req, res) => {
-    Promotion.check(req.query.promo_code, (result) => {
+router.post('/api/v1/check-promo-code', (req, res) => {
+    Promotion.check(req.body.promo_code, (result) => {
         res.json(result)
     })
 });

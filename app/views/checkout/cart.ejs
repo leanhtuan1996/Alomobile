@@ -70,6 +70,13 @@
                                                     </span>
                                                     <span class="value" data-raw-price="0">0 VNĐ</span>
                                                 </div>
+                                                <div class="cart-summary-line" id="cart-subtotal-discount">
+                                                    <span class="label">
+                                                        Giảm giá
+                                                    </span>
+                                                    <span class="value" data-raw-price="0">0 VNĐ</span>
+                                                    <div><small class="value"></small></div>
+                                                </div>
                                                 <div class="cart-summary-line" id="cart-subtotal-shipping">
                                                     <span class="label">
                                                         Phí vận chuyển
@@ -79,7 +86,7 @@
                                                 </div>
                                             </div>
                                             <hr class="separator">
-                                            <div class="card-block">
+                                            <div class="card-block" id="voucher-block">
                                                 <div class="voucher-input">
                                                     <div class="voucher-input-inner" style="display: table;
                                                     width: 100%;
@@ -107,14 +114,20 @@
                                                             </span>
                                                         </div>
                                                     <div class="voucher-input-col">
-                                                        <button type="button" class="btn btn-primary">Áp dụng</button>
+                                                        <button type="button" id="check_promo_code" class="btn btn-primary">Áp dụng</button>
+                                                    </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <div class="voucher-use">
+                                                    <!-- PROMO CODE ITEMS -->
+                                                    <p class="note-coupon">
+                                                        <b>Lưu ý:</b> Mỗi giỏ hàng chỉ được áp dụng 1 mã giảm giá.
+                                                    </p>
+                                                </div>                                               
                                             </div>
                                             <hr class="separator">
                                             <div class="card-block">
-                                                <div class="cart-summary-line cart-total">
+                                                <div class="cart-summary-line cart-total" id="cart-total">
                                                     <span class="label">Tổng đơn hàng</span>
                                                     <span class="value" data-total-raw-price="0">0 VNĐ</span>
                                                 </div>  
@@ -139,4 +152,163 @@
     <div class="back-top"><a href="#" class="back-top-button"></a></div>
 </body>
 <script type="text/javascript" src="/static/js/cart.js"></script>
+<script>
+
+    function checkAvalablePromoCode() {
+        if ($('#voucher-block').find('div.voucher-use span.gift-card-item').length > 0) {
+            return true
+        } 
+        return false
+    }
+
+    function showNotifier(status, content) {
+        swal('Thông báo', content, status)
+    }
+
+    jQuery(document).ready(($) => {
+        $('#check_promo_code').click((e) => {
+
+            var promo_code = $('#voucher-input').val();
+            if (!promo_code) { return }
+
+            if (checkAvalablePromoCode() == false) {
+                
+                $.post('/api/v1/check-promo-code', {
+                    promo_code: promo_code
+                }, (data) => {
+                    if (data.promotion) {
+                                                
+                        var discount = data.promotion.discount,
+                            type = data.promotion.type,
+                            totalMinOrder = data.promotion.totalMinOrder,
+                            maxDiscount = data.promotion.maxDiscount,
+                            subTotalBill = $('#cart-subtotal-products span.value').attr('data-raw-price');
+                            totalBill =  $('#cart-total span.value').attr('data-total-raw-price');
+
+                        if (!subTotalBill) {
+                            showNotifier('error', `Mã ${promo_code} không thể được sử dụng.`)
+                            return
+                        }
+
+                        if (totalMinOrder) {
+                            if (!subTotalBill) {
+                                showNotifier('error', `Mã ${promo_code} chỉ áp dụng cho đơn hàng có giá trị ${totalMinOrder} trở lên.`)
+                                return
+                            } else {
+                                if (subTotalBill < totalMinOrder) {
+                                    showNotifier('error', `Mã ${promo_code} chỉ áp dụng cho đơn hàng có giá trị ${totalMinOrder} trở lên.`)
+                                    return
+                                }
+                            }
+                        }      
+                                 
+                        switch (type) {
+                            case 'percent':
+                                var price_discount = (subTotalBill * discount) / 100;
+
+                                if (maxDiscount) {
+                                    if (price_discount > maxDiscount) {
+                                        usePromoCode(promo_code, maxDiscount, subTotalBill - maxDiscount);
+                                    } else {
+                                        usePromoCode(promo_code, price_discount, subTotalBill - price_discount)
+                                    }
+                                } else {
+                                    usePromoCode(promo_code, price_discount, subTotalBill - price_discount)
+                                }
+
+                                break;
+                        
+                            default:
+                                if (maxDiscount) {
+                                    if (discount > subTotalBill) {
+                                        usePromoCode(promo_code, maxDiscount, subTotalBill - maxDiscount)
+                                    } else {
+                                        usePromoCode(promo_code, discount, subTotalBill - discount)
+                                    }
+                                } else {
+                                    usePromoCode(promo_code, discount, subTotalBill - discount);
+                                }
+                                break;
+                        }
+                          
+
+                    } else {
+                        showNotifier('error', `Mã ${promo_code} không hợp lệ hoặc hết hạn sử dụng!`);
+                    }
+                }).error((err) => {
+                    showNotifier('error', `Lỗi không xác định, vui lòng tải lại trang và thử lại.`)
+                })
+            } else {
+                showNotifier('error', 'Chỉ có thể áp dụng 1 mã giảm giá cho mỗi đơn hàng.');
+            }
+        });
+
+        $('#voucher-block div.voucher-use').delegate('button', 'click', (e) => {
+            location.reload();
+        })
+
+        function usePromoCode(promo_code, price, totalOrder) {
+            var content = `
+                <span class="label label-success gift-card-item">
+                    <span class="coupon-disc">${promo_code}</span>
+                    <button type="button" class="btn btn-default btn-remove-coupon"><i class="fa fa-times"></i></button>
+                </span>                            
+            `
+
+            if (checkAvalablePromoCode()) { return }
+            $('#voucher-block').find('div.voucher-use p.note-coupon').before(content);
+            $('#voucher-input').val('');
+            $('#cart-subtotal-discount span.value').attr('data-raw-price', price)
+            $('#cart-subtotal-discount span.value').text("- " + numberWithCommas(price) + ' VNĐ')
+            $('#cart-total span.value').attr('data-total-raw-price', totalOrder);
+            $('#cart-total span.value').text(numberWithCommas(totalOrder) + " VNĐ");
+        }
+    });
+</script>
+<style>
+
+.gift-card-item {
+    display: inline-block;
+    border-radius: 3px;
+    line-height: normal;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-bottom: 3px;
+    padding: 0 0 0 4px
+}
+
+.gift-card-item span {
+    padding: 2px;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 400;
+    display: inline-block;
+    vertical-align: middle;
+    color: #fff;
+}
+
+.gift-card-item .btn {
+    border: none;
+    background: #3E883E;
+    border-radius: 0;
+    color: #fff;
+    padding: 0 3px
+}
+
+.gift-card-item .btn:hover {
+    opacity: .8
+}
+
+.note-coupon {
+    color: #7f7f7f;
+    font-style: italic;
+    margin-bottom: 0
+}
+
+.label-success {
+    background-color: #5cb85c
+}
+
+
+</style>
 </html>
