@@ -79,6 +79,7 @@
                                                     </th>
                                                     <th>Ngày mua</th>
                                                     <th>Sản phẩm</th>
+                                                    <th>Giảm giá</th>
                                                     <th>Tổng tiền</th>
                                                     <th>
                                                         <span class="hidden-lg">Trạng thái</span>
@@ -90,6 +91,12 @@
                                                 <% data.user.orders.forEach(order => { %>
                                                     <% var date = new Date(order.created_at) %>
                                                     <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" + date.getFullYear() %>
+                                                    <% var discount = 0; %>
+                                                    <% if (order.promoCode) { %>
+                                                            <% if (order.promoCode.id && order.promoCode.discount) { %>
+                                                                <% discount = order.promoCode.discount; %>
+                                                            <% } %>
+                                                    <% } %>
                                                     
                                                     <tr>
                                                         <td><a href="/tra-cuu-don-hang?email=<%- data.user.email %>&id=<%- order._id %>">#<%- order._id %></a></td>
@@ -112,7 +119,8 @@
                                                                 </ul>
                                                             <% }) %>
                                                         </td>
-                                                        <td class="price"><%- total %></td>
+                                                        <td class="price discount"><%- discount %></td>
+                                                        <td class="price"><%- total - discount %></td>
                                                         <td>
                                                                 <% var status = order.status; %>
                                                                 <% if (status == 1) { %>

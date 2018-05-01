@@ -41,6 +41,12 @@
                                                 <% var date = new Date(data.order.created_at) %>
                                                 <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" +date.getFullYear() %>
                                                 <% var address = data.order.toAddress.address + " " + data.order.toAddress.state + " " + data.order.toAddress.city %>
+                                                <% var discount = 0; %>
+                                                <% if (data.order.promoCode) { %>
+                                                        <% if (data.order.promoCode.id && data.order.promoCode.discount) { %>
+                                                            <% discount = data.order.promoCode.discount; %>
+                                                        <% } %>
+                                                <% } %>
 
                                                 <p class="order-id">Mã đơn hàng: #<%- data.order._id %></p>
 
@@ -174,10 +180,20 @@
                                                             <tr>
                                                                 <td></td>
                                                                 <td></td>
+                                                                <td><strong>Giảm giá</strong></td>
+                                                                <td><strong>
+                                                                    <span class="price discount">
+                                                                        <%- discount %>
+                                                                    </span>
+                                                                </strong></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
                                                                 <td><strong>Tổng</strong></td>
                                                                 <td><strong>
                                                                     <span class="price">
-                                                                        <%- total %>
+                                                                        <%- total - discount%>
                                                                     </span>
                                                                 </strong></td>
                                                             </tr>
