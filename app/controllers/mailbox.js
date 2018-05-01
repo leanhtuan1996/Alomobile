@@ -83,7 +83,8 @@ var sendMailWithConfirmOrder = (parameters) => {
         //address
         var user = parameters.byUser,
             products = parameters.products,
-            toAddress = parameters.toAddress;
+            toAddress = parameters.toAddress,
+            promoCode = parameters.promoCode;
 
         var fullName = toAddress.fullName,
             phone = toAddress.phone,
@@ -150,8 +151,9 @@ var sendMailWithConfirmOrder = (parameters) => {
 
         $('#table_product').append(items);
 
-        $('.subtotal_order').text(helper.numberWithCommas(subtotal))
-        $('.total_order').text(helper.numberWithCommas(subtotal))
+        $('.discount_order').text("- " + helper.numberWithCommas(promoCode.discount || 0) + " VNĐ")
+        $('.subtotal_order').text(helper.numberWithCommas(subtotal) + " VNĐ")
+        $('.total_order').text(helper.numberWithCommas(subtotal - (promoCode.discount || 0)) + " VNĐ")
         
         var newParameters = {
             to: email,
@@ -175,7 +177,8 @@ var sendMailWithSuccessOrder = (parameters) => {
         //address
         var user = parameters.byUser,
             products = parameters.products,
-            toAddress = parameters.toAddress;
+            toAddress = parameters.toAddress,
+            promoCode = parameters.promoCode;
 
         var fullName = toAddress.fullName,
             phone = toAddress.phone,
@@ -241,8 +244,9 @@ var sendMailWithSuccessOrder = (parameters) => {
 
         $('#table_product').append(items);
 
-        $('.subtotal_order').text(helper.numberWithCommas(subtotal))
-        $('.total_order').text(helper.numberWithCommas(subtotal))
+        $('.subtotal_order').text(helper.numberWithCommas(subtotal) + " VNĐ");
+        $('.discount_order').text("- " + helper.numberWithCommas(promoCode.discount || 0) + " VNĐ");
+        $('.total_order').text(helper.numberWithCommas(subtotal - (promoCode.discount || 0)) + " VNĐ");
         
         var newParameters = {
             to: email,
