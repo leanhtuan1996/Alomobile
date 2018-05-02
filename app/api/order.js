@@ -474,6 +474,59 @@ var updateOrder = (order, parameters, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var updateStatus = (id, status, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id is required!"
+            });
+            return
+        }
+
+        if (!status) {
+            workflow.emit('response', {
+                error: "Status is required!"
+            });
+            return
+        } else {
+            try {
+                status = Number.parseInt(status)
+            } catch (error) {
+                workflow.emit('response', {
+                    error: error
+                })
+            }
+        }
+
+        workflow.emit('update')
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    })
+
+    workflow.on('update', () => {
+        Order.findById(id, (err, order) => {
+            if (order) {
+                order.status = status;
+                order.save((err) => {
+                    workflow.emit('response', {
+                        error: err
+                    });
+                });
+            } else {
+                workflow.emit('response', {
+                    error: "Order not found"
+                });
+            }
+        })
+    })
+
+    workflow.emit('validate-parameters')
+}
+
 var newOrder = (order, cb) => {
     var workflow = new event.EventEmitter();
 
@@ -1153,5 +1206,6 @@ module.exports = {
     checkOrder: checkOrder,
     getMyOrders: getMyOrders,
     getLastestOrder: getLastestOrder,
-    cancelOrder: cancelOrder
+    cancelOrder: cancelOrder,
+    updateStatus: updateStatus
 }

@@ -3,6 +3,8 @@
 
 <head>
     <% include layouts/header %>
+    <!-- bootstrap-select CSS -->
+    <link href="/static/admin/libs/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
@@ -60,10 +62,10 @@
                                                                 <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  (date.getMonth() + 1) +"/" +date.getFullYear() %>
                                                                 <tr role="row" id="<%- order._id %>"> 
                                                                     <td class="txt-dark td-id">
-                                                                        <%- order._id %>
+                                                                        <a href="/admin/invoice/<%- order._id %>"><%- order._id %></a>
                                                                     </td>
                                                                     <td style="color: blue;" class="td-name-user">
-                                                                        <a href="javascript: void(0)"> <%- fullName %></a>
+                                                                        <a href="javascript: void(0);"> <%- fullName %></a>
                                                                     </td>
                                                                     <td class="txt-dark td-product">
                                                                         <div>
@@ -77,7 +79,7 @@
                                                                                     </li>
                                                                                     <li style="background-color: <%- product.color.hex %>; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin: 5px" title="<%- product.color.name %>">
                                                                                     </li>
-                                                                                    <li style="float: left; margin: 5px"><span>- <%- product.price %></span></li>
+                                                                                    <li style="float: left; margin: 5px">-<span class="price"><%- product.price %></span></li>
                                                                                     <li style="float: left; margin: 5px"><span>- số lượng: <%- product.quantity %></span></li>
                                                                                 </ul>	
                                                                             <% }) %>  
@@ -89,21 +91,30 @@
                                                                     </td>
                                                                     <td>
                                                                         <% var status = order.status %>
-                                                                        <% if (status == 0) { %>
-                                                                            <span class="label label-success font-weight-100">Khởi tạo</span>
-                                                                        <% } else if (status == 1) { %>
-                                                                            <span class="label label-primary font-weight-100">Đang đợi duyệt</span>
-                                                                            <% } else if (status == 2) { %>
-                                                                                <span class="label label-default font-weight-100">Đã duyệt</span>
-                                                                        <% } else if (status == 3) { %>
-                                                                            <span class="label label-default font-weight-100">Bị từ chối</span>
-                                                                        <% } else if (status == 4) { %>
-                                                                            <span class="label label-default font-weight-100">Người dùng huỷ đơn</span>
-                                                                        <% } else if (status == 5) { %>
-                                                                            <span class="label label-default font-weight-100">Đang giao</span>
+                                                                        <select class="select-status-order" data-style="form-control btn-primary btn-outline">
+                                                                        <% if (status) { %>
+                                                                           <option value="1" <% if (status == 1) { %>
+                                                                            selected data-origin-selection="true"
+                                                                       <% } %>>Đang đợi duyệt</option>
+                                                                           <option value="2" <% if (status == 2) { %>
+                                                                            selected data-origin-selection="true"
+                                                                       <% } %> >Đã duyệt</option>
+                                                                           <option value="3" <% if (status == 3) { %>
+                                                                            selected data-origin-selection="true"
+                                                                       <% } %> >Bị từ chối</option>
+                                                                           <option value="4" <% if (status == 4) { %>
+                                                                            selected data-origin-selection="true"
+                                                                       <% } %> >Đã huỷ</option>
+                                                                           <option value="5" <% if (status == 5) { %>
+                                                                            selected data-origin-selection="true"
+                                                                       <% } %> >Đang giao</option>
+                                                                           <option value="6" <% if (status == 6) { %>
+                                                                            selected data-origin-selection="true"
+                                                                       <% } %> >Đã giao</option>  
                                                                         <% } else { %>
-                                                                            <span class="label label-default font-weight-100">Đã giao</span>
+                                                                            <option value="null">Không có</option>
                                                                         <% } %>
+                                                                        </select>
                                                                     </td>
                                                                     <td class="action-brand">
                                                                         <a href="javascript:void(0)" class="text-inverse pr-10 review-order" title="Duyệt đơn hàng" data-id-order="<%- order._id %>">
@@ -143,9 +154,20 @@
                 <!-- /#wrapper -->
                 <% include layouts/footer %>
                 <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-                    <script type="text/javascript">
-                      
-                      function confirmDelete(cb) {
+                <!-- Bootstrap Select JavaScript -->
+		        <script type="text/javascript" src="/static/admin/libs/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+                <script type="text/javascript">
+
+                        $('.price').each((index, price) => {
+                            if ($(price).html().match(/^[0-9]{1,}$/g)) {
+                                $(price).html(numberWithCommas($(price).html() + " VNĐ"));
+                            }
+                        });
+
+                        /* Bootstrap Select Init*/
+                        $('.select-status-order').selectpicker();
+
+                        function confirmDelete(cb) {
                             swal({
                                     title: "Bạn có muốn xoá không?",
                                     text: "Nhấn vào 'Đồng ý' để xoá, không thể phục hồi được sau khi xoá!",
@@ -234,6 +256,31 @@
                             $("#table-order tbody").delegate('.review-order', 'click', (e) => {
                                 var id = $(e.currentTarget).attr('data-id-order'); 
                                 location.href = '/admin/invoice/' + id
+                            });
+
+                            $('#table-order tbody').delegate('select', 'change', (e) => {                      
+                                var status = Number.parseInt($(e.currentTarget).find('option:selected').val());
+                                var id = $(e.currentTarget.parentElement.parentElement.parentElement).attr('id');
+
+                                if (!id ||  id == 'undefined') { return }
+
+                                if (!status || status > 6) { return }
+
+                                $.ajax({
+                                    url: '/api/v1/order/update-status',
+                                    method: "PUT",
+                                    data: {
+                                        id: id,
+                                        status: status
+                                    },
+                                    success: (data) => {
+                                        console.log(data);
+                                    },
+                                    error: (err) => {
+                                        console.log(data);
+                                    }
+                                })
+                               
                             });
                         });
                     </script>

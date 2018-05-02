@@ -572,6 +572,12 @@ router.get('/api/v1/order/getNewerOrders', [auth.requireAuth, auth.requireRole],
     })
 });
 
+router.put('/api/v1/order/update-status', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Order.updateStatus(req.body.id, req.body.status, (result) => {
+        res.json(result)
+    })
+});
+
 //**/APIS FOR ORDER
 
 //APIS FOR REVIEW
@@ -666,7 +672,7 @@ router.post('/api/v1/promotion', [auth.requireAuth, auth.requireRole], (req, res
 router.put('/api/v1/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
     Promotion.edit(req.body, (result) => {
         res.json(result)
-    })
+    });
 });
 
 router.delete('/api/v1/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
