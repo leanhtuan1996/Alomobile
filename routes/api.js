@@ -89,7 +89,9 @@ router.post('/api/v1/user/sign-up', (req, res) => {
 });
 
 router.post('/api/v1/user/register-new-letters', (req, res) => {
-
+    User.registerNewLetters(req.body.email, (result) => {
+        res.json(result);
+    })
 });
 
 router.get('/api/v1/user/all-users', [auth.requireAuth, auth.requireRole], (req, res) => {
@@ -574,6 +576,11 @@ router.get('/api/v1/order/getNewerOrders', [auth.requireAuth, auth.requireRole],
 
 router.put('/api/v1/order/update-status', [auth.requireAuth, auth.requireRole], (req, res) => {
     Order.updateStatus(req.body.id, req.body.status, (result) => {
+
+        if (!result.error) {
+            res.redis.delItem('order', [`get-order?id=${req.body.id}&email=${req.user.email}`]);
+        }
+
         res.json(result)
     })
 });

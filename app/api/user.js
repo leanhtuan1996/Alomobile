@@ -173,22 +173,44 @@ var signUp = (user, result) => {
     workflow.emit('validate-parameters');
 }/***/
 
-var registerNewLetters = (res, email) => {
+var registerNewLetters = (email, cb) => {
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
+        if (!email) {
+            workflow.emit('response', {
+                error: "Email is required!"
+            });
+            return
+        }
 
+        workflow.emit('register-new-letters');
     });
 
-    workflow.on('handler-error', (err) => {
-
+    workflow.on('response', (response) => {
+        return cb(response)
     });
 
     workflow.on('register-new-letters', () => {
-
+        User.findOne({
+            email: email
+        }).exec((err, user) => {
+            if (user) {
+                user.isRegisteredNewLetters = true
+                user.save((err) => {
+                    workflow.emit('response', {
+                        error: err
+                    });
+                });
+            } else {
+                workflow.emit('response', {
+                    error: "Email không tìm thấy trong hệ thống"
+                });
+            }
+        })
     });
 
-    workflow.emit('validate-paremeters');
+    workflow.emit('validate-parameters');
 }
 
 var getInformations = (req, res) => {
