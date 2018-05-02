@@ -68,12 +68,7 @@ var add = (promotion, cb) => {
                 });
                 return
             }
-        } else {
-            workflow.emit('response', {
-                error: "Minimize price of order is required!"
-            });
-            return
-        }
+        } 
 
         if (promotion.maxDiscount) {
             try {
@@ -84,12 +79,7 @@ var add = (promotion, cb) => {
                 });
                 return
             }
-        } else {
-            workflow.emit('response', {
-                error: "Maximun discount is required!"
-            });
-            return
-        }
+        } 
 
         if (promotion.start_at) {
             try {

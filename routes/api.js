@@ -667,6 +667,12 @@ router.put('/api/v1/promotion', [auth.requireAuth, auth.requireRole], (req, res)
     Promotion.edit(req.body, (result) => {
         res.json(result)
     })
+});
+
+router.delete('/api/v1/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Promotion.delete(req.body.id, (result) => {
+        res.json(result)
+    })
 })
 
 router.post('/api/v1/check-promo-code', (req, res) => {
