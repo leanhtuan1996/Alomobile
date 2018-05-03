@@ -577,8 +577,8 @@ router.get('/api/v1/order/getNewerOrders', [auth.requireAuth, auth.requireRole],
 router.put('/api/v1/order/update-status', [auth.requireAuth, auth.requireRole], (req, res) => {
     Order.updateStatus(req.body.id, req.body.status, (result) => {
 
-        if (!result.error) {
-            res.redis.delItem('order', [`get-order?id=${req.body.id}&email=${req.user.email}`]);
+        if (result.order) {
+            res.redis.delItem('order', [`get-order?id=${result.order.alias}&email=${req.user.email}`]);
         }
 
         res.json(result)

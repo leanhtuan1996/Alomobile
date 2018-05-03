@@ -512,7 +512,8 @@ var updateStatus = (id, status, cb) => {
                 order.status = status;
                 order.save((err) => {
                     workflow.emit('response', {
-                        error: err
+                        error: err,
+                        order: order
                     });
                 });
             } else {
