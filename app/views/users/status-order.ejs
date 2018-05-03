@@ -28,8 +28,9 @@
                                     Kiểm tra tình trạng đơn hàng.
                                 </h1>
                             </header>
-                            <section id="content" class="page-content card card-block">
-                                <form action="" class="forgotten-password" method="post">
+                            <!-- ORDER STATUS -->
+                            <section id="order-status-checking" class="page-content card card-block">
+                                <form action="" class="tracking-order" method="post">
                                     <header>
                                         <p class="send-renew-password-link"></p>
                                     </header>
@@ -39,7 +40,7 @@
                                                 <% var status = data.order.status %>
                                                 <% var fullName =  data.order.toAddress.fullName %>
                                                 <% var date = new Date(data.order.created_at) %>
-                                                <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" +date.getFullYear() %>
+                                                <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" + date.getFullYear() %>
                                                 <% var address = data.order.toAddress.address + " " + data.order.toAddress.state + " " + data.order.toAddress.city %>
                                                 <% var discount = 0; %>
                                                 <% if (data.order.promoCode) { %>
@@ -48,7 +49,7 @@
                                                         <% } %>
                                                 <% } %>
 
-                                                <p class="order-id">Mã đơn hàng: #<%- data.order.alias %></p>
+                                                <p class="order-id">Mã đơn hàng: <%- data.order.alias %></p>
 
                                                 <% if (status == 1) { %>
                                                     <p class="status">Tình trạng đơn hàng: <span>ĐANG CHỜ XÁC NHẬN</span></p>
@@ -107,7 +108,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--                <h2>Thông tin đơn hàng</h2>-->
                                             <div class="tracking-order-detail">
                                                 <div class="row top">
                                                     <div class="col-lg-3 col-md-3 item">
@@ -217,6 +217,39 @@
                                     </section>
                                 </form>
                             </section>
+                            <!-- END ORDER STATUS -->
+
+                            <!-- OTHER MY ORDERS -->
+                            <!-- END OTHER YMY ORDERS -->
+
+                            <section id="content" class="page-content card card-block">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="tracking-order-form">
+                                            <h4>Tra cứu theo mã đơn hàng</h4>
+                                            <form class="form-inline" id="checking-status-order">
+                                                <div class="form-group has-feedback ">
+                                                    <label for="email">Địa chỉ email</label>
+                                                    <input name="email" type="email" class="form-control" id="email" value="<%- data.user.email || "" %>">
+                                                    <span class="help-block"></span>
+                                
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="order-id">Mã đơn hàng</label>
+                                                    <input name="code" type="text" class="form-control" id="id_order" value="">
+                                                    <span class="help-block"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email" style="widows: 0px;">&emsp;</label>
+                                                    <button class="form-control-submit btn btn-success hidden-xs-down" type="submit" style="font-weight: 600; margin: 10px;" id="check">KIỂM TRA</button>
+                                                    <button class="form-control-submit btn btn-success hidden-sm-up" name="submit" type="submit" id="check-1">KIỂM TRA</button>
+                                                </div>                                                    
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
                             <style>                            
                                 b, strong {
                                     font-weight: 700;
@@ -287,7 +320,105 @@
 
 </script>
 <script>   
-    var id = "<%- data.order._id %>"
+    var id = "<%- data.order._id %>";
+
+    //get other orders
+    (function (alias) {
+        if (!alias) { return }
+        $.get(`/api/v1/order/get-my-orders?idOrder=${alias}`, (data) => {
+            if (data.orders) {
+                var statusSession = $("#order-status-checking");
+
+                var sessionOrders = `
+                    <section class="page-content card card-block">
+                        <div class="row distance-top">
+                            <div class="col-lg-12">
+                                <h1 class="text-center">Các đơn hàng khác</h1>
+                                <div class="tracking-order-detail">  
+                                    <div class="row bottom">
+                                        <table class="table-responsive-2">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Tên sản phẩm</th>
+                                                    <th>Ngày mua</th>
+                                                    <th>Tổng</th>
+                                                    <th>Trạng thái</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>`
+
+                                                data.orders.forEach(order => {
+
+                                                    var total = 0;
+
+                                                    var date = new Date(order.created_at)
+					                                var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  (date.getMonth() + 1) +"/" +date.getFullYear()
+
+                                                    sessionOrders+= `<tr id="${order._id} data-order-alias=${order.alias}">
+                                                        <td><a href="/tra-cuu-don-hang?email=${order.byUser.email}&id=${order.alias}">${order.alias}</a></td>
+                                                        <td>`
+                                                            order.products.forEach(product => {
+                                                                total += product.quantity + product.price;
+                                                                sessionOrders += `
+                                                                    <ul style="list-style-type: none;
+                                                                            margin: 0;
+                                                                            padding: 0;
+                                                                            overflow: hidden;" data-id-product="${product.id._id}">
+                                                                        <li style="float: left; margin: 5px">
+                                                                            <a href="/${product.alias}-${product.id._id}"><span>${product.id.name} - </span></a>  
+                                                                        </li>
+                                                                        <li style="background-color: ${product.color.hex}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin: 5px" title="${product.color.name}">
+                                                                        </li>
+                                                                        <li style="float: left; margin: 5px">-<span class="price">${numberWithCommas(product.price)} VNĐ</span></li>
+                                                                        <li style="float: left; margin: 5px"><span>- số lượng: ${product.quantity}</span></li>
+                                                                    </ul>
+                                                                `
+                                                            })                                                            
+                                                        sessionOrders +=` </td>
+                                                        <td>
+                                                            ${dateCreated}
+                                                        </td>
+                                                        <td>
+                                                            ${numberWithCommas(total)} VNĐ
+                                                        </td>
+                                                        <td>`
+                                                            var status = order.status
+                                                            if (status == 0) { 
+                                                                sessionOrders += `<span class="label label-success font-weight-100">Khởi tạo</span>`
+                                                            } else if (status == 1) {
+                                                                sessionOrders += `<span class="label label-primary font-weight-100">Đang đợi duyệt</span>`
+                                                            } else if (status == 2) {
+                                                                sessionOrders += `<span class="label label-default font-weight-100">Đã duyệt</span>`
+                                                            } else if (status == 3) {
+                                                                sessionOrders += `<span class="label label-default font-weight-100">Bị từ chối</span>`
+                                                            } else if (status == 4) {
+                                                                sessionOrders += `<span class="label label-default font-weight-100">Người dùng huỷ đơn</span>`
+                                                            } else if (status == 5) {
+                                                                sessionOrders += `<span class="label label-default font-weight-100">Đang giao</span>`
+                                                            } else {
+                                                                sessionOrders += `<span class="label label-default font-weight-100">Đã giao</span>`
+                                                            }
+                                                        sessionOrders+= `</td>
+                                                    </tr>`
+                                                })    
+
+                                            sessionOrders+= `</tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="pull-right" style="margin-top: 10px;"><a href="/tai-khoan-cua-toi/lich-su-mua-hang" class="order-history-link">Lịch sử đơn hàng <i class="fa fa-angle-right"></i></a></div>
+                            </div>
+                        </div>
+                    </section>
+                `
+
+                $(statusSession).after(sessionOrders)
+            } 
+        });
+    })("<%- data.order.alias %>")
+
+
     function confirmDelete(cb) {
 		swal({
 			   title: "Bạn có muốn huỷ đơn hàng này không?",
@@ -359,7 +490,67 @@
                     });
                 }
             })
-        })
+        });
+
+        
+
+        $("#checking-status-order").submit((e) => {
+            e.preventDefault();
+            
+            var email = $('#email').val();
+            var id = $('#id_order').val();
+
+            if (!email || email == undefined) {
+                swal({
+                    title: "Có lỗi xảy ra",
+                    text: "Vui lòng nhập Email cần tra cứu!",
+                    icon: "error",
+                    button: "Đã rõ",
+                });
+                return
+            }
+
+            if (!id || id == undefined) {
+                swal({
+                    title: "Có lỗi xảy ra",
+                    text: "Vui lòng nhập Mã đơn hàng cần tra cứu!",
+                    icon: "error",
+                    button: "Đã rõ",
+                });
+                return
+            }
+
+            $.ajax({
+                url: '/tra-cuu-don-hang',
+                data: {
+                    id: id,
+                    email: email
+                },
+                method: 'POST',
+                success: (data) => {
+                    if (!data.order) {
+                        swal({
+                            title: "Có lỗi xảy ra",
+                            text: "Đơn hàng không tìm thấy hoặc mã nhập vào không hợp lệ.",
+                            icon: "error",
+                            button: "Đã rõ",
+                        });
+                    } else {
+                        location.href = `/tra-cuu-don-hang?id=${id}&email=${email}`
+                    }
+                },
+                error: (err) => {
+                    swal({
+                        title: "Có lỗi xảy ra",
+                        text: err.statusText,
+                        icon: "error",
+                        button: "Đã rõ",
+                    });
+                }
+            })
+        });
+
+           
     })
 
 </script>

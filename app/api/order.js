@@ -1039,7 +1039,7 @@ var checkOrder = (id, email, cb) => {
                             error: err,
                             order: data
                         });
-                    })                    
+                    })
                 }
             } else {
                 workflow.emit('response', {
@@ -1142,6 +1142,69 @@ var getLastestOrder = (idUser, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var getMyOrdersWithExcept = (idOrder, idUser, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!idOrder) {
+            workflow.emit('response', {
+                error: "Id of order's except is required"
+            });
+            return
+        }
+
+        if (!idUser) {
+            workflow.emit('response', {
+                error: "Id of User is required!"
+            });
+            return
+        }
+
+        workflow.emit('get');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    })
+
+    workflow.on('get', () => {
+        Order.find({
+            byUser: idUser,
+            status: {
+                $gt: 0
+            },
+            alias: {
+                $ne: idOrder
+            }
+        }).populate({
+            path: 'byUser',
+            model: 'User',
+            select: 'email'
+        })
+        .sort('-created_at')
+            .exec((err, docs) => {
+                if (docs && docs.length > 0) {
+                    Order.populate(docs, {
+                        path: 'products.id',
+                        model: "Product",
+                        select: 'name alias'
+                    }, (err, orders) => {
+                        workflow.emit('response', {
+                            error: err,
+                            orders: orders
+                        })
+                    })
+                } else {
+                    workflow.emit('response', {
+                        error: "No orders finded"
+                    })
+                }
+            })
+    })
+
+    workflow.emit('validate-parameters');
+}
+
 var cancelOrder = (idOrder, idUser, cb) => {
     var workflow = new event.EventEmitter();
 
@@ -1213,5 +1276,6 @@ module.exports = {
     getMyOrders: getMyOrders,
     getLastestOrder: getLastestOrder,
     cancelOrder: cancelOrder,
-    updateStatus: updateStatus
+    updateStatus: updateStatus,
+    getMyOrdersWithExcept: getMyOrdersWithExcept
 }
