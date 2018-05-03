@@ -317,10 +317,42 @@ router.get('/tai-khoan-cua-toi/lich-su-mua-hang', (req, res) => {
         res.render('my-orders', {
           data: {
             token: req.session.token,
-            orders: result.orders
+            orders: result.orders,
+            user: user
           }
         });
       });
+    });
+  } else {
+    res.redirect('/sign-in');
+  }
+});
+
+router.get('/tai-khoan-cua-toi/nhan-xet', (req, res) => {
+  if (req.session.token && req.session.user) {
+    User.verify(req.session.token, (cb) => {
+      if (cb.error) {
+        req.session.destroy();
+        res.redirect('/sign-in');
+        return
+      }
+      var user = cb.user;
+      req.session.user = user;
+
+      if (!user) {
+        res.redirect('/sign-in');
+        return
+      }
+
+      User.getMyReviews(user._id, (result) => {
+        res.render('my-comment', {
+          data: {
+            user: user,
+            token: req.session.token,
+            reviews: result.reviews
+          }
+        });
+      })
     });
   } else {
     res.redirect('/sign-in');
@@ -332,5 +364,7 @@ router.put('/update-informations', [auth.requireAuth], (req, res) => {
     res.json(result);
   });
 });
+
+
 
 module.exports = router;

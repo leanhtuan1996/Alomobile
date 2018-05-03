@@ -2,6 +2,7 @@
 
 var userApi = require('../api/index').user;
 var orderApi = require('../api/index').order;
+var reviewApi = require('../api/index').review;
 
 var signIn = (user, result) => {
     userApi.signIn(user, (response) => {
@@ -75,6 +76,12 @@ var getMyOrders = (id, cb) => {
     });
 }
 
+var getMyReviews = (id, cb) => {
+    reviewApi.getMyReviews(id, (result) => {
+        return cb(result)
+    })
+}
+
 module.exports = {
     signIn: signIn,
     signUp: signUp,
@@ -87,5 +94,6 @@ module.exports = {
     canRecoveryPassword: canRecoveryPassword,
     signOutAllDevices: signOutAllDevices,
     editUser: editUser,
-    getMyOrders: getMyOrders
+    getMyOrders: getMyOrders,
+    getMyReviews: getMyReviews
 }

@@ -228,3 +228,31 @@ $(document).ready(($) => {
         });
     })(jQuery)
 </script>
+
+<script>
+    jQuery(document).ready(($) => {
+        $('#form_register_newsletters').submit((e) => {
+            e.preventDefault();
+
+            var email = $(e.currentTarget).find('input[name="email"]').val();
+
+            if (!email || email == 'undefined') {
+                swal('Lỗi', 'Vui lòng nhập Email của bạn vào trường được yêu cầu!', 'error');
+                return
+            }
+
+            $.post('/api/v1/user/register-new-letters', {
+                email: email
+            }, (data) => {
+                if (data.error) {
+                    showNotification(data.error);
+                    $(e.currentTarget).find('input[name="email"]').val('')
+                } else {
+                    swal('Thông báo', 'Đăng kí nhận tin mới thành công', 'info');
+                }
+            }).error((err) => {
+                swal('Lỗi', 'Lỗi không xác định, vui lòng tải lại trang và thử lại!', 'error');
+            })
+        })
+    })
+</script>

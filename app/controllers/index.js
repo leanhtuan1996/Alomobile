@@ -6,6 +6,7 @@ var homepage = require('./homepage');
 var category = require('./category');
 var brand = require('./brand');
 var mailbox = require('./mailbox');
+var review = require('./review');
 var redis = require('./redis');
 
 module.exports = {
@@ -16,5 +17,6 @@ module.exports = {
     category: category,
     brand: brand,
     mailbox: mailbox,
+    review: review,
     redis: redis
 }

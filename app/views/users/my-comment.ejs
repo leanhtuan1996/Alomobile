@@ -1,0 +1,158 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Các nhận xét của tôi | Alomobile</title>
+    <meta name="description" content="Alomobile - Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng">
+    <meta name="keywords" content="iphone, smartphone, tablet, may tinh bang, laptop, phu kien di dong, phu kien may tinh, samsung, apple, mua dien thoai, may tinh bang">
+    
+    <%- include layouts/head %>
+    <link href="/static/css/myOrders.css"
+    rel="stylesheet">
+</head>
+        
+<body id="my-account" class="lang-en country-us currency-usd layout-full-width page-my-account tax-display-disabled">
+    <main>
+        <header id="header">
+            <div class="header-banner">
+            </div>
+            <%- include layouts/header-nav %>
+                <%- include layouts/header-top %>
+                    <%- include layouts/header-bottom %>
+        </header>
+        <div class="headerSpace unvisible" style="height: 226px;"></div>
+        <div class="breadcrumb_container">
+            <div class="container">
+                <nav data-depth="3" class="breadcrumb hidden-sm-down">
+                    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                        <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                            <a itemprop="item" href="/">
+                                <span itemprop="name">Trang chủ</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                            <a itemprop="item" href="/tai-khoan-cua-toi">
+                                <span itemprop="name">Tài khoản của tôi</span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
+                        <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                            <a itemprop="item" href="/tai-khoan-cua-toi/nhan-xet">
+                                <span itemprop="name">Các nhận xét</span>
+                            </a>
+                            <meta itemprop="position" content="3">
+                        </li>
+                    </ol>
+                </nav>                
+            </div>
+        </div>
+        <section id="wrapper">
+            <div class="container">
+                <div class="row">
+                    <div id="content-wrapper" class="col-xs-12">
+                        <div id="main">
+                            <header class="page-header">
+                                <h1>
+                                    Các nhận xét của tôi
+                                </h1>
+                            </header>
+                            <section id="content" class="page-content">
+
+                                <% if (!data.reviews || data.reviews.length == 0) { %>
+                                    <aside id="notifications">
+                                        <div class="container">
+                                            <article class="alert alert-warning" role="alert" data-alert="warning">
+                                                <ul>
+                                                    <li>Không có nhận xét nào trước đây.</li>
+                                                </ul>
+                                            </article>
+                                        </div>                                    
+                                    </aside>
+                                <% } else { %>
+                                    <div class="dashboard-order have-margin">
+                                        <table class="table-responsive-2 list">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tiêu đề</th>
+                                                    <th>Nội dung</th>
+                                                    <th>Chất lượng</th>
+                                                    <th>Sản phẩm</th>
+                                                    <th>Ngày thêm</th>
+                                                    <th>
+                                                        <span class="hidden-lg">Trạng thái</span>
+                                                    </th>
+                                                    <th>Chức năng</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                <% data.reviews.forEach(review => { %>
+                                                    <% var date = new Date(review.created_at) %>
+                                                    <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  (date.getMonth() + 1) +"/" + date.getFullYear() %>
+                                                                                             
+                                                    <tr>
+                                                        <td><%- review.title %></td>
+                                                        <td><%- review.content %></td>
+                                                        <td>
+                                                            <div class="comments_note clearfix">
+                                                                <div class="star_content clearfix">
+                                                                    <% for(let i = 1; i <= 5; i++) { %>
+                                                                            <% if (i <= review.star) { %>
+                                                                                <div class="star star_on"></div>
+                                                                            <% } else { %>
+                                                                                <div class="star"></div>
+                                                                            <% } %>
+                                                                    <% } %>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><a href="/<%- review.product.alias %>-<%- review.product._id %>"><%- review.product.name %></a></td>
+                                                        <td><%- dateCreated %></td>
+                                                        <td>
+                                                                <% var status = review.status; %>
+                                                                <% if (status == 0) { %>
+                                                                    <p class="review-status"><span>Đợi duyệt</span></p>
+                                                                <% } else if (status == 1){ %>
+                                                                    <p class="review-status"><span>Đã duyệt</span></p>
+                                                                <% } else { %>
+                                                                    <p class="review-status"><span>Bị từ chối</span></p>
+                                                                <% } %>
+                                                        </td>
+                                                        <td class="action-review">
+                                                            <a href="/<%- review.product.alias %>-<%- review.product._id %>" class="text-inverse pr-10" title="Xem bình luận này">
+                                                                <i class="material-icons">search</i>
+                                                            </a>
+                                                            <a href="javascript:void(0)" class="text-inverse pr-10 edit-review" title="Chỉnh sửa bình luận">
+                                                                <i class="material-icons">mode_edit</i>
+                                                            </a>
+                                                            <a href="javascript:void(0)" class="text-inverse delete-review" title="Xoá bình luận này">
+                                                                <i class="material-icons">delete</i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                <% }) %>                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <% } %>
+                                <div class="clearfix"></div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <%- include layouts/footer %>
+    </main>
+    <script type="text/javascript" src="/static/js/custom.min.js"></script>
+    <div class="back-top"><a href="#" class="back-top-button"></a></div>   
+</body>
+    <script type="text/javascript">
+        $('.price').each((index, price) => {
+            if ($(price).html().match(/^[0-9]{1,}$/g)) {
+                $(price).html(numberWithCommas($(price).html() + " VNĐ"));
+            }
+        });
+    </script>
+</html>

@@ -29,8 +29,7 @@ function logout() {
             window.location.href = document.referrer;
         },
         error: (err) => {
-            // window.location.reload();
-            //console.log(err);
+            window.location.reload();
         }
     })
 }

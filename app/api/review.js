@@ -423,7 +423,41 @@ var getNewReviews = (cb) => {
     workflow.emit('validate-parameters');
 }
 
+var getMyReviews = (id, cb) => {
+    var workflow = new event.EventEmitter();
 
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id of user is required!"
+            });
+            return
+        }
+
+        workflow.emit('get')
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    });
+
+    workflow.on('get', () => {
+        Review.find({
+            byUser: id
+        }).populate({
+            path: 'product',
+            model: 'Product',
+            select: 'alias name details'
+        }).exec((err, reviews) => {
+            workflow.emit('response', {
+                error: err,
+                reviews: reviews
+            })
+        })
+    })
+
+    workflow.emit('validate-parameters');
+}
 
 module.exports = {
     getRequestReviews: getRequestReviews,
@@ -431,5 +465,6 @@ module.exports = {
     deleteReview: deleteReview,
     getDismissReviews: getDismissReviews,
     getReviews: getReviews,
-    getNewReviews: getNewReviews
+    getNewReviews: getNewReviews,
+    getMyReviews: getMyReviews
 }
