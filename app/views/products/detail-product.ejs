@@ -9,23 +9,23 @@
     <meta name="description" content="Alomobile - Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng">
     <%- include layouts/head %>
     <meta property="og:type" content="product">
-    <meta property="og:url" content="http://alomobile.tech/<%- data.product.alias %>- <%- data.product._id %>">
+    <meta property="og:url" content="https://alomobile.tech/<%- data.product.alias %>- <%- data.product._id %>">
     <meta property="og:title" content="<%- data.product.metaTitle %>">
     <meta property="og:site_name" content="Alomobile - Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng">
     <meta property="og:description" content="Trung tâm mua sắm các loại điện thoại, Tablet, Laptop và các phụ kiện chính hãng">
-    <meta property="og:image" content="<%-  data.product.images[0].url %>">
+    <meta property="og:image" content="/<%-  data.product.images[0].url %>">
     <meta property="product:price:amount" content="<%- data.product.details[0].price %>">
     <meta property="product:price:currency" content="VND">
 </head>
 
-<body id="product" class="lang-en country-us currency-eur layout-full-width page-product tax-display-disabled product-id-9 product-printed-dress product-id-category-12 product-id-manufacturer-1 product-id-supplier-1 product-available-for-order">
+<body id="product" class="lang-vi country-vi currency-vnd layout-full-width page-product tax-display-disabled product-id-9 product-printed-dress product-id-category-12 product-id-manufacturer-1 product-id-supplier-1 product-available-for-order">
     <main>
         <header id="header">
             <div class="header-banner">
             </div>
             <%- include layouts/header-nav %>
-                <%- include layouts/header-top %>
-                    <%- include layouts/header-bottom %>
+            <%- include layouts/header-top %>
+            <%- include layouts/header-bottom %>
         </header>
         <aside id="notifications">
             <div class="container">
@@ -160,7 +160,7 @@
                                         <h1 class="h1 namne_details" itemprop="name"><%- data.product.name %></h1>
                                         <div id="product_comments_block_extra" class="no-print" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
                                             <div class="comments_note clearfix">
-                                                <span>Rating&nbsp;</span>
+                                                <span>Đánh giá&nbsp;</span>
                                                 <div class="star_content clearfix">
                                                     <div class="star star_on"></div>
                                                     <div class="star star_on"></div>
@@ -193,7 +193,7 @@
                                                 -->
                                                 <div class="product-price h5 has-discount" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                                     <link itemprop="availability" href="https://schema.org/InStock" />
-                                                    <meta itemprop="priceCurrency" content="EUR">
+                                                    <meta itemprop="priceCurrency" content="VND">
                                                     <div class="current-price">
                                                         <span class="price" itemprop="price" content="46.91"><%- data.product.details[0].price %></span>
                                                         <!-- <span class="discount discount-percentage">Save 8%</span> -->

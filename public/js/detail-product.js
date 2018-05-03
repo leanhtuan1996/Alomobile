@@ -2255,6 +2255,7 @@
                                             product.reviews.forEach(r => {
                                                 totalStar+= r.star;
                                             });
+                                            
 
                                             avg = Math.round(totalStar / product.reviews.length);
 
