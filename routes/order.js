@@ -98,7 +98,7 @@ router.post('/thanh-toan', (req, res) => {
         return
     }
     var parameters = {
-        products: req.body.parameters.products        
+        products: req.body.parameters.products
     };
 
     if (req.body.parameters.promoCode) {
@@ -305,8 +305,8 @@ router.put('/huy-don-hang', [auth.requireAuth], (req, res) => {
     Order.cancelOrder(req.body.idOrder, req.user._id, (result) => {
 
         //success
-        if (!result.error) {
-            res.redis.delItem('order', [`get-order?id=${req.body.idOrder}&email=${req.user.email}`])
+        if (result.order) {
+            res.redis.delItem('order', [`get-order?id=${result.order.alias}&email=${req.user.email}`])
         }
 
         res.json(result)

@@ -347,7 +347,7 @@
                             idOrder: id
                         },
                         success: (data) => {
-                            if (!data.order) {
+                            if (data.order) {
                                 cancelSuccess();
                             } else {
                                 swal('Huỷ đơn hàng thất bại, vui lòng liên hệ với chúng tôi qua số hot line để được hỗ trợ ngay lập tức!')

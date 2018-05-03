@@ -1183,7 +1183,8 @@ var cancelOrder = (idOrder, idUser, cb) => {
 
             order.save((err) => {
                 workflow.emit('response', {
-                    error: err
+                    error: err,
+                    order: order
                 });
             });
         });
