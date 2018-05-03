@@ -587,7 +587,11 @@ router.put('/api/v1/order/update-status', [auth.requireAuth, auth.requireRole], 
 
 router.get('/api/v1/order/get-my-orders', [auth.requireAuth], (req, res) => {
     Order.getMyOrdersWithExcept(req.query.idOrder, req.user._id, (result) => {
-        res.json(result)
+        res.json({
+            error: result.error,
+            orders: result.orders,
+            user: req.user
+        })
     })
 })
 
