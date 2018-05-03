@@ -62,7 +62,7 @@
                                                                 <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  (date.getMonth() + 1) +"/" +date.getFullYear() %>
                                                                 <tr role="row" id="<%- order._id %>"> 
                                                                     <td class="txt-dark td-id">
-                                                                        <a href="/admin/invoice/<%- order._id %>"><%- order._id %></a>
+                                                                        <a href="/admin/invoice/<%- order._id %>"><%- order.alias %></a>
                                                                     </td>
                                                                     <td style="color: blue;" class="td-name-user">
                                                                         <a href="javascript: void(0);"> <%- fullName %></a>

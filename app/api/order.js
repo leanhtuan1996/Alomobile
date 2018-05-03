@@ -876,7 +876,7 @@ var getOrders = (cb) => {
             status: {
                 $gt: 0
             }
-        }).select('products byUser status created_at').populate({
+        }).select('products byUser status created_at alias').populate({
             path: "byUser",
             model: "User",
             select: "fullName"
