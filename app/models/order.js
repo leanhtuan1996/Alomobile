@@ -14,6 +14,7 @@ var Schema = mongoose.Schema;
  */
 
 module.exports = mongoose.model('Order', new Schema({
+    alias: { type: Schema.Types.Number, unique: true },
     products: [{
         id: { type: Schema.Types.ObjectId, ref: "Product" },
         color: {

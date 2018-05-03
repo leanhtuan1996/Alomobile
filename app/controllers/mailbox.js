@@ -92,7 +92,7 @@ var sendMailWithConfirmOrder = (parameters) => {
             email = user.email,
             note = parameters.note,
             checkoutMethod = parameters.checkoutMethod,
-            id = parameters._id;
+            id = parameters.alias;
 
         if (checkoutMethod) {
             switch (checkoutMethod) {
@@ -186,7 +186,7 @@ var sendMailWithSuccessOrder = (parameters) => {
             email = user.email,
             note = parameters.note,
             checkoutMethod = parameters.checkoutMethod,
-            id = parameters._id;
+            id = parameters.alias;
 
         if (checkoutMethod) {
             switch (checkoutMethod) {

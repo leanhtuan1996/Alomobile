@@ -58,7 +58,6 @@ app.use(session({
   expires: 365 * 24 * 60 * 60 //15 days
 }));
 
-
 //cron job
 cron.removeUncompleteOrder();
 

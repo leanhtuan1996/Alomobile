@@ -389,7 +389,7 @@ $('#conditions-to-approve').submit((e) => {
                     if (!data.error) {
                         //remove cart
                         localStorage.removeItem('cart');
-                        location.href = `/dat-hang-thanh-cong?id=${data.order._id}&email=${data.order.byUser.email}`
+                        location.href = `/dat-hang-thanh-cong?id=${data.order.alias}&email=${data.order.byUser.email}`
                     } else {
                         var error = data.error;
                         if (typeof error == 'Object') {

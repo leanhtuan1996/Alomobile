@@ -50,7 +50,8 @@ $('.checkout button').click((e) => {
             parameters: parameters
         }, (data) => {
            if (data.error) {
-               showNotification(data.error);
+               console.log(data.error);
+               showNotification(data.error == typeof 'Object' ?  JSON.stringify(data.error) : data.error);
                return
            }
 

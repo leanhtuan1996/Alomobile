@@ -81,6 +81,12 @@ var copySync = (src, dest) => {
     });
 }
 
+var getRamdomNumber = () => {
+    var time = Math.round(Date.now() / 1000);
+    var random = Math.floor(Math.random() * (99 - 1 + 1) + 10)
+    return Number.parseInt(`${time}${random}`)
+}
+
 module.exports = {
     hashPw: hashPw,
     comparePw: comparePw,
@@ -90,5 +96,6 @@ module.exports = {
     decodeToken: decodeToken,
     refreshToken: refreshToken,
     signSHA: signSHA,
-    numberWithCommas: numberWithCommas
+    numberWithCommas: numberWithCommas,
+    getRamdomNumber: getRamdomNumber
 }

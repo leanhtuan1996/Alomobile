@@ -59,7 +59,7 @@
                             </header>
                             <section id="content" class="page-content">
 
-                                <% if (!data.user.orders || data.user.orders.length == 0) { %>
+                                <% if (!data.orders || data.orders.length == 0) { %>
                                     <aside id="notifications">
                                         <div class="container">
                                             <article class="alert alert-warning" role="alert" data-alert="warning">
@@ -88,9 +88,9 @@
                                             </thead>
                                             <tbody>
                                                 
-                                                <% data.user.orders.forEach(order => { %>
+                                                <% data.orders.forEach(order => { %>
                                                     <% var date = new Date(order.created_at) %>
-                                                    <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" + date.getFullYear() %>
+                                                    <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  (date.getMonth() + 1) +"/" + date.getFullYear() %>
                                                     <% var discount = 0; %>
                                                     <% if (order.promoCode) { %>
                                                             <% if (order.promoCode.id && order.promoCode.discount) { %>
@@ -99,7 +99,7 @@
                                                     <% } %>
                                                     
                                                     <tr>
-                                                        <td><a href="/tra-cuu-don-hang?email=<%- data.user.email %>&id=<%- order._id %>">#<%- order._id %></a></td>
+                                                        <td><a href="/tra-cuu-don-hang?email=<%- order.byUser.email %>&id=<%- order.alias %>">#<%- order.alias %></a></td>
                                                         <td><%- dateCreated %></td>
                                                         <td>
                                                             <% var total = 0; %>

@@ -276,13 +276,12 @@ var initOrder = (parameters, cb) => {
                 }
             });
         }
-
-
     });
 
     workflow.on('init', (newProducts) => {
         var newOrder = new Order();
         newOrder.products = newProducts;
+        newOrder.alias = helper.getRamdomNumber();
 
         if (user) {
             newOrder.byUser = user._id;
@@ -441,10 +440,10 @@ var updateOrder = (order, parameters, cb) => {
                             orders.push(order);
                             user.orders = orders;
                         }
-                        
+
                         user.save((err) => {
                             //send Email
-                            if (!err) {  
+                            if (!err) {
                                 Order.populate(order, {
                                     path: 'products.id',
                                     model: 'Product'
@@ -458,7 +457,7 @@ var updateOrder = (order, parameters, cb) => {
                                 workflow.emit('response', {
                                     error: err
                                 });
-                            }                            
+                            }
                         });
                     });
                 } else {
@@ -979,20 +978,20 @@ var getNewOrders = (cb) => {
             model: "User",
             select: "fullName"
         })
-        .limit(10)
-        .sort('-created_at')
-        .exec((err, docs) => {
-            Order.populate(docs, {
-                path: "products.id",
-                model: "Product",
-                select: "images name"
-            }, (err, orders) => {
-                workflow.emit('response', {
-                    error: err,
-                    orders: orders
+            .limit(10)
+            .sort('-created_at')
+            .exec((err, docs) => {
+                Order.populate(docs, {
+                    path: "products.id",
+                    model: "Product",
+                    select: "images name"
+                }, (err, orders) => {
+                    workflow.emit('response', {
+                        error: err,
+                        orders: orders
+                    });
                 });
             });
-        });
     });
 
     workflow.emit('validate-parameters')
@@ -1017,20 +1016,36 @@ var checkOrder = (id, email, cb) => {
     });
 
     workflow.on('check', () => {
-        User.findOne({
-            email: email,
-            orders: id
-        }).select('email').exec((err, user) => {
-            if (user) {
-                getDetailOrder(id, (result) => {
-                    workflow.emit('response', result)
-                });
+        Order.findOne({
+            alias: id
+        }).populate({
+            path: 'byUser',
+            model: 'User',
+            select: 'email'
+        }).exec((err, order) => {
+            if (order) {
+                if (order.byUser.email != email) {
+                    workflow.emit('response', {
+                        error: "Không có đơn hàng nào được tìm thấy!"
+                    });
+                } else {
+                    Order.populate(order, {
+                        path: 'products.id',
+                        model: 'Product',
+                        select: 'name alias'
+                    }, (err, data) => {
+                        workflow.emit('response', {
+                            error: err,
+                            order: data
+                        });
+                    })                    
+                }
             } else {
                 workflow.emit('response', {
-                    error: "Mã đơn hàng không được tìm thấy"
+                    error: "Không có đơn hàng nào được tìm thấy!"
                 });
             }
-        });
+        })
     });
 
     workflow.emit('validate-parameters');
@@ -1046,52 +1061,41 @@ var getMyOrders = (id, cb) => {
             });
             return
         }
-        
+
         workflow.emit('get-my-orders');
     });
 
     workflow.on('response', (response) => {
+        console.log(response);
         return cb(response);
     });
 
     workflow.on('get-my-orders', () => {
-        User.findById(id).select('email fullName orders').exec((err, doc) => {
-            if (err) {
-                workflow.emit('response', {
-                    error: err
-                });
-                return
-            }
 
-            if (!doc) {
-                workflow.emit('response', {
-                    error: "User not found"
-                });
-                return
-            }
-
-            User.populate(doc, {
-                path: "orders",
-                model: "Order"
-            }, (err, doc2) => {
-                if (doc2) {
-                    User.populate(doc2, {
-                        path: "orders.products.id",
-                        model: "Product",
-                        select: "name alias"
-                    }, (err, user) => {
-                        workflow.emit('response', {
-                            error: err,
-                            user: user
-                        }); 
-                    })
-                } else {
+        Order.find({
+            byUser: id
+        }).populate({
+            path: 'byUser',
+            model: 'User',
+            select: 'email fullName'
+        }).exec((err, docs) => {
+            if (docs && docs.length > 0) {
+                Order.populate(docs, {
+                    path: 'products.id',
+                    model: 'Product',
+                    select: 'name alias'
+                }, (err, orders) => {
                     workflow.emit('response', {
-                        error: "Order not found"
+                        error: err,
+                        orders: orders
                     })
-                }              
-            });
-        });
+                })
+            } else {
+                workflow.emit('response', {
+                    error: "Không có đơn hàng nào"
+                })
+            }
+        })
     });
 
     workflow.emit('validate-parameters');
@@ -1131,7 +1135,7 @@ var getLastestOrder = (idUser, cb) => {
                     workflow.emit('response', result);
                 });
             }
-        });        
+        });
     });
 
     workflow.emit('validate-parameters');

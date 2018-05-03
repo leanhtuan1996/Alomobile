@@ -37,7 +37,7 @@
                                         <div class="col-lg-12">                                            
                                             <div class="tracking-order-process">
                                                 <% var status = data.order.status %>
-                                                <% var fullName =  data.order.byUser.fullName.firstName + " " +  data.order.byUser.fullName.lastName %>
+                                                <% var fullName =  data.order.toAddress.fullName %>
                                                 <% var date = new Date(data.order.created_at) %>
                                                 <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  date.getMonth() +"/" +date.getFullYear() %>
                                                 <% var address = data.order.toAddress.address + " " + data.order.toAddress.state + " " + data.order.toAddress.city %>
@@ -48,7 +48,7 @@
                                                         <% } %>
                                                 <% } %>
 
-                                                <p class="order-id">Mã đơn hàng: #<%- data.order._id %></p>
+                                                <p class="order-id">Mã đơn hàng: #<%- data.order.alias %></p>
 
                                                 <% if (status == 1) { %>
                                                     <p class="status">Tình trạng đơn hàng: <span>ĐANG CHỜ XÁC NHẬN</span></p>

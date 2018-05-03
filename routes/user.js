@@ -317,7 +317,7 @@ router.get('/tai-khoan-cua-toi/lich-su-mua-hang', (req, res) => {
         res.render('my-orders', {
           data: {
             token: req.session.token,
-            user: result.user
+            orders: result.orders
           }
         });
       });
