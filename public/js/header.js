@@ -204,7 +204,7 @@ var prestashop = {
             "order_return": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/index.php?controller=order-return",
             "order_slip": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/credit-slip",
             "pagenotfound": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/page-not-found",
-            "password": "/password-recovery",
+            "password": "/quen-mat-khau",
             "pdf_invoice": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/index.php?controller=pdf-invoice",
             "pdf_order_return": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/index.php?controller=pdf-order-return",
             "pdf_order_slip": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/index.php?controller=pdf-order-slip",
@@ -214,7 +214,7 @@ var prestashop = {
             "sitemap": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/sitemap",
             "stores": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/stores",
             "supplier": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/supplier",
-            "register": "./sign-up",
+            "register": "./dang-ky",
             "order_login": "http:\/\/demo.posthemes.com\/pos_fastbuy\/layout2\/en\/order?login=1"
         },
         "theme_assets": "static",

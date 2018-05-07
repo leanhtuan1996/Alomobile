@@ -8,7 +8,7 @@ var mailbox = require('../app/controllers/index').mailbox;
 
 /* GET users listing. */
 /* USER SIGN_IN */
-router.get('/sign-in', (req, res) => {
+router.get('/dang-nhap', (req, res) => {
   if (req.session.token && req.session.user) {
     res.redirect('/')
     return
@@ -60,7 +60,7 @@ router.post('/sign-in', (req, res) => {
 }); /***/
 
 /* USER SIGN_UP */
-router.get('/sign-up', (req, res) => {
+router.get('/dang-ky', (req, res) => {
   if (req.session.token && req.session.user) {
     res.redirect('/');
     return
@@ -135,7 +135,7 @@ router.get('/tai-khoan-cua-toi', (req, res) => {
       }
 
       if (!user) {
-        res.redirect('/sign-in');
+        res.redirect('/dang-nhap');
         return
       }
 
@@ -150,11 +150,11 @@ router.get('/tai-khoan-cua-toi', (req, res) => {
       });
     });
   } else {
-    res.redirect('/sign-in');
+    res.redirect('/dang-nhap');
   }
 });
 
-router.get('/password-recovery', (req, res) => {
+router.get('/quen-mat-khau', (req, res) => {
   if (req.session.token && req.session.user) {
     res.redirect('/');
     return
@@ -186,7 +186,7 @@ router.put('/password-recovery', (req, res) => {
   });
 });
 
-router.get('/password-recovery/:email/:token', (req, res) => {
+router.get('/quen-mat-khau/:email/:token', (req, res) => {
   User.canRecoveryPassword(req.params.email, req.params.token, (cb) => {
     if (cb.error) {
       res.render('404', {
@@ -246,14 +246,14 @@ router.get('/tai-khoan-cua-toi/thong-tin', (req, res) => {
     User.verify(req.session.token, (cb) => {
       if (cb.error) {
         req.session.destroy();
-        res.redirect('/sign-in');
+        res.redirect('/dang-nhap');
         return
       }
       var user = cb.user;
       req.session.user = user;
 
       if (!user) {
-        res.redirect('/sign-in');
+        res.redirect('/dang-nhap');
         return
       }
 
@@ -265,7 +265,7 @@ router.get('/tai-khoan-cua-toi/thong-tin', (req, res) => {
       });
     });
   } else {
-    res.redirect('/sign-in');
+    res.redirect('/dang-nhap');
   }
 });
 
@@ -274,14 +274,14 @@ router.get('/tai-khoan-cua-toi/dia-chi', (req, res) => {
     User.verify(req.session.token, (cb) => {
       if (cb.error) {
         req.session.destroy();
-        res.redirect('/sign-in');
+        res.redirect('/dang-nhap');
         return
       }
       var user = cb.user;
       req.session.user = user;
 
       if (!user) {
-        res.redirect('/sign-in');
+        res.redirect('/dang-nhap');
         return
       }
 
@@ -293,7 +293,7 @@ router.get('/tai-khoan-cua-toi/dia-chi', (req, res) => {
       });
     });
   } else {
-    res.redirect('/sign-in');
+    res.redirect('/dang-nhap');
   }
 });
 
@@ -302,14 +302,14 @@ router.get('/tai-khoan-cua-toi/lich-su-mua-hang', (req, res) => {
     User.verify(req.session.token, (cb) => {
       if (cb.error) {
         req.session.destroy();
-        res.redirect('/sign-in');
+        res.redirect('/dang-nhap');
         return
       }
       var user = cb.user;
       req.session.user = user;
 
       if (!user) {
-        res.redirect('/sign-in');
+        res.redirect('/dang-nhap');
         return
       }
 
@@ -324,7 +324,7 @@ router.get('/tai-khoan-cua-toi/lich-su-mua-hang', (req, res) => {
       });
     });
   } else {
-    res.redirect('/sign-in');
+    res.redirect('/dang-nhap');
   }
 });
 
@@ -333,14 +333,14 @@ router.get('/tai-khoan-cua-toi/nhan-xet', (req, res) => {
     User.verify(req.session.token, (cb) => {
       if (cb.error) {
         req.session.destroy();
-        res.redirect('/sign-in');
+        res.redirect('/dang-nhap');
         return
       }
       var user = cb.user;
       req.session.user = user;
 
       if (!user) {
-        res.redirect('/sign-in');
+        res.redirect('/dang-nhap');
         return
       }
 
@@ -355,7 +355,7 @@ router.get('/tai-khoan-cua-toi/nhan-xet', (req, res) => {
       })
     });
   } else {
-    res.redirect('/sign-in');
+    res.redirect('/dang-nhap');
   }
 });
 

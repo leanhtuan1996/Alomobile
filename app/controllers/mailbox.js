@@ -56,7 +56,7 @@ var sendMailWithForgetPassword = (user, token, cb) => {
         }
 
         var fullName = `${user.fullName.firstName || ""} ${user.fullName.lastName || ""}`;
-        var link = `http://alomobile.tech/password-recovery/${user.email}/${token}`
+        var link = `https://www.alomobile.tech/quen-mat-khau/${user.email}/${token}`
 
         $('#fullName').html(`Chào ${fullName},`)    
         $('#link').attr('href', link);

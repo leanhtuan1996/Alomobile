@@ -217,6 +217,8 @@ router.get('/tra-cuu-don-hang', (req, res) => {
                         } else {
                             res.render('check-order', {
                                 data: {
+                                    user: cb.user,
+                                    token: req.session.token
                                 }
                             });
                         }
@@ -258,7 +260,6 @@ router.get('/tra-cuu-don-hang', (req, res) => {
             }
         });
     }
-
 });
 
 router.post('/tra-cuu-don-hang', (req, res) => {
