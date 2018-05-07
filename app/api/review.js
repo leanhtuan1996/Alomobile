@@ -9,7 +9,7 @@ var helper = require('../helpers/index').helper;
 var User = require('../models/index').user;
 var Product = require('../models/index').product;
 var Review = require('../models/index').review;
-
+var Order = require('../models/index').order;
 
 var getPreviewProduct = (id, cb) => {
     var workflow = new event.EventEmitter();
@@ -113,25 +113,11 @@ var reviewProduct = (user, review, cb) => {
             });
 
             newReview.save((err) => {
-                if (!err) {
-                    var reviewsOfProduct = product.reviews || [];
-                    var reviewsOfUser = user.reviews || [];
-                    reviewsOfProduct.push(newReview._id);
-                    reviewsOfUser.push(newReview._id);
-
-                    product.reviews = reviewsOfProduct;
-                    user.reviews = reviewsOfUser;
-
-                    product.save((err) => {
-                        user.save((err) => {
-                            workflow.emit('response', {
-                                error: err,
-                                review: newReview
-                            });
-                        });
-                    });
-                }
-            });
+                workflow.emit('response', {
+                    error: err,
+                    review: newReview
+                });
+            });          
         });
     });
 
@@ -145,13 +131,12 @@ var getReviews = (cb) => {
         workflow.emit('get');
     });
 
-
     workflow.on('response', (response) => {
         return cb(response);
     });
 
     workflow.on('get', () => {
-        Review.find({ }).populate({
+        Review.find({}).populate({
             path: 'product',
             model: 'Product',
             select: 'name'
@@ -249,35 +234,40 @@ var getReviewsWithProduct = (product, status = true, cb) => {
     });
 
     workflow.on('get-reviews', () => {
-        Product.findById(product).select('reviews').populate({
-            path: "reviews",
-            model: "Review",
-            match: { status: 1 }
-        }).exec((err, docs) => {
-            if (docs) {
-                Product.populate(docs, {
-                    path: 'reviews.byUser',
-                    model: 'User',
-                    select: 'orders reviews email fullName'
-                }, (err, docs2) => {
-                    Product.populate(docs2, {
-                        path: 'reviews.byUser.orders',
-                        model: "Order",
-                        select: 'products'
-                    }, (err, product) => {
-                        workflow.emit('response', {
-                            error: err,
-                            product: product
-                        });
-                    })
-                });
+        Review.find({
+            product: product,
+            status: 1
+        }).populate({
+            path: 'byUser',
+            model: 'User',
+            select: 'fullName email'
+        }).lean().exec((err, reviews) => {
+            if (reviews && reviews.length > 0) {
+                reviews.forEach((review, index) => {
+                    isBoughtProduct(product, byUser._id, (isBought) => {
+                        console.log(isBought);
+                        review.isBought = isBought;
+                        workflow.emit('populate-bought', reviews.length, review);
+                    });
+                })
             } else {
                 workflow.emit('response', {
                     error: err
-                });
+                })
             }
-        });
+        })
     });
+
+    var reviews = [];
+
+    workflow.on('populate-bought', (maxLength, review) => {
+        reviews.push(review)
+        if (reviews.length == maxLength) {
+            workflow.emit('response', {
+                reviews: reviews
+            });
+        }
+    })
 
     workflow.on('response', (response) => {
         return cb(response)
@@ -401,23 +391,23 @@ var getNewReviews = (cb) => {
     });
 
     workflow.on('get', () => {
-        Review.find({ })
-        .limit(5)
-        .sort('-created_at')
-        .populate({
-            path: 'product',
-            model: 'Product',
-            select: 'name'
-        }).populate({
-            path: 'byUser',
-            model: 'User',
-            select: 'fullName'
-        }).exec((err, reviews) => {
-            workflow.emit('response', {
-                error: err,
-                reviews: reviews
+        Review.find({})
+            .limit(5)
+            .sort('-created_at')
+            .populate({
+                path: 'product',
+                model: 'Product',
+                select: 'name'
+            }).populate({
+                path: 'byUser',
+                model: 'User',
+                select: 'fullName'
+            }).exec((err, reviews) => {
+                workflow.emit('response', {
+                    error: err,
+                    reviews: reviews
+                });
             });
-        });
     });
 
     workflow.emit('validate-parameters');
@@ -459,6 +449,38 @@ var getMyReviews = (id, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var isBoughtProduct = (idProduct, idUser,  cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!idProduct || !idUser) {
+            workflow.emit('response', false);
+            return
+        }
+
+        workflow.emit('isBought');
+    });
+
+    workflow.on('response', (isBought) => {
+        return cb(isBought)
+    });
+
+    workflow.on('isBought', () => {
+        Order.find({
+            byUser: idUser,
+            "products.id": idProduct
+        }).exec((err, orders) => {    
+            if (orders && orders.length > 0) {
+                workflow.emit('response', true)
+            } else {
+                workflow.emit('response', false)
+            }
+        })
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     getRequestReviews: getRequestReviews,
     updateReview: updateReview,
@@ -466,5 +488,6 @@ module.exports = {
     getDismissReviews: getDismissReviews,
     getReviews: getReviews,
     getNewReviews: getNewReviews,
-    getMyReviews: getMyReviews
+    getMyReviews: getMyReviews,
+    isBoughtProduct: isBoughtProduct
 }

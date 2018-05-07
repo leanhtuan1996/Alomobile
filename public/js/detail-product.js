@@ -3119,10 +3119,10 @@
         });
 
         $.get(`/api/v1/product/get-reviews?product=${product._id}`, (data) => {
-            if (data.product) {
-                var reviews = data.product.reviews;
 
-                if (!reviews || reviews.length == 0) { return }
+            var reviews = data.reviews;
+
+            if (reviews && reviews.length > 0) {   
 
                 $('ul.comments_advices a.reviews span').text(reviews.length || 0);
 
@@ -3151,24 +3151,11 @@
                                 <div class="comment_author_infos">
                                     <strong>${review.byUser.fullName.firstName} ${review.byUser.fullName.lastName}`
 
-                    var userOrders = review.byUser.orders;
-                    if (userOrders && userOrders.length > 0) {
-                        if (userOrders.find(order => {
-                            if (order.products) {
-                                if (order.products.find(element => {
-                                    return element.id == product._id
-                                })) {
-                                    return order
-                                }
-                            } else {
-                                return null
-                            }
-                        })) {
-                            items += `<label style="color: #2ba832;">
-                                            <i class="material-icons" style="font-size: 20px;">check</i>Đã mua hàng tại Alomobile.tech
-                                        </label>`
-                        }
-                    }
+                    if (review.isBought) {
+                        items += `<label style="color: #2ba832;">
+                            <i class="material-icons" style="font-size: 20px;">check</i>Đã mua hàng tại Alomobile.tech
+                        </label>`
+                    }   
 
                     var date = new Date(review.created_at);
 

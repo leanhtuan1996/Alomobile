@@ -11,6 +11,8 @@ var Product = require('../models/index').product;
 var Brand = require('../models/index').brand;
 var Category = require('../models/index').category;
 var Review = require('../models/index').review;
+var Order = require('../models/index').order;
+
 
 var getProducts = (prevProduct, result) => {
     var workflow = new event.EventEmitter();
@@ -1015,39 +1017,75 @@ var getReviewsWithProduct = (product, status = true, cb) => {
     });
 
     workflow.on('get-reviews', () => {
-        Product.findById(product).select('reviews').populate({
-            path: "reviews",
-            model: "Review",
-            match: { status: 1 }
-        }).exec((err, docs) => {
-            if (docs) {
-                Product.populate(docs, {
-                    path: 'reviews.byUser',
-                    model: 'User',
-                    select: 'orders reviews email fullName'
-                }, (err, docs2) => {
-                    Product.populate(docs2, {
-                        path: 'reviews.byUser.orders',
-                        model: "Order",
-                        select: 'products'
-                    }, (err, product) => {
-                        workflow.emit('response', {
-                            error: err,
-                            product: product
-                        });
-                    })
-                });
+        Review.find({
+            product: product,
+            status: 1
+        }).populate({
+            path: 'byUser',
+            model: 'User',
+            select: 'fullName email'
+        }).lean().exec((err, reviews) => {
+            if (reviews && reviews.length > 0) {
+                reviews.forEach((review, index) => {
+                    isBoughtProduct(product, review.byUser._id, (isBought) => {
+                        review.isBought = isBought;
+                        workflow.emit('populate-bought', reviews.length, review);
+                    });
+                })
             } else {
                 workflow.emit('response', {
                     error: err
-                });
+                })
             }
-        });
+        })
     });
+
+    var reviews = [];
+
+    workflow.on('populate-bought', (maxLength, review) => {
+        reviews.push(review)
+        if (reviews.length == maxLength) {
+            workflow.emit('response', {
+                reviews: reviews
+            });
+        }
+    })
 
     workflow.on('response', (response) => {
         return cb(response)
     })
+    workflow.emit('validate-parameters');
+}
+
+var isBoughtProduct = (idProduct, idUser,  cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!idProduct || !idUser) {
+            workflow.emit('response', false);
+            return
+        }
+
+        workflow.emit('isBought');
+    });
+
+    workflow.on('response', (isBought) => {
+        return cb(isBought)
+    });
+
+    workflow.on('isBought', () => {
+        Order.find({
+            byUser: idUser,
+            "products.id": idProduct
+        }).exec((err, orders) => {    
+            if (orders && orders.length > 0) {
+                workflow.emit('response', true)
+            } else {
+                workflow.emit('response', false)
+            }
+        })
+    });
+
     workflow.emit('validate-parameters');
 }
 

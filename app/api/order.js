@@ -341,7 +341,16 @@ var updateOrder = (order, parameters, cb) => {
     });
 
     workflow.on('update', () => {
-        Order.findById(order._id).populate('byUser').exec((err, order) => {
+        Order.findById(order._id)
+        .populate({
+            path: 'byUser',
+            model: 'User'
+        })
+        .populate({
+            path: 'products.id',
+            model: 'Product'
+        })
+        .exec((err, order) => {
             if (err) {
                 workflow.emit('response', {
                     error: err
@@ -419,54 +428,10 @@ var updateOrder = (order, parameters, cb) => {
             }
 
             order.save((err) => {
-
-                //save to user
-                if (!err && order.status >= 1) {
-                    User.findById(order.byUser).select('orders').exec((err, user) => {
-                        if (err) {
-                            workflow.emit('response', {
-                                error: err
-                            });
-                            return
-                        }
-
-                        if (!user) {
-                            workflow.emit('response', {
-                                error: "Không tìm thấy người dùng, vui lòng đăng nhập để tiếp tục"
-                            });
-                            return
-                        }
-                        if (order.status == 1) {
-                            var orders = user.orders || [];
-                            orders.push(order);
-                            user.orders = orders;
-                        }
-
-                        user.save((err) => {
-                            //send Email
-                            if (!err) {
-                                Order.populate(order, {
-                                    path: 'products.id',
-                                    model: 'Product'
-                                }, (err, order) => {
-                                    workflow.emit('response', {
-                                        error: err,
-                                        order: order
-                                    });
-                                });
-                            } else {
-                                workflow.emit('response', {
-                                    error: err
-                                });
-                            }
-                        });
-                    });
-                } else {
-                    workflow.emit('response', {
-                        error: err,
-                        order: order
-                    });
-                }
+                workflow.emit('response', {
+                    error: err,
+                    order: order
+                });
             });
         });
     });
@@ -1050,7 +1015,6 @@ var getMyOrders = (id, cb) => {
     });
 
     workflow.on('response', (response) => {
-        console.log(response);
         return cb(response);
     });
 

@@ -176,7 +176,7 @@ router.get('/api/v1/product/get-products-by-type/:id', (req, res) => {
     });
 });
 
-router.get('/api/v1/product/get-hot-products', (req, res) => {    
+router.get('/api/v1/product/get-hot-products', (req, res) => {
     res.redis.getItem('products', 'get-hot-products', (result) => {
         if (result) {
             res.json({
@@ -238,11 +238,11 @@ router.get('/api/v1/product/get-products-by-category/:id', (req, res) => {
 router.get('/api/v1/product/get-products-by-category', (req, res) => {
 
     if (req.query.category && req.query.from && req.query.action) {
-        Product.getProductsByCategoryWithPagination(req.query.category, req.query.from, 12, req.query.action, (result) => {   
+        Product.getProductsByCategoryWithPagination(req.query.category, req.query.from, 12, req.query.action, (result) => {
             res.json(result);
         });
         return
-    } 
+    }
 
     var idCategory = req.query.idCategory,
         idRootCategory = req.query.idRootCategory;
@@ -258,7 +258,7 @@ router.get('/api/v1/product/get-products-by-category', (req, res) => {
             Product.getProductsByCategory(idCategory, idRootCategory, req.query.limit || 15, (result) => {
                 if (result.products && result.products.length > 0) {
                     res.redis.setItem('products', `get-products-by-category?idCategory=${idCategory}&idRootCategory=${idRootCategory}`, result.products);
-                }                
+                }
                 res.json(result);
             });
         }
@@ -276,14 +276,14 @@ router.get('/api/v1/product/get-new-products', (req, res) => {
                 if (result.products && result.products.length > 0) {
                     res.redis.setItem('products', `get-new-products`, result.products);
                 }
-                
+
                 res.json(result);
             });
         }
     });
 });
 
-router.get('/api/v1/product/count-products', (req, res) => {
+router.get('/api/v1/product/count-products', [auth.requireAuth, auth.requireRole], (req, res) => {
     res.redis.getItem('products', `count-products`, (data) => {
         if (data) {
             res.json({
@@ -294,15 +294,15 @@ router.get('/api/v1/product/count-products', (req, res) => {
                 if (result.count) {
                     res.redis.setItem('products', `count-products`, result.count);
                 }
-                
+
                 res.json(result);
             });
         }
     });
 });
 
-router.post('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {   
-    
+router.post('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
+
     Product.newProduct(req.body, (result) => {
 
         if (!result.error) {
@@ -327,7 +327,7 @@ router.put('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array(
 
 router.delete('/api/v1/product', [auth.requireAuth, auth.requireRole], (req, res) => {
     Product.deleteProduct(req.body.id, (result) => {
-        
+
         //update cache
         if (!result.error) {
             res.redis.delItem('products');
@@ -340,8 +340,8 @@ router.delete('/api/v1/product', [auth.requireAuth, auth.requireRole], (req, res
 router.get('/api/v1/product/search-product/:text', (req, res) => {
     Product.searchProducts(req.params.text, (result) => {
 
-        if (result.products && result.products.length != 0) { 
-            SearchKeyword.insert(req.params.text, (result) => {  });
+        if (result.products && result.products.length != 0) {
+            SearchKeyword.insert(req.params.text, (result) => { });
         }
 
         res.json(result);
@@ -368,7 +368,7 @@ router.get('/api/v1/product/get-preview', (req, res) => {
                 if (result.products && result.products.length > 0) {
                     res.redis.setItem('products', `get-preview?id=${id}`, result.products);
                 }
-                
+
                 res.json(result);
             });
         }
@@ -396,24 +396,24 @@ router.get('/api/v1/product/get-reviews', (req, res) => {
                 if (result.product) {
                     res.redis.setItem('products', `get-reviews?id=${id}`, result.product);
                 }
-                
+
                 res.json(result);
             });
         }
     });
 });
 
-router.put('/api/v1/product/update-quantity', [auth.requireAuth], (req, res) => {
+router.put('/api/v1/product/update-quantity', [auth.requireAuth, auth.requireRole], (req, res) => {
     Product.editQuantity(req.body.id, req.body.color, req.body.quantity, (result) => {
 
         if (!result.error) {
             res.redis.delItem('products', ['get-new-products', '/product/list', 'products-by-categories', 'get-products-by-type', `getProduct?id=${req.body.id}`]);
         }
-       
+
     })
 });
 
-router.put('/api/v1/product/update-status', [auth.requireAuth], (req, res) => {
+router.put('/api/v1/product/update-status', [auth.requireAuth, auth.requireRole], (req, res) => {
     Product.editStatus(req.body.id, req.body.status, (result) => {
 
         if (!result.error) {
@@ -445,7 +445,7 @@ router.get('/api/v1/category/get-categories', (req, res) => {
             Category.getCategories((result) => {
                 if (result.categories) {
                     res.redis.setItem('category', `get-categories`, result.categories);
-                }                
+                }
                 res.json(result);
             });
         }
@@ -471,7 +471,7 @@ router.get('/api/v1/category/:id', (req, res) => {
             Category.getCategory(id, (result) => {
                 if (result.category) {
                     res.redis.setItem('category', `category?id=${id}`, result.category);
-                }                
+                }
                 res.json(result);
             });
         }
@@ -519,7 +519,7 @@ router.delete('/api/v1/category/delete-category', [auth.requireAuth, auth.requir
 //** /APIS FOR ORDER */
 
 //** APIS FOR TYPE */
-router.get('/api/v1/type/get-types', (req, res) => {
+router.get('/api/v1/type/get-types', [auth.requireAuth, auth.requireRole], (req, res) => {
     res.redis.getItem('type', `get-types`, (data) => {
         if (data) {
             res.json({
@@ -529,7 +529,7 @@ router.get('/api/v1/type/get-types', (req, res) => {
             Type.getTypes((result) => {
                 if (result.types) {
                     res.redis.setItem('type', `get-types`, result.types);
-                }                
+                }
                 res.json(result);
             });
         }
@@ -538,7 +538,7 @@ router.get('/api/v1/type/get-types', (req, res) => {
 //** /APIS FOR TYPE */
 
 //** APIS FOR BRAND */
-router.get('/api/v1/brand/get-brands', (req, res) => {
+router.get('/api/v1/brand/get-brands', [auth.requireAuth, auth.requireRole], (req, res) => {
     Brand.getBrands((result) => {
         res.json(result);
     });
@@ -635,7 +635,7 @@ router.get('/api/v1/reviews', [auth.requireAuth, auth.requireRole], (req, res) =
             Review.getReviews((result) => {
                 if (result.reviews) {
                     res.redis.setItem('reviews', `get-reviews`, result.reviews);
-                }                
+                }
                 res.json(result);
             });
         }
@@ -653,7 +653,7 @@ router.get('/api/v1/newerReviews', [auth.requireAuth, auth.requireRole], (req, r
             Review.getNewReviews((result) => {
                 if (result.reviews) {
                     res.redis.setItem('reviews', `get-new-reviews`, result.reviews);
-                }                
+                }
                 res.json(result);
             });
         }
@@ -663,31 +663,31 @@ router.get('/api/v1/newerReviews', [auth.requireAuth, auth.requireRole], (req, r
 //**/APIS FOR REVIEW
 
 //** APIS FOR ANALYTICS */
-router.get('/api/v1/get-satisfied-client', (req, res) => {
+router.get('/api/v1/get-satisfied-client', [auth.requireAuth, auth.requireRole], (req, res) => {
     Analytic.satisfiedClient((result) => {
         res.json(result);
     });
 });
 
-router.get('/api/v1/get-revenue', (req, res) => {
+router.get('/api/v1/get-revenue', [auth.requireAuth, auth.requireRole], (req, res) => {
     Analytic.revenue(req.query.year, (result) => {
         res.json(result);
     });
 });
 
-router.get('/api/v1/get-top-keyword', (req, res) => {
+router.get('/api/v1/get-top-keyword', [auth.requireAuth, auth.requireRole], (req, res) => {
     SearchKeyword.gets((result) => {
         res.json(result)
     });
 });
 
-router.get('/api/v1/get-top-search-product', (req, res) => {
+router.get('/api/v1/get-top-search-product', [auth.requireAuth, auth.requireRole], (req, res) => {
     SearchProduct.gets((result) => {
         res.json(result)
     })
 });
 
-router.get('/api/v1/get-best-sold-products', (req, res) => {
+router.get('/api/v1/get-best-sold-products', [auth.requireAuth, auth.requireRole], (req, res) => {
     Analytic.sellestProducts((result) => {
         res.json(result);
     });
@@ -695,7 +695,7 @@ router.get('/api/v1/get-best-sold-products', (req, res) => {
 
 /** ROUTER FOR PROMOTION */
 
-router.get('/api/v1/get-promotions', [auth.requireAuth, auth.requireRole], (req,res) => {
+router.get('/api/v1/get-promotions', [auth.requireAuth, auth.requireRole], (req, res) => {
     Promotion.gets((result) => {
         res.json(result)
     });
