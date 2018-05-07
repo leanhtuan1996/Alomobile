@@ -21,6 +21,7 @@ module.exports = mongoose.model('Order', new Schema({
             name: String,
             hex: String
         },
+        basePrice: Number,
         price: Number,
         quantity: Number
     }],

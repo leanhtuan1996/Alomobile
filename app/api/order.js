@@ -256,6 +256,7 @@ var initOrder = (parameters, cb) => {
                 var newElement = {
                     id: product.id,
                     quantity: product.quantity,
+                    basePrice: detail.basePrice,
                     price: detail.price,
                     color: detail.color
                 }
@@ -527,23 +528,6 @@ var updateStatus = (id, status, cb) => {
     workflow.emit('validate-parameters')
 }
 
-var newOrder = (order, cb) => {
-    var workflow = new event.EventEmitter();
-
-    workflow.on('validate-parameters', () => {
-
-    });
-
-    workflow.on('response', (response) => {
-
-    });
-
-    workflow.on('new', () => {
-
-    });
-
-    workflow.emit('validate-parameters');
-}
 
 var processProductBeforeCheckout = (id, color, quantity, cb) => {
     var workflow = new event.EventEmitter();
@@ -712,7 +696,6 @@ var getDetailOrder = (id, cb) => {
                 path: 'products.id',
                 model: 'Product'
             }, (err, order) => {
-                console.log(order);
                 workflow.emit('response', {
                     error: err,
                     order: order
