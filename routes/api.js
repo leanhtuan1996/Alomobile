@@ -301,8 +301,7 @@ router.get('/api/v1/product/count-products', (req, res) => {
     });
 });
 
-router.post('/api/v1/product/new-product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
-   
+router.post('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {   
     
     Product.newProduct(req.body, (result) => {
 
@@ -314,7 +313,7 @@ router.post('/api/v1/product/new-product', [auth.requireAuth, auth.requireRole, 
     });
 });
 
-router.put('/api/v1/product/edit-product', [auth.requireAuth, auth.requireRole, upload.array('images')], (req, res) => {
+router.put('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images')], (req, res) => {
     Product.editProduct(req.body, (result) => {
 
         //update cache
@@ -326,7 +325,7 @@ router.put('/api/v1/product/edit-product', [auth.requireAuth, auth.requireRole, 
     });
 });
 
-router.delete('/api/v1/product/delete-product', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.delete('/api/v1/product', [auth.requireAuth, auth.requireRole], (req, res) => {
     Product.deleteProduct(req.body.id, (result) => {
         
         //update cache
@@ -421,6 +420,12 @@ router.put('/api/v1/product/update-status', [auth.requireAuth], (req, res) => {
             res.redis.delItem('products', ['get-new-products', '/product/list', 'products-by-categories', 'get-products-by-type', `getProduct?id=${req.body.id}`]);
         }
 
+        res.json(result)
+    })
+})
+
+router.post('/api/v1/product/duplicate', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.duplicate(req.body.id, (result) => {
         res.json(result)
     })
 })

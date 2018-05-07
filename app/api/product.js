@@ -38,7 +38,7 @@ var getProducts = (prevProduct, result) => {
                     created_at: 1,
                     status: 1
                 }
-            }, 
+            },
             {
                 $sort: {
                     created_at: -1
@@ -54,7 +54,7 @@ var getProducts = (prevProduct, result) => {
                     }
                 }
             })
-        } 
+        }
 
         Product.aggregate(query, (err, products) => {
             workflow.emit('response', {
@@ -92,7 +92,7 @@ var getPrevProducts = (nextProduct, result) => {
                     created_at: 1,
                     status: 1
                 }
-            }, 
+            },
             {
                 $sort: {
                     created_at: -1
@@ -111,7 +111,7 @@ var getPrevProducts = (nextProduct, result) => {
                     }
                 }
             })
-        } 
+        }
 
         Product.aggregate(query, (err, products) => {
             workflow.emit('response', {
@@ -1103,7 +1103,7 @@ var editQuantity = (id, hexColor, quantity, cb) => {
                 }
 
                 var index = details.findIndex(detail => {
-                    if (detail.color) {                      
+                    if (detail.color) {
                         return detail.color.hex == hexColor
                     }
                 })
@@ -1116,7 +1116,7 @@ var editQuantity = (id, hexColor, quantity, cb) => {
                 }
 
                 details[index].quantity = quantity;
-                
+
                 product.details = details;
 
                 product.save((err) => {
@@ -1135,7 +1135,7 @@ var editQuantity = (id, hexColor, quantity, cb) => {
     workflow.emit('validate-parameters');
 }
 
-var editStatus= (id, status, cb) => {
+var editStatus = (id, status, cb) => {
     var workflow = new event.EventEmitter();
 
     workflow.on('validate-parameters', () => {
@@ -1182,6 +1182,45 @@ var editStatus= (id, status, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var duplicate = (id, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id of product is required!"
+            });
+            return
+        }
+
+        workflow.emit('duplicate');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    });
+
+    workflow.on('duplicate', () => {
+        Product.findById(id).lean().select('name alias colors details brand specifications images descriptions metaTitle metaKeyword type category').exec((err, product) => {
+            if (product) {
+                delete product._id;
+                Product.insertMany([product], (err, products) => {
+                    workflow.emit('response', {
+                        error: err,
+                        products: products
+                    });
+                })                
+            } else {
+                workflow.emit('response', {
+                    error: "Cannot duplicate this product"
+                });
+            }
+        })
+    })
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     getProducts: getProducts,
     getProductById: getProductById,
@@ -1201,5 +1240,6 @@ module.exports = {
     getReviews: getReviewsWithProduct,
     getProductsByCategoryWithPagination: getProductsByCategoryWithPagination,
     editQuantity: editQuantity,
-    editStatus: editStatus
+    editStatus: editStatus,
+    duplicate: duplicate
 }

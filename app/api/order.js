@@ -979,20 +979,20 @@ var getNewOrders = (cb) => {
             model: "User",
             select: "fullName"
         })
-            .limit(10)
-            .sort('-created_at')
-            .exec((err, docs) => {
-                Order.populate(docs, {
-                    path: "products.id",
-                    model: "Product",
-                    select: "images name"
-                }, (err, orders) => {
-                    workflow.emit('response', {
-                        error: err,
-                        orders: orders
-                    });
+        .limit(10)
+        .sort('-created_at')
+        .exec((err, docs) => {
+            Order.populate(docs, {
+                path: "products.id",
+                model: "Product",
+                select: "images name"
+            }, (err, orders) => {
+                workflow.emit('response', {
+                    error: err,
+                    orders: orders
                 });
             });
+        });
     });
 
     workflow.emit('validate-parameters')
