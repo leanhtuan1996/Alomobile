@@ -88,7 +88,7 @@ router.get('/products/search/text=:text', (req, res) => {
     });
 });
 
-router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
+router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res, next) => {
     var URL = url.parse(req.url);
     var des = URL.pathname;
     
@@ -104,14 +104,14 @@ router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
         var t = des.split('-');
 
         if (!t) {
-            res.redirect('/');
+            next();
             return
         }
 
         var id = t[t.length - 1];
 
         if (!id) {
-            res.redirect('/');
+            next();
             return
         }
 
@@ -133,13 +133,13 @@ router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
             } else {
                 Product.getProductById(id, (result) => {
                     if (result.error) {
-                        res.redirect('/');
+                        next();
                         return
                     }
 
                     var product = result.product;
                     if (!product) {
-                        res.redirect('/');
+                        next();
                         return
                     }
                     res.redis.setItem('products', `getProduct?id=${id}`, product);
@@ -160,11 +160,12 @@ router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res) => {
             }
         });
     } else {
-        res.redirect('/');
+        next();
+        return
     }
 });
 
-router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
+router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res, next) => {
     var url = req.url;
     if (url) {
         var t = url.split('/');
@@ -180,10 +181,10 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
                 });
 
                 if (matches.length == 0) {
-                    res.redirect('/');
+                    next();
+                    return
                 } else {
                     if (matches.length == 1) {
-
                         res.redis.getItem('products', `products-by-categories?idRootCategory=${matches[0]}&idCategory=${matches[0]}`, (data) => {
                             if (data) {
                                 res.render('products-by-categories', {
@@ -246,15 +247,15 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res) => {
                             }
                         });                        
                     } else {
-                        res.redirect('/');
+                        next();
                     }
                 }
             }
         } else {
-            res.redirect('/');
+            next();
         }
     } else {
-        res.redirect('/');
+        next();
     }
 });
 

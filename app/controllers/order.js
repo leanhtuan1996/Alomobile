@@ -1,7 +1,7 @@
 'use strict';
 
 var orderApi = require('../api/order');
-var mailBox = require('./mailbox');
+var mailApi = require('../api/index').mail;
 
 var initOrder = (parameters, cb) => {
     orderApi.initOrder(parameters, (response) => {
@@ -20,7 +20,7 @@ var updateOrder = (order, parameters, cb) => {
 
         if (result.order && result.order.status == 1) {
             //send email
-            mailBox.sendMailWithConfirmOrder(result.order);
+            mailApi.sendMailWithConfirmOrder(result.order);
         }
 
         return cb(result)

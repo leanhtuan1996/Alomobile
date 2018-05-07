@@ -21,10 +21,10 @@ function isValidDate(dateString) {
 
 function logout() {
     $.ajax({
-        url: "/sign-out",
-        method: "GET",
+        url: "/api/v1/user/sign-out",
+        method: "POST",
         success: (data) => {
-            if (data.error) { return };
+            if (data.error) { location.reload(); };
             localStorage.removeItem('cart');
             window.location.href = document.referrer;
         },

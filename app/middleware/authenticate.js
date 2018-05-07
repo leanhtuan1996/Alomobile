@@ -15,22 +15,30 @@ var newError = (content, status, href) => {
 }
 
 var requireAuth = (req, res, next) => {
+    
     var token = req.body.token || req.params.token || req.session.token;
-
-    if (!token) {
-        return next(newError('The login session has expired, please log in again.', 401, 'admin/sign-in'));
+    var loginPage = 'sign-in';
+    if (isLoginAdmin(req.url)) {
+        loginPage = 'admin/sign-in'
     }
+    
+    if (!token) {
+        return next(newError('The login session has expired, please log in again.', 401, loginPage));
+    }    
 
     UserCtl.verify(token, (cb) => {
         if (cb.error) {
-            return next(newError(cb.error, 401, 'admin/sign-in'));
+            return next(newError(cb.error, 401, loginPage));
         } 
 
         if (!cb.user) {
-            return next(newError('The login session has expired, please log in again.', 401, 'admin/sign-in'));
+            return next(newError('The login session has expired, please log in again.', 401, loginPage));
         }
 
         req.user = cb.user;
+
+        req.session.user = cb.user;
+        req.session.token = token;
         next();
     });
 }
@@ -38,15 +46,22 @@ var requireAuth = (req, res, next) => {
 var requireRole = (req, res, next) => {
     //get current role of user
 
+    var loginPage = 'sign-in';
+    var rolePage = '403'
+    if (isLoginAdmin(req.url)) {
+        loginPage = 'admin/sign-in'
+        rolePage = 'admin/403'
+    }
+
     if (!req.user) {
-        return next(newError('The login session has expired, please log in again.', 401, 'admin/sign-in'));
+        return next(newError('The login session has expired, please log in again.', 401, loginPage));
     }
 
     var role = req.user.role;
 
     var err = new Error("User can not access to this page!");
     err.status = 403;
-    err.href = "admin/403";
+    err.href = rolePage;
     err.message = "User can not access to this page!";
 
     if (!role) {
@@ -139,6 +154,10 @@ var isMatchingRouter = (userPath, userMethod, allows) => {
     }
 
     return false;
+}
+
+var isLoginAdmin = (host) => {
+    return host.match(/(admin)/g);
 }
 
 module.exports = {

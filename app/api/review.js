@@ -489,5 +489,6 @@ module.exports = {
     getReviews: getReviews,
     getNewReviews: getNewReviews,
     getMyReviews: getMyReviews,
-    isBoughtProduct: isBoughtProduct
+    isBoughtProduct: isBoughtProduct,
+    reviewProduct: reviewProduct
 }

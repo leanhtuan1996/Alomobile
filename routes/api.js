@@ -16,6 +16,7 @@ var Analytic = api.analytic;
 var SearchKeyword = api.searchKeyword;
 var SearchProduct = api.searchProduct;
 var Promotion = api.promotion;
+var Mail = api.mail;
 
 var multer = require('multer');
 var auth = require('../app/middleware/index').authenticate;
@@ -47,44 +48,87 @@ var upload = multer({
 
 //#region APIS FOR USER
 router.post('/api/v1/user/sign-in', (req, res) => {
-    User.signIn(req.body, (result) => {
+    User.signIn(req.body.credential, (result) => {
         if (result.error) {
-            res.json(result);
-        } else {
-            if (result.user) {
-                var id = result.user._id
-
-                var token = helper.encodeToken(id);
-                //set token in session
-                req.session.token = token
-
-                res.json({
-                    user: result.user,
-                    token: token,
-                });
-            }
+            res.json({
+                error: result.error
+            });
+            return
         }
+
+        var user = result.user;
+
+        if (!user) { res.json({ error: "User not found!" }); return; }
+
+        var id = user._id
+
+        var token = helper.encodeToken(id);
+
+        //set token in session
+        req.session.token = token;
+        req.session.user = user;
+
+        //push new token to user
+        User.pushValidToken(token, id, (cb) => {
+            res.json({
+                error: cb.error,
+                user: {
+                    id: id,
+                    email: user.name,
+                    fullName: user.fullName,
+                    phone: user.phone,
+                    sex: user.sex,
+                    orders: user.orders
+                }
+            });
+        });
     });
 });
 
 router.post('/api/v1/user/sign-up', (req, res) => {
     User.signUp(req.body, (result) => {
-        if (result.error) {
-            res.json(result);
-        } else {
-            if (result.user) {
-                var id = result.user._id
+        var user = result.user;
+        if (user) {
+            //set token in session
+            req.session.token = helper.encodeToken(user._id);
+            req.session.user = user;
 
-                var token = helper.encodeToken(id);
-                //set token in session
-                req.session.token = token
-
-                res.json({
-                    user: result.user,
-                    token: token,
-                });
+            //send email to user     
+            var parameters = {
+                to: user.email,
+                subject: "Chúc mừng bạn đã đăng kí tài khoản thành công trên Alomobile",
+                fullName: user.fullName
             }
+
+            Mail.sendMailWithSignUp(parameters, (cb) => { });
+
+            //push new token to user
+            User.pushValidToken(req.session.token, user._id, (cb) => {
+                res.json({
+                    error: cb.error,
+                    user: {
+                        id: user._id,
+                        email: user.name,
+                        fullName: user.fullName,
+                        phone: user.phone,
+                        sex: user.sex,
+                        orders: user.orders
+                    }
+                });
+            });
+        } else {
+            res.json(result);
         }
+    });
+});
+
+router.post('/api/v1/user/sign-out', (req, res) => {
+    User.signOut(req.session.token, (result) => {
+        if (!result.error) {
+            req.session.destroy();
+        }
+
+        res.json(result);
     });
 });
 
@@ -94,32 +138,34 @@ router.post('/api/v1/user/register-new-letters', (req, res) => {
     })
 });
 
-router.get('/api/v1/user/all-users', [auth.requireAuth, auth.requireRole], (req, res) => {
-
+router.post('/api/v1/user/password-recovery', (req, res) => {
+    User.requireForgetPassword(req.body.email, (result) => {
+        if (result.token && result.user) {
+            Mail.sendMailWithForgetPassword(result.user, result.token, (cb) => {
+                res.json(cb);
+            });
+        } else {
+            res.json(result);
+        }
+    });
 });
 
-router.get('/api/v1/user', [auth.requireAuth, auth.requireRole], (req, res) => {
-
+router.put('/api/v1/user/password-recovery', (req, res) => {
+    User.recoveryPassword(req.body.email, req.body.token, req.body.password, (r) => {
+        if (r.user) {
+            User.signOutAllDevices(r.user._id, (c) => {
+                res.json(c);
+            });
+        } else {
+            res.json(r);
+        }
+    });
 });
 
-router.get('/api/v1/user/count-users', [auth.requireAuth, auth.requireRole], (req, res) => {
-
-});
-
-router.put('/api/v1/user/update-my-informations', [auth.requireAuth], (req, res) => {
-
-});
-
-router.put('/api/v1/user/update-informations', [auth.requireAuth, auth.requireRole], (req, res) => {
-
-});
-
-router.delete('/api/v1/user', [auth.requireAuth, auth.requireRole], (req, res) => {
-
-});
-
-router.put('/api/v1/user/deactive-user', [auth.requireAuth, auth.requireRole], (req, res) => {
-
+router.put('/api/v1/user/update-informations', [auth.requireAuth], (req, res) => {  
+    User.editUser(req.user._id, req.body.user, (result) => {
+        res.json(result);
+    });
 });
 
 //#endregion APIS FOR USER
@@ -662,6 +708,12 @@ router.get('/api/v1/newerReviews', [auth.requireAuth, auth.requireRole], (req, r
                 res.json(result);
             });
         }
+    });
+});
+
+router.post('/api/v1/review', [auth.requireAuth], (req, res) => {
+    Review.reviewProduct(req.user, req.body.review, (result) => {
+        res.json(result)
     });
 });
 

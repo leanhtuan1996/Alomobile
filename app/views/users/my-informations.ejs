@@ -291,7 +291,7 @@
         
 
             $.ajax({
-                url: '/update-informations',
+                url: '/api/v1/user/update-informations',
                 data: {
                     user: JSON.stringify(user)
                 },
@@ -306,6 +306,9 @@
                     } else {
                         window.location.reload();
                     }
+                },
+                error: (err) => {
+                    console.log(err);
                 }
             });
         });

@@ -137,8 +137,10 @@
                 $("#login-button").html("Đang đăng nhập...").addClass('disabled', true);
 
                 $.post(
-                    'sign-in',
-                    user,
+                    '/api/v1/user/sign-in',
+                    {
+                        credential: user
+                    },
                     (data) => {
                         $("#login-button").html("Đăng nhập").removeClass('disabled');
 

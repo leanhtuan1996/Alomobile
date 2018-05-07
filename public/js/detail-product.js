@@ -3095,7 +3095,7 @@
                 star: star
             }
 
-            $.post('/product/review', {
+            $.post('/api/v1/review', {
                 review: parameters
             }, (data) => {
                 if (data.error) {
@@ -3112,8 +3112,8 @@
                         $('#result_comment').modal('hide');
                     }, 3000);
                 }
-            }).error((err) => {
-                showNotification("Lỗi không xác định, vui lòng tại lại trang để thử lại.")
+            }).error((err) => {                
+                showNotification(`${err.status == 401 ? 'Vui lòng đăng nhập để sử dụng chức năng này.' : "Lỗi không xác định, vui lòng tại lại trang để thử lại."}`)
             });
 
         });
