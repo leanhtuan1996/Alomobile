@@ -83,10 +83,14 @@ var isMatchingRouter = (userPath, userMethod, allows) => {
     if (!userMethod) { return false }
     if (!allows && allows.length == 0) { return false }
 
+    if (userPath.match(/\?/g)) {
+        userPath = userPath.split('?', 1)[0];
+    }
+
     for (let i = 0; i < allows.length; i++) {
         const allow = allows[i];
         if (allow) {
-            var path = allow.resources.trim();;
+            var path = allow.resources.trim();
             var methods = allow.permissions;
 
             if (path && methods && methods.length > 0) {
@@ -96,7 +100,6 @@ var isMatchingRouter = (userPath, userMethod, allows) => {
                 var userPathSplited = userPath.split('/');
 
                 if (pathSplited.length == userPathSplited.length) {
-
                     var x = [];
                     for (let a = 0; a < pathSplited.length; a++) {
                         if (pathSplited[a].trim() == userPathSplited[a].trim()) {

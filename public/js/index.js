@@ -1498,4 +1498,3 @@ function initProductCate(category) {
         })
     }
 }
-

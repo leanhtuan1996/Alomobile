@@ -751,6 +751,7 @@ var editProduct = (product, result) => {
 
     workflow.on('new-product', (imagesEdited) => {
 
+
         if (specifications) {
             specifications = JSON.parse(specifications);
         }

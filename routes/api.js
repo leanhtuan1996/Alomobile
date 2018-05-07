@@ -45,7 +45,7 @@ var upload = multer({
     limits: { fileSize: 1 * 1024 * 1024 }
 });
 
-//** APIS FOR USER */
+//#region APIS FOR USER
 router.post('/api/v1/user/sign-in', (req, res) => {
     User.signIn(req.body, (result) => {
         if (result.error) {
@@ -98,7 +98,7 @@ router.get('/api/v1/user/all-users', [auth.requireAuth, auth.requireRole], (req,
 
 });
 
-router.get('/api/v1/user/get-user/:id', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.get('/api/v1/user', [auth.requireAuth, auth.requireRole], (req, res) => {
 
 });
 
@@ -114,17 +114,17 @@ router.put('/api/v1/user/update-informations', [auth.requireAuth, auth.requireRo
 
 });
 
-router.delete('/api/v1/user/delete-user', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.delete('/api/v1/user', [auth.requireAuth, auth.requireRole], (req, res) => {
 
 });
 
-router.post('/api/v1/user/deactive-user', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.put('/api/v1/user/deactive-user', [auth.requireAuth, auth.requireRole], (req, res) => {
 
 });
 
-//** /APIS FOR USER */
+//#endregion APIS FOR USER
 
-//** APIS FOR PRODUCT */
+//#region APIS FOR PRODUCT
 
 router.get('/api/v1/product/get-products', (req, res) => {
     Product.getProducts(null, (result) => {
@@ -302,7 +302,6 @@ router.get('/api/v1/product/count-products', [auth.requireAuth, auth.requireRole
 });
 
 router.post('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
-
     Product.newProduct(req.body, (result) => {
 
         if (!result.error) {
@@ -313,7 +312,7 @@ router.post('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array
     });
 });
 
-router.put('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images')], (req, res) => {
+router.put('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
     Product.editProduct(req.body, (result) => {
 
         //update cache
@@ -339,6 +338,17 @@ router.delete('/api/v1/product', [auth.requireAuth, auth.requireRole], (req, res
 
 router.get('/api/v1/product/search-product/:text', (req, res) => {
     Product.searchProducts(req.params.text, (result) => {
+
+        if (result.products && result.products.length != 0) {
+            SearchKeyword.insert(req.params.text, (result) => { });
+        }
+
+        res.json(result);
+    });
+});
+
+router.get('/api/v1/product/search-product', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.searchProducts(req.query.text, (result) => {
 
         if (result.products && result.products.length != 0) {
             SearchKeyword.insert(req.params.text, (result) => { });
@@ -430,11 +440,9 @@ router.post('/api/v1/product/duplicate', [auth.requireAuth, auth.requireRole], (
     })
 })
 
+//#endregion APIS FOR PRODUCT
 
-//** /APIS FOR PRODUCT */
-
-
-//** APIS FOR CATEGORY */
+//#region APIS FOR CATEGORY
 router.get('/api/v1/category/get-categories', (req, res) => {
     res.redis.getItem('category', `get-categories`, (data) => {
         if (data) {
@@ -513,12 +521,9 @@ router.delete('/api/v1/category/delete-category', [auth.requireAuth, auth.requir
         res.json(result);
     });
 });
-//** /APIS FOR CATEGORY */
+//#endregion APIS FOR CATEGORY
 
-//** APIS FOR ORDER */
-//** /APIS FOR ORDER */
-
-//** APIS FOR TYPE */
+//#region APIS FOR TYPE
 router.get('/api/v1/type/get-types', [auth.requireAuth, auth.requireRole], (req, res) => {
     res.redis.getItem('type', `get-types`, (data) => {
         if (data) {
@@ -535,9 +540,9 @@ router.get('/api/v1/type/get-types', [auth.requireAuth, auth.requireRole], (req,
         }
     });
 });
-//** /APIS FOR TYPE */
+//#endregion APIS FOR TYPE
 
-//** APIS FOR BRAND */
+//#region APIS FOR BRAND
 router.get('/api/v1/brand/get-brands', [auth.requireAuth, auth.requireRole], (req, res) => {
     Brand.getBrands((result) => {
         res.json(result);
@@ -580,9 +585,9 @@ router.delete('/api/v1/brand/delete-brand', [auth.requireAuth, auth.requireRole]
     });
 });
 
-//** /APIS FOR BRAND */
+//#endregion APIS FOR BRAND
 
-//**APIS FOR ORDER
+//#region APIS FOR ORDER
 router.get('/api/v1/order/checkAvailable', (req, res) => {
     Order.checkingAvailable(req.query.id, req.query.quantity, req.query.color, (cb) => {
         res.json(cb);
@@ -622,9 +627,9 @@ router.get('/api/v1/order/get-my-orders', [auth.requireAuth], (req, res) => {
     })
 })
 
-//**/APIS FOR ORDER
+//#endregion APIS FOR ORDER
 
-//APIS FOR REVIEW
+//#region APIS FOR REVIEW
 router.get('/api/v1/reviews', [auth.requireAuth, auth.requireRole], (req, res) => {
     res.redis.getItem('reviews', `get-reviews`, (data) => {
         if (data) {
@@ -660,9 +665,9 @@ router.get('/api/v1/newerReviews', [auth.requireAuth, auth.requireRole], (req, r
     });
 });
 
-//**/APIS FOR REVIEW
+//#endregion APIS FOR REVIEW
 
-//** APIS FOR ANALYTICS */
+//#region APIS FOR ANALYTICS
 router.get('/api/v1/get-satisfied-client', [auth.requireAuth, auth.requireRole], (req, res) => {
     Analytic.satisfiedClient((result) => {
         res.json(result);
@@ -693,7 +698,9 @@ router.get('/api/v1/get-best-sold-products', [auth.requireAuth, auth.requireRole
     });
 });
 
-/** ROUTER FOR PROMOTION */
+//#endregion APIS FOR ANALYTICS
+
+//#region APIS FOR PROMOTION
 
 router.get('/api/v1/get-promotions', [auth.requireAuth, auth.requireRole], (req, res) => {
     Promotion.gets((result) => {
@@ -730,5 +737,7 @@ router.post('/api/v1/check-promo-code', (req, res) => {
         res.json(result)
     })
 });
+
+//#endregion APIS FOR PROMOTION
 
 module.exports = router;

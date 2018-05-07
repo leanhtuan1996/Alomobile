@@ -106,7 +106,9 @@
                 return
             }
 
-            $.get('/api/v1/product/search-product/' + text, (data) => {
+            $.get('/api/v1/product/search-product', {
+                text: text
+            }, (data) => {
                 if (data.products && data.products.length > 0) {
 
                     var items = '';

@@ -16,7 +16,6 @@ var Promotion = require('../app/controllers/admin/index').promotion;
 
 var mail = require('../app/api/index').mail;
 
-
 var multer = require('multer');
 var auth = require('../app/middleware/index').authenticate;
 var helper = require('../app/helpers/index').helper;
@@ -84,8 +83,6 @@ router.post('/admin/sign-in', (req, res) => {
                 var token = helper.encodeToken(id);
                 //set token in session
                 req.session.token = token;
-
-
 
                 //push new token to user
                 User.pushValidToken(token, id, (cb) => {
