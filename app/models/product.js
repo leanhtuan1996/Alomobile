@@ -15,6 +15,7 @@ module.exports = mongoose.model('Product', new Schema({
             hex: String,
             name: String
         },
+        basePrice: Number,
         price: Number,
         quantity: { type: Schema.Types.Number, default: 0 }
     }],
@@ -37,23 +38,9 @@ module.exports = mongoose.model('Product', new Schema({
         ref: "Promotion"
     }],
     descriptions: String,
-    quantity: [{
-        color: {
-            hex: String,
-            name: String,
-        },
-        quantity: { type: Schema.Types.Number, default: 0 }
-    }],
     status: { type: Schema.Types.Boolean, default: true },
     metaTitle: String,
     metaKeyword: String,
-    prices: [{
-        color: {
-            hex: String,
-            name: String
-        },
-        price: Number
-    }],
     type: {
         type: Schema.Types.ObjectId,
         ref: "Type"

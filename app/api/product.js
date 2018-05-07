@@ -24,21 +24,44 @@ var getProducts = (prevProduct, result) => {
     });
 
     workflow.on('get-products', () => {
-        Product.find({
-            created_at: {
-                $lt: prevProduct == null ? Date.now() : (prevProduct == null ? Date.now() : prevProduct)
+
+        var query = [
+            {
+                $unwind: '$details'
+            },
+            {
+                $project: {
+                    alias: 1,
+                    name: 1,
+                    images: 1,
+                    details: 1,
+                    created_at: 1,
+                    status: 1
+                }
+            }, 
+            {
+                $sort: {
+                    created_at: -1
+                }
             }
-        })
-            .populate('brand')
-            .limit(15)
-            .sort('-created_at')
-            .select('alias name brand images details status')
-            .exec((err, products) => {
-                workflow.emit('response', {
-                    error: err,
-                    products: products
-                });
+        ]
+
+        if (prevProduct) {
+            query.push({
+                $match: {
+                    'created_at': {
+                        $lte: prevProduct
+                    }
+                }
+            })
+        } 
+
+        Product.aggregate(query, (err, products) => {
+            workflow.emit('response', {
+                error: err,
+                products: products
             });
+        });
     });
 
     workflow.emit('validate-parameters');
@@ -56,21 +79,46 @@ var getPrevProducts = (nextProduct, result) => {
     });
 
     workflow.on('get-products', () => {
-        Product.find({
-            created_at: {
-                $gt: nextProduct == null ? Date.now() : (nextProduct == null ? Date.now() : nextProduct)
+        var query = [
+            {
+                $unwind: '$details'
+            },
+            {
+                $project: {
+                    alias: 1,
+                    name: 1,
+                    images: 1,
+                    details: 1,
+                    created_at: 1,
+                    status: 1
+                }
+            }, 
+            {
+                $sort: {
+                    created_at: -1
+                }
+            },
+            {
+                $limit: 15
             }
-        })
-            .populate('brand')
-            .limit(15)
-            .select('alias name brand images details status')
-            .sort('-created_at')
-            .exec((err, products) => {
-                workflow.emit('response', {
-                    error: err,
-                    products: products
-                });
+        ]
+
+        if (nextProduct) {
+            query.push({
+                $match: {
+                    'created_at': {
+                        $gte: nextProduct
+                    }
+                }
+            })
+        } 
+
+        Product.aggregate(query, (err, products) => {
+            workflow.emit('response', {
+                error: err,
+                products: products
             });
+        })
     });
 
     workflow.emit('validate-parameters');
@@ -127,7 +175,9 @@ var getSpecialProducts = (limit, result) => {
 
     workflow.on('get-products', () => {
         Product
-            .find({})
+            .find({
+                status: true
+            })
             .limit(limit || 10)
             .sort('-created_at')
             .select('alias name images details status reviews')
@@ -169,7 +219,8 @@ var getProductsByType = (idType, limit, result) => {
     workflow.on('get-products', () => {
         Product
             .find({
-                type: idType
+                type: idType,
+                status: true
             })
             .limit(limit || 15)
             .sort('-created_at')
@@ -222,7 +273,8 @@ var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
         if (idRootCategory == idCategory) {
             Product
                 .find({
-                    "category.idRootCategory": idRootCategory
+                    "category.idRootCategory": idRootCategory,
+                    status: true
                 })
                 .limit(parseInt(limit))
                 .select('alias name brand images details status reviews created_at')
@@ -241,7 +293,8 @@ var getProductsByCategory = (idCategory, idRootCategory, limit, result) => {
             Product
                 .find({
                     "category.idCategory": idCategory,
-                    "category.idRootCategory": idRootCategory
+                    "category.idRootCategory": idRootCategory,
+                    status: true
                 })
                 .limit(limit)
                 .select('alias name brand images details status reviews')
@@ -295,7 +348,8 @@ var getProductsByCategoryWithPagination = (idCategory, from, limit = 15, action 
                     "category.idRootCategory": idCategory,
                     "created_at": {
                         $lte: from
-                    }
+                    },
+                    status: true
                 })
                 .sort('-created_at')
                 .limit(Number.parseInt(limit))
@@ -317,7 +371,8 @@ var getProductsByCategoryWithPagination = (idCategory, from, limit = 15, action 
                     "category.idRootCategory": idCategory,
                     "created_at": {
                         $gte: from
-                    }
+                    },
+                    status: true
                 })
                 .sort('-created_at')
                 .limit(Number.parseInt(limit))
@@ -352,7 +407,9 @@ var getNewProducts = (limit, result) => {
 
     workflow.on('get-products', () => {
         Product
-            .find({})
+            .find({
+                status: true
+            })
             .limit(parseInt(limit) || 10)
             .sort('-created_at')
             .select('alias name brand images details status reviews')
@@ -385,7 +442,9 @@ var getHotProducts = (limit, result) => {
 
     workflow.on('get-products', () => {
         Product
-            .find({})
+            .find({
+                status: true
+            })
             .limit(limit || 10)
             .sort('-created_at')
             .select('alias name brand images details status reviews')
@@ -941,9 +1000,6 @@ var reviewProduct = (user, review, cb) => {
     workflow.emit('validate-parameters');
 }
 
-var getReviews = (cb) => {
-
-}
 var getReviewsWithProduct = (product, status = true, cb) => {
     var workflow = new event.EventEmitter();
 
@@ -995,6 +1051,137 @@ var getReviewsWithProduct = (product, status = true, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var editQuantity = (id, hexColor, quantity, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id of product is required!"
+            });
+            return
+        }
+
+        if (!quantity) {
+            workflow.emit('response', {
+                error: "Quantity of product is required!"
+            });
+            return
+        } else {
+            try {
+                quantity = Number.parseInt(quantity);
+            } catch (error) {
+                workflow.emit('response', {
+                    error: "The quantity of products must be a number"
+                });
+            }
+        }
+
+        if (!hexColor) {
+            workflow.emit('response', {
+                error: "Color of product is required!"
+            });
+            return
+        }
+
+        workflow.emit('update');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    });
+
+    workflow.on('update', () => {
+        Product.findById(id, (err, product) => {
+            if (product) {
+                var details = product.details;
+                if (!details || details.length == 0) {
+                    workflow.emit('response', {
+                        error: "Details of product is empty"
+                    });
+                    return
+                }
+
+                var index = details.findIndex(detail => {
+                    if (detail.color) {                      
+                        return detail.color.hex == hexColor
+                    }
+                })
+
+                if (index < 0) {
+                    workflow.emit('response', {
+                        error: "Detail of product not found"
+                    });
+                    return
+                }
+
+                details[index].quantity = quantity;
+                
+                product.details = details;
+
+                product.save((err) => {
+                    workflow.emit('response', {
+                        error: err
+                    })
+                });
+            } else {
+                workflow.emit('response', {
+                    error: "Product not found!"
+                });
+            }
+        })
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var editStatus= (id, status, cb) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id of product is required!"
+            });
+            return
+        }
+
+        if (!status) {
+            workflow.emit('response', {
+                error: "Status of product is required!"
+            });
+            return
+        } else {
+            try {
+                status = Number.parseInt(status);
+            } catch (error) {
+                workflow.emit('response', {
+                    error: "The status of products must be a number"
+                });
+            }
+        }
+
+        workflow.emit('update');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response)
+    });
+
+    workflow.on('update', () => {
+        Product.findByIdAndUpdate(id, {
+            status: status
+        }, (err, product) => {
+            workflow.emit('response', {
+                error: err,
+                product: product
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
 module.exports = {
     getProducts: getProducts,
     getProductById: getProductById,
@@ -1012,5 +1199,7 @@ module.exports = {
     getPreviewProduct: getPreviewProduct,
     reviewProduct: reviewProduct,
     getReviews: getReviewsWithProduct,
-    getProductsByCategoryWithPagination: getProductsByCategoryWithPagination
+    getProductsByCategoryWithPagination: getProductsByCategoryWithPagination,
+    editQuantity: editQuantity,
+    editStatus: editStatus
 }

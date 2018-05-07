@@ -404,6 +404,28 @@ router.get('/api/v1/product/get-reviews', (req, res) => {
     });
 });
 
+router.put('/api/v1/product/update-quantity', [auth.requireAuth], (req, res) => {
+    Product.editQuantity(req.body.id, req.body.color, req.body.quantity, (result) => {
+
+        if (!result.error) {
+            res.redis.delItem('products', ['get-new-products', '/product/list', 'products-by-categories', 'get-products-by-type', `getProduct?id=${req.body.id}`]);
+        }
+       
+    })
+});
+
+router.put('/api/v1/product/update-status', [auth.requireAuth], (req, res) => {
+    Product.editStatus(req.body.id, req.body.status, (result) => {
+
+        if (!result.error) {
+            res.redis.delItem('products', ['get-new-products', '/product/list', 'products-by-categories', 'get-products-by-type', `getProduct?id=${req.body.id}`]);
+        }
+
+        res.json(result)
+    })
+})
+
+
 //** /APIS FOR PRODUCT */
 
 
