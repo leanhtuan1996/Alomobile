@@ -467,6 +467,7 @@
                 if (!specifications) {
                     return;
                 }
+
                 switch (product.type.alias) {
                     case "dien-thoai":                          
                     case "may-tinh-bang":  
@@ -571,7 +572,70 @@
                       
                         break;     
                     case "laptop":  
-                                     
+
+                        var screen = specifications.screen,
+                            processor = specifications.processor,
+                            storage = specifications.storage ,
+                            graphicsAudio = specifications.graphicsAudio,
+                            connectionAndUtils = specifications.connectionAndUtils,
+                            sizeAndWeight = specifications.sizeAndWeight,
+                            battery = specifications.battery,
+                            os = specifications.os,
+                            other = specifications.other;
+
+                            if (screen) {
+                                $('#display_technology').val(screen.displayTechnology || "")
+                                $('#display_resolution').val(screen.resolution || "")
+                                $('#display_width').val(screen.width || "")
+                                $('#display_touch_screen').val(screen.touch || "")
+                            }
+                            if (processor) {
+                                $('#processor_cpu_tech').val(processor.tech || "")
+                                $('#processor_cpu_type').val(processor.type || "")
+                                $('#processor_cpu_speed').val(processor.speed || "")
+                                $('#processor_cpu_max_speed').val(processor.maxSpeed || "")
+                            }
+
+                            if (storage) {
+                                $('#storage_ram').val(storage.ram || "")
+                                $('#storage_ram_type').val(storage.type || "")
+                                $('#storage_ram_bus').val(storage.bus || "")
+                                $('#storage_ram_max').val(storage.maxRam || "")
+                                $('#storage_hard_drive').val(storage.hardDrive || "")
+                            }
+                            if (graphicsAudio) {
+                                $('#graphics_design').val(graphicsAudio.design || "")
+                                $('#graphics_card_name').val(graphicsAudio.cardName || "")
+                                $('#sound_tech').val(graphicsAudio.sound || "")
+                            }
+
+                            if (connectionAndUtils) {
+                                $('#connective_port').val(connectionAndUtils.connectivePort || "")
+                                $('#connective_wireless').val(connectionAndUtils.connectiveWireless || "")
+                                $('#connective_card_reader').val(connectionAndUtils.cardReader || "")
+                                $('#connective_optical_drive').val(connectionAndUtils.opticalDrive || "")
+                                $('#connective_webcam').val(connectionAndUtils.webcam || "")
+                                $('#connective_light_keyboard').val(connectionAndUtils.ligthKeyboard || "")
+                                $('#connective_other').val(connectionAndUtils.otherUtils || "")
+                            }
+
+                            if (sizeAndWeight) {
+                                $('#design_weight').val(sizeAndWeight.weight || "")
+                                $('#design_material').val(sizeAndWeight.meterial || "")                                   
+                                $('#size_long').val(sizeAndWeight.size.long || "")
+                                $('#size_horizontal').val(sizeAndWeight.size.horizontal || "")
+                                $('#size_thick').val(sizeAndWeight.size.thick || "")                                                                 
+                            }
+                            
+                            if (battery) {
+                                $('#battery_capacity').val(battery.capacity || "")
+                                $('#battery_style').val(battery.style || "")
+                                $('#battery_tech').val(battery.tech || "")
+                            }
+
+                            $('#os').val(os || "");
+                            $('#other').val(other || "");
+                                
                         break;                            
                     case "tai-nghe": 
                         var jack = specifications.jack,

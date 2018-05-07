@@ -1,179 +1,174 @@
 <!-- JavaScript -->
 
-	<!-- jQuery -->
-	<script type="text/javascript" src="/static/admin/libs/jquery/dist/jquery.min.js"></script>
+<!-- jQuery -->
+<script type="text/javascript" src="/static/admin/libs/jquery/dist/jquery.min.js"></script>
 
-	<!-- Bootstrap Core JavaScript -->
-	<script type="text/javascript" src="/static/admin/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/static/admin/libs/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script type="text/javascript" src="/static/admin/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/admin/libs/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
 
-	<!-- Data table JavaScript -->
-	<script type="text/javascript" src="/static/admin/libs/datatables/media/js/jquery.dataTables.min.js"></script>
+<!-- Data table JavaScript -->
+<script type="text/javascript" src="/static/admin/libs/datatables/media/js/jquery.dataTables.min.js"></script>
 
-	<!-- Slimscroll JavaScript -->
-	<script type="text/javascript" src="/static/admin/js/jquery.slimscroll.js"></script>
+<!-- Slimscroll JavaScript -->
+<script type="text/javascript" src="/static/admin/js/jquery.slimscroll.js"></script>
 
-	<!-- Progressbar Animation JavaScript -->
-	<script type="text/javascript" src="/static/admin/libs/waypoints/lib/jquery.waypoints.min.js"></script>
-	<script type="text/javascript" src="/static/admin/libs/jquery.counterup/jquery.counterup.min.js"></script>
+<!-- Progressbar Animation JavaScript -->
+<script type="text/javascript" src="/static/admin/libs/waypoints/lib/jquery.waypoints.min.js"></script>
+<script type="text/javascript" src="/static/admin/libs/jquery.counterup/jquery.counterup.min.js"></script>
 
-	<!-- Fancy Dropdown JS -->
-	<script type="text/javascript" src="/static/admin/js/dropdown-bootstrap-extended.js"></script>
+<!-- Fancy Dropdown JS -->
+<script type="text/javascript" src="/static/admin/js/dropdown-bootstrap-extended.js"></script>
 
-	<!-- Sparkline JavaScript -->
-	<script type="text/javascript" src="/static/admin/libs/jquery.sparkline/dist/jquery.sparkline.min.js"></script>
+<!-- Sparkline JavaScript -->
+<script type="text/javascript" src="/static/admin/libs/jquery.sparkline/dist/jquery.sparkline.min.js"></script>
 
-	<!-- Owl JavaScript -->
-	<script type="text/javascript" src="/static/admin/libs/owl.carousel/dist/owl.carousel.min.js"></script>
+<!-- Owl JavaScript -->
+<script type="text/javascript" src="/static/admin/libs/owl.carousel/dist/owl.carousel.min.js"></script>
 
-	<!-- Switchery JavaScript -->
-	<script type="text/javascript" src="/static/admin/libs/switchery/dist/switchery.min.js"></script>
+<!-- Switchery JavaScript -->
+<script type="text/javascript" src="/static/admin/libs/switchery/dist/switchery.min.js"></script>
 
-	<!-- EChartJS JavaScript -->
-	<script type="text/javascript" src="/static/admin/libs/echarts/dist/echarts-en.min.js"></script>
-	<script type="text/javascript" src="/static/admin/libs/echarts-liquidfill.min.js"></script>
+<!-- EChartJS JavaScript -->
+<script type="text/javascript" src="/static/admin/libs/echarts/dist/echarts-en.min.js"></script>
+<script type="text/javascript" src="/static/admin/libs/echarts-liquidfill.min.js"></script>
 
-	<!-- Toast JavaScript -->
-	<script type="text/javascript" src="/static/admin/libs/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
+<!-- Toast JavaScript -->
+<script type="text/javascript" src="/static/admin/libs/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
 
-	<script type="text/javascript" src="/static/admin/js/dashboard-data.js"></script>
-	
-	<script type="text/javascript" src="/static/js/ntc.js"></script>
+<script type="text/javascript" src="/static/admin/js/dashboard-data.js"></script>
 
-	<!-- Init JavaScript -->
-	<script type="text/javascript" src="/static/admin/js/init.js"></script>
+<script type="text/javascript" src="/static/js/ntc.js"></script>
 
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+<!-- Init JavaScript -->
+<script type="text/javascript" src="/static/admin/js/init.js"></script>
 
-	<script type="text/javascript" src="/static/js/myFunc.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
 
-	<script type="text/javascript">
-		var socket = io.connect(window.location.host, { 
-			path: '/socket.io',
-			transports: ['websocket'],
-			secure: true 
-		});
+<script type="text/javascript" src="/static/js/myFunc.js"></script>
 
-		function numberWithCommas(x) {
-			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		}
+<script type="text/javascript">
+	var socket = io.connect(window.location.host, { 
+		path: '/socket.io',
+		transports: ['websocket'],
+		secure: true 
+	});
 
-		function logout() {
-			$.ajax({
-				url: "/admin/sign-out",
-				method: "PUT",
-				success: (data) => {
-					window.location.reload();
-				},
-				error: (err) => {
-					window.location.reload();
-				}
-			})
-		}
+	function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
 
-		var removeUnicode = (str) => {
-			// str = str.replace("?", " ");
-			// str = str.replace(/!/g, "");
-			str = str.toLowerCase();
-			str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
-			str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
-			str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
-			str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
-			str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
-			str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
-			str = str.replace(/đ/g, "d");
-			return str;
-		}
-
-		function rgbToHex(color) {
-			color = ""+ color;
-			if (!color || color.indexOf("rgb") < 0) {
-				return;
+	function logout() {
+		$.ajax({
+			url: "/admin/sign-out",
+			method: "PUT",
+			success: (data) => {
+				window.location.reload();
+			},
+			error: (err) => {
+				window.location.reload();
 			}
+		})
+	}
 
-			if (color.charAt(0) == "#") {
-				return color;
-			}
+	var removeUnicode = (str) => {
+		// str = str.replace("?", " ");
+		// str = str.replace(/!/g, "");
+		str = str.toLowerCase();
+		str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+		str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+		str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+		str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+		str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+		str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+		str = str.replace(/đ/g, "d");
+		return str;
+	}
 
-			var nums = /(.*?)rgb\((\d+),\s*(\d+),\s*(\d+)\)/i.exec(color),
-				r = parseInt(nums[2], 10).toString(16),
-				g = parseInt(nums[3], 10).toString(16),
-				b = parseInt(nums[4], 10).toString(16);
-
-			return "#"+ (
-				(r.length == 1 ? "0"+ r : r) +
-				(g.length == 1 ? "0"+ g : g) +
-				(b.length == 1 ? "0"+ b : b)
-			);
+	function rgbToHex(color) {
+		color = ""+ color;
+		if (!color || color.indexOf("rgb") < 0) {
+			return;
 		}
 
-		var removeSpecialString = (str) => {
-			str = str.toLowerCase();
-			str = str.replace(/\+/g, ' plus')
-			str = str.replace(/\-/g, ' minus')
-			str = str.replace(/[^\w\s]/gi, '')
-			return str;
+		if (color.charAt(0) == "#") {
+			return color;
 		}
 
-		function regenerateUrl(value) {	
+		var nums = /(.*?)rgb\((\d+),\s*(\d+),\s*(\d+)\)/i.exec(color),
+			r = parseInt(nums[2], 10).toString(16),
+			g = parseInt(nums[3], 10).toString(16),
+			b = parseInt(nums[4], 10).toString(16);
 
-			if (!value || value == 'undefined') { 
-				return
-			}
+		return "#"+ (
+			(r.length == 1 ? "0"+ r : r) +
+			(g.length == 1 ? "0"+ g : g) +
+			(b.length == 1 ? "0"+ b : b)
+		);
+	}
 
-			var filtered = removeUnicode(value);
-			var filtered = removeSpecialString(filtered);
+	var removeSpecialString = (str) => {
+		str = str.toLowerCase();
+		str = str.replace(/\+/g, ' plus')
+		str = str.replace(/\-/g, ' minus')
+		str = str.replace(/[^\w\s]/gi, '')
+		return str;
+	}
 
-			if (filtered) {
-				return filtered.replace(/[ ]/g, '-');				
-			} 
-			return null
-		}
-	
+	function regenerateUrl(value) {	
 
-		function showNotification(heading, text, icon = 'success') {
-			$.toast().reset('all');
-			$("body").removeAttr('class');
-			$.toast({
-				heading: heading,
-				text: text,
-				position: 'top-right',
-				loaderBg: '#fec107',
-				icon: icon,
-				hideAfter: 6000, 
-				stack: 6,
-				showHideTransition: 'fade'
-			});
+		if (!value || value == 'undefined') { 
+			return
 		}
 
-		socket.on('login-success', (data) => {
-			var user = data.user;
+		var filtered = removeUnicode(value);
+		var filtered = removeSpecialString(filtered);
 
-			var fullName = user.fullName.firstName + " " + user.fullName.lastName;
+		if (filtered) {
+			return filtered.replace(/[ ]/g, '-');				
+		} 
+		return null
+	}
 
-			if (!user || !fullName) { return }
-			
-			showNotification(`Alomobile xin chào ${fullName}!`, 'Chúc bạn một ngày vui vẻ.');
+
+	function showNotification(heading, text, icon = 'success') {
+		$.toast().reset('all');
+		$("body").removeAttr('class');
+		$.toast({
+			heading: heading,
+			text: text,
+			position: 'top-right',
+			loaderBg: '#fec107',
+			icon: icon,
+			hideAfter: 6000, 
+			stack: 6,
+			showHideTransition: 'fade'
 		});
+	}
 
-		socket.on('new-order', (data) => {
-			var order = data[0]
-			var id = order._id;
+	socket.on('login-success', (data) => {
+		var user = data.user;
 
-			if (!order || !id) {
-				return
-			}
+		var fullName = user.fullName.firstName + " " + user.fullName.lastName;
 
-			showNotification(`Có một đơn hàng mới cần duyệt`, `Nhấn vào <a href="/admin/invoice/${id}">đây</a> để đi đến trang duyệt đơn hàng.`, 'success')
-		});
+		if (!user || !fullName) { return }
+		
+		showNotification(`Alomobile xin chào ${fullName}!`, 'Chúc bạn một ngày vui vẻ.');
+	});
 
-		socket.on('new-comment', () => {
-			showNotification(`Có một nhận xét mới cần duyệt`, `Nhấn vào <a href="/admin/reviews">đây</a> để đi đến trang duyệt nhận xét.`, 'success')
-		});
+	socket.on('new-order', (data) => {
+		var order = data[0]
+		var id = order._id;
 
-	</script>
+		if (!order || !id) {
+			return
+		}
 
+		showNotification(`Có một đơn hàng mới cần duyệt`, `Nhấn vào <a href="/admin/invoice/${id}">đây</a> để đi đến trang duyệt đơn hàng.`, 'success')
+	});
 
+	socket.on('new-comment', () => {
+		showNotification(`Có một nhận xét mới cần duyệt`, `Nhấn vào <a href="/admin/reviews">đây</a> để đi đến trang duyệt nhận xét.`, 'success')
+	});
 
-	
-	
+</script>
