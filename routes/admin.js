@@ -1,16 +1,16 @@
-var express = require('express');
-var router = express.Router();
-var _ = require('lodash');
-var app = require('../app').app;
+const express = require('express');
+const router = express.Router();
+const _ = require('lodash');
+
+const User = require('../app/api/index').user;
+const Product = require('../app/api/index').product;
+const Category = require('../app/api/index').category;
+const Brand = require('../app/api/index').brand;
+const Review = require('../app/api/index').review;
+const Role = require('../app/api/index').role;
 
 var Dashboard = require('../app/controllers/admin/index').dashboard;
-var Product = require('../app/controllers/admin/index').product;
-var Category = require('../app/controllers/admin/index').category;
-var Brand = require('../app/controllers/admin/index').brand;
-var User = require('../app/controllers/admin/index').user;
 var Type = require('../app/controllers/admin/index').type;
-var Role = require('../app/controllers/admin/index').role;
-var Review = require('../app/controllers/admin/index').review;
 var Order = require('../app/controllers/admin/index').order;
 var Promotion = require('../app/controllers/admin/index').promotion;
 
@@ -45,10 +45,7 @@ var upload = multer({
 });
 
 //#region USER ROUTERS
-/* GET users listing. */
-/* USER SIGN_IN */
 
-//page admin
 router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
     Dashboard.dashboard((result) => {
         res.render('dashboard', {
@@ -72,40 +69,6 @@ router.get('/admin/sign-in', (req, res) => {
     });
 });
 
-router.post('/admin/sign-in', (req, res) => {
-    User.signIn(req.body, (result) => {
-        if (result.error) {
-            res.json(result);
-        } else {
-            if (result.user) {
-                var id = result.user._id
-
-                var token = helper.encodeToken(id);
-                //set token in session
-                req.session.token = token;
-
-                //push new token to user
-                User.pushValidToken(token, id, (cb) => {
-                    res.json({
-                        error: cb.error,
-                        user: result.user
-                    });
-                });
-            }
-        }
-    });
-});
-
-router.put('/admin/sign-out', (req, res) => {
-    if (req.session.token) {
-        User.signOut(req.session.token, (cb) => {
-            res.redirect('/admin/sign-in');
-        });
-    } else {
-        res.redirect('/admin/sign-in');
-    }
-});
-
 router.get('/admin/forgot-password', (req, res) => {
     res.render('admin/forgot-password', {
         data: {
@@ -126,35 +89,10 @@ router.get('/admin/users', [auth.requireAuth, auth.requireRole], (req, res) => {
     });
 });
 
-router.get('/admin/user/:id', [auth.requireAuth, auth.requireRole], (req, res) => {
-    User.getUser(req.params.id, (result) => {
-        res.json(result);
-    });
-});
-
-router.put('/admin/user', [auth.requireAuth, auth.requireRole], (req, res) => {
-    User.editUser(req.body.id, req.body.properties, (result) => {
-        res.json(result);
-    });
-});
-
-router.post('/admin/user', [auth.requireAuth, auth.requireRole], (req, res) => {
-    User.newUser(req.body, (result) => {
-        res.json(result);
-    });
-});
-
-router.delete('/admin/user', [auth.requireAuth, auth.requireRole], (req, res) => {
-    User.deleteUser(req.body.id, (result) => {
-        res.json(result);
-    });
-});
-
 //#endregion USER ROUTERS
 
 //#region PRODUCT ROUTERS
 
-//page products
 router.get('/admin/products', [auth.requireAuth, auth.requireRole], (req, res) => {
     res.render('product', {
         data: {
@@ -163,33 +101,6 @@ router.get('/admin/products', [auth.requireAuth, auth.requireRole], (req, res) =
     });
 });
 
-router.get('/admin/products/list', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.getAllProducts(null, (result) => {
-        res.json(result);
-    });
-});
-
-router.get('/admin/products/list/from/:lastCreatedAt', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.getAllProducts(req.params.lastCreatedAt, (result) => {
-        res.json(result);
-    });
-});
-
-router.get('/admin/products/list/to/:lastCreatedAt', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.getPrevProducts(req.params.lastCreatedAt, (result) => {
-        res.json(result);
-    });
-});
-
-router.get('/admin/products/listSpecial', [auth.requireAuth, auth.requireRole], (req, res) => {
-
-});
-
-router.get('/admin/products/listNew', [auth.requireAuth, auth.requireRole], (req, res) => {
-
-});
-
-//page add new product
 router.get('/admin/product/add', [auth.requireAuth, auth.requireRole], (req, res) => {
 
     /** GET CATEGORIES */
@@ -210,55 +121,8 @@ router.get('/admin/product/add', [auth.requireAuth, auth.requireRole], (req, res
     });
 });
 
-router.post('/admin/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
-    Product.newProduct(req.body, (result) => {
-
-        if (!result.error) {
-            res.redis.delItem('products', ['get-new-products', '/product/list', 'products-by-categories', 'get-products-by-type']);
-        }
-
-        res.json(result);
-    });
-});
-
-router.put('/admin/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
-    Product.editProduct(req.body, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('products');
-        }
-
-        res.json(result);
-    });
-});
-
-router.delete('/admin/product', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.deleteProduct(req.body.id, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('products');
-        }
-
-        res.json(result);
-    });
-});
-
-router.get('/admin/products/getCount', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.getCountProducts((response) => {
-        res.json(response);
-    });
-});
-
-router.get('/admin/products/search/text=:text', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.searchProduct(req.params.text, (response) => {
-        res.json(response);
-    });
-});
-
-router.get('/admin/product/:id', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.getProduct(req.params.id, (response) => {
+router.get('/admin/product', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.getProductById(req.query.id, (response) => {
         if (response.error) {
             res.render('admin/404', {
                 data: {
@@ -278,8 +142,8 @@ router.get('/admin/product/:id', [auth.requireAuth, auth.requireRole], (req, res
     });
 });
 
-router.get('/admin/product/edit/:id', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.getProduct(req.params.id, (r1) => {
+router.get('/admin/product/edit', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.getProductById(req.query.id, (r1) => {
 
         if (r1.error) {
             res.render('admin/404', {
@@ -312,7 +176,6 @@ router.get('/admin/product/edit/:id', [auth.requireAuth, auth.requireRole], (req
 //#endregion PRODUCT ROUTERS
 
 //#region CATEGORY ROUTERS
-//page category
 router.get('/admin/categories', [auth.requireAuth, auth.requireRole], (req, res) => {
     Category.getCategories((result) => {
         res.render('category', {
@@ -325,46 +188,6 @@ router.get('/admin/categories', [auth.requireAuth, auth.requireRole], (req, res)
     });
 });
 
-router.post('/admin/category', [auth.requireAuth, auth.requireRole], upload.single('icon'), (req, res) => {
-    Category.addCategory(req.body, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('category', ['get-categories'])
-        }
-
-        res.json({
-            error: result.error,
-            success: true,
-        });
-    });
-});
-
-router.delete('/admin/category', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Category.delCategory(req.body, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('category', ['get-categories', `category?id=${req.body.id}`])
-        }
-
-        res.json({
-            error: result.error
-        });
-    });
-});
-
-router.put('/admin/category', [auth.requireAuth, auth.requireRole], upload.single('new_icon'), (req, res) => {
-    Category.editCategory(req.body, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('category', ['get-categories', `category?id=${req.body.current_root_category}`])
-        }
-
-        res.json(result);
-    })
-});
 //#endregion CATEGORY ROUTERS
 
 //#region BRAND ROUTERS
@@ -380,29 +203,6 @@ router.get('/admin/brands', [auth.requireAuth, auth.requireRole], (req, res) => 
     });
 });
 
-router.post('/admin/brand', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
-    Brand.newBrand(req.body, (result) => {
-        res.json({
-            error: result.error
-        });
-    });
-});
-
-router.put('/admin/brand', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
-    Brand.editBrand(req.body, (result) => {
-        res.json({
-            error: result.error
-        });
-    });
-});
-
-router.delete('/admin/brand', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Brand.deleteBrand(req.body, (result) => {
-        res.json({
-            error: result.error
-        });
-    });
-});
 //#endregion BRAND ROUTERS
 
 //#region ERRORS ROUTERS
@@ -428,133 +228,10 @@ router.get('/admin/inbox', (req, res) => {
 router.get('/admin/chat', (req, res) => {
     //res.render('admin/chat/chat');
     res.redirect('https://dashboard.tawk.to');
-})
-
-router.get('/admin/get-all-route', [auth.requireAuth, auth.requireRole], (req, res) => {
-    if (req.app) {
-
-        getAllRouter(req.app._router.stack, (result) => {
-            if (result.routers && result.routers.length > 0) {
-                var oriRouters = result.routers;
-                var newRouters = [];
-                for (let i = 0; i < oriRouters.length; i++) {
-                    const router = oriRouters[i];
-                    //method
-                    var methods = []
-                    methods.push(router.method);
-
-                    //path
-                    var path = router.path;
-
-                    //element
-                    var temp = {
-                        methods: methods,
-                        path: path
-                    }
-
-
-                    if (newRouters.length == 0) {
-                        newRouters.push(temp)
-                    } else {
-                        //find this path in newRouters
-                        var index = _.findIndex(newRouters, (e) => {
-                            return e.path == path;
-                        });
-
-                        if (index >= 0) {
-                            newRouters[index].methods.push(router.method);
-                        } else {
-                            newRouters.push(temp)
-                        }
-                    }
-                }
-
-                res.json(newRouters);
-            } else {
-                res.json([]);
-            }
-        });
-    } else {
-        res.json({})
-    }
 });
 //#endregion CHAT ROUTERS
 
 //#region ROLE ROUTERS
-var getAllRouter = (stack, cb) => {
-    var route, routes = [];
-    stack.forEach((middleware) => {
-        if (middleware.route) { // routes registered directly on the app
-            routes.push(middleware.route);
-        } else if (middleware.name === 'router') { // router middleware 
-            middleware.handle.stack.forEach((handler) => {
-                route = handler.route;
-                route && routes.push(route);
-            });
-        }
-    });
-
-    var response = [];
-
-    for (let i = 0; i < routes.length; i++) {
-        const element = routes[i];
-        var methods = "";
-        for (var method in element.methods) {
-            methods += method;
-        }
-        //just get all router of admin
-        if (element.path.startsWith('/admin') || element.path.startsWith('/api')) {
-            response.push({
-                method: methods,
-                path: element.path
-            });
-        }
-
-        if (i == routes.length - 1) {
-            if (response && response.length > 0) {
-                var oriRouters = response;
-                var newRouters = [];
-                for (let i = 0; i < oriRouters.length; i++) {
-                    const router = oriRouters[i];
-
-                    //method
-
-                    var method = router.method;
-                    //path
-                    var path = router.path;
-
-                    var methods = []
-                    methods.push(router.method);
-
-                    //element
-                    var temp = {
-                        methods: methods,
-                        path: path
-                    }
-
-                    if (newRouters.length == 0) {
-                        newRouters.push(temp)
-                    } else {
-                        //find this path in newRouters
-                        var index = _.findIndex(newRouters, (e) => {
-                            return e.path == path;
-                        });
-
-                        if (index >= 0) {
-                            newRouters[index].methods.push(router.method);
-                        } else {
-                            newRouters.push(temp)
-                        }
-                    }
-                }
-
-                return cb(newRouters);
-            } else {
-                return cb([]);
-            }
-        }
-    }
-}
 
 router.get('/admin/roles', [auth.requireAuth, auth.requireRole], (req, res) => {
     Role.getRoles((result) => {
@@ -565,42 +242,6 @@ router.get('/admin/roles', [auth.requireAuth, auth.requireRole], (req, res) => {
                 roles: result.roles
             }
         });
-    });
-});
-
-router.get('/admin/get-roles', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Role.getRoles((result) => {
-        res.json(result);
-    });
-})
-
-router.get('/admin/role/get-routers', [auth.requireAuth, auth.requireRole], (req, res) => {
-    getAllRouter(req.app._router.stack, (cb) => {
-        res.json(cb);
-    });
-});
-
-router.get('/admin/role/:id', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Role.getRole(req.params.id, (result) => {
-        res.json(result);
-    });
-});
-
-router.post('/admin/role', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Role.newRole(req.body, (result) => {
-        res.json(result);
-    });
-});
-
-router.put('/admin/role', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Role.editRole(req.body, (result) => {
-        res.json(result);
-    });
-});
-
-router.delete('/admin/role', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Role.deleteRole(req.body, (result) => {
-        res.json(result);
     });
 });
 
@@ -643,32 +284,6 @@ router.get('/admin/reviews/dismiss', [auth.requireAuth, auth.requireRole], (req,
     })
 });
 
-router.put('/admin/review', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Review.updateReview(req.body.id, req.body.parameters, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('review');
-            res.redis.delItem('products', [`get-reviews?id=${req.body.id}`])
-        }
-
-        res.json(result)
-    });
-});
-
-router.delete('/admin/review', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Review.deleteReview(req.body.id, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('review');
-            res.redis.delItem('products', [`get-reviews?id=${req.body.id}`])
-        }
-
-        res.json(result);
-    });
-});
-
 //#endregion COMMENT ROUTERS
 
 //#region ORDER ROUTERS
@@ -697,8 +312,8 @@ router.get('/admin/orders/approval', [auth.requireAuth, auth.requireRole], (req,
     })
 });
 
-router.get('/admin/invoice/:id', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Order.getOrder(req.params.id, (result) => {
+router.get('/admin/invoice', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Order.getOrder(req.query.id, (result) => {
         if (!result.order) {
             res.render('admin/404', {
                 data: {}
@@ -714,17 +329,6 @@ router.get('/admin/invoice/:id', [auth.requireAuth, auth.requireRole], (req, res
         });
     });
 });
-
-router.put('/admin/order', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Order.updateOrder(req.body.id, req.body.parameters, (result) => {
-
-        if (result.order) {
-            res.redis.delItem('order', [`get-order?id=${result.order.alias}&email=${req.user.email}`])
-        }
-
-        res.json(result)
-    })
-})
 
 //#endregion ORDER ROUTERS
 

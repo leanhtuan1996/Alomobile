@@ -1,9 +1,10 @@
 'use strict';
 
-var bcrypt = require('bcryptjs');
-var config = require('config');
-var jwt = require('jsonwebtoken-refresh');
+const bcrypt = require('bcryptjs');
+const config = require('config');
+const jwt = require('jsonwebtoken-refresh');
 const crypto = require('crypto');
+const _ = require('lodash');
 
 var hashPw = (pw) => {
     var saltRounds = config.get("salt");
@@ -87,6 +88,81 @@ var getRamdomNumber = () => {
     return Number.parseInt(`${time}${random}`)
 }
 
+var getAllRouter = (stack, cb) => {
+    var route, routes = [];
+    stack.forEach((middleware) => {
+        if (middleware.route) { // routes registered directly on the app
+            routes.push(middleware.route);
+        } else if (middleware.name === 'router') { // router middleware 
+            middleware.handle.stack.forEach((handler) => {
+                route = handler.route;
+                route && routes.push(route);
+            });
+        }
+    });
+
+    var response = [];
+
+    for (let i = 0; i < routes.length; i++) {
+        const element = routes[i];
+        var methods = "";
+        for (var method in element.methods) {
+            methods += method;
+        }
+        //just get all router of admin
+        if (element.path.startsWith('/admin') || element.path.startsWith('/api')) {
+            response.push({
+                method: methods,
+                path: element.path
+            });
+        }
+
+        if (i == routes.length - 1) {
+            if (response && response.length > 0) {
+                var oriRouters = response;
+                var newRouters = [];
+                for (let i = 0; i < oriRouters.length; i++) {
+                    const router = oriRouters[i];
+
+                    //method
+
+                    var method = router.method;
+                    //path
+                    var path = router.path;
+
+                    var methods = []
+                    methods.push(router.method);
+
+                    //element
+                    var temp = {
+                        methods: methods,
+                        path: path
+                    }
+
+                    if (newRouters.length == 0) {
+                        newRouters.push(temp)
+                    } else {
+                        //find this path in newRouters
+                        var index = _.findIndex(newRouters, (e) => {
+                            return e.path == path;
+                        });
+
+                        if (index >= 0) {
+                            newRouters[index].methods.push(router.method);
+                        } else {
+                            newRouters.push(temp)
+                        }
+                    }
+                }
+
+                return cb(newRouters);
+            } else {
+                return cb([]);
+            }
+        }
+    }
+}
+
 var removeUnicode = (str) => {
     // str = str.replace("?", " ");
     // str = str.replace(/!/g, "");
@@ -112,5 +188,6 @@ module.exports = {
     signSHA: signSHA,
     numberWithCommas: numberWithCommas,
     getRamdomNumber: getRamdomNumber,
-    removeUnicode: removeUnicode
+    removeUnicode: removeUnicode,
+    getAllRouter: getAllRouter
 }

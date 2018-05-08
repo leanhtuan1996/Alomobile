@@ -3,7 +3,7 @@
 var jwt = require('jsonwebtoken');
 var config = require('config');
 var User = require('../models/index').user;
-var UserCtl = require('../controllers/admin/index').user;
+var UserCtl = require('../api/index').user;
 var helper = require('../helpers/index').helper;
 var _ = require('lodash');
 

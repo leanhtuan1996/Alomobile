@@ -33,9 +33,4 @@ var getDismissReviews = (cb) => {
 }
 
 module.exports = {
-    getRequestReviews: getRequestReviews,
-    updateReview: updateReview,
-    deleteReview: deleteReview,
-    getDismissReviews: getDismissReviews,
-    getReviews: getReviews
 }

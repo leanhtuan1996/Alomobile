@@ -299,35 +299,6 @@ var editUser = (id, properties, result) => {
     workflow.emit('validate-parameters');
 }
 
-var deleteUser = (id, result) => {
-    var workflow = new event.EventEmitter();
-
-    workflow.on('validate-parameters', () => {
-        if (!id) {
-            workflow.emit('response', {
-                error: "Id of User is required!"
-            });
-            return
-        }
-
-        workflow.emit('delete-user');
-    });
-
-    workflow.on('response', (response) => {
-        return result(response);
-    });
-
-    workflow.on('delete-user', () => {
-        User.findByIdAndRemove(id, (err) => {
-            workflow.emit('response', {
-                error: err
-            });
-        });
-    });
-
-    workflow.emit('validate-parameters');
-}
-
 var pushValidToken = (token, user, cb) => {
     userApi.pushValidToken(token, user, (r) => {
         return cb(r);
@@ -365,16 +336,4 @@ var verify = (token, cb) => {
 }
 
 module.exports = {
-    getUsers: getUsers,
-    getUser: getUser,
-    newUser: newUser,
-    editUser: editUser,
-    deleteUser: deleteUser,
-    signIn: signIn,
-    pushValidToken: pushValidToken,
-    pushInvalidToken: pushInvalidToken,
-    findInvalidToken: findInvalidToken,
-    removeValidToken: removeValidToken,
-    signOut: signOut,
-    verify: verify
 }

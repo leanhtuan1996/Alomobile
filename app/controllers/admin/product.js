@@ -135,17 +135,4 @@ var editProduct = (product, result) => {
 
 
 module.exports = {
-    index: index,
-    getAllProducts: getAllProducts,
-    getProduct: getProduct,
-    newProduct: newProduct,
-    getProductsByType: getProductsByType,
-    getSpecialProducts: getSpecialProducts,
-    getHotProducts: getHotProducts,
-    getNewProducts: getNewProducts,
-    getCountProducts: getCountProducts,
-    getPrevProducts: getPrevProducts,
-    searchProduct: searchProduct,
-    deleteProduct: deleteProduct,
-    editProduct: editProduct
 }

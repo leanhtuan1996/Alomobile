@@ -355,7 +355,7 @@
                                     formData.append("alias", category_alias);
 
                                     $.ajax({
-                                        url: '/admin/category',
+                                        url: '/api/v1/category',
                                         method: 'POST',
                                         data: formData,
                                         processData: false,
@@ -382,7 +382,7 @@
                                     formData.append("new_url", category_url);
 
                                     $.ajax({
-                                        url: '/admin/category',
+                                        url: '/api/v1/category',
                                         method: 'PUT',
                                         data: formData,
                                         processData: false,
@@ -418,7 +418,7 @@
                                         //delete root category
                                         if (id == rootId) {
                                             $.ajax({
-                                                url: '/admin/category',
+                                                url: '/api/v1/category',
                                                 method: 'delete',
                                                 data: {
                                                     id: id
@@ -440,7 +440,7 @@
                                         } else {    //non root
 
                                             $.ajax({
-                                                url: '/admin/category',
+                                                url: '/api/v1/category',
                                                 method: 'delete',
                                                 data: {
                                                     id: id,

@@ -33,9 +33,4 @@ var deleteRole = (parameter, cb) => {
 }
 
 module.exports = {
-    getRoles: getRoles,
-    getRole: getRole,
-    editRole: editRole,
-    newRole: newRole,
-    deleteRole: deleteRole
 }

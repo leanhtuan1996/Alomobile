@@ -164,7 +164,7 @@
 			return
 		}
 
-		showNotification(`Có một đơn hàng mới cần duyệt`, `Nhấn vào <a href="/admin/invoice/${id}">đây</a> để đi đến trang duyệt đơn hàng.`, 'success')
+		showNotification(`Có một đơn hàng mới cần duyệt`, `Nhấn vào <a href="/admin/invoice?id=${id}">đây</a> để đi đến trang duyệt đơn hàng.`, 'success')
 	});
 
 	socket.on('new-comment', () => {

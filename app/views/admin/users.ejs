@@ -457,7 +457,9 @@
                             $("#table-users tbody").delegate('.edit-user', 'click', (e) => {
                                 var modalEdit = $("#edit-user-modal");                               
                                 var id = $(e.currentTarget.parentElement.parentElement).find('td.td-id').html();
-                                $.get(`/admin/user/${id.trim()}`, (data) => {
+                                $.get(`/api/v1/user`, {
+                                    id: id.trim()
+                                }, (data) => {
                                     if (data.error) {
                                         swal('Oops', data.error, 'error');
                                     } else {
@@ -541,7 +543,7 @@
                                         switch (result) {
                                             case 'delete':
                                             $.ajax({
-                                                url: '/admin/user',
+                                                url: '/api/v1/user',
                                                 data: {
                                                     id: $(row).attr('id')
                                                 },
@@ -568,7 +570,7 @@
                                         switch (result) {
                                             case 'delete':
                                             $.ajax({
-                                                url: '/admin/user',
+                                                url: '/api/v1/user',
                                                 data: {
                                                     id: $(row).attr('id')
                                                 },
@@ -594,7 +596,7 @@
                                             switch (action) {
                                                 case "delete":
                                                     $.ajax({
-                                                        url: '/admin/user',
+                                                        url: '/api/v1/user',
                                                         data: {
                                                             id: $(row).attr('id')
                                                         },
@@ -617,7 +619,7 @@
                                                     };
 
                                                     $.ajax({
-                                                        url: '/admin/user',
+                                                        url: '/api/v1/user',
                                                         method: 'PUT',
                                                         data: {
                                                             id: $(row).attr('id'),
@@ -657,7 +659,7 @@
                                             }
                                             
                                             $.ajax({
-                                                url: '/admin/user',
+                                                url: '/api/v1/user',
                                                 method: 'PUT',
                                                 data: {
                                                     id: id,
@@ -703,7 +705,7 @@
                                 }
                                 
                                 $.ajax({
-                                    url: "/admin/user",
+                                    url: "/api/v1/user",
                                     data: newUser,
                                     method: "POST",
                                     success: (data) => {
@@ -806,7 +808,7 @@
                                 if (!id) { showNotifier('error', 'Không thể lấy được mã người dùng cần sửa, thử lại sau!'); $(modal).modal('hide'); return; }
                                 
                                 $.ajax({
-                                    url: "/admin/user",
+                                    url: "/api/v1/user",
                                     data: {
                                         id: id,
                                         properties: JSON.stringify(properties)

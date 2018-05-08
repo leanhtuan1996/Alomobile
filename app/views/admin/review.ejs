@@ -190,109 +190,6 @@
                             //configation datatable jquery
                             var table = $('#table-review').DataTable();
 
-                            //add and update brand
-                            $("form").submit((e) => {
-
-                                e.preventDefault();
-
-                                //remove alert
-                                $('.alert').remove();
-
-                                //get purpose
-                                var purpose = $('.btn-save-changes').attr('id');
-
-                                var brand_name,
-                                    brand_alias,
-                                    brand_icon,
-                                    brand_url;
-
-                                //receive parameters
-                                $("#form-add-brand :input").each((index, element) => {
-
-                                    var id = $(element).attr('id');
-
-                                    switch (id) {
-                                        case 'brand-name':
-                                            brand_name = $(element).val();
-
-                                            if (!brand_name) {
-                                                showAlert("#alert-error", "Tên thương hiệu là bắt buộc!");
-                                                return
-                                            }
-
-                                            break;
-                                        case 'brand-alias':
-                                            brand_alias = $(element).val();
-
-                                            if (!brand_alias) {
-                                                showAlert("#alert-error", "SEO URL là bắt buộc!");
-                                                return
-                                            }
-                                            break;
-                                        case 'brand-icon':
-                                            if ($(element).get(0).files.length != 0) {
-                                                brand_icon = $(element).get(0).files[0];
-                                            };
-                                            break;
-                                        case 'brand-url':
-                                            brand_url = $(element).val();
-                                            break;
-                                    }
-                                });
-
-                                var formData = new FormData();
-
-                                if (purpose == "btn-add-brand") {                                    
-                                    formData.append("name", brand_name);
-                                    formData.append("image", brand_icon);
-                                    formData.append("url", brand_url);
-                                    formData.append("alias", brand_alias);
-
-                                    $.ajax({
-                                        url: '/admin/brand',
-                                        method: 'POST',
-                                        data: formData,
-                                        processData: false,
-                                        contentType: false,
-                                        success: (data) => {
-                                            if (data.error) {
-                                                swal('Oops', data.error, 'error')
-                                            } else {
-                                                location.reload(true);
-                                            }
-                                        },
-                                        error: (err) => {
-                                            swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
-                                        }
-                                    });
-                                } else {
-
-                                    formData.append("name", brand_name);
-                                    formData.append("alias", brand_alias);
-                                    formData.append("id", $('#brand-id').attr('data-id-brand'));
-                                    formData.append("image", brand_icon);
-                                    formData.append("url", brand_url);
-
-                                    $.ajax({
-                                        url: '/admin/brand',
-                                        method: 'PUT',
-                                        data: formData,
-                                        processData: false,
-                                        contentType: false,
-                                        success: (result) => {
-                                            if (result.error) {
-                                                swal('Oops', result.error, 'error')
-                                            } else {
-                                                location.reload();
-                                            }
-                                        },
-                                        error: (err) => {
-                                            swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
-                                        }
-                                    });
-                                }
-                            });
-
                             //delete brand
                             $("#table-review tbody").delegate('.delete-review', 'click', (e) => {
 
@@ -302,7 +199,7 @@
                                         var row = $('#table-review tbody').find(`[id = ${id}]`);
 
                                         $.ajax({
-                                            url: '/admin/review',
+                                            url: '/api/v1/review',
                                             method: 'DELETE',
                                             data: {
                                                 id: id
@@ -328,7 +225,7 @@
                                 var row = $('#table-review tbody').find(`[id = ${id}]`);
 
                                 $.ajax({
-                                    url: '/admin/review',
+                                    url: '/api/v1/review',
                                     method: 'PUT',
                                     data: {
                                         id: id,
@@ -356,7 +253,7 @@
                                 var row = $('#table-review tbody').find(`[id = ${id}]`);
 
                                 $.ajax({
-                                    url: '/admin/review',
+                                    url: '/api/v1/review',
                                     method: 'PUT',
                                     data: {
                                         id: id,

@@ -17,6 +17,7 @@ const Analytic = api.analytic;
 const SearchKeyword = api.searchKeyword;
 const SearchProduct = api.searchProduct;
 const Promotion = api.promotion;
+const Role = api.role;
 const Mail = api.mail;
 
 const storage = multer.diskStorage({
@@ -159,8 +160,32 @@ router.put('/api/v1/user/password-recovery', (req, res) => {
     });
 });
 
-router.put('/api/v1/user/update-informations', [auth.requireAuth], (req, res) => {  
+router.put('/api/v1/user/update-informations', [auth.requireAuth], (req, res) => {
     User.editUser(req.user._id, req.body.user, (result) => {
+        res.json(result);
+    });
+});
+
+router.get('/api/v1/user', [auth.requireAuth, auth.requireRole], (req, res) => {
+    User.getUser(req.query.id, (result) => {
+        res.json(result);
+    });
+});
+
+router.put('/api/v1/user', [auth.requireAuth, auth.requireRole], (req, res) => {
+    User.editUser(req.body.id, req.body.properties, (result) => {
+        res.json(result);
+    });
+});
+
+router.post('/api/v1/user', [auth.requireAuth, auth.requireRole], (req, res) => {
+    User.newUser(req.body, (result) => {
+        res.json(result);
+    });
+});
+
+router.delete('/api/v1/user', [auth.requireAuth, auth.requireRole], (req, res) => {
+    User.deleteUser(req.body.id, (result) => {
         res.json(result);
     });
 });
@@ -169,7 +194,7 @@ router.put('/api/v1/user/update-informations', [auth.requireAuth], (req, res) =>
 
 //#region APIS FOR PRODUCT
 
-router.get('/api/v1/product/get-products', (req, res) => {
+router.get('/api/v1/product/get-products', [auth.requireAuth, auth.requireRole], (req, res) => {
     Product.getProducts(null, (result) => {
         res.json(result);
     });
@@ -180,6 +205,12 @@ router.get('/api/v1/product/get-product', (req, res) => {
         res.json(result);
     });
 });
+
+router.get('/api/v1/product', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.getProductById(req.query.id, (result) => {
+        res.json(result)
+    })
+})
 
 router.get('/api/v1/product/get-products-by-type', (req, res) => {
 
@@ -248,7 +279,7 @@ router.get('/api/v1/product/get-products-by-category', (req, res) => {
             res.json(result);
         });
         return
-    } else if (req.query.idCategory && req.query.idRootCategory) {        
+    } else if (req.query.idCategory && req.query.idRootCategory) {
         res.redis.getItem('products', `get-products-by-category?idCategory=${req.query.idCategory}&idRootCategory=${req.query.idRootCategory}`, (data) => {
             if (data) {
                 res.json({
@@ -264,7 +295,7 @@ router.get('/api/v1/product/get-products-by-category', (req, res) => {
             }
         });
         return
-    } 
+    }
 });
 
 router.get('/api/v1/product/get-new-products', (req, res) => {
@@ -451,25 +482,16 @@ router.get('/api/v1/category/get-categories', (req, res) => {
     });
 });
 
-router.get('/api/v1/category/:id', (req, res) => {
-
-    var id = req.params.id;
-    if (!id) {
-        res.json({
-            error: "Id is required!"
-        });
-        return
-    }
-
-    res.redis.getItem('category', `category?id=${id}`, (data) => {
+router.get('/api/v1/category', (req, res) => {
+    res.redis.getItem('category', `category?id=${req.query.id}`, (data) => {
         if (data) {
             res.json({
                 category: data
             });
         } else {
-            Category.getCategory(id, (result) => {
+            Category.getCategory(req.query.id, (result) => {
                 if (result.category) {
-                    res.redis.setItem('category', `category?id=${id}`, result.category);
+                    res.redis.setItem('category', `category?id=${req.query.id}`, result.category);
                 }
                 res.json(result);
             });
@@ -477,41 +499,47 @@ router.get('/api/v1/category/:id', (req, res) => {
     });
 });
 
-router.post('/api/v1/category/add-category', [auth.requireAuth, auth.requireRole, upload.single('image')], (req, res) => {
+router.post('/api/v1/category', [auth.requireAuth, auth.requireRole], upload.single('icon'), (req, res) => {
     Category.addCategory(req.body, (result) => {
 
         //update cache
         if (!result.error) {
-            res.redis.delItem('category', ['get-categories']);
+            res.redis.delItem('category', ['get-categories'])
         }
 
-        res.json(result);
+        res.json({
+            error: result.error,
+            success: true,
+        });
     });
 });
 
-router.put('/api/v1/category/edit-category', [auth.requireAuth, auth.requireRole, upload.single('image')], (req, res) => {
+router.delete('/api/v1/category', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Category.delCategory(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('category', ['get-categories', `category?id=${req.body.id}`])
+        }
+
+        res.json({
+            error: result.error
+        });
+    });
+});
+
+router.put('/api/v1/category', [auth.requireAuth, auth.requireRole], upload.single('new_icon'), (req, res) => {
     Category.editCategory(req.body, (result) => {
 
         //update cache
         if (!result.error) {
-            res.redis.delItem('category');
+            res.redis.delItem('category', ['get-categories', `category?id=${req.body.current_root_category}`])
         }
 
         res.json(result);
-    });
+    })
 });
 
-router.delete('/api/v1/category/delete-category', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Category.deleteProduct(req.body, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('category');
-        }
-
-        res.json(result);
-    });
-});
 //#endregion APIS FOR CATEGORY
 
 //#region APIS FOR TYPE
@@ -540,39 +568,27 @@ router.get('/api/v1/brand/get-brands', [auth.requireAuth, auth.requireRole], (re
     });
 });
 
-router.post('/api/v1/brand/new-brand', [auth.requireAuth, auth.requireRole, upload.single('image')], (req, res) => {
+router.post('/api/v1/brand', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
     Brand.newBrand(req.body, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('brand');
-        }
-
-        res.json(result);
-    })
-});
-
-router.put('/api/v1/brand/edit-brand', [auth.requireAuth, auth.requireRole, upload.single('image')], (req, res) => {
-    Brand.editBrand(req.body, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('brand');
-        }
-
-        res.json(result);
+        res.json({
+            error: result.error
+        });
     });
 });
 
-router.delete('/api/v1/brand/delete-brand', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.put('/api/v1/brand', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
+    Brand.editBrand(req.body, (result) => {
+        res.json({
+            error: result.error
+        });
+    });
+});
+
+router.delete('/api/v1/brand', [auth.requireAuth, auth.requireRole], (req, res) => {
     Brand.deleteBrand(req.body, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('brand');
-        }
-
-        res.json(result);
+        res.json({
+            error: result.error
+        });
     });
 });
 
@@ -620,7 +636,7 @@ router.get('/api/v1/order/get-my-orders', [auth.requireAuth], (req, res) => {
 
 router.post('/api/v1/order/check-out', (req, res) => {
 
-    if (req.session.order) {    
+    if (req.session.order) {
         if (Order.compareCurrentOrder(req.session.order._id, req.session.order.products, req.body.parameters.products)) {
             res.json({
                 order: req.session.order
@@ -774,6 +790,20 @@ router.put('/api/v1/order/cancel-order', [auth.requireAuth], (req, res) => {
     });
 });
 
+router.put('/api/v1/order', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Order.updateOrder({ _id: req.body.id }, req.body.parameters, (result) => {
+
+        if (result.order) {
+            if (result.order.status == 2) {
+                Mail.sendMailWithSuccessOrder(result.order);
+            }
+            res.redis.delItem('order', [`get-order?id=${result.order.alias}&email=${req.user.email}`])
+        }
+
+        res.json(result)
+    })
+})
+
 //#endregion APIS FOR ORDER
 
 //#region APIS FOR REVIEW
@@ -815,6 +845,32 @@ router.get('/api/v1/newerReviews', [auth.requireAuth, auth.requireRole], (req, r
 router.post('/api/v1/review', [auth.requireAuth], (req, res) => {
     Review.reviewProduct(req.user, req.body.review, (result) => {
         res.json(result)
+    });
+});
+
+router.put('/api/v1/review', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Review.updateReview(req.body.id, req.body.parameters, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('review');
+            res.redis.delItem('products', [`get-reviews?id=${req.body.id}`])
+        }
+
+        res.json(result)
+    });
+});
+
+router.delete('/api/v1/review', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Review.deleteReview(req.body.id, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('review');
+            res.redis.delItem('products', [`get-reviews?id=${req.body.id}`])
+        }
+
+        res.json(result);
     });
 });
 
@@ -892,5 +948,45 @@ router.post('/api/v1/check-promo-code', (req, res) => {
 });
 
 //#endregion APIS FOR PROMOTION
+
+//#region APIS FOR ROLE
+router.get('/api/v1/role/get-roles', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Role.getRoles((result) => {
+        res.json(result);
+    });
+});
+
+router.get('/api/v1/role/get-routers', [auth.requireAuth, auth.requireRole], (req, res) => {
+    helper.getAllRouter(req.app._router.stack, (cb) => {
+        res.json(cb);
+    });
+});
+
+router.get('/api/v1/role', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Role.getRole(req.query.id, (result) => {
+        res.json(result);
+    });
+});
+
+router.post('/api/v1/role', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Role.newRole(req.body, (result) => {
+        res.json(result);
+    });
+});
+
+router.put('/api/v1/role', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Role.editRole(req.body, (result) => {
+        res.json(result);
+    });
+});
+
+router.delete('/api/v1/role', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Role.deleteRole(req.body, (result) => {
+        res.json(result);
+    });
+});
+
+
+//#endregion APIS FOR ROLE
 
 module.exports = router;

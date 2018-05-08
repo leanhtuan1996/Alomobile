@@ -270,7 +270,7 @@
                                 confirmOrder((isConfirm) => {
                                     if (isConfirm) {
                                         $.ajax({
-                                            url: '/admin/order',
+                                            url: '/api/v1/order',
                                             method: "PUT",
                                             data: {
                                                 id: $(e.currentTarget).attr('data-id-order'),

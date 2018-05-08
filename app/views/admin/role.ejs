@@ -349,14 +349,14 @@
                     var tableView = $("#table-role-view").DataTable();
 
                     function getRole(id, cb) {
-                        $.get(`/admin/role/${id}`, (data) => {
+                        $.get(`/api/v1/role?id=${id}`, (data) => {
                             return cb(data);
                         }).error((err) => {
                         });
                     }
 
                     function getRouters(cb) {
-                        $.get('/admin/role/get-routers', (data) => {
+                        $.get('/api/v1/role/get-routers', (data) => {
                             return cb(data);
                         }).error((err) => {
                         })
@@ -404,7 +404,7 @@
                                         if (!id) { return }
 
                                         $.ajax({
-                                            url: "/admin/role",
+                                            url: "/api/v1/role",
                                             method: "DELETE",
                                             data: {
                                                 id: id
@@ -436,8 +436,8 @@
                                 $("#role-edit-model").modal('show');
 
                                 //process data
-                                $.get('/admin/role/get-routers', (routers) => {
-                                    $.get(`/admin/role/${id}`, (data) => {
+                                $.get('/api/v1/role/get-routers', (routers) => {
+                                    $.get(`/api/v1/role?id=${id}`, (data) => {
                                         var role = data.role;
                                         if (!role) {
                                             alert("Role was missing!")
@@ -526,7 +526,7 @@
 
                                 var id = $(e.currentTarget.parentElement.parentElement).attr('data-id-role');
                                 
-                                $.get(`/admin/role/${id}`, (data) => {
+                                $.get(`/api/v1/role?id=${id}`, (data) => {
                                     if (data.error) {
                                         swal('Oops', data.error, 'error')
                                     } else {
@@ -595,7 +595,7 @@
                                     tableAdd.rows().remove();
                                 }
                                 $("#role-add-model").modal('show'); 
-                                $.get('/admin/role/get-routers', (routers) => { 
+                                $.get('/api/v1/role/get-routers', (routers) => { 
                                     routers.forEach((router, index) => {
                                         if (router.path && router.methods) {
                                             var tr = `
@@ -676,7 +676,7 @@
                                 } 
 
                                 $.ajax({
-                                    url: "/admin/role",
+                                    url: "/api/v1/role",
                                     method: "POST",
                                     data: parameters,
                                     success: (data) => {
@@ -737,7 +737,7 @@
                                 } 
 
                                 $.ajax({
-                                    url: "/admin/role",
+                                    url: "/api/v1/role",
                                     method: "PUT",
                                     data: parameters,
                                     success: (data) => {

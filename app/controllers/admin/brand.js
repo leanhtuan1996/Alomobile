@@ -27,8 +27,4 @@ var deleteBrand = (parameters, result) => {
 }
 
 module.exports = {
-    getBrands: getBrands,
-    newBrand: newBrand,
-    editBrand: editBrand,
-    deleteBrand: deleteBrand
 }

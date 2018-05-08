@@ -33,8 +33,4 @@ var deleteCategory = (idSub, idRoot, result) => {
 }
 
 module.exports = {
-    getCategories: getCategories,
-    addCategory: addCategory,
-    delCategory: delCategory,
-    editCategory: editCategory
 }

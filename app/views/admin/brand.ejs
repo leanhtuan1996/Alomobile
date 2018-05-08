@@ -261,7 +261,7 @@
                                     formData.append("alias", brand_alias);
 
                                     $.ajax({
-                                        url: '/admin/brand',
+                                        url: '/api/v1/brand',
                                         method: 'POST',
                                         data: formData,
                                         processData: false,
@@ -286,7 +286,7 @@
                                     formData.append("url", brand_url);
 
                                     $.ajax({
-                                        url: '/admin/brand',
+                                        url: '/api/v1/brand',
                                         method: 'PUT',
                                         data: formData,
                                         processData: false,
@@ -314,7 +314,7 @@
                                         var row = $('#table-brand tbody').find(`[id = ${id}]`);
 
                                         $.ajax({
-                                            url: '/admin/brand',
+                                            url: '/api/v1/brand',
                                             method: 'DELETE',
                                             data: {
                                                 id: id

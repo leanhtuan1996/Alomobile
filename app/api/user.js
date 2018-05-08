@@ -270,25 +270,14 @@ var getUsers = (result) => {
     });
 
     workflow.on('get-users', () => {
-        User.find({}, (err, users) => {
-            if (err) {
+        User.find({})
+            .populate('role', 'name', 'Role')
+            .exec((err, users) => {
                 workflow.emit('response', {
-                    error: err
+                    error: err,
+                    users: users
                 });
-                return
-            }
-
-            if (!users) {
-                workflow.emit('response', {
-                    error: "Data is empty"
-                });
-                return
-            }
-
-            workflow.emit('response', {
-                users: users
             });
-        })
     });
 
     workflow.emit('validate-parameters');
@@ -1034,7 +1023,7 @@ var signOutAllDevices = (id, cb) => {
 
 var editUser = (id, parameter, result) => {
     var workflow = new event.EventEmitter();
-    
+
     var editedUser;
     try {
         editedUser = JSON.parse(parameter);
@@ -1043,7 +1032,7 @@ var editUser = (id, parameter, result) => {
             error: "Tham số không hợp lệ"
         });
     }
-    
+
     workflow.on('validate-parameters', () => {
         if (!id) {
             workflow.emit('response', {
@@ -1060,14 +1049,13 @@ var editUser = (id, parameter, result) => {
                     });
                     return
                 }
-            } 
+            }
         }
 
         workflow.emit('edit-user');
     });
 
     workflow.on('response', (response) => {
-        //console.log(response);
         return result(response);
     });
 
@@ -1116,6 +1104,10 @@ var editUser = (id, parameter, result) => {
                 user.password = editedUser.newPassword
             }
 
+            if (editedUser.role) {
+                user.role = editedUser.role;
+            }
+
             if (editedUser.address) {
                 if (user.addresses && user.addresses.length > 0) {
                     user.addresses.push(editedUser.address)
@@ -1124,12 +1116,183 @@ var editUser = (id, parameter, result) => {
                     user.addresses.push(editedUser.address)
                 }
             }
-           
+
+            if (editedUser.phone) {
+                user.phone = editedUser.phone;
+            }
+
+            if (editedUser.sex) {
+                user.sex = editedUser.sex;
+            }
+
+            if (editedUser.status) {
+                user.status = editedUser.status;
+            } else {
+                user.status = false;
+            }
+
             user.save((err) => {
                 workflow.emit('response', {
                     error: err,
                     user: user
                 });
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var getUser = (id, result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id || id == 'undefined') {
+            workflow.emit('response', {
+                error: 'Id of User is required!'
+            });
+            return
+        }
+
+        workflow.emit('get-user');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('get-user', () => {
+        User.findById(id)
+            .populate('role', 'name', 'Role')
+            .exec((err, user) => {
+                workflow.emit('response', {
+                    error: err,
+                    user: user
+                });
+            });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var newUser = (parameters, result) => {
+    var fullName = parameters.fullName,
+        email = parameters.email,
+        password = parameters.password || 'alomobile',
+        phone = parameters.phone,
+        sex = parameters.sex,
+        role = parameters.role;
+
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!parameters) {
+            workflow.emit('response', {
+                error: "Please provide informations of user"
+            });
+            return
+        }
+
+        if (!fullName) {
+            workflow.emit('response', {
+                error: "Fullname of User is required!"
+            });
+            return
+        } else {
+            fullName = JSON.parse(fullName);
+            if (!fullName.firstName) {
+                workflow.emit('response', {
+                    error: "First name is required!"
+                });
+                return
+            }
+
+            if (!fullName.lastName) {
+                workflow.emit('response', {
+                    error: "Last name is required!"
+                });
+                return
+            }
+        }
+
+        if (!role) {
+            workflow.emit('response', {
+                error: "Role of user is required!"
+            });
+            return
+        }
+
+        if (!phone) {
+            workflow.emit('response', {
+                error: "Phone of user is required!"
+            });
+            return
+        }
+
+        if (!sex) {
+            workflow.emit('response', {
+                error: "Sex of user is required!"
+            });
+            return
+        }
+
+        if (!email) {
+            workflow.emit('response', {
+                error: "Email is required!"
+            });
+            return
+        }
+
+        workflow.emit('new-user');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('new-user', () => {
+        var newUser = new User({
+            fullName: fullName,
+            email: email,
+            password: password,
+            role: role,
+            sex: sex,
+            phone: phone
+        });
+
+        newUser.save((err) => {
+            workflow.emit('response', {
+                error: err,
+                user: newUser
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
+}
+
+var deleteUser = (id, result) => {
+    var workflow = new event.EventEmitter();
+
+    workflow.on('validate-parameters', () => {
+        if (!id) {
+            workflow.emit('response', {
+                error: "Id of User is required!"
+            });
+            return
+        }
+
+        workflow.emit('delete-user');
+    });
+
+    workflow.on('response', (response) => {
+        return result(response);
+    });
+
+    workflow.on('delete-user', () => {
+        User.findByIdAndRemove(id, (err) => {
+            workflow.emit('response', {
+                error: err
             });
         });
     });
@@ -1154,5 +1317,8 @@ module.exports = {
     canRecoveryPassword: canRecoveryPassword,
     signOutAllDevices: signOutAllDevices,
     pushInvalidTokens: pushInvalidTokens,
-    editUser: editUser
+    editUser: editUser,
+    getUser: getUser,
+    newUser: newUser,
+    deleteUser: deleteUser
 }
