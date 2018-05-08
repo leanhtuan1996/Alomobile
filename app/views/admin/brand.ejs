@@ -200,7 +200,15 @@
                     <script>
                         jQuery(document).ready(($) => {
                             //configation datatable jquery
-                            var table = $('#table-brand').DataTable();
+                            var table = $('#table-brand').DataTable({
+                                "language": {
+                                        "lengthMenu": "Hiển thị _MENU_ dòng trên một trang",
+                                        "zeroRecords": "Không có dữ liệu",
+                                        "info": "Đang ở trang thứ _PAGE_ của _PAGES_ trang",
+                                        "infoEmpty": "Dữ liệu hiện không sẵn có",
+                                        "infoFiltered": "(đã lọc từ _MAX_ thương hiệu hiện có)"
+                                    }
+                            });
 
                             //add and update brand
                             $("form").submit((e) => {

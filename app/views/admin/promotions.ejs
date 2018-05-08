@@ -327,7 +327,7 @@
                                         "zeroRecords": "Không có dữ liệu",
                                         "info": "Đang ở trang thứ _PAGE_ của _PAGES_ trang",
                                         "infoEmpty": "Dữ liệu hiện không sẵn có",
-                                        "infoFiltered": "(đã lọc từ _MAX_ người dùng hiện có)"
+                                        "infoFiltered": "(đã lọc từ _MAX_ khuyến mãi hiện có)"
                                     }
                                 });
                             });                           
@@ -435,7 +435,7 @@
                                 }
 
                                 $.ajax({
-                                    url: "/admin/promotion",
+                                    url: "/api/v1/promotion",
                                     data: newPromotion,
                                     method: "POST",
                                     success: (data) => {

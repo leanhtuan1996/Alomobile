@@ -139,7 +139,7 @@ var getReviews = (cb) => {
         Review.find({}).populate({
             path: 'product',
             model: 'Product',
-            select: 'name'
+            select: 'name alias'
         }).populate({
             path: 'byUser',
             model: 'User',

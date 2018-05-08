@@ -8,10 +8,11 @@ const Category = require('../app/api/index').category;
 const Brand = require('../app/api/index').brand;
 const Review = require('../app/api/index').review;
 const Role = require('../app/api/index').role;
+const Order = require('../app/api/index').order;
+
 
 var Dashboard = require('../app/controllers/admin/index').dashboard;
 var Type = require('../app/controllers/admin/index').type;
-var Order = require('../app/controllers/admin/index').order;
 var Promotion = require('../app/controllers/admin/index').promotion;
 
 var mail = require('../app/api/index').mail;
@@ -247,7 +248,7 @@ router.get('/admin/roles', [auth.requireAuth, auth.requireRole], (req, res) => {
 
 //#endregion ROLE ROUTERS
 
-//#region COMMENT ROUTERS
+//#region REVIEW ROUTERS
 router.get('/admin/reviews', [auth.requireAuth, auth.requireRole], (req, res) => {
     Review.getReviews((result) => {
         res.render('admin/review', {
@@ -284,7 +285,7 @@ router.get('/admin/reviews/dismiss', [auth.requireAuth, auth.requireRole], (req,
     })
 });
 
-//#endregion COMMENT ROUTERS
+//#endregion REVIEW ROUTERS
 
 //#region ORDER ROUTERS
 
@@ -301,7 +302,7 @@ router.get('/admin/orders', [auth.requireAuth, auth.requireRole], (req, res) => 
 });
 
 router.get('/admin/orders/approval', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Order.getRequestOrders((result) => {
+    Order.getPendingOrders((result) => {
         res.render('admin/waiting-orders.ejs', {
             data: {
                 title: "Alomobile Control Panel > Trang quản lý đơn hàng",
@@ -345,39 +346,6 @@ router.get('/admin/promotions', [auth.requireAuth, auth.requireRole], (req, res)
         });
     });
 });
-
-router.post('/admin/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Promotion.new(req.body, (result) => {
-        res.json(result)
-    });
-});
-
-router.put('/admin/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Promotion.edit(req.body, (result) => {
-        res.json(result)
-    });
-});
-
-router.delete('/admin/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Promotion.delete(req.body.id, (result) => {
-        res.json(result)
-    });
-});
-
-router.get('/admin/promotion', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Promotion.get(req.query.id, (result) => {
-        res.json(result)
-    });
-});
-
-router.get('/admin/get-promotions', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Promotion.gets((result) => {
-        res.json(result)
-    })
-});
-
-
-
 
 //#endregion PROMOTION ROUTERS
 

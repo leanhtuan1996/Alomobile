@@ -330,23 +330,53 @@
                 <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
                 <script type="text/javascript">
 
-                    var table = $('#table-role').DataTable();
+                    var table = $('#table-role').DataTable({
+                        "language": {
+                            "lengthMenu": "Hiển thị _MENU_ dòng trên một trang",
+                            "zeroRecords": "Không có dữ liệu",
+                            "info": "Đang ở trang thứ _PAGE_ của _PAGES_ trang",
+                            "infoEmpty": "Dữ liệu hiện không sẵn có",
+                            "infoFiltered": "(đã lọc từ _MAX_ vai trò hiện có)"
+                        }
+                    });
 
                     var tableAdd = $('#table-role-add').DataTable({
                         "columnDefs": [{
                             "targets": 0,
                             "orderable": false,
                             "width": "20%"
-                        }]
+                        }],
+                        "language": {
+                            "lengthMenu": "Hiển thị _MENU_ dòng trên một trang",
+                            "zeroRecords": "Không có dữ liệu",
+                            "info": "Đang ở trang thứ _PAGE_ của _PAGES_ trang",
+                            "infoEmpty": "Dữ liệu hiện không sẵn có",
+                            "infoFiltered": "(đã lọc từ _MAX_ quyền hiện có)"
+                        }
                     });
                     var tableEdit = $('#table-role-edit').DataTable({
                         "columnDefs": [ {
                             "targets": 0,
                             "orderable": false,
                             "width": "20%"
-                        }]
+                        }],
+                        "language": {
+                            "lengthMenu": "Hiển thị _MENU_ dòng trên một trang",
+                            "zeroRecords": "Không có dữ liệu",
+                            "info": "Đang ở trang thứ _PAGE_ của _PAGES_ trang",
+                            "infoEmpty": "Dữ liệu hiện không sẵn có",
+                            "infoFiltered": "(đã lọc từ _MAX_ quyền hiện có)"
+                        }
                     });
-                    var tableView = $("#table-role-view").DataTable();
+                    var tableView = $("#table-role-view").DataTable({
+                        "language": {
+                            "lengthMenu": "Hiển thị _MENU_ dòng trên một trang",
+                            "zeroRecords": "Không có dữ liệu",
+                            "info": "Đang ở trang thứ _PAGE_ của _PAGES_ trang",
+                            "infoEmpty": "Dữ liệu hiện không sẵn có",
+                            "infoFiltered": "(đã lọc từ _MAX_ quyền hiện có)"
+                        }
+                    });
 
                     function getRole(id, cb) {
                         $.get(`/api/v1/role?id=${id}`, (data) => {
@@ -626,7 +656,6 @@
                                         }                                        
                                     });
                                     tableAdd.rows().draw();
-                                    //$('#table-role-add').DataTable();
                                 }).error((err) => {
                                     swal('Oops', err.status == 403 ? 'Bạn không có quyền sử dụng chức năng này' : 'Lỗi không xác định hoặc bạn không có quyền thực hiện chức năng này.', 'error')
                                 });                    
