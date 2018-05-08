@@ -60,8 +60,8 @@
 
 	function logout() {
 		$.ajax({
-			url: "/admin/sign-out",
-			method: "PUT",
+			url: "/api/v1/user/sign-out",
+			method: "POST",
 			success: (data) => {
 				window.location.reload();
 			},

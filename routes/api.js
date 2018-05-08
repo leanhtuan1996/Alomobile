@@ -122,10 +122,7 @@ router.post('/api/v1/user/sign-up', (req, res) => {
 
 router.post('/api/v1/user/sign-out', (req, res) => {
     User.signOut(req.session.token, (result) => {
-        if (!result.error) {
-            req.session.destroy();
-        }
-
+        req.session.destroy();
         res.json(result);
     });
 });
