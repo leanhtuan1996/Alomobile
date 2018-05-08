@@ -1,26 +1,37 @@
 var express = require('express');
 var router = express.Router();
 
-var Homepage = require('../app/controllers/index').homepage;
-var User = require('../app/controllers/index').user;
-
-var auth = require('../app/middleware/index').authenticate;
+var Category = require('../app/api/index').category;
 
 /* GET home page. */
 router.get('/', (req, res) => {
-  Homepage.index(req, res, (result) => {
-    res.render('index', {
-      data: {
-        categories: result.categories,
-        token: req.session.token,
-        user: req.session.user
-      }
-    })
+  res.redis.getItem('category', `get-categories`, (data) => {
+    if (data) {
+      res.render('index', {
+        data: {
+          categories: data,
+          token: req.session.token,
+          user: req.session.user
+        }
+      })
+    } else {
+      Category.getCategories((result) => {
+        if (result.categories) {
+          res.redis.setItem('category', `get-categories`, result.categories);
+        }
+        res.render('index', {
+          data: {
+            categories: result.categories,
+            token: req.session.token,
+            user: req.session.user
+          }
+        })
+      });
+    }
   });
 });
 
 router.get('/chinh-sach-giao-hang', (req, res) => {
-  
   res.render('menu/delivery', {
     data: {
       token: req.session.token,

@@ -90,14 +90,4 @@ var cancelOrder = (idOrder, idUser, cb) => {
 
 
 module.exports = {
-    initOrder: initOrder,
-    verify: verify,
-    updateOrder: updateOrder,
-    getOrder: getOrder,
-    requestPayment: requestPayment,
-    compareCurrentOrder: compareCurrentOrder,
-    deleteOrder: deleteOrder,
-    checkOrder: checkOrder,
-    getLastestOrder: getLastestOrder,
-    cancelOrder: cancelOrder
 }

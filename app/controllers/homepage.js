@@ -45,5 +45,4 @@ var index = (req, res, result) => {
 }
 
 module.exports = {
-    index: index
 }

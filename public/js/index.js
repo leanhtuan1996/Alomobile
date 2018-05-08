@@ -1303,19 +1303,19 @@ function getPreviewProduct(id, cb) {
 }
 
 function getPhones(cb) {
-    $.get('/api/v1/product/get-products-by-type/5a9e3f620d9bb43e1c54ed15', (data) => {
+    $.get('/api/v1/product/get-products-by-type?id=5a9e3f620d9bb43e1c54ed15', (data) => {
         return cb(data.products || []);
     });
 }
 
 function getTablets(cb) {
-    $.get('/api/v1/product/get-products-by-type/5aa13e840d9bb43e1c55cc2d', (data) => {
+    $.get('/api/v1/product/get-products-by-type?id=5aa13e840d9bb43e1c55cc2d', (data) => {
         return cb(data.products || []);
     });
 }
 
 function getLaptops(cb) {
-    $.get('/api/v1/product/get-products-by-type/5a9e3f8a0d9bb43e1c54ed29', (data) => {
+    $.get('/api/v1/product/get-products-by-type?id=5a9e3f8a0d9bb43e1c54ed29', (data) => {
         return cb(data.products || []);
     });
 }

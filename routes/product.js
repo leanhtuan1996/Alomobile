@@ -2,91 +2,8 @@ var express = require('express');
 var router = express.Router();
 var url = require('url');
 
-var api = require('../app/api/index');
-
-var SearchProduct = api.searchProduct;
-
-var auth = require('../app/middleware/index').authenticate;
-
-var User = require('../app/controllers/index').user;
-var Product = require('../app/controllers/index').product;
-
-router.get('/product/list', (req, res) => {
-    res.redis.getItem('products', `product/list`, (data) => {
-        if (data) {
-            res.json({
-                products: data
-            });
-        } else {
-            Product.getProducts((result) => {
-                if (result.products && result.products.length > 0) {
-                    res.redis.setItem('products', `product/list`, result.products);
-                }
-                res.json(result);
-            });
-        }
-    });
-});
-
-router.get('/product/listNew/', (req, res) => {
-    Product.getNewProducts(10, (response) => {
-        res.json(response);
-    });
-});
-
-router.get('/product/listNew/limit=:limit', (req, res) => {
-    Product.getNewProducts(req.params.limit, (response) => {
-        res.json(response);
-    });
-});
-
-router.get("/product/listSpecial", (req, res) => {
-    Product.getSpecialProducts(10, (response) => {
-        res.json(response);
-    });
-});
-
-router.get("/product/listSpecial/limit=:limit", (req, res) => {
-    Product.getSpecialProducts(parseInt(req.params.limit), (response) => {
-        res.json(response);
-    });
-});
-
-router.get("/product/listHot", (req, res) => {
-    Product.getHotProducts(20, (response) => {
-        res.json(response);
-    });
-});
-
-router.get("/product/listHot/limit=:limit", (req, res) => {
-    Product.getHotProducts(parseInt(req.params.limit), (response) => {
-        res.json(response);
-    });
-});
-
-router.get('/product/type/:type', (req, res) => {
-    Product.getProductsByType(req.params.type, 10, (response) => {
-        res.json(response);
-    });
-});
-
-router.get('/product/type/:type/limit=:limit', (req, res) => {
-    Product.getProductsByType(req.params.type, parseInt(req.params.limit), (response) => {
-        res.json(response);
-    });
-});
-
-router.get('/product/getCount', (req, res) => {
-    Product.getCountProducts((response) => {
-        res.json(response);
-    });
-});
-
-router.get('/products/search/text=:text', (req, res) => {
-    Product.searchProduct(req.params.text, (result) => {
-        res.json(result)
-    });
-});
+var SearchProduct = require('../app/api/index').searchProduct;
+var Product = require('../app/api/index').product;
 
 router.get('^\/[a-zA-Z0-9]{1,}-[a-zA-z0-9-+]{1,}$', (req, res, next) => {
     var URL = url.parse(req.url);
@@ -257,50 +174,6 @@ router.get('\/danh-muc\/[a-zA-Z-0-9\/]{1,}', (req, res, next) => {
     } else {
         next();
     }
-});
-
-router.post('/product/search', (req, res) => {
-    Product.getProductsByCategory(req.body.id, req.body.idRoot, 15, (cb) => {
-
-    })
-})
-
-router.post('/product/review', (req, res) => {
-    var token = req.body.token || req.params.token || req.session.token;
-
-    if (!token) {
-        res.json({
-            error: "Vui lòng đăng nhập để có thể sử dụng chức năng này!"
-        });
-        return
-    }
-
-    User.verify(token, (cb) => {
-        if (cb.error) {
-            res.json({
-                error: "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại để tiếp tục thực hiện chức năng này."
-            })
-            return
-        }
-
-        if (!cb.user) {
-            res.json({
-                error: "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại để tiếp tục thực hiện chức năng này."
-            })
-            return
-        }
-
-        Product.reviewProduct(cb.user, req.body.review, (result) => {
-            if (result.review) {
-                //push notify to admin
-                res.io.emit('new-comment');
-                //update cache
-                res.redis.delItem('products', [`getProduct?id=${req.body.review.product}`, `get-reviews?id=${req.body.review.product}`]);
-                res.redis.delItem('reviews');
-            }
-            res.json(result);
-        });
-    });
 });
 
 module.exports = router;

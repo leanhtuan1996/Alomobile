@@ -237,7 +237,9 @@
 
                 $.post(
                     'sign-up',
-                    user,
+                    {
+                        credential: user
+                    },
                     (data) => {
                         $('input[type="submit"]').html('Đăng ký ngay').removeClass('disabled');   
                                            

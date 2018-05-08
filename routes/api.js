@@ -1,28 +1,25 @@
-var express = require('express');
-var router = express.Router();
-var _ = require('lodash');
+const express = require('express');
+const router = express.Router();
+const _ = require('lodash');
+const multer = require('multer');
+const auth = require('../app/middleware/index').authenticate;
+const helper = require('../app/helpers/index').helper;
+const api = require('../app/api/index');
 
-var api = require('../app/api/index');
+const User = api.user;
+const Product = api.product;
+const Category = api.category;
+const Brand = api.brand;
+const Type = api.type;
+const Order = api.order;
+const Review = api.review;
+const Analytic = api.analytic;
+const SearchKeyword = api.searchKeyword;
+const SearchProduct = api.searchProduct;
+const Promotion = api.promotion;
+const Mail = api.mail;
 
-var User = api.user;
-var Product = api.product;
-var Category = api.category;
-var Brand = api.brand;
-var User = api.user;
-var Type = api.type;
-var Order = api.order;
-var Review = api.review;
-var Analytic = api.analytic;
-var SearchKeyword = api.searchKeyword;
-var SearchProduct = api.searchProduct;
-var Promotion = api.promotion;
-var Mail = api.mail;
-
-var multer = require('multer');
-var auth = require('../app/middleware/index').authenticate;
-var helper = require('../app/helpers/index').helper;
-
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './public/img');
     },
@@ -41,7 +38,7 @@ var storage = multer.diskStorage({
         cb(null, newName);
     }
 });
-var upload = multer({
+const upload = multer({
     storage: storage,
     limits: { fileSize: 1 * 1024 * 1024 }
 });
@@ -86,7 +83,7 @@ router.post('/api/v1/user/sign-in', (req, res) => {
 });
 
 router.post('/api/v1/user/sign-up', (req, res) => {
-    User.signUp(req.body, (result) => {
+    User.signUp(req.body.credential, (result) => {
         var user = result.user;
         if (user) {
             //set token in session
@@ -178,27 +175,15 @@ router.get('/api/v1/product/get-products', (req, res) => {
     });
 });
 
-router.get('/api/v1/product/get-products/from/:last', (req, res) => {
-    Product.getProducts(req.params.last, (result) => {
+router.get('/api/v1/product/get-product', (req, res) => {
+    Product.getProductById(req.query.id, (result) => {
         res.json(result);
     });
 });
 
-router.get('/api/v1/product/get-previous-products/:id', (req, res) => {
-    Product.getPrevProducts(req.params.id, (result) => {
-        res.json(result);
-    });
-});
+router.get('/api/v1/product/get-products-by-type', (req, res) => {
 
-router.get('/api/v1/product/get-product/:id', (req, res) => {
-    Product.getProductById(req.params.id, (result) => {
-        res.json(result);
-    });
-});
-
-router.get('/api/v1/product/get-products-by-type/:id', (req, res) => {
-
-    var id = req.params.id;
+    var id = req.query.id;
     if (!id) {
         res.json({
             error: "Id is required!"
@@ -256,31 +241,6 @@ router.get('/api/v1/product/get-special-products', (req, res) => {
     });
 });
 
-router.get('/api/v1/product/get-products-by-category/:id', (req, res) => {
-    var id = req.params.id;
-    if (!id) {
-        res.json({
-            error: "Parameters missing!"
-        });
-        return;
-    }
-
-    res.redis.getItem('products', `get-products-by-category/${id}`, (data) => {
-        if (data) {
-            res.json({
-                products: data
-            });
-        } else {
-            Product.getProductsByCategory(req, 15, (result) => {
-                if (result.products && result.products.length > 0) {
-                    res.redis.setItem('products', `get-products-by-category/${id}`, result.products);
-                }
-                res.json(result);
-            });
-        }
-    });
-});
-
 router.get('/api/v1/product/get-products-by-category', (req, res) => {
 
     if (req.query.category && req.query.from && req.query.action) {
@@ -288,27 +248,23 @@ router.get('/api/v1/product/get-products-by-category', (req, res) => {
             res.json(result);
         });
         return
-    }
-
-    var idCategory = req.query.idCategory,
-        idRootCategory = req.query.idRootCategory;
-
-    if (!idCategory || !idRootCategory) { res.json({ products: [] }); return; }
-
-    res.redis.getItem('products', `get-products-by-category?idCategory=${idCategory}&idRootCategory=${idRootCategory}`, (data) => {
-        if (data) {
-            res.json({
-                products: data
-            });
-        } else {
-            Product.getProductsByCategory(idCategory, idRootCategory, req.query.limit || 15, (result) => {
-                if (result.products && result.products.length > 0) {
-                    res.redis.setItem('products', `get-products-by-category?idCategory=${idCategory}&idRootCategory=${idRootCategory}`, result.products);
-                }
-                res.json(result);
-            });
-        }
-    });
+    } else if (req.query.idCategory && req.query.idRootCategory) {        
+        res.redis.getItem('products', `get-products-by-category?idCategory=${req.query.idCategory}&idRootCategory=${req.query.idRootCategory}`, (data) => {
+            if (data) {
+                res.json({
+                    products: data
+                });
+            } else {
+                Product.getProductsByCategory(req.query.idCategory, req.query.idRootCategory, req.query.limit || 15, (result) => {
+                    if (result.products && result.products.length > 0) {
+                        res.redis.setItem('products', `get-products-by-category?idCategory=${req.query.idCategory}&idRootCategory=${req.query.idRootCategory}`, result.products);
+                    }
+                    res.json(result);
+                });
+            }
+        });
+        return
+    } 
 });
 
 router.get('/api/v1/product/get-new-products', (req, res) => {
@@ -347,53 +303,7 @@ router.get('/api/v1/product/count-products', [auth.requireAuth, auth.requireRole
     });
 });
 
-router.post('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
-    Product.newProduct(req.body, (result) => {
-
-        if (!result.error) {
-            res.redis.delItem('products', ['get-new-products', '/product/list', 'products-by-categories', 'get-products-by-type']);
-        }
-
-        res.json(result);
-    });
-});
-
-router.put('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
-    Product.editProduct(req.body, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('products');
-        }
-
-        res.json(result);
-    });
-});
-
-router.delete('/api/v1/product', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.deleteProduct(req.body.id, (result) => {
-
-        //update cache
-        if (!result.error) {
-            res.redis.delItem('products');
-        }
-
-        res.json(result);
-    });
-});
-
-router.get('/api/v1/product/search-product/:text', (req, res) => {
-    Product.searchProducts(req.params.text, (result) => {
-
-        if (result.products && result.products.length != 0) {
-            SearchKeyword.insert(req.params.text, (result) => { });
-        }
-
-        res.json(result);
-    });
-});
-
-router.get('/api/v1/product/search-product', [auth.requireAuth, auth.requireRole], (req, res) => {
+router.get('/api/v1/product/search-product', (req, res) => {
     Product.searchProducts(req.query.text, (result) => {
 
         if (result.products && result.products.length != 0) {
@@ -459,6 +369,35 @@ router.get('/api/v1/product/get-reviews', (req, res) => {
     });
 });
 
+router.post('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
+    Product.newProduct(req.body, (result) => {
+
+        if (!result.error) {
+            res.redis.delItem('products', ['get-new-products', '/product/list', 'products-by-categories', 'get-products-by-type']);
+        }
+
+        res.json(result);
+    });
+});
+
+router.post('/api/v1/product/duplicate', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.duplicate(req.body.id, (result) => {
+        res.json(result)
+    })
+});
+
+router.put('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
+    Product.editProduct(req.body, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('products');
+        }
+
+        res.json(result);
+    });
+});
+
 router.put('/api/v1/product/update-quantity', [auth.requireAuth, auth.requireRole], (req, res) => {
     Product.editQuantity(req.body.id, req.body.color, req.body.quantity, (result) => {
 
@@ -478,13 +417,19 @@ router.put('/api/v1/product/update-status', [auth.requireAuth, auth.requireRole]
 
         res.json(result)
     })
-})
+});
 
-router.post('/api/v1/product/duplicate', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Product.duplicate(req.body.id, (result) => {
-        res.json(result)
-    })
-})
+router.delete('/api/v1/product', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Product.deleteProduct(req.body.id, (result) => {
+
+        //update cache
+        if (!result.error) {
+            res.redis.delItem('products');
+        }
+
+        res.json(result);
+    });
+});
 
 //#endregion APIS FOR PRODUCT
 
@@ -660,7 +605,7 @@ router.put('/api/v1/order/update-status', [auth.requireAuth, auth.requireRole], 
         }
 
         res.json(result)
-    })
+    });
 });
 
 router.get('/api/v1/order/get-my-orders', [auth.requireAuth], (req, res) => {
@@ -671,7 +616,163 @@ router.get('/api/v1/order/get-my-orders', [auth.requireAuth], (req, res) => {
             user: req.user
         })
     })
-})
+});
+
+router.post('/api/v1/order/check-out', (req, res) => {
+
+    if (req.session.order) {    
+        if (Order.compareCurrentOrder(req.session.order._id, req.session.order.products, req.body.parameters.products)) {
+            res.json({
+                order: req.session.order
+            });
+            return
+        }
+        delete req.session.order;
+    }
+
+    if (!req.body.parameters) {
+        res.json({
+            error: 'No parameters'
+        });
+        return
+    }
+    var parameters = {
+        products: req.body.parameters.products
+    };
+
+    if (req.body.parameters.promoCode) {
+        parameters.promoCode = req.body.parameters.promoCode;
+        parameters.discount = req.body.parameters.discount;
+    }
+
+    if (req.session.token && req.session.user) {
+        User.verify(req.session.token, (cb) => {
+            if (cb.error || !cb.user) {
+                req.session.destroy();
+            } else {
+                parameters.byUser = cb.user
+            }
+
+            Order.initOrder(parameters, (response) => {
+                if (response.order) {
+                    req.session.order = response.order;
+                }
+                res.json(response);
+            });
+        });
+    } else {
+        Order.initOrder(parameters, (response) => {
+            if (response.order) {
+                req.session.order = response.order;
+            }
+            res.json(response);
+        });
+    }
+});
+
+router.put('/api/v1/order/check-out', (req, res) => {
+    if (!req.session.order) {
+        res.json({
+            error: 'Your order not found'
+        });
+        return
+    }
+
+    Order.updateOrder(req.session.order, req.body, (result) => {
+        if (result.order) {
+            req.session.order = result.order;
+
+            if (result.order.status == 1) {
+                res.io.emit('new-order', [result.order]);
+                Mail.sendMailWithConfirmOrder(result.order);
+                delete req.session.order;
+            }
+        }
+        res.json(result)
+    });
+});
+
+router.post('/api/v1/order/request-payment', (req, res) => {
+
+    if (!req.session.order || !req.session.token) {
+        res.json({
+            error: "Đơn hàng không hợp lệ hoặc đã bị lỗi."
+        });
+        return
+    }
+
+    var id = req.session.order._id;
+    if (!id) {
+        res.json({
+            error: "Đơn hàng không hợp lệ hoặc đã bị lỗi."
+        });
+    }
+
+    if (!req.body.method) {
+        workflow.emit('response', {
+            error: "Không tìm thấy phương thức thanh toán vui lòng chọn loại phương thức khác!"
+        });
+        return
+    }
+
+    Order.requestPayment(id, req.body.method, (result) => {
+        res.json(result);
+    });
+});
+
+router.post('/api/v1/order/confirm-checkout', (req, res) => {
+});
+
+router.post('/api/v1/order/tracking-order', (req, res) => {
+    var id = req.body.id,
+        email = req.body.email;
+    if (!id) {
+        res.json({
+            error: "Mã đơn hàng bị thiếu"
+        });
+        return
+    }
+
+    if (!email) {
+        res.json({
+            error: "Email bị thiếu"
+        });
+        return
+    }
+
+    res.redis.getItem('order', `get-order?id=${id}&email=${email}`, (data) => {
+        if (data) {
+            res.json({
+                order: data,
+                token: req.session.token,
+                user: req.session.user,
+            });
+        } else {
+            Order.checkOrder(id, email, (result) => {
+                if (result.order) {
+                    res.redis.setItem('order', `get-order?id=${id}&email=${email}`, result.order);
+                }
+                res.json({
+                    token: req.session.token,
+                    user: req.session.user,
+                    error: result.error,
+                    order: result.order
+                });
+            });
+        }
+    })
+});
+
+router.put('/api/v1/order/cancel-order', [auth.requireAuth], (req, res) => {
+    Order.cancelOrder(req.body.idOrder, req.user._id, (result) => {
+        //success
+        if (result.order) {
+            res.redis.delItem('order', [`get-order?id=${result.order.alias}&email=${req.user.email}`])
+        }
+
+        res.json(result)
+    });
+});
 
 //#endregion APIS FOR ORDER
 

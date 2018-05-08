@@ -1204,6 +1204,30 @@ var cancelOrder = (idOrder, idUser, cb) => {
     workflow.emit('validate-parameters');
 }
 
+var compareCurrentOrder = (id, currentProducts, requestProducts) => {
+    if (currentProducts.length != requestProducts.length) {
+        deleteOrder(id, (cb) => {
+
+        });
+        return false
+    } else {
+        for (let i = 0; i < currentProducts.length; i++) {
+            const currentProduct = currentProducts[i];
+
+            var requestProduct = requestProducts.find(e => {
+                return e.id == currentProduct.id && currentProduct.color.hex == e.color && Number.parseInt(currentProduct.quantity) == Number.parseInt(e.quantity);
+            });
+
+            if (!requestProduct) {
+                deleteOrder(id, (cb) => { })
+                return false
+            }
+        }
+        return true
+    }
+
+    return true
+}
 
 module.exports = {
     checkingAvailable: checkingAvailable,
@@ -1224,5 +1248,6 @@ module.exports = {
     getLastestOrder: getLastestOrder,
     cancelOrder: cancelOrder,
     updateStatus: updateStatus,
-    getMyOrdersWithExcept: getMyOrdersWithExcept
+    getMyOrdersWithExcept: getMyOrdersWithExcept,
+    compareCurrentOrder: compareCurrentOrder
 }

@@ -46,7 +46,7 @@ $('.checkout button').click((e) => {
             parameters.discount = $('#cart-subtotal-discount span.value').attr('data-raw-price') || 0;
         }        
 
-        $.post('/thanh-toan', {
+        $.post('/api/v1/order/check-out', {
             parameters: parameters
         }, (data) => {
            if (data.error) {

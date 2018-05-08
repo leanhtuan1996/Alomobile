@@ -123,7 +123,7 @@ jQuery(document).ready(($) => {
         };
 
         $.ajax({
-            url: '/thanh-toan',
+            url: '/api/v1/order/check-out',
             data: {
                 toAddress: toAddress    
             },
@@ -160,7 +160,7 @@ jQuery(document).ready(($) => {
         e.preventDefault();
 
         $.ajax({
-            url: '/thanh-toan',
+            url: '/api/v1/order/check-out',
             data: {
                 note: $('#delivery_message').val() || '0'    
             },
@@ -252,15 +252,17 @@ jQuery(document).ready(($) => {
         }
 
         $.post(
-            '/sign-up',
-            user,
+            '/api/v1/user/sign-up',
+            {
+                credential: user
+            },
             (data) => {
                 if (data.error) {
                     showNotify(data.error || "Đã xảy ra lỗi không xác định, vui lòng thử lại sau.");
                 } else {
                     if (data.user) {
                         $.ajax({
-                            url: '/thanh-toan',
+                            url: '/api/v1/order/check-out',
                             data: {
                                 byUser: data.user
                             },
@@ -315,12 +317,14 @@ jQuery(document).ready(($) => {
         }
 
         $.post(
-            '/sign-in',
-            user,
+            '/api/v1/user/sign-in',
+            {
+                credential: user
+            },
             (data) => {
                 if (data.user) {
                     $.ajax({
-                        url: '/thanh-toan',
+                        url: '/api/v1/order/check-out',
                         data: {
                             byUser: data.user
                         },
@@ -382,7 +386,7 @@ $('#conditions-to-approve').submit((e) => {
             }
 
             $.ajax({
-                url: '/thanh-toan',
+                url: '/api/v1/order/check-out',
                 data: parameters,
                 method: 'PUT',
                 success: (data) => {
@@ -409,7 +413,7 @@ $('#conditions-to-approve').submit((e) => {
             
             break;
         case 'vtc-pay':
-            $.post('/request-payment', {
+            $.post('/api/v1/order/request-payment', {
                 method: 'vtc-pay'
             }, (data) => {
                 if (data.error) {

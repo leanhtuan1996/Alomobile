@@ -1,13 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-var User = require('../app/controllers/index').user;
-var helper = require('../app/helpers/index').helper;
 var auth = require('../app/middleware/index').authenticate
-var mailbox = require('../app/controllers/index').mailbox;
+var User = require('../app/api/index').user;
+var Review = require('../app/api/index').review;
+var Order = require('../app/api/index').order;
 
-/* GET users listing. */
-/* USER SIGN_IN */
 router.get('/dang-nhap', (req, res) => {
   if (req.session.token && req.session.user) {
     res.redirect('/')
@@ -21,7 +19,6 @@ router.get('/dang-nhap', (req, res) => {
   });
 });
 
-/* USER SIGN_UP */
 router.get('/dang-ky', (req, res) => {
   if (req.session.token && req.session.user) {
     res.redirect('/');
@@ -29,15 +26,6 @@ router.get('/dang-ky', (req, res) => {
   }
   res.render('sign-up', {
     data: {}
-  });
-});
-
-router.get('/tai-khoan-cua-toi', [auth.requireAuth], (req, res) => {
-  res.render('my-account', {
-    data: {
-      token: req.session.token,
-      user: req.session.user
-    }
   });
 });
 
@@ -75,6 +63,7 @@ router.get('/quen-mat-khau', (req, res) => {
 
 router.get('/gio-hang', (req, res) => {
   if (req.session.token && req.session.user) {
+  
     User.verify(req.session.token, (cb) => {
       if (cb.error) {
         req.session.destroy();
@@ -106,6 +95,15 @@ router.get('/gio-hang', (req, res) => {
   }
 });
 
+router.get('/tai-khoan-cua-toi', [auth.requireAuth], (req, res) => {
+  res.render('my-account', {
+    data: {
+      token: req.session.token,
+      user: req.session.user
+    }
+  });
+});
+
 router.get('/tai-khoan-cua-toi/thong-tin', [auth.requireAuth], (req, res) => {
   res.render('my-informations', {
     data: {
@@ -125,7 +123,7 @@ router.get('/tai-khoan-cua-toi/dia-chi', [auth.requireAuth], (req, res) => {
 });
 
 router.get('/tai-khoan-cua-toi/lich-su-mua-hang', [auth.requireAuth], (req, res) => {
-  User.getMyOrders(req.user._id, (result) => {
+  Order.getMyOrders(req.user._id, (result) => {
     res.render('my-orders', {
       data: {
         token: req.session.token,
@@ -137,7 +135,7 @@ router.get('/tai-khoan-cua-toi/lich-su-mua-hang', [auth.requireAuth], (req, res)
 });
 
 router.get('/tai-khoan-cua-toi/nhan-xet', [auth.requireAuth], (req, res) => {
-  User.getMyReviews(req.user._id, (result) => {
+  Review.getMyReviews(req.user._id, (result) => {
     res.render('my-comment', {
       data: {
         user: req.user,

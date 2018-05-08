@@ -63,14 +63,4 @@ var reviewProduct = (user, review, result) => {
 }
 
 module.exports = {
-    getProducts: getProducts,
-    getProductById: getProductById,
-    getProductsByType: getProductsByType,
-    getSpecialProducts: getSpecialProducts,
-    getProductsByCategory: getProductsByCategory,
-    getHotProducts: getHotProducts,
-    getNewProducts: getNewProducts,
-    getCountProducts: getCountProducts,
-    searchProduct: searchProduct,
-    reviewProduct: reviewProduct
 }
