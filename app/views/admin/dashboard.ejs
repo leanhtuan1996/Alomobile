@@ -70,9 +70,14 @@
 											<span class="block txt-dark weight-500 font-18"><span class="counter-orders">0</span></span>
 											<div class="clearfix"></div>
 										</li>
-										<li class="text-left auto-width">
+										<li class="text-left auto-width mr-60">
 											<span class="block">Doanh thu</span>
 											<span class="block txt-dark weight-500 font-18"><span class="counter-revenue">0</span></span>
+											<div class="clearfix"></div>
+										</li>
+										<li class="text-left auto-width">
+											<span class="block">Lợi nhuận</span>
+											<span class="block txt-dark weight-500 font-18"><span class="counter-profit">0</span></span>
 											<div class="clearfix"></div>
 										</li>
 									</ul>
@@ -437,16 +442,16 @@
     var chartAnalyticSale = Morris.Line({
         element: 'chart_analytic_sale',
         xkey: 'xkey',
-        ykeys: ['orders', 'revenue'],
-        labels: ['orders', 'revenue'],
+        ykeys: ['orders', 'revenue', 'profit'],
+        labels: ['orders', 'revenue', 'profit'],
         pointSize: 2,
         fillOpacity: 0,
         lineWidth:2,
-        pointStrokeColors:['#8BC34A', '#f8b32d'],
+        pointStrokeColors:['#8BC34A', '#f8b32d', '#08a1c4'],
         behaveLikeLine: true,
         grid: false,
         hideHover: 'auto',
-        lineColors: ['#8BC34A', '#f8b32d'],
+        lineColors: ['#8BC34A', '#f8b32d', '#08a1c4'],
         resize: true,
         gridTextFamily:"Roboto",
         smooth: true,
@@ -473,12 +478,14 @@
                 data.push({
                     xkey: key,
                     orders: analytics[key].orders,
-                    revenue: analytics[key].revenue
+					revenue: analytics[key].revenue,
+					profit: analytics[key].profit
                 });
             }
 
             $('#chart_analytic_sale').prev('ul').find('span.counter-orders').text(received.totalOrders);
-            $('#chart_analytic_sale').prev('ul').find('span.counter-revenue').text(numberWithCommas(received.totalRevenue) + " VNĐ");
+			$('#chart_analytic_sale').prev('ul').find('span.counter-revenue').text(numberWithCommas(received.totalRevenue) + " VNĐ");
+			$('#chart_analytic_sale').prev('ul').find('span.counter-profit').text(numberWithCommas(received.totalProfits) + " VNĐ");
 
             chartAnalyticSale.setData(data);
         });   

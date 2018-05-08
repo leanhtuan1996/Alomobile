@@ -29,8 +29,6 @@ var userSchema = new Schema({
         zipPostalCode: Number
     }],
     status: { type: Schema.Types.Boolean, default: true },
-    orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
-    reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
     validTokens: [String],
     isRegisteredNewLetters: Boolean,
     lastSignIn: Number,

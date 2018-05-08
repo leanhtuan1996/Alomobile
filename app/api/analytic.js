@@ -93,7 +93,7 @@ var revenue = (year = Date.now(), cb) => {
                 $lte: maxMonth
             }
         })
-            .select('products created_at')
+            .select('products created_at promoCode')
             .exec((err, orders) => {
 
                 if (err) {
@@ -103,61 +103,72 @@ var revenue = (year = Date.now(), cb) => {
                     return
                 }
 
-
-
                 var data = {
                     "1": {
                         orders: 0,
-                        revenue: 0
+                        revenue: 0,
+                        profit: 0
                     },
                     "2": {
                         orders: 0,
-                        revenue: 0
+                        revenue: 0,
+                        profit: 0
                     },
                     "3": {
                         orders: 0,
-                        revenue: 0
+                        revenue: 0,
+                        profit: 0
                     },
                     "4": {
                         orders: 0,
-                        revenue: 0
+                        revenue: 0,
+                        profit: 0
                     },
                     "5": {
                         orders: 0,
-                        revenue: 0
+                        revenue: 0,
+                        profit: 0
                     },
                     "6": {
                         orders: 0,
-                        revenue: 0
+                        revenue: 0,
+                        profit: 0
                     },
                     "7": {
                         orders: 0,
-                        revenue: 0
+                        revenue: 0,
+                        profit: 0
                     },
                     "8": {
                         orders: 0,
-                        revenue: 0
+                        revenue: 0,
+                        profit: 0
                     },
                     "9": {
                         orders: 0,
-                        revenue: 0
+                        revenue: 0,
+                        profit: 0
                     },
                     "10": {
                         orders: 0,
-                        revenue: 0
+                        revenue: 0,
+                        profit: 0
                     },
                     "11": {
                         orders: 0,
-                        revenue: 0
+                        revenue: 0,
+                        profit: 0
                     },
                     "12": {
                         orders: 0,
-                        revenue: 0
+                        revenue: 0,
+                        profit: 0
                     }
                 };
 
                 var totalRevenue = 0;
                 var totalOrders = 0;
+                var totalProfits = 0;
 
                 if (!orders || orders.length == 0) {
                     workflow.emit('response', {
@@ -173,65 +184,92 @@ var revenue = (year = Date.now(), cb) => {
                 }
 
                 orders.forEach(order => {
-                    var orderDate = new Date(order.created_at).getMonth() + 1;
+                    var orderDate = new Date(order.created_at).getMonth() + 1;                   
 
                     totalOrders += 1;
 
                     var revenue = 0;
+                    var profit = 0;
+                    var discount = 0;
+
+                    if (order.promoCode) {
+                        discount = order.promoCode.discount || 0;
+                    }
+
                     order.products.forEach(product => {
+                        
+                        if (product.basePrice) {
+                            profit += (product.price - product.basePrice) * product.quantity;
+                        }
+
                         revenue += product.price * product.quantity;
                     });
 
+                    profit = profit - discount;
+
+                    totalProfits += profit;
                     totalRevenue += revenue;
 
                     switch (orderDate) {
                         case 1:
                             data["1"].orders++;
                             data["1"].revenue += revenue;
+                            data["1"].profit += profit;
                             break;
                         case 2:
                             data["2"].orders++;
                             data["2"].revenue += revenue;
+                            data["2"].profit += profit;
                             break;
                         case 3:
                             data["3"].orders++;
                             data["3"].revenue += revenue;
+                            data["3"].profit += profit;
                             break;
                         case 4:
                             data["4"].orders++;
                             data["4"].revenue += revenue;
+                            data["4"].profit += profit;
                             break;
                         case 5:
                             data["5"].orders++;
                             data["5"].revenue += revenue;
+                            data["5"].profit += profit;
                             break;
                         case 6:
                             data["6"].orders++;
                             data["6"].revenue += revenue;
+                            data["6"].profit += profit;
                             break;
                         case 7:
                             data["7"].orders++;
                             data["7"].revenue += revenue;
+                            data["7"].profit += profit;
                             break;
                         case 8:
                             data["8"].orders++;
                             data["8"].revenue += revenue;
+                            data["8"].profit += profit;
                             break;
                         case 9:
                             data["9"].orders++;
                             data["9"].revenue += revenue;
+                            data["9"].profit += profit;
                             break;
                         case 10:
                             data["10"].orders++;
                             data["10"].revenue += revenue;
+                            data["10"].profit += profit;
                             break;
                         case 11:
                             data["11"].orders++;
                             data["11"].revenue += revenue;
+                            data["11"].profit += profit;
                             break;
                         case 12:
                             data["12"].orders++;
                             data["12"].revenue += revenue;
+                            data["12"].profit += profit;
                             break;
                     }
                 });
@@ -242,6 +280,7 @@ var revenue = (year = Date.now(), cb) => {
                         year: newYear,
                         totalOrders: totalOrders,
                         totalRevenue: totalRevenue,
+                        totalProfits: totalProfits,
                         analytics: data
                     }
                 });
