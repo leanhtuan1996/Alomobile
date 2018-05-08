@@ -166,7 +166,7 @@
 					items += `
 					<tr id="${product._id}" data-product-createdAt=${product.created_at} data-color-product=${product.details.color.hex}>
 						<td class="txt-dark product-name">
-							<a class="txt-dark" href="/${product.alias}-${product._id}" style="text-decoration: none;">${product.name}</a>	
+							<a class="txt-dark" href="/${product.alias}-${product._id}" target="_blank" style="text-decoration: none;">${product.name}</a>	
 						</td>
 						<td class="product-images">`
 							if (product.images && product.images.length > 0) {

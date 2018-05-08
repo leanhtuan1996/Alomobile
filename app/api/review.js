@@ -397,7 +397,7 @@ var getNewReviews = (cb) => {
             .populate({
                 path: 'product',
                 model: 'Product',
-                select: 'name'
+                select: 'name alias'
             }).populate({
                 path: 'byUser',
                 model: 'User',

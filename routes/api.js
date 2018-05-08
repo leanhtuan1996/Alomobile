@@ -825,20 +825,8 @@ router.get('/api/v1/reviews', [auth.requireAuth, auth.requireRole], (req, res) =
 });
 
 router.get('/api/v1/newerReviews', [auth.requireAuth, auth.requireRole], (req, res) => {
-
-    res.redis.getItem('reviews', `get-new-reviews`, (data) => {
-        if (data) {
-            res.json({
-                reviews: data
-            });
-        } else {
-            Review.getNewReviews((result) => {
-                if (result.reviews) {
-                    res.redis.setItem('reviews', `get-new-reviews`, result.reviews);
-                }
-                res.json(result);
-            });
-        }
+    Review.getNewReviews((result) => {
+        res.json(result);
     });
 });
 

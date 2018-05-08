@@ -922,7 +922,7 @@ var getNewOrders = (cb) => {
             status: {
                 $gt: 0
             }
-        }).select('products byUser status created_at').populate({
+        }).select('products byUser status created_at alias').populate({
             path: "byUser",
             model: "User",
             select: "fullName"
@@ -933,7 +933,7 @@ var getNewOrders = (cb) => {
             Order.populate(docs, {
                 path: "products.id",
                 model: "Product",
-                select: "images name"
+                select: "images name alias"
             }, (err, orders) => {
                 workflow.emit('response', {
                     error: err,

@@ -86,11 +86,24 @@ var gets = (cb) => {
             },
             { "$sort": { "count": -1 } },
             { "$limit": 10 }
-        ], (err, products) => {
-            workflow.emit('response', {
-                error: err,
-                products: products
-            })
+        ], (err, docs) => {
+            var a = [];
+            if (docs && docs.length > 0) {
+                SearchProduct.populate(docs, {
+                    path: '_id.id',
+                    model: 'Product',
+                    select: 'alias'
+                }, (err, products) => {
+                    workflow.emit('response', {
+                        error: err,
+                        products: products
+                    })
+                })
+            } else {
+                workflow.emit('response', {
+                    products: []
+                })
+            }
         })
     });
 

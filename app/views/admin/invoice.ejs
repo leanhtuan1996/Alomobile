@@ -139,7 +139,7 @@
                                                                 <% subTotal+= product.quantity * product.price %>
                                                                 <tr>
                                                                     <td>
-                                                                        <a href="/admin/product/<%- product.id._id %>">
+                                                                        <a href="/<%- product.alias %>-<%- product.id._id %>" target="_blank">
                                                                             <span><%- product.id.name %> - </span>
                                                                         </a>  
                                                                     <td>

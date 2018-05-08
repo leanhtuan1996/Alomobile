@@ -542,7 +542,7 @@
 										}							
 									}
 
-									items += `<span class="inline-block">Cho ${review.product.name}</span>
+									items += `<span class="inline-block">Cho <a href="/${review.product.alias}-${review.product._id}" target="_blank">${review.product.name}</a></span>
 								</div>
 								<a href="javascript:void(0);" class="pull-right txt-grey">
 									<i class="zmdi zmdi-mail-reply"></i>
@@ -591,7 +591,7 @@
 
 					items += `					
 						<td class="txt-dark td-id">
-							${order._id}
+							<a href="/admin/invoice?id=${order._id}">${order.alias}</a>
 						</td>
 						<td style="color: blue;" class="td-name-user">
 							<a href="javascript: void(0)"> ${fullName}</a>
@@ -604,11 +604,11 @@
 												padding: 0;
 												overflow: hidden;" data-id-product="${product.id._id}">
 										<li style="float: left; margin: 5px">
-											<a href="/admin/product/${product.id._id}"><span>${product.id.name} - </span></a>  
+											<a href="/${product.id.alias}-${product.id._id}" target="_blank"><span>${product.id.name} - </span></a>  
 										</li>
 										<li style="background-color: ${product.color.hex}; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin: 5px" title="${product.color.name}">
 										</li>
-										<li style="float: left; margin: 5px"><span>- ${product.price} </span></li>
+										<li style="float: left; margin: 5px"><span>- ${numberWithCommas(product.price)} VNĐ </span></li>
 										<li style="float: left; margin: 5px"><span>- số lượng: ${ product.quantity}</span></li>
 									</ul>	`
 								}) 
@@ -637,7 +637,7 @@
 							}
 						items += `</td>
 						<td class="action-brand">
-							<a href="/admin/invoice?id=${order._id}" class="text-inverse pr-10 review-order" title="Duyệt đơn hàng" data-id-order="${order._id}">
+							<a href="/admin/invoice?id=${order._id}" class="text-inverse pr-10 review-order" title="Duyệt đơn hàng" data-id-order="${order._id}" target="_blank">
 								<i class="zmdi zmdi-eye txt-warning"></i>
 							</a>
 						</td>
@@ -680,12 +680,14 @@
 			if (data.products && data.products.length > 0) {
 				var items = "";
 				data.products.forEach(product => {
-					items += `
-					<tr>
-						<td><a href="/admin/product/${product._id.id}">${product._id.name}</a></td>
-						<td>${product.count}</td>
-				  	</tr>
-					`
+					if (product._id.id) {
+						items += `
+						<tr>
+							<td><a href="/${product._id.id.alias}-${product._id.id._id}" target="_blank">${product._id.name}</a></td>
+							<td>${product.count}</td>
+						  </tr>
+						`
+					}					
 				});
 
 				$('#table_search_product tbody').append(items);
@@ -714,14 +716,14 @@
 						label = `
 							<div class="mb-5">
 								<span class="clabels circular-clabels inline-block mr-5" style="background-color: ${colors[index]} "></span>
-								<span class="clabels-text font-12 inline-block txt-dark capitalize-font"><a href="/admin/product/${product._id._id}">${product._id.name}</a></span>
+								<span class="clabels-text font-12 inline-block txt-dark capitalize-font"><a href="/${product._id.alias}-${product._id._id}" target="_blank">${product._id.name}</a></span>
 							</div>
 						`
 					} else {
 						label = `
 						<div class="">
 						<span class="clabels circular-clabels inline-block" style="background-color: ${colors[index]} "></span>
-							<span class="clabels-text font-12 inline-block txt-dark capitalize-font"><a href="/admin/product/${product._id._id}">${product._id.name}</a></span>
+							<span class="clabels-text font-12 inline-block txt-dark capitalize-font"><a href="/${product._id.alias}-${product._id._id}" target="_blank">${product._id.name}</a></span>
 						</div>
 					`
 					}

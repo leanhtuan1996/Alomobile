@@ -62,7 +62,7 @@
                                                                 <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  (date.getMonth() + 1) +"/" +date.getFullYear() %>
                                                                 <tr role="row" id="<%- order._id %>"> 
                                                                     <td class="txt-dark td-id">
-                                                                        <a href="/admin/invoice?id=<%- order._id %>"><%- order.alias %></a>
+                                                                        <a href="/admin/invoice?id=<%- order._id %>" target="_blank"><%- order.alias %></a>
                                                                     </td>
                                                                     <td style="color: blue;" class="td-name-user">
                                                                         <a href="javascript: void(0);"> <%- fullName %></a>
@@ -75,7 +75,7 @@
                                                                             padding: 0;
                                                                             overflow: hidden;" data-id-product="<%- product.id._id %>" >
                                                                                     <li style="float: left; margin: 5px">
-                                                                                        <a href="/admin/product/<%- product.id._id %>"><span><%- product.id.name %> - </span></a>  
+                                                                                        <a href="/<%- product.alias %>-<%- product.id._id %>"><span><%- product.id.name %> - </span></a>  
                                                                                     </li>
                                                                                     <li style="background-color: <%- product.color.hex %>; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin: 5px" title="<%- product.color.name %>">
                                                                                     </li>
