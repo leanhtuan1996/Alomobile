@@ -604,13 +604,6 @@ var getOrder = (id, cb) => {
                 return
             }
 
-            if (order.status != 0) {
-                workflow.emit('response', {
-                    error: "Đơn hàng đã được chấp nhận"
-                });
-                return
-            }
-
             workflow.emit('response', {
                 order: order
             });

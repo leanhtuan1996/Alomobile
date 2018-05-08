@@ -314,7 +314,7 @@ router.get('/admin/orders/approval', [auth.requireAuth, auth.requireRole], (req,
 });
 
 router.get('/admin/invoice', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Order.getOrder(req.query.id, (result) => {
+    Order.getDetailOrder(req.query.id, (result) => {
         if (!result.order) {
             res.render('admin/404', {
                 data: {}

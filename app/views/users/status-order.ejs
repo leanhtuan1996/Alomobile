@@ -30,7 +30,7 @@
                             </header>
                             <!-- ORDER STATUS -->
                             <section id="order-status-checking" class="page-content card card-block">
-                                <form action="" class="tracking-order" method="post">
+                                <form action="" class="tracking-order">
                                     <header>
                                         <p class="send-renew-password-link"></p>
                                     </header>
@@ -399,8 +399,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="email" style="widows: 0px;">&emsp;</label>
-                                            <button class="form-control-submit btn btn-success hidden-xs-down" type="submit" style="font-weight: 600; margin: 10px;" id="check">KIỂM TRA</button>
-                                            <button class="form-control-submit btn btn-success hidden-sm-up" name="submit" type="submit" id="check-1">KIỂM TRA</button>
+                                            <button class="form-control-submit btn btn-success hidden-xs-down" type="button" style="font-weight: 600; margin: 10px;" id="check">KIỂM TRA</button>
+                                            <button class="form-control-submit btn btn-success hidden-sm-up" name="submit" type="button" id="check-1">KIỂM TRA</button>
                                         </div>                                                    
                                     </form>
                                 </div>
@@ -409,7 +409,63 @@
                     </section>
                 `
 
-                $(statusSession).after(sessionOrders)
+                $(statusSession).after(sessionOrders);
+
+                $('#check, #check-1').click((e) => {
+                    var email = $('#email').val();
+                    var id = $('#id_order').val();
+
+                    if (!email || email == undefined) {
+                        swal({
+                            title: "Có lỗi xảy ra",
+                            text: "Vui lòng nhập Email cần tra cứu!",
+                            icon: "error",
+                            button: "Đã rõ",
+                        });
+                        return
+                    }
+
+                    if (!id || id == undefined) {
+                        swal({
+                            title: "Có lỗi xảy ra",
+                            text: "Vui lòng nhập Mã đơn hàng cần tra cứu!",
+                            icon: "error",
+                            button: "Đã rõ",
+                        });
+                        return
+                    }
+
+                    
+
+                    $.ajax({
+                        url: '/api/v1/order/tracking-order',
+                        data: {
+                            id: id,
+                            email: email
+                        },
+                        method: 'POST',
+                        success: (data) => {
+                            if (!data.order) {
+                                swal({
+                                    title: "Có lỗi xảy ra",
+                                    text: "Đơn hàng không tìm thấy hoặc mã nhập vào không hợp lệ.",
+                                    icon: "error",
+                                    button: "Đã rõ",
+                                });
+                            } else {
+                                location.href = `/tra-cuu-don-hang?id=${id}&email=${email}`
+                            }
+                        },
+                        error: (err) => {
+                            swal({
+                                title: "Có lỗi xảy ra",
+                                text: err.statusText,
+                                icon: "error",
+                                button: "Đã rõ",
+                            });
+                        }
+                    })
+                })
             } 
         });
     })("<%- data.order.alias %>")
@@ -488,65 +544,6 @@
             })
         });
 
-        
-
-        $("#checking-status-order").submit((e) => {
-            e.preventDefault();
-            
-            var email = $('#email').val();
-            var id = $('#id_order').val();
-
-            if (!email || email == undefined) {
-                swal({
-                    title: "Có lỗi xảy ra",
-                    text: "Vui lòng nhập Email cần tra cứu!",
-                    icon: "error",
-                    button: "Đã rõ",
-                });
-                return
-            }
-
-            if (!id || id == undefined) {
-                swal({
-                    title: "Có lỗi xảy ra",
-                    text: "Vui lòng nhập Mã đơn hàng cần tra cứu!",
-                    icon: "error",
-                    button: "Đã rõ",
-                });
-                return
-            }
-
-            $.ajax({
-                url: '/tra-cuu-don-hang',
-                data: {
-                    id: id,
-                    email: email
-                },
-                method: 'POST',
-                success: (data) => {
-                    if (!data.order) {
-                        swal({
-                            title: "Có lỗi xảy ra",
-                            text: "Đơn hàng không tìm thấy hoặc mã nhập vào không hợp lệ.",
-                            icon: "error",
-                            button: "Đã rõ",
-                        });
-                    } else {
-                        location.href = `/tra-cuu-don-hang?id=${id}&email=${email}`
-                    }
-                },
-                error: (err) => {
-                    swal({
-                        title: "Có lỗi xảy ra",
-                        text: err.statusText,
-                        icon: "error",
-                        button: "Đã rõ",
-                    });
-                }
-            })
-        });
-
-           
     })
 
 </script>
