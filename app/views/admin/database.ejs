@@ -2,18 +2,19 @@
 <html lang="vi">
 
 <head>
-		
-	<!-- bootstrap-select CSS -->
-	<link href="/static/admin/libs/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>	
-	
-	<!-- Bootstrap Switches CSS -->
-	<link href="/static/admin/libs/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
-		
-	<!-- switchery CSS -->
-	<link href="/static/admin/libs/switchery/dist/switchery.min.css" rel="stylesheet" type="text/css"/>
 
-    <% include layouts/header %>
-    
+	<!-- bootstrap-select CSS -->
+	<link href="/static/admin/libs/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+
+	<!-- Bootstrap Switches CSS -->
+	<link href="/static/admin/libs/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" type="text/css"
+	/>
+
+	<!-- switchery CSS -->
+	<link href="/static/admin/libs/switchery/dist/switchery.min.css" rel="stylesheet" type="text/css" />
+
+	<% include layouts/header %>
+
 </head>
 
 <body>
@@ -23,161 +24,110 @@
 	</div>
 	<!-- /Preloader -->
 	<div class="wrapper theme-5-active pimary-color-green">
-        
-        <% include layouts/menu %>
 
-        <!-- Main Content -->
-		<div class="page-wrapper">
-            <div class="container-fluid pt-25">				
-				<!-- Row -->
-				<div class="row">
-					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-						<div class="panel panel-default card-view panel-refresh">
-							<div class="refresh-container">
-								<div class="la-anim-1"></div>
-							</div>
-							<div class="panel-heading">
-								<div class="pull-left">
-									<h6 class="panel-title txt-dark">Sao lưu Cơ Sở Dữ Liệu</h6>
+		<% include layouts/menu %>
+
+			<!-- Main Content -->
+			<div class="page-wrapper">
+				<div class="container-fluid pt-25">
+					<!-- Row -->
+					<div class="row">
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+							<div class="panel panel-default card-view panel-refresh">
+								<div class="refresh-container">
+									<div class="la-anim-1"></div>
 								</div>
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-wrapper collapse in">							
-								<div class="panel-body row">
-									<div class="col-sm-12">	
-										<h6>Đọc kỹ những điều sau trước khi thực hiện:</h6>
-										<ol style="padding: 20px;">												
-											<li>Luôn đảm bảo giữ bản sao lưu ở một nơi an toàn.</li>
-											<li>Luôn xác minh chất lượng và tính toàn vẹn của các tệp sao lưu của bạn!</li>
-											<li>Luôn xác minh rằng các tệp sao lưu của bạn đã hoàn tất, cập nhật và hợp lệ, ngay cả khi bạn có thông báo thành công xuất hiện trong quá trình sao lưu.</li>
-										</ol>											
-									</div>																
+								<div class="panel-heading">
+									<div class="pull-left">
+										<h6 class="panel-title txt-dark">Sao lưu Cơ Sở Dữ Liệu</h6>
+									</div>
+									<div class="clearfix"></div>
 								</div>
-								<div class="panel-footer">
-									<button class="btn btn-success btn-icon left-icon" style="margin: 15px;">
-										<i class="fa fa-save"></i> 
-										<span>Sao lưu ngay</span>
-									</button>
-								</div>	
+								<div class="panel-wrapper collapse in">
+									<div class="panel-body row">
+										<div class="col-sm-12">
+											<h6>Đọc kỹ những điều sau trước khi thực hiện:</h6>
+											<ol style="padding: 20px;">
+												<li>Luôn đảm bảo giữ bản sao lưu ở một nơi an toàn.</li>
+												<li>Luôn xác minh chất lượng và tính toàn vẹn của các tệp sao lưu của bạn!</li>
+												<li>Luôn xác minh rằng các tệp sao lưu của bạn đã hoàn tất, cập nhật và hợp lệ, ngay cả khi bạn có thông báo thành
+													công xuất hiện trong quá trình sao lưu.</li>
+											</ol>
+										</div>
+									</div>
+									<div class="panel-footer">
+										<button class="btn btn-success btn-icon left-icon" style="margin: 15px;" id="backup_database">
+											<i class="fa fa-save"></i>
+											<span>Sao lưu ngay</span>
+										</button>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">					
-						<div class="panel panel-default card-view sm-data-box-3">
-							<div class="panel-heading">
-								<div class="pull-left">
-									<h6 class="panel-title txt-dark">Khôi phục Cơ Sở Dữ Liệu</h6>
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+							<div class="panel panel-default card-view sm-data-box-3">
+								<div class="panel-heading">
+									<div class="pull-left">
+										<h6 class="panel-title txt-dark">Khôi phục Cơ Sở Dữ Liệu</h6>
+									</div>
+									<div class="clearfix"></div>
 								</div>
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-wrapper collapse in">
-								<div class="panel-body">
-									<div class="col-md-12">
-										<div class="col-md-6">
-											<div class="pull-left">
-												<span>Xoá dữ liệu trước đó</span>
+								<div class="panel-wrapper collapse in">
+									<div class="panel-body">
+										<div class="col-md-12">
+											<div class="input-group">
+												<label class="input-group-btn">
+													<span class="btn btn-success btn-icon left-icon">
+														<i class="fa fa-folder-o"></i>
+														Browse&hellip;
+														<input type="file" style="display: none;" accept="application/gzip, .gz">
+													</span>
+												</label>
+												<input type="text" class="form-control" readonly>
 											</div>
+											<span class="help-block">
+												Chọn file có đuôi là .gz để tiến hành khôi phục.
+											</span>
 										</div>
-										<div class="col-md-6"><input type="checkbox" checked class="js-switch js-switch-1" data-color="#8BC34A"/></div>	
-									</div>					
-									<div class="clearfix" style="margin: 10px;"></div>								
-									<div class="col-md-12">
-										<div class="input-group">
-											<label class="input-group-btn">
-												<span class="btn btn-success btn-icon left-icon">
-													<i class="fa fa-folder-o"></i> 
-													Browse&hellip; <input type="file" style="display: none;" accept="application/gzip, .gz">
-												</span>
-											</label>
-											<input type="text" class="form-control" readonly>
-										</div>
-										<span class="help-block">
-											Chọn file có đuôi là .gz để tiến hành khôi phục.
-										</span>
-									</div>						
-								</div>	
-								<div class="panel-footer">
-									<button class="btn btn-success btn-icon left-icon" style="margin: 15px;">
-										<i class="fa fa-refresh"></i> 
-										<span>Khôi phục ngay</span>
-									</button>
+									</div>
+									<div class="panel-footer">
+										<button class="btn btn-success btn-icon left-icon" style="margin: 15px;" id="restore_database">
+											<i class="fa fa-refresh"></i>
+											<span>Khôi phục ngay</span>
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<!-- /Row -->
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default card-view panel-refresh">
-							<div class="refresh-container">
-								<div class="la-anim-1"></div>
-							</div>
-							<div class="panel-heading">
-								<div class="pull-left">
-									<h6 class="panel-title txt-dark">Các bảng sao lưu CSDL</h6>
+					<!-- /Row -->
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-default card-view panel-refresh">
+								<div class="refresh-container">
+									<div class="la-anim-1"></div>
 								</div>
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-wrapper collapse in">
-								<div class="panel-body row pa-0">
-									<div class="table-wrap sm-data-box-2">
-										<div class="table-responsive">
-											<table class="table table-striped mb-0" id="table_top_keyword">
-												<thead>
-													<tr>
-														<th>Ngày</th>
-														<th>Tên tệp</th>
-														<th>Kích thước</th>
-														<th></th>
-													</tr>
-												</thead>
-												<tbody>	
-													<tr>
-														<td>20/02/2018</td>
-														<td>ALOMOBILE-9-5-2018-14-20.bz</td>
-														<td>28</td>
-														<td>
-															<div class="btn-group pull-right">
-																<a href="javascript: void(0);" title="Download" class="btn btn-primary download">
-																	<i class="fa fa-download" aria-hidden="true"></i> Tải xuống
-																</a>
-																<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-																	<span class="caret"></span>
-																</button>
-																<ul class="dropdown-menu" role="menu" >
-																	<li>
-																		<a href="javascript: void(0);" title="Delete" >
-																			<i class="fa fa-trash-o" aria-hidden="true"></i> Xoá
-																		</a>
-																	</li>
-																</ul>								
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td>20/02/2018</td>
-														<td>ALOMOBILE-9-5-2018-14-20.bz</td>
-														<td>28</td>
-														<td>
-															<div class="btn-group pull-right">
-																<a href="javascript: void(0);" title="Download" class="btn btn-primary download">
-																	<i class="fa fa-download" aria-hidden="true"></i> Tải xuống
-																</a>
-																<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-																	<span class="caret"></span>
-																</button>
-																<ul class="dropdown-menu" role="menu" >
-																	<li>
-																		<a href="javascript: void(0);" title="Delete" >
-																			<i class="fa fa-trash-o" aria-hidden="true"></i> Xoá
-																		</a>
-																	</li>
-																</ul>								
-															</div>
-														</td>
-													</tr>
-													<tr>
+								<div class="panel-heading">
+									<div class="pull-left">
+										<h6 class="panel-title txt-dark">Các bảng sao lưu CSDL</h6>
+									</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="panel-wrapper collapse in">
+									<div class="panel-body row pa-0">
+										<div class="table-wrap sm-data-box-2">
+											<div class="table-responsive">
+												<table class="table table-striped mb-0" id="table_top_keyword">
+													<thead>
+														<tr>
+															<th>Ngày</th>
+															<th>Tên tệp</th>
+															<th>Kích thước</th>
+															<th></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
 															<td>20/02/2018</td>
 															<td>ALOMOBILE-9-5-2018-14-20.bz</td>
 															<td>28</td>
@@ -189,105 +139,174 @@
 																	<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 																		<span class="caret"></span>
 																	</button>
-																	<ul class="dropdown-menu" role="menu" >
+																	<ul class="dropdown-menu" role="menu">
 																		<li>
-																			<a href="javascript: void(0);" title="Delete" >
+																			<a href="javascript: void(0);" title="Delete">
 																				<i class="fa fa-trash-o" aria-hidden="true"></i> Xoá
 																			</a>
 																		</li>
-																	</ul>								
+																	</ul>
 																</div>
 															</td>
 														</tr>
-												</tbody>
-											</table>
+														<tr>
+															<td>20/02/2018</td>
+															<td>ALOMOBILE-9-5-2018-14-20.bz</td>
+															<td>28</td>
+															<td>
+																<div class="btn-group pull-right">
+																	<a href="javascript: void(0);" title="Download" class="btn btn-primary download">
+																		<i class="fa fa-download" aria-hidden="true"></i> Tải xuống
+																	</a>
+																	<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+																		<span class="caret"></span>
+																	</button>
+																	<ul class="dropdown-menu" role="menu">
+																		<li>
+																			<a href="javascript: void(0);" title="Delete">
+																				<i class="fa fa-trash-o" aria-hidden="true"></i> Xoá
+																			</a>
+																		</li>
+																	</ul>
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td>20/02/2018</td>
+															<td>ALOMOBILE-9-5-2018-14-20.bz</td>
+															<td>28</td>
+															<td>
+																<div class="btn-group pull-right">
+																	<a href="javascript: void(0);" title="Download" class="btn btn-primary download">
+																		<i class="fa fa-download" aria-hidden="true"></i> Tải xuống
+																	</a>
+																	<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+																		<span class="caret"></span>
+																	</button>
+																	<ul class="dropdown-menu" role="menu">
+																		<li>
+																			<a href="javascript: void(0);" title="Delete">
+																				<i class="fa fa-trash-o" aria-hidden="true"></i> Xoá
+																			</a>
+																		</li>
+																	</ul>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
+					<div class="row">
 						<div class="col-md-12">
 							<div class="panel panel-default card-view panel-refresh">
-									<div class="refresh-container">
-										<div class="la-anim-1"></div>
+								<div class="refresh-container">
+									<div class="la-anim-1"></div>
+								</div>
+								<div class="panel-heading">
+									<div class="pull-left">
+										<h6 class="panel-title txt-dark">Các tuỳ chọn khác</h6>
 									</div>
-									<div class="panel-heading">
-										<div class="pull-left">
-											<h6 class="panel-title txt-dark">Các tuỳ chọn khác</h6>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-									<div class="panel-wrapper collapse in">
-										<div class="panel-body row">
-																					
-										</div>	
+									<div class="clearfix"></div>
+								</div>
+								<div class="panel-wrapper collapse in">
+									<div class="panel-body row">
+
 									</div>
 								</div>
+							</div>
 						</div>
 					</div>
-			</div>
-			
-			<!-- Footer -->
-			<footer class="footer container-fluid pl-30 pr-30">
-                <div class="row">
-                    <div class="col-sm-12">
-                    <p>2018 &copy; Alomobile</p>
-                    </div>
-                </div>
-            </footer>
-            <!-- /Footer -->
-			
-		</div>
-        <!-- /Main Content -->
+				</div>
 
-    </div>
+				<!-- Footer -->
+				<footer class="footer container-fluid pl-30 pr-30">
+					<div class="row">
+						<div class="col-sm-12">
+							<p>2018 &copy; Alomobile</p>
+						</div>
+					</div>
+				</footer>
+				<!-- /Footer -->
+
+			</div>
+			<!-- /Main Content -->
+
+	</div>
 	<!-- /#wrapper -->
-	<% include layouts/footer %>	 
-	
-	<!-- Bootstrap Select JavaScript -->
-	<script src="/static/admin/libs/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<% include layouts/footer %>
+	<script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<!-- Bootstrap Select JavaScript -->
+		<script src="/static/admin/libs/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 </body>
 <script>
-	$('.js-switch-1').each(function() {
+	$('.js-switch-1').each(function () {
 		new Switchery($(this)[0], $(this).data());
 	});
 
-	$(function() {
+	function showNotifier(status, content) {
+		swal('Thông báo', content, status)
+	};
 
-// We can attach the `fileselect` event to all file inputs on the page
-$(document).on('change', ':file', function() {
-  var input = $(this),
-	  numFiles = input.get(0).files ? input.get(0).files.length : 1,
-	  label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-  input.trigger('fileselect', [numFiles, label]);
-});
+	$(function () {
 
-// We can watch for our custom `fileselect` event like this
-$(document).ready( function() {
-	$(':file').on('fileselect', function(event, numFiles, label) {
+		// We can attach the `fileselect` event to all file inputs on the page
+		$(document).on('change', ':file', function () {
+			var input = $(this),
+				numFiles = input.get(0).files ? input.get(0).files.length : 1,
+				label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+			input.trigger('fileselect', [numFiles, label]);
+		});
 
-		var input = $(this).parents('.input-group').find(':text'),
-			log = numFiles > 1 ? numFiles + ' files selected' : label;
+		// We can watch for our custom `fileselect` event like this
+		$(document).ready(function () {
+			$(':file').on('fileselect', function (event, numFiles, label) {
 
-		if( input.length ) {
-			input.val(log);
-		} else {
-			if( log ) alert(log);
-		}
+				var input = $(this).parents('.input-group').find(':text'),
+					log = numFiles > 1 ? numFiles + ' files selected' : label;
 
+				if (input.length) {
+					input.val(log);
+				} else {
+					if (log) alert(log);
+				}
+
+			});
+		});
 	});
-});
 
-});
-	
+	jQuery(document).ready(($) => {
+		$('#backup_database').click((e) => {
+			$.ajax({
+				url: '/api/v1/database/back-up',
+				method: 'POST',
+				success: (data) => {
+					if (data.error) {
+						showNotifier('error', data.error);
+					} else {
+						if (data.path && data.fileName) {
+							location.href = `/api/v1/database/back-up?path=${data.path}&fileName=${data.fileName}`
+						} else {
+							showNotifier('error', 'Có lỗi trong quá trình khởi tạo bản sao, vui lòng thử lại sau');
+						}
+					}
+				}, 
+				error: (err) => {
+					showNotifier('error', err.status == 403 ? "Bạn không có quyền thực hiện chức năng này." : 'Có lỗi trong quá trình khởi tạo bản sao, vui lòng thử lại sau');
+				}
+			});
+		});
+
+		$('#restore_database').click((e) => {
+
+		});
+	});
+
 </script>
-<style>
-	.switchery {
-		margin-top: 0px;
-	}
-</style>
 
 </html>

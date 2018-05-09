@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"alomobile.invalidtokens"},{"v":2,"key":{"_fts":"text","_ftsx":1},"name":"$**_text","ns":"alomobile.invalidtokens","background":true,"weights":{"$**":1},"default_language":"english","language_override":"language","textIndexVersion":3}],"uuid":"af7f966c2b3b44a6acae2de1b604942b"}

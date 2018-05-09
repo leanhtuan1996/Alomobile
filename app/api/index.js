@@ -11,6 +11,7 @@ var analytic = require('./analytic');
 var searchKeyword = require('./searchKeyword');
 var searchProduct = require('./searchProduct');
 var promotion = require('./promotion');
+var settings = require('./settings');
 
 module.exports = {
     brand: brand,
@@ -25,5 +26,6 @@ module.exports = {
     analytic: analytic,
     searchKeyword: searchKeyword,
     searchProduct: searchProduct,
-    promotion: promotion
+    promotion: promotion,
+    settings: settings
 }

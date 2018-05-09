@@ -5,6 +5,7 @@ const multer = require('multer');
 const auth = require('../app/middleware/index').authenticate;
 const helper = require('../app/helpers/index').helper;
 const api = require('../app/api/index');
+const fs = require('fs');
 
 const User = api.user;
 const Product = api.product;
@@ -19,6 +20,7 @@ const SearchProduct = api.searchProduct;
 const Promotion = api.promotion;
 const Role = api.role;
 const Mail = api.mail;
+const Settings = api.settings;
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -974,5 +976,26 @@ router.delete('/api/v1/role', [auth.requireAuth, auth.requireRole], (req, res) =
 
 
 //#endregion APIS FOR ROLE
+
+//#region APIS FOR DATABASE
+router.post('/api/v1/database/back-up', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Settings.backupDatabase((result) => {
+        res.json(result);
+    });
+});
+
+router.get('/api/v1/database/back-up', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Settings.downloadBackup(req.query.path, req.query.fileName, (result) => {
+        if (result.error) {
+            res.json({
+                error: result.error
+            });
+        } else {
+            res.download(result.path, result.fileName);
+        }
+    });
+});
+
+//#endregion APIS FOR DATABASE
 
 module.exports = router;
