@@ -20,10 +20,10 @@ var auth = require('../app/middleware/index').authenticate;
 //#region USER ROUTERS
 
 router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
-     //get count
-     Product.getCountProducts((r1) => {
+    //get count
+    Product.getCountProducts((r1) => {
         User.getCountUsers((r2) => {
-            Order.getCountOrders((r3) => {     
+            Order.getCountOrders((r3) => {
                 Session.count({}, (err, c) => {
                     Analytic.satisfiedClient((r4) => {
                         res.render('dashboard', {
@@ -36,8 +36,8 @@ router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
                                 satisfiedClient: r4
                             }
                         });
-                    })                        
-                });                    
+                    })
+                });
             });
         });
     });
@@ -84,7 +84,7 @@ router.get('/admin/products', [auth.requireAuth, auth.requireRole], (req, res) =
 });
 
 router.get('/admin/product/add', [auth.requireAuth, auth.requireRole], (req, res) => {
-    
+
     /** GET CATEGORIES */
     Category.getCategories((r) => {
         Brand.getBrands((r1) => {
@@ -329,5 +329,14 @@ router.get('/admin/promotions', [auth.requireAuth, auth.requireRole], (req, res)
 });
 
 //#endregion PROMOTION ROUTERS
+
+
+router.get('/admin/database', [auth.requireAuth], (req, res) => {
+    res.render('admin/database', {
+        data: {
+            title: "Alomobile Control Panel - Trang quản lý CSDL",
+        }
+    })
+})
 
 module.exports = router;

@@ -1,0 +1,3 @@
+mongodump -d alomobile --username alomobile --password letuananh --authenticationDatabase alomobile --host 35.201.243.41 --port 27017 --gzip
+mongostore --db alomobile --drop --gzip --archive=alomobile.gz
+mongodump -d alomobile --username alomobile --password letuananh --authenticationDatabase alomobile --host 35.201.243.41 --port 27017 --archive=alomobile.gz --gzip
