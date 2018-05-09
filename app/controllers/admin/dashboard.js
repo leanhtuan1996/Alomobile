@@ -29,6 +29,7 @@ var dashboard = (result) => {
                 orderApi.getCountOrders((r3) => {     
                     Session.count({}, (err, c) => {
                         analyticApi.satisfiedClient((r4) => {
+                            console.log(r4);
                             workflow.emit('response', {
                                 error: null,
                                 countUsers: r2.count,

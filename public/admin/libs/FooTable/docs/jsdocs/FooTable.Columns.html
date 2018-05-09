@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8">
     <title>JSDoc: Class: Columns</title>
@@ -1014,7 +1014,9 @@
 
 
 <div class="description">
-    Attempts to return a <a href="FooTable.Column.html"><code>FooTable.Column</code></a> instance when passed the <a href="FooTable.Column.html"><code>FooTable.Column</code></a> instance, the <a href="FooTable.Column.html#name"><code>FooTable.Column#name</code></a> string or the <a href="FooTable.Column.html#index"><code>FooTable.Column#index</code></a> number.If supplied a function this will return an array by iterating all columns passing the index and column itself to the supplied callback as arguments.Returning true in the callback will include the column in the result.
+    Attempts to return a <a href="FooTable.Column.html"><code>FooTable.Column</code></a> instance when passed the <a href="FooTable.Column.html"><code>FooTable.Column</code></a> instance, the <a href="FooTable.Column.html#name"><code>FooTable.Column#name</code></a> string or the <a href="FooTable.Column.html#index"><code>FooTable.Column#index</code></a> number.
+If supplied a function this will return an array by iterating all columns passing the index and column itself to the supplied callback as arguments.
+Returning true in the callback will include the column in the result.
 </div>
 
 
@@ -1168,7 +1170,16 @@
     
         <p class="code-caption">This example shows retrieving a column by name assuming a column called "id" exists. The <code>columns</code> object is an instance of <a href="FooTable.Columns.html"><code>FooTable.Columns</code></a>.</p>
     
-    <pre class="prettyprint"><code>var column = columns.get('id');if (column instanceof FooTable.Column){	// found the "id" column} else {	// no column with a name of "id" exists}// to get an array of all hidden columnsvar columns = columns.get(function(col){ return col.hidden;});</code></pre>
+    <pre class="prettyprint"><code>var column = columns.get('id');
+if (column instanceof FooTable.Column){
+	// found the "id" column
+} else {
+	// no column with a name of "id" exists
+}
+// to get an array of all hidden columns
+var columns = columns.get(function(col){
+ return col.hidden;
+});</code></pre>
 
 
 
@@ -1421,7 +1432,8 @@
 
 
 <div class="description">
-    Used to finalize the parsing of columns it is supplied the parse deferred object which must be resolved with an array of <a href="FooTable.Column.html"><code>FooTable.Column</code></a> objectsor rejected with an error.
+    Used to finalize the parsing of columns it is supplied the parse deferred object which must be resolved with an array of <a href="FooTable.Column.html"><code>FooTable.Column</code></a> objects
+or rejected with an error.
 </div>
 
 

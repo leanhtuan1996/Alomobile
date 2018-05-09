@@ -4,11 +4,6 @@ var router = express.Router();
 var User = require('../app/api/index').user;
 var Order = require('../app/api/index').order;
 
-var helper = require('../app/helpers/index').helper;
-var middleware = require('../app/middleware/index').middleware
-
-var auth = require('../app/middleware/index').authenticate;
-
 router.get('/thanh-toan', (req, res) => {
     if (!req.session.order) {
         res.redirect('/gio-hang');

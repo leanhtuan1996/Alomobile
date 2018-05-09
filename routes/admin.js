@@ -9,55 +9,36 @@ const Brand = require('../app/api/index').brand;
 const Review = require('../app/api/index').review;
 const Role = require('../app/api/index').role;
 const Order = require('../app/api/index').order;
+const Type = require('../app/api/index').type;
+const Promotion = require('../app/api/index').promotion;
+const Analytic = require('../app/api/index').analytic;
 
+var Session = require('../app/models/index').session;
 
-var Dashboard = require('../app/controllers/admin/index').dashboard;
-var Type = require('../app/controllers/admin/index').type;
-var Promotion = require('../app/controllers/admin/index').promotion;
-
-var mail = require('../app/api/index').mail;
-
-var multer = require('multer');
 var auth = require('../app/middleware/index').authenticate;
-var helper = require('../app/helpers/index').helper;
-
-var storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './public/img');
-    },
-    filename: (req, file, cb) => {
-        var originalName = file.originalname.replace(/\.[^/.]+$/, "");
-        var fileExtension = file.originalname.split('.').pop();
-
-        if (!req.body.newNames) {
-            req.body.newNames = [];
-        }
-
-        var newName = Date.now() + _.random(1, 1000) + "." + fileExtension;
-
-        req.body.newNames.push(newName);
-
-        cb(null, newName);
-    }
-});
-var upload = multer({
-    storage: storage,
-    limits: { fileSize: 1 * 1024 * 1024 }
-});
 
 //#region USER ROUTERS
 
 router.get('/admin', [auth.requireAuth, auth.requireRole], (req, res) => {
-    Dashboard.dashboard((result) => {
-        res.render('dashboard', {
-            data: {
-                title: "Alomobile Control Panel - Trang quản trị",
-                countProducts: result.countProducts,
-                countUsers: result.countUsers,
-                countOrders: result.countOrders,
-                countTraffic: result.countTraffic,
-                satisfiedClient: result.satisfiedClient
-            }
+     //get count
+     Product.getCountProducts((r1) => {
+        User.getCountUsers((r2) => {
+            Order.getCountOrders((r3) => {     
+                Session.count({}, (err, c) => {
+                    Analytic.satisfiedClient((r4) => {
+                        res.render('dashboard', {
+                            data: {
+                                title: "Alomobile Control Panel - Trang quản trị",
+                                countProducts: r1.count,
+                                countUsers: r2.count,
+                                countOrders: r3.count,
+                                countTraffic: c.count || 0,
+                                satisfiedClient: r4
+                            }
+                        });
+                    })                        
+                });                    
+            });
         });
     });
 });
@@ -103,7 +84,7 @@ router.get('/admin/products', [auth.requireAuth, auth.requireRole], (req, res) =
 });
 
 router.get('/admin/product/add', [auth.requireAuth, auth.requireRole], (req, res) => {
-
+    
     /** GET CATEGORIES */
     Category.getCategories((r) => {
         Brand.getBrands((r1) => {
