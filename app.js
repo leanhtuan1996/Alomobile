@@ -17,7 +17,6 @@ var product = require('./routes/product');
 var api = require('./routes/api');
 var crawl = require('./routes/crawl');
 var order = require('./routes/order');
-var exec = require('child_process').exec;
 
 var cron = require('./app/controllers/admin/index').cron;
 var redis = require('./app/controllers/index').redis;

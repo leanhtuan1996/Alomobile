@@ -117,7 +117,7 @@
 									<div class="panel-body row pa-0">
 										<div class="table-wrap sm-data-box-2">
 											<div class="table-responsive">
-												<table class="table table-striped mb-0" id="table_top_keyword">
+												<table class="table table-striped mb-0" id="table_list_backups">
 													<thead>
 														<tr>
 															<th>Ngày</th>
@@ -127,72 +127,6 @@
 														</tr>
 													</thead>
 													<tbody>
-														<tr>
-															<td>20/02/2018</td>
-															<td>ALOMOBILE-9-5-2018-14-20.bz</td>
-															<td>28</td>
-															<td>
-																<div class="btn-group pull-right">
-																	<a href="javascript: void(0);" title="Download" class="btn btn-primary download">
-																		<i class="fa fa-download" aria-hidden="true"></i> Tải xuống
-																	</a>
-																	<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-																		<span class="caret"></span>
-																	</button>
-																	<ul class="dropdown-menu" role="menu">
-																		<li>
-																			<a href="javascript: void(0);" title="Delete">
-																				<i class="fa fa-trash-o" aria-hidden="true"></i> Xoá
-																			</a>
-																		</li>
-																	</ul>
-																</div>
-															</td>
-														</tr>
-														<tr>
-															<td>20/02/2018</td>
-															<td>ALOMOBILE-9-5-2018-14-20.bz</td>
-															<td>28</td>
-															<td>
-																<div class="btn-group pull-right">
-																	<a href="javascript: void(0);" title="Download" class="btn btn-primary download">
-																		<i class="fa fa-download" aria-hidden="true"></i> Tải xuống
-																	</a>
-																	<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-																		<span class="caret"></span>
-																	</button>
-																	<ul class="dropdown-menu" role="menu">
-																		<li>
-																			<a href="javascript: void(0);" title="Delete">
-																				<i class="fa fa-trash-o" aria-hidden="true"></i> Xoá
-																			</a>
-																		</li>
-																	</ul>
-																</div>
-															</td>
-														</tr>
-														<tr>
-															<td>20/02/2018</td>
-															<td>ALOMOBILE-9-5-2018-14-20.bz</td>
-															<td>28</td>
-															<td>
-																<div class="btn-group pull-right">
-																	<a href="javascript: void(0);" title="Download" class="btn btn-primary download">
-																		<i class="fa fa-download" aria-hidden="true"></i> Tải xuống
-																	</a>
-																	<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-																		<span class="caret"></span>
-																	</button>
-																	<ul class="dropdown-menu" role="menu">
-																		<li>
-																			<a href="javascript: void(0);" title="Delete">
-																				<i class="fa fa-trash-o" aria-hidden="true"></i> Xoá
-																			</a>
-																		</li>
-																	</ul>
-																</div>
-															</td>
-														</tr>
 													</tbody>
 												</table>
 											</div>
@@ -280,6 +214,50 @@
 		});
 	});
 
+	$(function() {
+		$.get('/api/v1/database/get-list-backups', (data) => {
+			if (data.files && data.files.length > 0) {
+				var items = ""
+
+				data.files.forEach(file => {
+					var date;
+					if (file.dateCreated) {
+						try {
+							var temp = new Date(Date(file.dateCreated));
+							date = `${temp.getHours()}:${temp.getMinutes()} ${temp.getDate()}/${temp.getMonth() + 1}/${temp.getFullYear()}`
+						} catch (error) { }
+					}
+					items += `
+						<tr>
+							<td>${date || ""}</td>
+							<td>${file.fileName}</td>
+							<td>${file.size} kb</td>
+							<td>
+								<div class="btn-group pull-right">
+									<a href="/api/v1/database/back-up?path=${file.filePath}&fileName=${file.fileName}" title="Download" class="btn btn-primary download">
+										<i class="fa fa-download" aria-hidden="true"></i> Tải xuống
+									</a>
+									<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li>
+											<a href="javascript: void(0);" title="Delete" class="remove_file" data-file-path=${file.filePath} data-file-name=${file.fileName}>
+												<i class="fa fa-trash-o" aria-hidden="true"></i> Xoá
+											</a>
+										</li>
+									</ul>
+								</div>
+							</td>
+						</tr>
+					`
+				});
+
+				$('#table_list_backups tbody').append(items);
+			}
+		})
+	});
+
 	jQuery(document).ready(($) => {
 		$('#backup_database').click((e) => {
 			$.ajax({
@@ -304,6 +282,35 @@
 
 		$('#restore_database').click((e) => {
 
+		});
+
+		$('#table_list_backups tbody').delegate('.remove_file', 'click', (e) => {
+			var filePath = $(e.currentTarget).attr('data-file-path');
+			var fileName = $(e.currentTarget).attr('data-file-name');
+
+			if (!filePath || !fileName) {
+				showNotifier('error', 'Không thể thực hiện thao tác này, vui lòng tải lại trang và thử lại');
+			} else {
+				$.ajax({
+					url: '/api/v1/database',
+					method: 'DELETE',
+					data: {
+						path: filePath,
+						fileName: fileName
+					},
+					success: (data) => {
+						if (data.error) {
+							showNotifier('error', 'Có lỗi trong quá trình xoá dữ liệu, vui lòng thử lại sau');
+						} else {
+							var row = $(e.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement)
+							$('#table_list_backups tbody').remove(row);
+						}
+					},
+					error: (err) => {
+						showNotifier('error', err.status == 403 ? "Bạn không có quyền thực hiện chức năng này." : 'Có lỗi trong quá trình khởi tạo bản sao, vui lòng thử lại sau');
+					}
+				});
+			}
 		});
 	});
 

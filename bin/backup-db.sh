@@ -12,7 +12,7 @@ MONGO_PASSWORD="letuananh"
 MONGO_BACKUPDIR="/home/leanhtuan110596/backups/alomobile"
 MONGO_AUTHDB="alomobile"
 #===========================
-TIMESTAMP=`date +%F-%H%M`
+TIMESTAMP=`date +%s`
 BACKUP_NAME="$MONGO_DATABASE-$TIMESTAMP"
 #===========================
 # STARTING BACKUP

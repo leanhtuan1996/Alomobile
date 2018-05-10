@@ -996,6 +996,18 @@ router.get('/api/v1/database/back-up', [auth.requireAuth, auth.requireRole], (re
     });
 });
 
+router.get('/api/v1/database/get-list-backups', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Settings.getListBackupDatabases((result) => {
+        res.json(result)
+    })
+});
+
+router.delete('/api/v1/database', [auth.requireAuth, auth.requireRole], (req, res) => {
+    Settings.removeBackUpFile(req.body.path, req.body.fileName, (result) => {
+        res.json(result)
+    });
+});
+
 //#endregion APIS FOR DATABASE
 
 module.exports = router;
