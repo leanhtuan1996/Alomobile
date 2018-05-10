@@ -22,5 +22,6 @@
 	},
 	"salt": 10,
 	"secret_key" : "alomobile",
-	"keyJWT": "alomobile-zzzxxx"
+	"keyJWT": "alomobile-zzzxxx",
+	"dirBackUpDb": "/Users/tuan/backups/alomobile"
 }
