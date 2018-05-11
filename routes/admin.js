@@ -339,4 +339,22 @@ router.get('/admin/database', [auth.requireAuth], (req, res) => {
     })
 })
 
+router.get('/admin/invoice/print', (req, res) => {  
+    Order.getDetailOrder(req.query.id, (result) => {
+        if (!result.order) {
+            res.json({
+                error: "Print failed"
+            })
+        } else {
+            res.render('admin/invoice-print', {
+                data: {
+                    title: "Alomobile Control Panel > Trang quản lý đơn hàng",
+                    error: result.error,
+                    order: result.order
+                }
+            });
+        }        
+    });
+});
+
 module.exports = router;

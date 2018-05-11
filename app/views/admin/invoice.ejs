@@ -3,7 +3,7 @@
 
 <head>
     <% include layouts/header %>
-
+    <link rel="stylesheet" type="text/css" href="/static/css/print.min.css">
 </head>
 
 <body>
@@ -27,7 +27,7 @@
                     <!-- Row -->
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel panel-default card-view">
+                            <div class="panel panel-default card-view" id="print_invoice">
                                 <div class="panel-heading">
                                     <div class="pull-left">
                                         <h6 class="panel-title txt-dark">Chi tiết đơn hàng</h6>
@@ -163,42 +163,38 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>
-                                                            <td></td>
                                                             <td>Tổng phụ</td>
-                                                            <td><span class="price"><%- subTotal %></span></td>
+                                                            <td colspan="2"><span class="price"><%- subTotal %></span></td>
                                                         </tr>
                                                         <tr class="txt-dark">
-                                                            <td></td>
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>
                                                             <td>Phí vận chuyển</td>
-                                                            <td><span class="price">0 VNĐ</span></td>
+                                                            <td colspan="2"><span class="price">0 VNĐ</span></td>
                                                         </tr>
                                                         <tr class="txt-dark">
-                                                            <td></td>
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>
                                                             <td>Giảm giá</td>
-                                                            <td><span class="price"><%- discount %></span></td>
+                                                            <td colspan="2"><span class="price"><%- discount %></span></td>
                                                         </tr>
                                                         <tr class="txt-dark">
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>
-                                                            <td></td>
                                                             <td>Tổng cộng</td>
-                                                            <td><span class="price"><%- subTotal - discount %></span></td>
+                                                            <td colspan="2"><span class="price"><%- subTotal - discount %></span></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div class="button-list pull-right">
+                                            <div class="button-list pull-right no-print">
                                                 <button type="submit" class="btn btn-success mr-10" id="confirm-order" data-id-order="<%- data.order._id %>">
                                                     Xác nhận đơn hàng
                                                 </button>
-                                                <button type="button" class="btn btn-primary btn-outline btn-icon left-icon" onclick="javascript:window.print();">
+                                                <button type="button" class="btn btn-primary btn-outline btn-icon left-icon" onclick="javascript: printInvoice();">
                                                     <i class="fa fa-print"></i>
                                                     <span>In hoá đơn</span>
                                                 </button>
@@ -216,6 +212,7 @@
                 <!-- /#wrapper -->
                 <% include layouts/footer %>                   
                     <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                    <script type="text/javascript" src="/static/js/print.min.js"></script>
                     <script type="text/javascript">
 
                         function returnOrders() {
@@ -252,6 +249,12 @@
                                             break;
                                     }
                                 });
+                        }
+
+                        function printInvoice() {
+                            var disp_setting="toolbar=yes,location=no,directories=yes,menubar=yes,"; 
+                                disp_setting+="scrollbars=yes,width=780, height=780, left=100, top=25"; 
+                            var newWindow = window.open(`/admin/invoice/print?id=<%- data.order._id %>`, "", disp_setting);   
                         }
 
                     </script>
@@ -300,6 +303,7 @@
                                 $(price).html(numberWithCommas($(price).html() + " VNĐ"));
                             }
                         });
+                        
                     </script>
 </body>
 

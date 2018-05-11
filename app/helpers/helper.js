@@ -224,7 +224,6 @@ var upload = (isRename = true, limit = true, path = Path.join(__dirname, '..', '
         }); 
     }  
 }
-
 module.exports = {
     hashPw: hashPw,
     comparePw: comparePw,

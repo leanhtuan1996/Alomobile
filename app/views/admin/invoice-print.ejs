@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi" moznomarginboxes mozdisallowselectionprint>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <!-- Data table CSS -->
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom CSS -->
+    <link href="/static/admin/css/style.css" rel="stylesheet" type="text/css">
+
+    <style type="text/css" media="print">
+        @page 
+        {
+            size: auto;   /* auto is the current printer page size */
+            margin: 0px;  /* this affects the margin in the printer settings */
+            overflow-x: hidden;
+            
+        }
+
+        a[href]:after { content: none !important; }
+        img[src]:after { content: none !important; }
+
+        .page-wrapper {
+           padding: 0
+        }
+
+        .card-view { 
+           margin-bottom: 0
+        }
+
+        .panel {
+           margin-bottom: 0
+        }
+
+        .table-responsive {
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+    </style>
+</head>
+<body>
+    <!--/Preloader-->
+    <div class="wrapper theme-5-active pimary-color-green">
+
+        <!-- Main Content -->
+        <div class="page-wrapper">
+            <div class="container-fluid">
+            <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default card-view" id="print_invoice">
+                    <div class="panel-heading">
+                        <div class="pull-left">
+                            <h6 class="panel-title txt-dark">Chi tiết đơn hàng</h6>
+                        </div>
+                        <div class="pull-right">
+                            <h6 class="txt-dark">Đơn hàng #<%- data.order.alias %></h6>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-wrapper collapse in">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <span class="txt-dark head-font inline-block capitalize-font mb-5">Địa chỉ nhận hàng:</span>
+                                    <address class="mb-15">
+                                        <span class="address-head mb-5"><%- data.order.toAddress.address %>.</span> 
+                                        <%- data.order.toAddress.state %>
+                                        <br><%- data.order.toAddress.city %>
+                                        <br> Mã bưu điện: <%- data.order.toAddress.zipPostalCode %>
+                                    </address>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    <span class="txt-dark head-font inline-block capitalize-font mb-5">Người nhận:</span>
+                                    <address class="mb-15">
+                                        <span class="address-head mb-5"><%- data.order.toAddress.fullName %></span>
+                                        Phone: <%- data.order.toAddress.phone %>
+                                        <br>
+                                    </address>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <address>
+                                        <span class="txt-dark head-font capitalize-font mb-5">Phương thức thanh toán:</span>
+                                        <% if (data.order.checkoutMethod) { %>
+                                            <% if (data.order.checkoutMethod == 'Cod') { %>
+                                                <br>Thanh toán tiền mặt khi nhận hàng
+                                            <% } else { %>
+                                                <br>Thanh toán trực tuyến
+                                            <% } %>
+                                        <% } else { %>
+                                            <br>Không rõ
+                                        <% } %>
+                                        
+                                    </address>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    <address>
+                                        <span class="txt-dark head-font capitalize-font mb-5">Ngày mua hàng:</span>
+                                        <% var date = new Date(data.order.created_at) %>
+                                        <% var dateCreated = date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "/"+  (date.getMonth() + 1) +"/" +date.getFullYear() %>
+                                        <br> <%- dateCreated %>
+                                        <br>
+                                        <br>
+                                    </address>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                    <div class="col-xs-6">
+                                        <address>
+                                            <span class="txt-dark head-font capitalize-font mb-5">Ghi chú đơn hàng:</span>
+                                            <br> <%- data.order.note == 0 ? "Không có" : data.order.note %>
+                                        </address>
+                                    </div>
+                                    <div class="col-xs-6 text-right">
+                                        <address>
+                                            <span class="txt-dark head-font capitalize-font mb-5">Mã giảm giá:</span>
+                                            <% var discount = 0; %>
+                                            <% if (data.order.promoCode) { %>
+                                                <% var promoCode = data.order.promoCode; %>
+                                                <% if (promoCode.id) { %>
+                                                    <br> <%- promoCode.id.code; %>
+                                                    <% if (promoCode.id.description) { %>
+                                                        <br><%- promoCode.id.description %>
+                                                    <% } %>
+                                                    <% discount = promoCode.discount; %>
+                                                    <br>Giảm: <span class="price"><%- promoCode.discount %></span>
+                                                <% } else { %>
+                                                    <br> Không có
+                                                <% } %>                                                            
+                                            <% } else { %>
+                                                <br> Không có
+                                            <% } %>                                                        
+                                        </address>
+                                    </div>
+                                </div>
+
+                            <div class="seprator-block"></div>
+
+                            <div class="invoice-bill-table">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Sản phẩm</th>
+                                                <th>Hình ảnh</th>
+                                                <th>Màu sắc</th>
+                                                <th>Đơn giá</th>
+                                                <th>Số lượng</th>
+                                                <th>Tổng cộng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% var subTotal = 0; %>
+                                            <% if (data.order.products) { %>
+                                                <% data.order.products.forEach(product => { %>
+                                                    <% subTotal+= product.quantity * product.price %>
+                                                    <tr>
+                                                        <td>
+                                                            <a href="/<%- product.alias %>-<%- product.id._id %>" target="_blank">
+                                                                <span><%- product.id.name %></span>
+                                                            </a>  
+                                                        <td>
+                                                            <img src="<%- product.id.images[0].url %>" alt="<%- product.id.images[0].alt %>" width="80">
+                                                        </td>
+                                                        <td>
+                                                                <li style="background-color: <%- product.color.hex %>; border-radius: 50%; width: 20px; height: 20px; display: inline-block; border-width: 1px; border-style: solid; border-color: grey; float: left; margin: 5px" title="<%-  product.color.name %>">
+                                                        </td>
+                                                        <td>
+                                                                <span class="price"><%- product.price %></span>
+                                                        </td>
+                                                        <td>
+                                                                <span><%- product.quantity %></span>
+                                                        </td>
+                                                        <td><span class="price"><%- product.quantity * product.price %></span></td>
+                                                    </tr>
+                                                <% }) %>
+                                            <% } %>
+                                            
+                                            <tr class="txt-dark">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>Tổng phụ</td>
+                                                <td colspan="2"><span class="price"><%- subTotal %></span></td>
+                                            </tr>
+                                            <tr class="txt-dark">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>Phí vận chuyển</td>
+                                                <td colspan="2"><span class="price">0 VNĐ</span></td>
+                                            </tr>
+                                            <tr class="txt-dark">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>Giảm giá</td>
+                                                <td colspan="2"><span class="price"><%- discount %></span></td>
+                                            </tr>
+                                            <tr class="txt-dark">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>Tổng cộng</td>
+                                                <td colspan="2"><span class="price"><%- subTotal - discount %></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <!-- /Row -->
+            </div>
+        </div>
+</body>
+<footer>
+    <!-- jQuery -->
+    <script type="text/javascript" src="/static/admin/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script type="text/javascript" src="/static/admin/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Data table JavaScript -->
+    <script type="text/javascript" src="/static/admin/libs/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        $('.price').each((index, price) => {
+            if ($(price).html().match(/^[0-9]{1,}$/g)) {
+                $(price).html(numberWithCommas($(price).html() + " VNĐ"));
+            }
+        });
+
+        jQuery(document).ready(($) => {    
+            window.print();
+            window.close();
+        });
+
+    </script>
+</footer>
+</html>
