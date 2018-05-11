@@ -130,7 +130,9 @@ var restoreDatabase = (path, fileName, cb) => {
     });
 
     workflow.on('restore', () => {
-        exec(`mongorestore --host ${config.get('mongoose.host')} --port ${config.get('mongoose.port')} --username ${config.get('mongoose.user')} --password ${config.get('mongoose.password')} --db ${config.get('mongoose.database')} --authenticationDatabase ${config.get('mongoose.database')} --drop --quiet --gzip --archive=${path}/${fileName}`, (error, stdout, stderr) => {
+        var command = `mongorestore --host ${config.get('mongoose.host')} --port ${config.get('mongoose.port')} --username ${config.get('mongoose.user')} --password ${config.get('mongoose.password')} --db ${config.get('mongoose.database')} --authenticationDatabase ${config.get('mongoose.database')} --drop --quiet --gzip --archive=${path}/${fileName}`
+
+        exec(command, (error, stdout, stderr) => {
             workflow.emit('response', {
                 error: error
             });
