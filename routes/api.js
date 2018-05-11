@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
-const multer = require('multer');
 const auth = require('../app/middleware/index').authenticate;
 const helper = require('../app/helpers/index').helper;
 const api = require('../app/api/index');
 const fs = require('fs');
+const path = require('path');
 
 const User = api.user;
 const Product = api.product;
@@ -22,29 +22,6 @@ const Role = api.role;
 const Mail = api.mail;
 const Settings = api.settings;
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './public/img');
-    },
-    filename: (req, file, cb) => {
-        var originalName = file.originalname.replace(/\.[^/.]+$/, "");
-        var fileExtension = file.originalname.split('.').pop();
-
-        if (!req.body.newNames) {
-            req.body.newNames = [];
-        }
-
-        var newName = Date.now() + _.random(1, 1000) + "." + fileExtension;
-
-        req.body.newNames.push(newName);
-
-        cb(null, newName);
-    }
-});
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 1 * 1024 * 1024 }
-});
 
 //#region APIS FOR USER
 router.post('/api/v1/user/sign-in', (req, res) => {
@@ -399,7 +376,7 @@ router.get('/api/v1/product/get-reviews', (req, res) => {
     });
 });
 
-router.post('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
+router.post('/api/v1/product', [auth.requireAuth, auth.requireRole, helper.upload(true, true).array('images', 6)], (req, res) => {
     Product.newProduct(req.body, (result) => {
 
         if (!result.error) {
@@ -416,7 +393,7 @@ router.post('/api/v1/product/duplicate', [auth.requireAuth, auth.requireRole], (
     })
 });
 
-router.put('/api/v1/product', [auth.requireAuth, auth.requireRole, upload.array('images', 6)], (req, res) => {
+router.put('/api/v1/product', [auth.requireAuth, auth.requireRole, helper.upload(true, true).array('images', 6)], (req, res) => {
     Product.editProduct(req.body, (result) => {
 
         //update cache
@@ -498,7 +475,7 @@ router.get('/api/v1/category', (req, res) => {
     });
 });
 
-router.post('/api/v1/category', [auth.requireAuth, auth.requireRole], upload.single('icon'), (req, res) => {
+router.post('/api/v1/category', [auth.requireAuth, auth.requireRole], helper.upload(true, true).single('icon'), (req, res) => {
     Category.addCategory(req.body, (result) => {
 
         //update cache
@@ -527,7 +504,7 @@ router.delete('/api/v1/category', [auth.requireAuth, auth.requireRole], (req, re
     });
 });
 
-router.put('/api/v1/category', [auth.requireAuth, auth.requireRole], upload.single('new_icon'), (req, res) => {
+router.put('/api/v1/category', [auth.requireAuth, auth.requireRole], helper.upload(true, true).single('new_icon'), (req, res) => {
     Category.editCategory(req.body, (result) => {
 
         //update cache
@@ -567,7 +544,7 @@ router.get('/api/v1/brand/get-brands', [auth.requireAuth, auth.requireRole], (re
     });
 });
 
-router.post('/api/v1/brand', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
+router.post('/api/v1/brand', [auth.requireAuth, auth.requireRole], helper.upload(true, true).single('image'), (req, res) => {
     Brand.newBrand(req.body, (result) => {
         res.json({
             error: result.error
@@ -575,7 +552,7 @@ router.post('/api/v1/brand', [auth.requireAuth, auth.requireRole], upload.single
     });
 });
 
-router.put('/api/v1/brand', [auth.requireAuth, auth.requireRole], upload.single('image'), (req, res) => {
+router.put('/api/v1/brand', [auth.requireAuth, auth.requireRole], helper.upload(true, true).single('image'), (req, res) => {
     Brand.editBrand(req.body, (result) => {
         res.json({
             error: result.error
@@ -1004,6 +981,12 @@ router.get('/api/v1/database/get-list-backups', [auth.requireAuth, auth.requireR
 
 router.delete('/api/v1/database', [auth.requireAuth, auth.requireRole], (req, res) => {
     Settings.removeBackUpFile(req.body.path, req.body.fileName, (result) => {
+        res.json(result)
+    });
+});
+
+router.post('/api/v1/database/restore', [auth.requireAuth, helper.upload(false, false, path.join(__dirname, '..', 'uploads', 'backups')).single('file')], (req, res) => {
+    Settings.restoreDatabase(req.body.filePath, req.body.fileName, (result) => {
         res.json(result)
     });
 });

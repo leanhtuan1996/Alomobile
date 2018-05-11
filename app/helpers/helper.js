@@ -5,6 +5,8 @@ const config = require('config');
 const jwt = require('jsonwebtoken-refresh');
 const crypto = require('crypto');
 const _ = require('lodash');
+const Path = require('path');
+const multer = require('multer');
 
 var hashPw = (pw) => {
     var saltRounds = config.get("salt");
@@ -177,6 +179,52 @@ var removeUnicode = (str) => {
     return str;
 }
 
+var upload = (isRename = true, limit = true, path = Path.join(__dirname, '..', '..', 'public', 'img')) => {
+    var storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, path);
+        },
+        filename: (req, file, cb) => {
+            var originalName = file.originalname.replace(/\.[^/.]+$/, "");
+            var fileExtension = file.originalname.split('.').pop();
+    
+            if (!req.body.newNames) {
+                req.body.newNames = [];
+            }
+    
+            var newName = Date.now() + _.random(1, 1000) + "." + fileExtension;
+    
+            req.body.newNames.push(newName);
+    
+            cb(null, newName);
+        }
+    });
+
+    if (!isRename) {
+        storage = multer.diskStorage({
+            destination: (req, file, cb) => {
+                cb(null, path);
+            },
+            filename: (req, file, cb) => {   
+                req.body.filePath = path;
+                req.body.fileName = file.originalname     
+                cb(null, file.originalname);
+            }
+        })
+    } 
+
+    if (limit) {
+        return multer({
+            storage: storage,
+            limits: { fileSize: 1 * 1024 * 1024 }
+        }); 
+    } else {
+        return multer({
+            storage: storage
+        }); 
+    }  
+}
+
 module.exports = {
     hashPw: hashPw,
     comparePw: comparePw,
@@ -189,5 +237,6 @@ module.exports = {
     numberWithCommas: numberWithCommas,
     getRamdomNumber: getRamdomNumber,
     removeUnicode: removeUnicode,
-    getAllRouter: getAllRouter
+    getAllRouter: getAllRouter,
+    upload: upload
 }

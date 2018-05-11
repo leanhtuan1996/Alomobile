@@ -9,7 +9,7 @@ MONGO_PORT="27017"
 MONGO_DATABASE="alomobile"
 MONGO_USERNAME="alomobile"
 MONGO_PASSWORD="letuananh"
-MONGO_BACKUPDIR="/home/leanhtuan110596/backups/alomobile"
+MONGO_BACKUPDIR="/Users/tuan/backups/alomobile"
 MONGO_AUTHDB="alomobile"
 #===========================
 TIMESTAMP=`date +%s`

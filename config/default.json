@@ -10,11 +10,6 @@
 		"user" : "alomobile",
 		"password" : "letuananh"
     },
-    "certificate": {
-        "key": "/privkey.pem",
-        "ca": "/chain.pem",
-        "cert": "/fullchain.pem"
-	},
 	"mailbox": {
 		"apiKey": "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",
 		"user": "admin@alomobile.tech",

@@ -97,8 +97,47 @@ var downloadBackup = (path, fileName, cb) => {
     workflow.emit('validate-parameters');
 }
 
-var restoreDatabase = () => {
+var restoreDatabase = (path, fileName, cb) => {
+    var workflow = new event.EventEmitter();
 
+    workflow.on('validate-parameters', () => {
+        if (!path) {
+            workflow.emit('response', {
+                error: "Path of file is required!"
+            });
+            return
+        }
+
+        if (!fileName) {
+            workflow.emit('response', {
+                error: "File is required!"
+            });
+            return
+        }
+
+        if (!fs.existsSync(`${path}/${fileName}`)) {
+            workflow.emit('response', {
+                error: 'Path not found'
+            });
+            return
+        }
+
+        workflow.emit('restore');
+    });
+
+    workflow.on('response', (response) => {
+        return cb(response);
+    });
+
+    workflow.on('restore', () => {
+        exec(`mongorestore --host ${config.get('mongoose.host')} --port ${config.get('mongoose.port')} --username ${config.get('mongoose.user')} --password ${config.get('mongoose.password')} --db ${config.get('mongoose.database')} --authenticationDatabase ${config.get('mongoose.database')} --drop --quiet --gzip --archive=${path}/${fileName}`, (error, stdout, stderr) => {
+            workflow.emit('response', {
+                error: error
+            });
+        });
+    });
+
+    workflow.emit('validate-parameters');
 };
 
 var getListBackupDatabases = (cb) => {
@@ -172,7 +211,7 @@ var removeBackUpFile = (path, fileName, cb) => {
     workflow.on('remove', () => {
         fs.exists(path, (isExist) => {            
             if (isExist) {
-                exec(`rm -f ${path}/${fileName}`, (error, stdout, stderr) => {
+                exec(`rm -f ${path}`, (error, stdout, stderr) => {
                     if (error) {
                         workflow.emit('response', {
                             error: "Can not remove file"

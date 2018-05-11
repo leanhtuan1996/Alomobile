@@ -73,29 +73,31 @@
 									<div class="clearfix"></div>
 								</div>
 								<div class="panel-wrapper collapse in">
-									<div class="panel-body">
-										<div class="col-md-12">
-											<div class="input-group">
-												<label class="input-group-btn">
-													<span class="btn btn-success btn-icon left-icon">
-														<i class="fa fa-folder-o"></i>
-														Browse&hellip;
-														<input type="file" style="display: none;" accept="application/gzip, .gz">
-													</span>
-												</label>
-												<input type="text" class="form-control" readonly>
+									<form id="form-restore-db">
+										<div class="panel-body">
+											<div class="col-md-12">
+												<div class="input-group">
+													<label class="input-group-btn">
+														<span class="btn btn-success btn-icon left-icon">
+															<i class="fa fa-folder-o"></i>
+															Browse&hellip;
+															<input type="file" style="display: none;" accept="application/gzip, .gz">
+														</span>
+													</label>
+													<input type="text" class="form-control" readonly>
+												</div>
+												<span class="help-block">
+													Chọn file có đuôi là .gz để tiến hành khôi phục.
+												</span>
 											</div>
-											<span class="help-block">
-												Chọn file có đuôi là .gz để tiến hành khôi phục.
-											</span>
 										</div>
-									</div>
-									<div class="panel-footer">
-										<button class="btn btn-success btn-icon left-icon" style="margin: 15px;" id="restore_database">
-											<i class="fa fa-refresh"></i>
-											<span>Khôi phục ngay</span>
-										</button>
-									</div>
+										<div class="panel-footer">
+											<button class="btn btn-success btn-icon left-icon" style="margin: 15px;" id="restore_database" type="submit">
+												<i class="fa fa-refresh"></i>
+												<span>Khôi phục ngay</span>
+											</button>
+										</div>
+									</form>
 								</div>
 							</div>
 						</div>
@@ -228,7 +230,7 @@
 						} catch (error) { }
 					}
 					items += `
-						<tr>
+						<tr id=${file.fileName}>
 							<td>${date || ""}</td>
 							<td>${file.fileName}</td>
 							<td>${file.size} kb</td>
@@ -303,7 +305,7 @@
 							showNotifier('error', 'Có lỗi trong quá trình xoá dữ liệu, vui lòng thử lại sau');
 						} else {
 							var row = $(e.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement)
-							$('#table_list_backups tbody').remove(row);
+							$(row).remove();
 						}
 					},
 					error: (err) => {
@@ -312,6 +314,36 @@
 				});
 			}
 		});
+
+		$('#form-restore-db').submit((e) => {
+			e.preventDefault();
+			var file = $(e.currentTarget).find('input[type=file]').get(0).files[0];
+			if (!file) {
+				showNotifier('error', 'Vui lòng chọn file sao lưu để tiến hành khôi phục');
+				return
+			}
+
+			var newFormData = new FormData();
+			newFormData.append('file', file);
+
+			$.ajax({
+				url: '/api/v1/database/restore',
+				method: 'POST',
+				data: newFormData,
+				processData: false,
+				contentType: false,
+				success: (data) => {
+					if (data.error) {
+						showNotifier('error', 'Có lỗi trong quá trình khôi phục dữ liệu, vui lòng thử lại sau');
+					} else {
+						showNotifier('success', 'Khôi phục dữ liệu thành công, vui lòng tải lại trang để thấy sự thay đổi');
+					}
+				},
+				error: (err) => {
+					showNotifier('error', err.status == 403 ? "Bạn không có quyền thực hiện chức năng này." : 'Có lỗi trong quá trình khôi phục dữ liệu, vui lòng thử lại sau');
+				}
+			})
+		})
 	});
 
 </script>
