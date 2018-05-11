@@ -34,10 +34,6 @@
            margin-bottom: 0
         }
 
-       
-
-	
-
     </style>
 </head>
 <body>
@@ -246,6 +242,32 @@
             window.print();
      //       window.close();
         });
+
+        (function() {
+
+            var beforePrint = function() {
+                window.close()
+            };
+
+            var afterPrint = function() {
+                window.close()
+            };
+
+            if (window.matchMedia) {
+                var mediaQueryList = window.matchMedia('print');
+                mediaQueryList.addListener(function(mql) {
+                    if (mql.matches) {
+                        beforePrint();
+                    } else {
+                        afterPrint();
+                    }
+                });
+            }
+
+            window.onbeforeprint = beforePrint;
+            window.onafterprint = afterPrint;
+
+            }());
 
     </script>
 </footer>
