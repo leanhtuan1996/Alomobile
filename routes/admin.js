@@ -331,7 +331,7 @@ router.get('/admin/promotions', [auth.requireAuth, auth.requireRole], (req, res)
 //#endregion PROMOTION ROUTERS
 
 
-router.get('/admin/database', [auth.requireAuth], (req, res) => {
+router.get('/admin/database', [auth.requireAuth, auth.requireRole], (req, res) => {
     res.render('admin/database', {
         data: {
             title: "Alomobile Control Panel - Trang quản lý CSDL",
@@ -339,7 +339,7 @@ router.get('/admin/database', [auth.requireAuth], (req, res) => {
     })
 })
 
-router.get('/admin/invoice/print', (req, res) => {  
+router.get('/admin/invoice/print', [auth.requireAuth, auth.requireRole], (req, res) => {  
     Order.getDetailOrder(req.query.id, (result) => {
         if (!result.order) {
             res.json({
