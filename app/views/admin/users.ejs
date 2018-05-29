@@ -434,7 +434,7 @@
                             $('#user-add').click((e) => {
                                 $("#add-user-modal").modal('show');
 
-                                $.get('/admin/get-roles', (data) => {
+                                $.get('/api/v1/role/get-roles', (data) => {
                                     var roles = data.roles;
                                     if (roles && roles.length > 0) {
                                         var options = ``;
@@ -487,7 +487,7 @@
                                             $(modalEdit).find("#phone_edit").val(phone || "");
                                             $(modalEdit).find('#status_edit').prop('checked', status || false);
 
-                                            $.get('/admin/get-roles', (data) => {
+                                            $.get('/api/v1/role/get-roles', (data) => {
                                                 if (data.error) {
                                                     swal('Oops', data.error, 'error')
                                                 } else {

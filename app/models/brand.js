@@ -12,7 +12,7 @@ module.exports = mongoose.model('Brand', new Schema({
     var brand = this;
 
     brand.updated_at = Date.now();
-
+   
     if (!brand.created_at) {
         brand.created_at = Date.now();
     }

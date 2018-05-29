@@ -4,7 +4,6 @@ var helper = require('../helpers/index').helper;
 var bcrypt = require('bcryptjs');
 var config = require('config');
 
-
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
@@ -23,7 +22,7 @@ var userSchema = new Schema({
     addresses: [{
         fullName: String,
         phone: Number,
-        address: String,
+        address: String,    
         city: String,
         state: String,
         zipPostalCode: Number
@@ -31,7 +30,6 @@ var userSchema = new Schema({
     status: { type: Schema.Types.Boolean, default: true },
     validTokens: [String],
     isRegisteredNewLetters: Boolean,
-    lastSignIn: Number,
     created_at: Number,
     updated_at: Number
 });

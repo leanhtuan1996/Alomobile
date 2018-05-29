@@ -2,7 +2,7 @@
 
 const bcrypt = require('bcryptjs');
 const config = require('config');
-const jwt = require('jsonwebtoken-refresh');
+const jwt = require('jsonwebtoken')
 const crypto = require('crypto');
 const _ = require('lodash');
 const Path = require('path');
@@ -20,6 +20,7 @@ var comparePw = (pw, hash) => {
 
 var encodeToken = (payload, expire = 3 * 24 * 60 * 60) => {
     //token will expire in 3 days
+    //keyJWT is a string, ex: abcdef
     return jwt.sign({
         id: String(payload)
     }, config.get("keyJWT"), { expiresIn: expire });
@@ -71,19 +72,6 @@ var dateToTimeStamp = (date) => {
     return newDate.getTime() / 1000
 }
 
-var copySync = (src, dest) => {
-    if (!fs.existsSync(src)) {
-        return false;
-    }
-    fs.readFile(src, function (err, data) {
-        if (err) throw err;
-        fs.writeFile(dest, data, function (err) {
-            if (err) throw err;
-            return true;
-        });
-    });
-}
-
 var getRamdomNumber = () => {
     var time = Math.round(Date.now() / 1000);
     var random = Math.floor(Math.random() * (99 - 1 + 1) + 10)
@@ -111,7 +99,7 @@ var getAllRouter = (stack, cb) => {
         for (var method in element.methods) {
             methods += method;
         }
-        //just get all router of admin
+        //just get all routers for admin and api
         if (element.path.startsWith('/admin') || element.path.startsWith('/api')) {
             response.push({
                 method: methods,
@@ -228,7 +216,6 @@ module.exports = {
     hashPw: hashPw,
     comparePw: comparePw,
     dateToTimeStamp: dateToTimeStamp,
-    copySync: copySync,
     encodeToken: encodeToken,
     decodeToken: decodeToken,
     refreshToken: refreshToken,

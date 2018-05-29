@@ -6,10 +6,6 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('Product', new Schema({
     name: { type: Schema.Types.String },
     alias: String,
-    colors: [{
-        hex: String,
-        name: String
-    }],
     details: [{
         color: {
             hex: String,
@@ -29,14 +25,6 @@ module.exports = mongoose.model('Product', new Schema({
         url: String,
         alt: String
     }],
-    reviews: [{
-        type: Schema.Types.ObjectId,
-        ref: "Review"
-    }],
-    promotions: [{
-        type: Schema.Types.ObjectId,
-        ref: "Promotion"
-    }],
     descriptions: String,
     status: { type: Schema.Types.Boolean, default: true },
     metaTitle: String,
@@ -50,7 +38,6 @@ module.exports = mongoose.model('Product', new Schema({
         idCategory: { type: Schema.Types.ObjectId, ref: "Category" }
     },
     totalOrders: Number,
-    orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
     created_at: Number,
     updated_at: Number
 }).pre('save', function (next) {

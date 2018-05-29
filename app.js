@@ -53,7 +53,7 @@ app.use(session({
     url: `mongodb://${config.get("mongoose.user")}:${config.get("mongoose.password")}@${config.get("mongoose.host")}:${config.get("mongoose.port")}/${config.get("mongoose.database")}`,
     collection: "sessions"
   }),
-  expires: 365 * 24 * 60 * 60 //15 days
+  expires: 365 * 24 * 60 * 60 //1 year
 }));
 
 //cron job
@@ -73,6 +73,8 @@ app.use((req, res, next) => {
   res.redis = redis;
   next();
 });
+
+
 
 function ensureSec(req, res, next) {
   if (req.headers.host == 'localhost:3000') {
