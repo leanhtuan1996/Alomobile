@@ -539,7 +539,9 @@
    
     (function(idCategory, idRootCategory) {
         var breadcrumb = $('div.breadcrumb_container > div.container');
-        $.get(`/api/v1/category/${idRootCategory}`, (data) => {
+        $.get(`/api/v1/category`, {
+            id: idRootCategory
+        }, (data) => {
             if (data.category) {
                 var b = ``;
                 if (idCategory == idRootCategory) {
