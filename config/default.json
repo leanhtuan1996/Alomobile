@@ -4,12 +4,16 @@
 		"port" : 80
 	},
 	"mongoose": {
-		"host" : "35.201.243.41",
+		"host" : "35.198.196.40",
 		"port" : 27017,
 		"database" : "alomobile",
-		"user" : "alomobile",
-		"password" : "letuananh"
-    },
+		"user" : "",
+		"password" : ""
+	},
+	"redis": {
+		"host": "35.198.196.40",
+		"port": "6379"
+	},
 	"mailbox": {
 		"apiKey": "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",
 		"user": "admin@alomobile.tech",

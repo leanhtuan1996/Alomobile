@@ -1,7 +1,11 @@
 'use strict'
+var config = require('config');
 
 var redis = require("redis"),
-    client = redis.createClient()
+    client = redis.createClient({
+      host: config.get('redis.host'),
+      port: config.get('redis.port')  
+    })
 
 // if you'd like to select database 3, instead of 0 (default), call
 // client.select(3, function() { /* ... */ });
